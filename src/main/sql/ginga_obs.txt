@@ -1,0 +1,42 @@
+ginga_obs.txt
+     2004-6-28	    T.Tamura
+
+---------------------------- 
+- Parametes [type in Oracle DB tables] [unit]
+--  SEQ_NO  [NUMBER(10)]
+The sequence number of the observation. The number begins with [yymm] where yy and mm is a two-digits year and month of the starting time of the observation, respectively. The last digit of a sequence number is 0 for a target observation and 9 for a background observation.
+
+-- TARGET_NAME	[CHAR(80)]
+The name of the target(s). 
+
+-- AVE_ALPHA	[NUMBER] 
+-- AVE_DELTA	[NUMBER]
+The average values of the pointing coordinate in equatorial (B1950).
+
+-- MAX_ALPHA	[NUMBER]
+-- MAX_DELTA	[NUMBER]
+-- MIN_ALPHA	[NUMBER]
+-- MIN_DELTA	[NUMBER]
+The maximun and minmun values of the pointing coordinates during the observation in equatorial (B1950).
+
+-- RIKAKU	[NUMBER]      [degree] 
+Distance between the source and the pointing direction. 
+
+-- STARTTIME	[DATE]
+-- ENDTIME	[DATE]
+The start and end time of the observation.
+
+-- POINTING	[NUMBER]  [hour]
+The duration of the pointing.
+
+-----------------------------------
+The following columns are only for internal use.
+
+-- PASSNAME	[CHAR(80)]
+The names of passes. Some record are truncated.
+-- PI_NAME	[CHAR(27)]
+All records have 'GINGA' in this column.
+-- ENTRY_DATE	[DATE]
+All records have a fixed date (when the database table was created).
+
+
