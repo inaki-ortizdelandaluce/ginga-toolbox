@@ -19,6 +19,46 @@ public class LACDumpParser {
 
     private File lacdumpFile;
 
+    private final int seqnoBeginIdx = 0;
+    private final int seqnoLength = 5;
+    private final int dateBeginIdx = 5;
+    private final int dateLength = 17;
+    private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd hh:mm:s");
+    private final int bitRateBeginIdx = 22;
+    private final int bitRateLength = 2;
+    private final int modeBeginIdx = 24;
+    private final int modeLength = 4;
+    private final int gmuBeginIdx = 28;
+    private final int gmuLength = 4;
+    private final int attitudeBeginIdx = 32;
+    private final int attitudeLength = 4;
+    private final int directionBeginIdx = 36;
+    private final int directionLength = 4;
+    private final int lowCountRateBeginIdx = 40;
+    private final int lowCountRateLength = 8;
+    private final int highCountRateBeginIdx = 48;
+    private final int highCountRateLength = 7;
+    private final int sudCountRateBeginIdx = 56;
+    private final int sudCountRateLength = 9;
+    private final int piCountRateBeginIdx = 65;
+    private final int piCountRateLength = 7;
+    private final int rigidityBeginIdx = 72;
+    private final int rigidityLength = 4;
+    private final int elevationBeginIdx = 76;
+    private final int elevationLength = 7;
+    private final int raDegBeginIndex = 85;
+    private final int raDegLength = 6;
+    private final int decDegBeginIndex = 91;
+    private final int decDegLength = 7;
+    private final int targetBeginIdx = 99;
+    private final int targetLength = 8;
+    private final int transmissionBeginIdx = 107;
+    private final int transmissionLength = 9;
+    private final int spinAxisRaDegBeginIdx = 119;
+    private final int spinAxisRaDegLength = 6;
+    private final int spinAxisDecDegBeginIdx = 125;
+    private final int spinAxisDecDegLength = 7;
+    		
     public LACDumpParser(File f) {
         this.lacdumpFile = f;
     }
@@ -28,47 +68,40 @@ public class LACDumpParser {
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(this.lacdumpFile));
+            
             String line = null;
             String lastSuperFrame = null;
             LACDumpEntity entity = null;
 
             int seqno;
-            int seqnoBeginIdx = 0;
-            int seqnoLength = 5;
             Date date;
-            int dateBeginIdx = 5;
-            int dateLength = 17;
-            SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd hh:mm:s");
             String bitRate;
-            int bitRateBeginIdx = 22;
-            int bitRateLength = 2;
             String mode;
-            int modeBeginIdx = 24;
-            int modeLength = 4;
             String gmu;
-            int gmuBeginIdx = 28;
-            int gmuLength = 4;
             String attitude;
-            int attitudeBeginIdx = 32;
-            int attitudeLength = 4;
             String direction;
-            int directionBeingIdx = 36;
-            int directionLength = 4;
-
+            double lowEnergyCountRate;
+            double highEnergyCountRate;
+            double sudCountRate;
+            double piCountRate;
+            double rigidity;
+            double elevation;
+            double raDeg;
+            double decDeg;
+            String target;
+            double transmission;
+            double spinAxisRaDeg;
+            double spinAxisDecDeg;
             while ((line = reader.readLine()) != null) {
-
                 log.debug("Line " + reader.getLineNumber() + ": " + line);
-
                 if (line.startsWith(SUPERFRAME_PREFIX)) {
                     if (lastSuperFrame != null) {
                         log.debug("END Super Frame " + lastSuperFrame);
                     }
                     lastSuperFrame = line.substring(1, line.length() - 1).trim();
                     log.debug("BEGIN Super Frame " + lastSuperFrame);
-
                 } else if (line.contains(LHV_ON_DATA_PREFIX)) {
                     continue;
-
                 } else {
                     entity = new LACDumpEntity();
                     entity.setSuperFrame(lastSuperFrame);
@@ -108,15 +141,139 @@ public class LACDumpParser {
                     entity.setAttitudeStatus(attitude);
 
                     // direction
-                    direction = line.substring(directionBeingIdx,
-                            directionBeingIdx + directionLength - 1).trim();
+                    direction = line.substring(directionBeginIdx,
+                            directionBeginIdx + directionLength - 1).trim();
                     log.debug("S/E " + direction);
                     entity.setDirection(direction);
+                    
+                    // low energy count rate
+                    try {
+                    	lowEnergyCountRate = Double.valueOf(line.substring(lowCountRateBeginIdx,
+                            lowCountRateBeginIdx + lowCountRateLength - 1).trim()).doubleValue();
+                    	log.debug("LAC-L " + lowEnergyCountRate);
+                    	entity.setLowEnergyCountRate(lowEnergyCountRate);
+                    } catch (NumberFormatException e) {
+                    	log.debug("LAC-L isNaN. Value: " + line.substring(lowCountRateBeginIdx,
+                                lowCountRateBeginIdx + lowCountRateLength - 1).trim());
+                    }
+                    
+                    // higher energy count rate
+                    try {
+                    	highEnergyCountRate = Double.valueOf(line.substring(highCountRateBeginIdx,
+                            highCountRateBeginIdx + highCountRateLength - 1).trim()).doubleValue();
+                    	log.debug("LAC-H " + highEnergyCountRate);
+                    	entity.setHighEnergyCountRate(highEnergyCountRate);
+                    } catch (NumberFormatException e) {
+                    	log.debug("LAC-H isNaN. Value: " + line.substring(highCountRateBeginIdx,
+                                highCountRateBeginIdx + highCountRateLength - 1).trim());
+                    }
+ 
+                    // sud count rate
+                    try {
+                    	sudCountRate = Double.valueOf(line.substring(sudCountRateBeginIdx,
+                            sudCountRateBeginIdx + sudCountRateLength - 1).trim()).doubleValue();
+                    	log.debug("SUD " + sudCountRate);
+                    	entity.setSUDCountRate(sudCountRate);
+                    } catch (NumberFormatException e) {
+                    	log.debug("SUD isNaN. Value: " + line.substring(sudCountRateBeginIdx,
+                                sudCountRateBeginIdx + sudCountRateLength - 1).trim());
+                    }
+                    
+                    // PI count rate
+                    try {
+                    	piCountRate = Double.valueOf(line.substring(piCountRateBeginIdx,
+                            piCountRateBeginIdx + piCountRateLength - 1).trim()).doubleValue();
+                    	log.debug("PIMN " + piCountRate);
+                    	entity.setPIMonitorCountRate(piCountRate);
+                    } catch (NumberFormatException e) {
+                    	log.debug("PIMN isNaN. Value: " + line.substring(piCountRateBeginIdx,
+                                piCountRateBeginIdx + piCountRateLength - 1).trim());
+                    }
 
+                    // rigidity
+                    try {
+                    	rigidity = Double.valueOf(line.substring(rigidityBeginIdx,
+                            rigidityBeginIdx + rigidityLength - 1).trim()).doubleValue();
+                    	log.debug("RIG " + rigidity);
+                    	entity.setCutoffRigidity(rigidity);
+                    } catch (NumberFormatException e) {
+                    	log.debug("RIG isNaN. Value: " + line.substring(rigidityBeginIdx,
+                                rigidityBeginIdx + rigidityLength - 1).trim());
+                    }
+
+                    // elevation
+                    try {
+                    	elevation = Double.valueOf(line.substring(elevationBeginIdx,
+                            elevationBeginIdx + elevationLength - 1).trim()).doubleValue();
+                    	log.debug("EELV " + elevation);
+                    	entity.setElevation(elevation);
+                    } catch (NumberFormatException e) {
+                    	log.debug("EELV isNaN. Value: " + line.substring(elevationBeginIdx,
+                                elevationBeginIdx + elevationLength - 1).trim());
+                    }
+                    
+                    // ra
+                    try {
+                    	raDeg = Double.valueOf(line.substring(raDegBeginIndex,
+                            raDegBeginIndex + raDegLength - 1).trim()).doubleValue();
+                    	log.debug("RA " + raDeg);
+                    	entity.setRaDegB1950(raDeg);
+                    } catch (NumberFormatException e) {
+                    	log.debug("RA isNaN. Value: " + line.substring(raDegBeginIndex,
+                                raDegBeginIndex + raDegLength - 1).trim());
+                    }
+
+                    // dec
+                    try {
+                    	decDeg = Double.valueOf(line.substring(decDegBeginIndex,
+                            decDegBeginIndex + decDegLength - 1).trim()).doubleValue();
+                    	log.debug("DEC " + decDeg);
+                    	entity.setDecDegB1950(decDeg);
+                    } catch (NumberFormatException e) {
+                    	log.debug("DEC isNaN. Value: " + line.substring(decDegBeginIndex,
+                                decDegBeginIndex + decDegLength - 1).trim());
+                    }
+
+                    // target
+                    target = line.substring(targetBeginIdx,
+                           targetBeginIdx + targetLength - 1).trim();
+                    log.debug("TARGET " + target);
+                    entity.setTarget(target);
+
+                    // transmission
+                    try {
+                    	transmission = Double.valueOf(line.substring(transmissionBeginIdx,
+                            transmissionBeginIdx + transmissionLength - 1).trim()).doubleValue();
+                    	log.debug("TRANSMISSION " + transmission);
+                    	entity.setTransmission(transmission);
+                    } catch (NumberFormatException e) {
+                    	log.debug("TRANSMISSION isNaN. Value: " + line.substring(transmissionBeginIdx,
+                                transmissionBeginIdx + transmissionLength - 1).trim());
+                    }
+
+                    //  spin axis ra
+                    try {
+                    	spinAxisRaDeg = Double.valueOf(line.substring(spinAxisRaDegBeginIdx,
+                            spinAxisRaDegBeginIdx + spinAxisRaDegLength - 1).trim()).doubleValue();
+                    	log.debug("SPIN AXIS RA " + spinAxisRaDeg);
+                    	entity.setSpinAxisRaDeg(spinAxisRaDeg);
+                    } catch (NumberFormatException e) {
+                    	log.debug("SPIN AXIS RA isNaN. Value: " + line.substring(spinAxisRaDegBeginIdx,
+                                spinAxisRaDegBeginIdx + spinAxisRaDegLength - 1).trim());
+                    }
+
+                    // spin axis dec
+                    try {
+                    	spinAxisDecDeg = Double.valueOf(line.substring(spinAxisDecDegBeginIdx,
+                            spinAxisDecDegBeginIdx + spinAxisDecDegLength - 1).trim()).doubleValue();
+                    	log.debug("SPIN AXIS DEC " + spinAxisDecDeg);
+                    	entity.setSpinAxisDecDeg(spinAxisDecDeg);
+                    } catch (NumberFormatException e) {
+                    	log.debug("SPIN AXIS DEC isNaN. Value: " + line.substring(spinAxisDecDegBeginIdx,
+                                spinAxisDecDegBeginIdx + spinAxisDecDegLength - 1).trim());
+                    }
                     // add entity to list
                     entityList.addEntity(entity);
-                    break; // To be removed
-
                 }
             }
         } catch (IOException | ParseException e) {

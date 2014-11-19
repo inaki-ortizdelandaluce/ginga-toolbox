@@ -20,8 +20,10 @@ public class LACDumpEntity {
     private double elevation;
     private double raDegB1950; // B1950
     private double decDegB1950; // B1950
+    private String target;
     private double transmission;
-    private double spinAxis;
+    private double spinAxisRaDeg;
+    private double spinAxisDecDeg;
 
     /**
      * @return the superFrame
@@ -261,17 +263,27 @@ public class LACDumpEntity {
         this.transmission = transmission;
     }
 
-    /**
-     * @return the spinAxis
-     */
-    public double getSpinAxis() {
-        return this.spinAxis;
-    }
+ 	public String getTarget() {
+		return target;
+	}
 
-    /**
-     * @param spinAxis the spinAxis to set
-     */
-    public void setSpinAxis(double spinAxis) {
-        this.spinAxis = spinAxis;
-    }
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	public double getSpinAxisRaDeg() {
+		return spinAxisRaDeg;
+	}
+
+	public void setSpinAxisRaDeg(double spinAxisRaDeg) {
+		this.spinAxisRaDeg = spinAxisRaDeg;
+	}
+
+	public double getSpinAxisDecDeg() {
+		return spinAxisDecDeg;
+	}
+
+	public void setSpinAxisDecDeg(double spinAxisDecDeg) {
+		this.spinAxisDecDeg = spinAxisDecDeg;
+	}
 }
