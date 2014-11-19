@@ -2,7 +2,7 @@ package org.ginga.tools.lacdump;
 
 import java.util.Date;
 
-public class LACDumpRow {
+public class LACDumpEntity {
 
     private String superFrame;
     private int sequenceNumber;
@@ -11,7 +11,7 @@ public class LACDumpRow {
     private String mode; // MPC1, MPC2, MPC3, ACS, PCHK
     private String gainAndDiscriminators;
     private String attitudeStatus; // NML, SL+, SL-, S36, MAN
-    private String LACDirection; // SKY, NTE, DYE
+    private String direction; // SKY, NTE, DYE
     private double lowEnergyCountRate;
     private double highEnergyCountRate;
     private double SUDCountRate;
@@ -122,17 +122,17 @@ public class LACDumpRow {
     }
 
     /**
-     * @return the lACDirection
+     * @return the direction
      */
-    public String getLACDirection() {
-        return this.LACDirection;
+    public String getDirection() {
+        return this.direction;
     }
 
     /**
-     * @param lACDirection the lACDirection to set
+     * @param direction the direction to set
      */
-    public void setLACDirection(String lACDirection) {
-        this.LACDirection = lACDirection;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     /**
