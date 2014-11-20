@@ -36,7 +36,7 @@ public class LACDumpEntity {
     @Column(name = "gmu", length = 3)
     private String gainAndDiscriminators;
 
-    @Column(name = "acm", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
+    @Column(name = "acm", columnDefinition = "enum(,'NML', 'SL+','SL-','S36','MAN')")
     private String attitudeStatus;
 
     @Column(name = "s_e", columnDefinition = "enum('SKY','NTE','DYE')")
