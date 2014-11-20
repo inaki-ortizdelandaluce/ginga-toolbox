@@ -27,23 +27,19 @@ public class LACDumpEntity {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @Column(name = "br", length = 1)
-    // , columnDefinition = "enum('H', 'M', 'L')")
+    @Column(name = "br", columnDefinition = "enum('H', 'M', 'L')")
     private String bitRate;
 
-    @Column(name = "mode", length = 4)
-    // , columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
+    @Column(name = "mode", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
     private String mode;
 
     @Column(name = "gmu", length = 3)
     private String gainAndDiscriminators;
 
-    @Column(name = "acm", length = 3)
-    // , columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
+    @Column(name = "acm", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
     private String attitudeStatus;
 
-    @Column(name = "s_e", length = 3)
-    // , columnDefinition = "enum('SKY','NTE','DYE')")
+    @Column(name = "s_e", columnDefinition = "enum('SKY','NTE','DYE')")
     private String direction;
 
     @Column(name = "lac_l")
