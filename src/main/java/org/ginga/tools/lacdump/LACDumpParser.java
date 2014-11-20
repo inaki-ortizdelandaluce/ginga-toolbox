@@ -17,8 +17,6 @@ public class LACDumpParser {
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
 
-    private File lacdumpFile;
-
     private final int seqnoBeginIdx = 0;
     private final int seqnoLength = 5;
     private final int dateBeginIdx = 5;
@@ -59,15 +57,14 @@ public class LACDumpParser {
     private final int spinAxisDecDegBeginIdx = 125;
     private final int spinAxisDecDegLength = 7;
     		
-    public LACDumpParser(File f) {
-        this.lacdumpFile = f;
+    public LACDumpParser() {
     }
 
-    public LACDumpEntityList parse() throws IOException {
+    public LACDumpEntityList parse(File lacdumpFile) throws IOException {
         LACDumpEntityList entityList = new LACDumpEntityList();
         LineNumberReader reader = null;
         try {
-            reader = new LineNumberReader(new FileReader(this.lacdumpFile));
+            reader = new LineNumberReader(new FileReader(lacdumpFile));
             
             String line = null;
             String lastSuperFrame = null;
@@ -302,8 +299,8 @@ public class LACDumpParser {
                 System.exit(1);
             }
             try {
-                LACDumpParser parser = new LACDumpParser(f);
-                LACDumpEntityList entityList = parser.parse();
+                LACDumpParser parser = new LACDumpParser();
+                LACDumpEntityList entityList = parser.parse(f);
                 log.info("LACDUMP contains " + entityList.getEntityCount() + " row(s)");
             } catch (IOException e) {
                 log.error("Error parsing LACDUMP " + f.getPath() + ". Message=" + e.getMessage());
