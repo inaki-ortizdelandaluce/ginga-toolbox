@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LACDumpEntity;
 import org.ginga.tools.lacdump.LACDumpEntityList;
@@ -18,6 +19,10 @@ public class LACDumpParser {
 
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
+
+    private enum DirectionValues {
+        SKY, NTE, DYE
+    }
 
     private final int seqnoBeginIdx = 0;
     private final int seqnoLength = 5;
@@ -145,7 +150,9 @@ public class LACDumpParser {
                     direction = line.substring(this.directionBeginIdx,
                             this.directionBeginIdx + this.directionLength - 1).trim();
                     log.debug("S/E " + direction);
-                    entity.setDirection(direction);
+                    if (EnumUtils.isValidEnum(DirectionValues.class, direction)) {
+                        entity.setDirection(direction);
+                    }
 
                     // low energy count rate
                     try {
