@@ -22,16 +22,16 @@ public class LACDumpParser {
     private final int seqnoBeginIdx = 0;
     private final int seqnoLength = 5;
     private final int dateBeginIdx = 5;
-    private final int dateLength = 17;
+    private final int dateLength = 16;
     private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd hh:mm:s");
-    private final int bitRateBeginIdx = 22;
+    private final int bitRateBeginIdx = 21;
     private final int bitRateLength = 2;
-    private final int modeBeginIdx = 24;
-    private final int modeLength = 4;
+    private final int modeBeginIdx = 23;
+    private final int modeLength = 5;
     private final int gmuBeginIdx = 28;
     private final int gmuLength = 4;
-    private final int attitudeBeginIdx = 32;
-    private final int attitudeLength = 4;
+    private final int attitudeBeginIdx = 31;
+    private final int attitudeLength = 5;
     private final int directionBeginIdx = 36;
     private final int directionLength = 4;
     private final int lowCountRateBeginIdx = 40;
@@ -45,20 +45,20 @@ public class LACDumpParser {
     private final int rigidityBeginIdx = 72;
     private final int rigidityLength = 4;
     private final int elevationBeginIdx = 76;
-    private final int elevationLength = 7;
-    private final int raDegBeginIndex = 85;
-    private final int raDegLength = 6;
+    private final int elevationLength = 8;
+    private final int raDegBeginIndex = 84;
+    private final int raDegLength = 7;
     private final int decDegBeginIndex = 91;
     private final int decDegLength = 7;
-    private final int targetBeginIdx = 99;
-    private final int targetLength = 8;
-    private final int transmissionBeginIdx = 107;
-    private final int transmissionLength = 9;
-    private final int spinAxisRaDegBeginIdx = 119;
-    private final int spinAxisRaDegLength = 6;
+    private final int targetBeginIdx = 98;
+    private final int targetLength = 13;
+    private final int transmissionBeginIdx = 111;
+    private final int transmissionLength = 5;
+    private final int spinAxisRaDegBeginIdx = 118;
+    private final int spinAxisRaDegLength = 7;
     private final int spinAxisDecDegBeginIdx = 125;
     private final int spinAxisDecDegLength = 7;
-    		
+
     public LACDumpParser() {
     }
 
@@ -67,7 +67,7 @@ public class LACDumpParser {
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(lacdumpFile));
-            
+
             String line = null;
             String lastSuperFrame = null;
             LACDumpEntity entity = null;
@@ -106,170 +106,215 @@ public class LACDumpParser {
                     entity.setSuperFrame(lastSuperFrame);
                     // seqno
                     seqno = Integer.valueOf(
-                            line.substring(seqnoBeginIdx, seqnoBeginIdx + seqnoLength - 1).trim())
-                            .intValue();
+                            line.substring(this.seqnoBeginIdx,
+                                    this.seqnoBeginIdx + this.seqnoLength - 1).trim()).intValue();
                     log.debug("SEQ_NO " + seqno);
                     entity.setSequenceNumber(seqno);
 
                     // datetime
-                    date = dateFmt.parse(line.substring(dateBeginIdx, dateBeginIdx + dateLength)
-                            .trim());
+                    date = this.dateFmt.parse(line.substring(this.dateBeginIdx,
+                            this.dateBeginIdx + this.dateLength).trim());
                     log.debug("DATE " + new SimpleDateFormat("yyy-MM-dd'T'hh:mm:ss").format(date));
                     entity.setDate(date);
 
                     // bitrate
-                    bitRate = line.substring(bitRateBeginIdx, bitRateBeginIdx + bitRateLength - 1)
-                            .trim();
+                    bitRate = line.substring(this.bitRateBeginIdx,
+                            this.bitRateBeginIdx + this.bitRateLength - 1).trim();
                     log.debug("BR " + bitRate);
                     entity.setBitRate(bitRate);
 
                     // mode
-                    mode = line.substring(modeBeginIdx, modeBeginIdx + modeLength - 1).trim();
+                    mode = line.substring(this.modeBeginIdx,
+                            this.modeBeginIdx + this.modeLength - 1).trim();
                     log.debug("MODE " + mode);
                     entity.setMode(mode);
 
                     // gain and medium/upper discriminator
-                    gmu = line.substring(gmuBeginIdx, gmuBeginIdx + gmuLength - 1).trim();
+                    gmu = line.substring(this.gmuBeginIdx, this.gmuBeginIdx + this.gmuLength - 1)
+                            .trim();
                     log.debug("GMU " + gmu);
                     entity.setGainAndDiscriminators(gmu);
 
                     // attitude status
-                    attitude = line.substring(attitudeBeginIdx,
-                            attitudeBeginIdx + attitudeLength - 1).trim();
+                    attitude = line.substring(this.attitudeBeginIdx,
+                            this.attitudeBeginIdx + this.attitudeLength - 1).trim();
                     log.debug("ACM " + attitude);
                     entity.setAttitudeStatus(attitude);
 
                     // direction
-                    direction = line.substring(directionBeginIdx,
-                            directionBeginIdx + directionLength - 1).trim();
+                    direction = line.substring(this.directionBeginIdx,
+                            this.directionBeginIdx + this.directionLength - 1).trim();
                     log.debug("S/E " + direction);
                     entity.setDirection(direction);
-                    
+
                     // low energy count rate
                     try {
-                    	lowEnergyCountRate = Double.valueOf(line.substring(lowCountRateBeginIdx,
-                            lowCountRateBeginIdx + lowCountRateLength - 1).trim()).doubleValue();
-                    	log.debug("LAC-L " + lowEnergyCountRate);
-                    	entity.setLowEnergyCountRate(lowEnergyCountRate);
+                        lowEnergyCountRate = Double.valueOf(
+                                line.substring(this.lowCountRateBeginIdx,
+                                        this.lowCountRateBeginIdx + this.lowCountRateLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("LAC-L " + lowEnergyCountRate);
+                        entity.setLowEnergyCountRate(lowEnergyCountRate);
                     } catch (NumberFormatException e) {
-                    	log.debug("LAC-L isNaN. Value: " + line.substring(lowCountRateBeginIdx,
-                                lowCountRateBeginIdx + lowCountRateLength - 1).trim());
+                        log.debug("LAC-L isNaN. Value: "
+                                + line.substring(this.lowCountRateBeginIdx,
+                                        this.lowCountRateBeginIdx + this.lowCountRateLength - 1)
+                                        .trim());
                     }
-                    
+
                     // higher energy count rate
                     try {
-                    	highEnergyCountRate = Double.valueOf(line.substring(highCountRateBeginIdx,
-                            highCountRateBeginIdx + highCountRateLength - 1).trim()).doubleValue();
-                    	log.debug("LAC-H " + highEnergyCountRate);
-                    	entity.setHighEnergyCountRate(highEnergyCountRate);
+                        highEnergyCountRate = Double.valueOf(
+                                line.substring(this.highCountRateBeginIdx,
+                                        this.highCountRateBeginIdx + this.highCountRateLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("LAC-H " + highEnergyCountRate);
+                        entity.setHighEnergyCountRate(highEnergyCountRate);
                     } catch (NumberFormatException e) {
-                    	log.debug("LAC-H isNaN. Value: " + line.substring(highCountRateBeginIdx,
-                                highCountRateBeginIdx + highCountRateLength - 1).trim());
+                        log.debug("LAC-H isNaN. Value: "
+                                + line.substring(this.highCountRateBeginIdx,
+                                        this.highCountRateBeginIdx + this.highCountRateLength - 1)
+                                        .trim());
                     }
- 
+
                     // sud count rate
                     try {
-                    	sudCountRate = Double.valueOf(line.substring(sudCountRateBeginIdx,
-                            sudCountRateBeginIdx + sudCountRateLength - 1).trim()).doubleValue();
-                    	log.debug("SUD " + sudCountRate);
-                    	entity.setSUDCountRate(sudCountRate);
+                        sudCountRate = Double.valueOf(
+                                line.substring(this.sudCountRateBeginIdx,
+                                        this.sudCountRateBeginIdx + this.sudCountRateLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("SUD " + sudCountRate);
+                        entity.setSUDCountRate(sudCountRate);
                     } catch (NumberFormatException e) {
-                    	log.debug("SUD isNaN. Value: " + line.substring(sudCountRateBeginIdx,
-                                sudCountRateBeginIdx + sudCountRateLength - 1).trim());
+                        log.debug("SUD isNaN. Value: "
+                                + line.substring(this.sudCountRateBeginIdx,
+                                        this.sudCountRateBeginIdx + this.sudCountRateLength - 1)
+                                        .trim());
                     }
-                    
+
                     // PI count rate
                     try {
-                    	piCountRate = Double.valueOf(line.substring(piCountRateBeginIdx,
-                            piCountRateBeginIdx + piCountRateLength - 1).trim()).doubleValue();
-                    	log.debug("PIMN " + piCountRate);
-                    	entity.setPIMonitorCountRate(piCountRate);
+                        piCountRate = Double.valueOf(
+                                line.substring(this.piCountRateBeginIdx,
+                                        this.piCountRateBeginIdx + this.piCountRateLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("PIMN " + piCountRate);
+                        entity.setPIMonitorCountRate(piCountRate);
                     } catch (NumberFormatException e) {
-                    	log.debug("PIMN isNaN. Value: " + line.substring(piCountRateBeginIdx,
-                                piCountRateBeginIdx + piCountRateLength - 1).trim());
+                        log.debug("PIMN isNaN. Value: "
+                                + line.substring(this.piCountRateBeginIdx,
+                                        this.piCountRateBeginIdx + this.piCountRateLength - 1)
+                                        .trim());
                     }
 
                     // rigidity
                     try {
-                    	rigidity = Double.valueOf(line.substring(rigidityBeginIdx,
-                            rigidityBeginIdx + rigidityLength - 1).trim()).doubleValue();
-                    	log.debug("RIG " + rigidity);
-                    	entity.setCutoffRigidity(rigidity);
+                        rigidity = Double.valueOf(
+                                line.substring(this.rigidityBeginIdx,
+                                        this.rigidityBeginIdx + this.rigidityLength - 1).trim())
+                                .doubleValue();
+                        log.debug("RIG " + rigidity);
+                        entity.setCutoffRigidity(rigidity);
                     } catch (NumberFormatException e) {
-                    	log.debug("RIG isNaN. Value: " + line.substring(rigidityBeginIdx,
-                                rigidityBeginIdx + rigidityLength - 1).trim());
+                        log.debug("RIG isNaN. Value: "
+                                + line.substring(this.rigidityBeginIdx,
+                                        this.rigidityBeginIdx + this.rigidityLength - 1).trim());
                     }
 
                     // elevation
                     try {
-                    	elevation = Double.valueOf(line.substring(elevationBeginIdx,
-                            elevationBeginIdx + elevationLength - 1).trim()).doubleValue();
-                    	log.debug("EELV " + elevation);
-                    	entity.setElevation(elevation);
+                        elevation = Double.valueOf(
+                                line.substring(this.elevationBeginIdx,
+                                        this.elevationBeginIdx + this.elevationLength - 1).trim())
+                                .doubleValue();
+                        log.debug("EELV " + elevation);
+                        entity.setElevation(elevation);
                     } catch (NumberFormatException e) {
-                    	log.debug("EELV isNaN. Value: " + line.substring(elevationBeginIdx,
-                                elevationBeginIdx + elevationLength - 1).trim());
+                        log.debug("EELV isNaN. Value: "
+                                + line.substring(this.elevationBeginIdx,
+                                        this.elevationBeginIdx + this.elevationLength - 1).trim());
                     }
-                    
+
                     // ra
                     try {
-                    	raDeg = Double.valueOf(line.substring(raDegBeginIndex,
-                            raDegBeginIndex + raDegLength - 1).trim()).doubleValue();
-                    	log.debug("RA " + raDeg);
-                    	entity.setRaDegB1950(raDeg);
+                        raDeg = Double.valueOf(
+                                line.substring(this.raDegBeginIndex,
+                                        this.raDegBeginIndex + this.raDegLength - 1).trim())
+                                .doubleValue();
+                        log.debug("RA " + raDeg);
+                        entity.setRaDegB1950(raDeg);
                     } catch (NumberFormatException e) {
-                    	log.debug("RA isNaN. Value: " + line.substring(raDegBeginIndex,
-                                raDegBeginIndex + raDegLength - 1).trim());
+                        log.debug("RA isNaN. Value: "
+                                + line.substring(this.raDegBeginIndex,
+                                        this.raDegBeginIndex + this.raDegLength - 1).trim());
                     }
 
                     // dec
                     try {
-                    	decDeg = Double.valueOf(line.substring(decDegBeginIndex,
-                            decDegBeginIndex + decDegLength - 1).trim()).doubleValue();
-                    	log.debug("DEC " + decDeg);
-                    	entity.setDecDegB1950(decDeg);
+                        decDeg = Double.valueOf(
+                                line.substring(this.decDegBeginIndex,
+                                        this.decDegBeginIndex + this.decDegLength - 1).trim())
+                                .doubleValue();
+                        log.debug("DEC " + decDeg);
+                        entity.setDecDegB1950(decDeg);
                     } catch (NumberFormatException e) {
-                    	log.debug("DEC isNaN. Value: " + line.substring(decDegBeginIndex,
-                                decDegBeginIndex + decDegLength - 1).trim());
+                        log.debug("DEC isNaN. Value: "
+                                + line.substring(this.decDegBeginIndex,
+                                        this.decDegBeginIndex + this.decDegLength - 1).trim());
                     }
 
                     // target
-                    target = line.substring(targetBeginIdx,
-                           targetBeginIdx + targetLength - 1).trim();
+                    target = line.substring(this.targetBeginIdx,
+                            this.targetBeginIdx + this.targetLength - 1).trim();
                     log.debug("TARGET " + target);
                     entity.setTarget(target);
 
                     // transmission
                     try {
-                    	transmission = Double.valueOf(line.substring(transmissionBeginIdx,
-                            transmissionBeginIdx + transmissionLength - 1).trim()).doubleValue();
-                    	log.debug("TRANSMISSION " + transmission);
-                    	entity.setTransmission(transmission);
+                        transmission = Double.valueOf(
+                                line.substring(this.transmissionBeginIdx,
+                                        this.transmissionBeginIdx + this.transmissionLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("TRANSMISSION " + transmission);
+                        entity.setTransmission(transmission);
                     } catch (NumberFormatException e) {
-                    	log.debug("TRANSMISSION isNaN. Value: " + line.substring(transmissionBeginIdx,
-                                transmissionBeginIdx + transmissionLength - 1).trim());
+                        log.debug("TRANSMISSION isNaN. Value: "
+                                + line.substring(this.transmissionBeginIdx,
+                                        this.transmissionBeginIdx + this.transmissionLength - 1)
+                                        .trim());
                     }
 
-                    //  spin axis ra
+                    // spin axis ra
                     try {
-                    	spinAxisRaDeg = Double.valueOf(line.substring(spinAxisRaDegBeginIdx,
-                            spinAxisRaDegBeginIdx + spinAxisRaDegLength - 1).trim()).doubleValue();
-                    	log.debug("SPIN AXIS RA " + spinAxisRaDeg);
-                    	entity.setSpinAxisRaDeg(spinAxisRaDeg);
+                        spinAxisRaDeg = Double.valueOf(
+                                line.substring(this.spinAxisRaDegBeginIdx,
+                                        this.spinAxisRaDegBeginIdx + this.spinAxisRaDegLength - 1)
+                                        .trim()).doubleValue();
+                        log.debug("SPIN AXIS RA " + spinAxisRaDeg);
+                        entity.setSpinAxisRaDeg(spinAxisRaDeg);
                     } catch (NumberFormatException e) {
-                    	log.debug("SPIN AXIS RA isNaN. Value: " + line.substring(spinAxisRaDegBeginIdx,
-                                spinAxisRaDegBeginIdx + spinAxisRaDegLength - 1).trim());
+                        log.debug("SPIN AXIS RA isNaN. Value: "
+                                + line.substring(this.spinAxisRaDegBeginIdx,
+                                        this.spinAxisRaDegBeginIdx + this.spinAxisRaDegLength - 1)
+                                        .trim());
                     }
 
                     // spin axis dec
                     try {
-                    	spinAxisDecDeg = Double.valueOf(line.substring(spinAxisDecDegBeginIdx,
-                            spinAxisDecDegBeginIdx + spinAxisDecDegLength - 1).trim()).doubleValue();
-                    	log.debug("SPIN AXIS DEC " + spinAxisDecDeg);
-                    	entity.setSpinAxisDecDeg(spinAxisDecDeg);
+                        spinAxisDecDeg = Double
+                                .valueOf(
+                                        line.substring(
+                                                this.spinAxisDecDegBeginIdx,
+                                                this.spinAxisDecDegBeginIdx
+                                                        + this.spinAxisDecDegLength - 1).trim())
+                                .doubleValue();
+                        log.debug("SPIN AXIS DEC " + spinAxisDecDeg);
+                        entity.setSpinAxisDecDeg(spinAxisDecDeg);
                     } catch (NumberFormatException e) {
-                    	log.debug("SPIN AXIS DEC isNaN. Value: " + line.substring(spinAxisDecDegBeginIdx,
-                                spinAxisDecDegBeginIdx + spinAxisDecDegLength - 1).trim());
+                        log.debug("SPIN AXIS DEC isNaN. Value: "
+                                + line.substring(this.spinAxisDecDegBeginIdx,
+                                        this.spinAxisDecDegBeginIdx + this.spinAxisDecDegLength - 1)
+                                        .trim());
                     }
                     // add entity to list
                     entityList.addEntity(entity);
