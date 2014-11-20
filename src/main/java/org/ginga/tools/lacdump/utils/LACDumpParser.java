@@ -20,8 +20,28 @@ public class LACDumpParser {
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
 
-    private enum DirectionValues {
+    private enum DirectionEnum {
         SKY, NTE, DYE
+    }
+    
+    private enum ModeEnum {
+    	MPC1, MPC2, MPC3, ACS, PCHK
+    }
+    
+    private enum BitRateEnum {
+    	H, M, L
+    }
+    
+    private enum AttitudeEnum {
+    	NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"),S36("S36"),MAN("MAN");
+    	String s;
+    	AttitudeEnum(String value) {
+    		this.s = value;
+    	}
+    	@Override
+    	public String toString() {
+    		return this.s;
+    	}
     }
 
     private final int seqnoBeginIdx = 0;
@@ -126,13 +146,16 @@ public class LACDumpParser {
                     bitRate = line.substring(this.bitRateBeginIdx,
                             this.bitRateBeginIdx + this.bitRateLength - 1).trim();
                     log.debug("BR " + bitRate);
-                    entity.setBitRate(bitRate);
-
+                    if (EnumUtils.isValidEnum(BitRateEnum.class, bitRate)) {
+                        entity.setBitRate(bitRate);
+                    }
                     // mode
                     mode = line.substring(this.modeBeginIdx,
                             this.modeBeginIdx + this.modeLength - 1).trim();
                     log.debug("MODE " + mode);
-                    entity.setMode(mode);
+                    if (EnumUtils.isValidEnum(ModeEnum.class, mode)) {
+                        entity.setMode(mode);
+                    }
 
                     // gain and medium/upper discriminator
                     gmu = line.substring(this.gmuBeginIdx, this.gmuBeginIdx + this.gmuLength - 1)
@@ -144,13 +167,14 @@ public class LACDumpParser {
                     attitude = line.substring(this.attitudeBeginIdx,
                             this.attitudeBeginIdx + this.attitudeLength - 1).trim();
                     log.debug("ACM " + attitude);
-                    entity.setAttitudeStatus(attitude);
-
+                    if (EnumUtils.isValidEnum(AttitudeEnum.class, attitude)) {
+                        entity.setAttitudeStatus(attitude);
+                    }
                     // direction
                     direction = line.substring(this.directionBeginIdx,
                             this.directionBeginIdx + this.directionLength - 1).trim();
                     log.debug("S/E " + direction);
-                    if (EnumUtils.isValidEnum(DirectionValues.class, direction)) {
+                    if (EnumUtils.isValidEnum(DirectionEnum.class, direction)) {
                         entity.setDirection(direction);
                     }
 
