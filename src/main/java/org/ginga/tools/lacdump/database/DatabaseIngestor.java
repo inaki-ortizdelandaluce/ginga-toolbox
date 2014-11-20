@@ -3,6 +3,7 @@ package org.ginga.tools.lacdump.database;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
@@ -44,7 +45,8 @@ public class DatabaseIngestor {
                     return name.matches("J[0-9]{6}");
                 }
             });
-
+            Arrays.sort(lacdumpFiles);
+            
             log.info(lacdumpFiles.length + " file(s) found");
             LACDumpParser parser = new LACDumpParser();
             LACDumpDao dao = new LACDumpDaoImpl();
