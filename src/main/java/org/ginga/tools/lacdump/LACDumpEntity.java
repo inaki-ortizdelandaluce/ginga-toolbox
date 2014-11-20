@@ -10,72 +10,72 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "lacdump")
+@Table(name = "LACDUMP")
 public class LACDumpEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "sf", nullable = false, length = 12)
+    @Column(name = "SF", nullable = false, length = 12)
     private String superFrame;
 
-    @Column(name = "seq_no", nullable = false)
+    @Column(name = "SEQ_NO", nullable = false)
     private int sequenceNumber;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @Column(name = "br", columnDefinition = "enum('H', 'M', 'L')")
+    @Column(name = "BR", columnDefinition = "enum('H', 'M', 'L')")
     private String bitRate;
 
-    @Column(name = "mode", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
+    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
     private String mode;
 
-    @Column(name = "gmu", length = 3)
+    @Column(name = "GMU", length = 3)
     private String gainAndDiscriminators;
 
-    @Column(name = "acm", columnDefinition = "enum(,'NML', 'SL+','SL-','S36','MAN')")
+    @Column(name = "ACM", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
     private String attitudeStatus;
 
-    @Column(name = "s_e", columnDefinition = "enum('SKY','NTE','DYE')")
+    @Column(name = "S_E", columnDefinition = "enum('SKY','NTE','DYE')")
     private String direction;
 
-    @Column(name = "lac_l")
+    @Column(name = "LAC_L")
     private double lowEnergyCountRate;
 
-    @Column(name = "lac_h")
+    @Column(name = "LAC_H")
     private double highEnergyCountRate;
 
-    @Column(name = "suf")
+    @Column(name = "SUD")
     private double SUDCountRate;
 
-    @Column(name = "pimn")
+    @Column(name = "PIMN")
     private double PIMonitorCountRate;
 
-    @Column(name = "rig")
+    @Column(name = "RIG")
     private double cutoffRigidity;
 
-    @Column(name = "eelv")
+    @Column(name = "EELV")
     private double elevation;
 
-    @Column(name = "ra_deg_b1950")
+    @Column(name = "RA_DEG_B1950")
     private double raDegB1950; // B1950
 
-    @Column(name = "dec_deg_b1950")
+    @Column(name = "DEC_DEG_B1950")
     private double decDegB1950; // B1950
 
-    @Column(name = "target")
+    @Column(name = "TARGET")
     private String target;
 
-    @Column(name = "transmission")
+    @Column(name = "TRANSMISSION")
     private double transmission;
 
-    @Column(name = "spin_axis_ra_deg")
+    @Column(name = "SPIN_AXIS_RA_DEG")
     private double spinAxisRaDeg;
 
-    @Column(name = "spin_axis_dec_deg")
+    @Column(name = "SPIN_AXIS_DEC_DEG")
     private double spinAxisDecDeg;
 
     /**
