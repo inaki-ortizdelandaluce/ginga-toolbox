@@ -2,27 +2,80 @@ package org.ginga.tools.lacdump;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lacdump")
 public class LACDumpEntity {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "sf", nullable = false, length = 12)
     private String superFrame;
+
+    @Column(name = "seq_no", nullable = false)
     private int sequenceNumber;
+
+    @Column(name = "date", nullable = false)
     private Date date;
-    private String bitRate; // H, M, L
-    private String mode; // MPC1, MPC2, MPC3, ACS, PCHK
+
+    @Column(name = "br", columnDefinition = "enum('H', 'M', 'L')")
+    private String bitRate;
+
+    @Column(name = "mode", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
+    private String mode;
+
+    @Column(name = "gmu", length = 3)
     private String gainAndDiscriminators;
-    private String attitudeStatus; // NML, SL+, SL-, S36, MAN
-    private String direction; // SKY, NTE, DYE
+
+    @Column(name = "acm", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
+    private String attitudeStatus;
+
+    @Column(name = "s_e", columnDefinition = "enum('SKY','NTE','DYE')")
+    private String direction;
+
+    @Column(name = "lac_l")
     private double lowEnergyCountRate;
+
+    @Column(name = "lac_h")
     private double highEnergyCountRate;
+
+    @Column(name = "suf")
     private double SUDCountRate;
+
+    @Column(name = "pimn")
     private double PIMonitorCountRate;
+
+    @Column(name = "rig")
     private double cutoffRigidity;
+
+    @Column(name = "eelv")
     private double elevation;
+
+    @Column(name = "ra_deg_b1950")
     private double raDegB1950; // B1950
+
+    @Column(name = "dec_deg_b1950")
     private double decDegB1950; // B1950
+
+    @Column(name = "target")
     private String target;
+
+    @Column(name = "transmission")
     private double transmission;
+
+    @Column(name = "spin_axis_ra_deg")
     private double spinAxisRaDeg;
+
+    @Column(name = "spin_axis_dec_deg")
     private double spinAxisDecDeg;
 
     /**
@@ -263,27 +316,41 @@ public class LACDumpEntity {
         this.transmission = transmission;
     }
 
- 	public String getTarget() {
-		return target;
-	}
+    public String getTarget() {
+        return this.target;
+    }
 
-	public void setTarget(String target) {
-		this.target = target;
-	}
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
-	public double getSpinAxisRaDeg() {
-		return spinAxisRaDeg;
-	}
+    public double getSpinAxisRaDeg() {
+        return this.spinAxisRaDeg;
+    }
 
-	public void setSpinAxisRaDeg(double spinAxisRaDeg) {
-		this.spinAxisRaDeg = spinAxisRaDeg;
-	}
+    public void setSpinAxisRaDeg(double spinAxisRaDeg) {
+        this.spinAxisRaDeg = spinAxisRaDeg;
+    }
 
-	public double getSpinAxisDecDeg() {
-		return spinAxisDecDeg;
-	}
+    public double getSpinAxisDecDeg() {
+        return this.spinAxisDecDeg;
+    }
 
-	public void setSpinAxisDecDeg(double spinAxisDecDeg) {
-		this.spinAxisDecDeg = spinAxisDecDeg;
-	}
+    public void setSpinAxisDecDeg(double spinAxisDecDeg) {
+        this.spinAxisDecDeg = spinAxisDecDeg;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return this.id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
 }

@@ -1,4 +1,4 @@
-package org.ginga.tools.lacdump;
+package org.ginga.tools.lacdump.utils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.ginga.tools.lacdump.LACDumpEntity;
+import org.ginga.tools.lacdump.LACDumpEntityList;
 
 public class LACDumpParser {
 
