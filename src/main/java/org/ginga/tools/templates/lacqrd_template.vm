@@ -1,0 +1,47 @@
+lacqrd-880908-133rd-SU.ps/vps
+'CALFILE' 'CARD.LACQR.NORMAL8' /
+'TRP'  0.0   0.5  0.05   / PROPORTIONAL TO TRAPPED PARTICLES C/SEC/S    
+'CHK' 'SFL'   1 1 1  / SOLAR CONTAMI  POS,IMPOS,BOTH                    
+'CHK' 'ELV'  5.0 180.0  / ELEVATION ANGLE                              
+'CALFILE' 'CARD.LACQR.BGD590SU'/
+'RMK' '   BGD590  : 5PARAMETERS FOR MPC1 MODE               '           
+'RMK' '              MADE AT 1990.6      '                              
+'RMK' '   BGD590SU : 5PARAMETERS FOR MPC2,MPC3 ( AND MPC1 )'            
+'RMK' '                                 MADE AT 1990.6    '             
+'RMK' '        USE MID MODELED BY ORBITAL POSITION AND REAL SUD '       
+'RMK' '   BGD590ML : 5PARAMETERS FOR MPC2,MPC3 ( AND MPC1 )'            
+'RMK' '                                 MADE AT 1990.6    '             
+'RMK' '        USE SUD AND MID MODELED BY ORBITAL POSITION '            
+'RMK' '                                                    '            
+'RMK' '  MPC1 MODE ONLY  ...   BGD590                      '            
+'RMK' '  MPC2 MODE AND/OR MPC3 MODE ...  BGD590SU          '            
+'RMK' '  FOR VERY BRIGHT SOURCES    ...  BGD590ML          '            
+'RMK' '                                                    '            
+'RMK' '  MODELS WERE MADE BASED ON THE DATA UPTO MAY 1990  '            
+'TAB' 'CARD.LACQR.DIRBGTAB' / DATA FOR SUD AND MID              
+'COR'  1  1  1  1    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
+'TIM'  128 /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF          
+'SUD' 1 1 1 1  1 1 1 1 ,2.0  22.0  1.0  ,37.0, 0.0 /                    
+'PIM' 1 1 1 1  1 1 1 1 ,0.5  10.5  0.5 , 0.0 /                          
+'MID' 1 1 1 1  1 1 1 1  2  8 , 0.0  30.0 1.0 , 0.0 /                    
+'SPC' 'CNT'  1 /                                                        
+'SPC' 'ENG'   1 ,       ' 22.1  35.2' /                                 
+'SPC' 'PLT'   1 ,       1    0   1.0 50.0,   1    1 10000.0 0.0 /       
+'SPC' 'LAC' 3 3 3 3  3 3 3 3     'MPC2'           1 /                   
+'SPC' 'OUT' 'GS2000+25_SPEC-880908-133rd-SU.FILE'  'OLD'    / 
+'SPC' 'MON' 'GS2000+25_SPEC-880908-133rd-SU.MONI'  'OLD'  0 /
+'CHT' 'WRK' 'COEF1.WORK'  /                                      
+'CHT' 'PLM' 1.0  0.0  0.0                  /                            
+'CHT' 'PAR' 1,'LAC'  3 3 3 3 3 3 3 3  0  7 /                            
+'CHT' 'PLP' 1, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
+'CHT' 'PAR' 2,'LAC'  3 3 3 3 3 3 3 3  8 15 /                            
+'CHT' 'PLP' 2, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
+'CHT' 'PAR' 3,'LAC'  3 3 3 3 3 3 3 3 16 31 /                            
+'CHT' 'PLP' 3, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
+'CHT' 'PAR' 4,'LAC'  3 3 3 3 3 3 3 3  0 31 /                            
+'CHT' 'PLP' 4, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
+'TIF' 'ENG' 1,   ' 22.1  35.2 '     / 
+'TIF' 'OUT'  'GS2000+25_TIMING-880908-133rd-SU.fits'  'OLD' /
+'CALFILE'  'LACQRT1' /
+'FILE'  'GS2000+25_REGION-880908-133rd.DATA' /
+'GO' /
