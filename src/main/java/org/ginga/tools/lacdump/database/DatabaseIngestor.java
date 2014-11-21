@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LACDumpEntity;
 import org.ginga.tools.lacdump.LACDumpEntityList;
 import org.ginga.tools.lacdump.dao.DaoException;
 import org.ginga.tools.lacdump.dao.LACDumpDao;
@@ -46,7 +44,7 @@ public class DatabaseIngestor {
                 }
             });
             Arrays.sort(lacdumpFiles);
-            
+
             log.info(lacdumpFiles.length + " file(s) found");
             LACDumpParser parser = new LACDumpParser();
             LACDumpDao dao = new LACDumpDaoImpl();
@@ -56,11 +54,7 @@ public class DatabaseIngestor {
                     entityList = parser.parse(lacdumpFiles[i]);
                     log.info("LACDUMP contains " + entityList.getEntityCount() + " row(s)");
                     log.info("Inserting LACDUMP file " + lacdumpFiles[i]);
-                    // save
-                    for (Iterator<LACDumpEntity> iterator = entityList.iterator(); iterator
-                            .hasNext();) {
-                        dao.save(iterator.next());
-                    }
+                    dao.saveList(entityList);
                 } catch (IOException e) {
                     log.error("Error parsing LACDUMP " + lacdumpFiles[i].getPath() + ". Message="
                             + e.getMessage(), e);
@@ -71,6 +65,7 @@ public class DatabaseIngestor {
                     System.exit(1);
                 }
             }
+            log.info(lacdumpFiles.length + " file(s) ingested into the database successfully");
         }
     }
 }

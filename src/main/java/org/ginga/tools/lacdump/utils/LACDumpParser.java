@@ -23,25 +23,27 @@ public class LACDumpParser {
     private enum DirectionEnum {
         SKY, NTE, DYE
     }
-    
+
     private enum ModeEnum {
-    	MPC1, MPC2, MPC3, ACS, PCHK
+        MPC1, MPC2, MPC3, ACS, PCHK
     }
-    
+
     private enum BitRateEnum {
-    	H, M, L
+        H, M, L
     }
-    
+
     private enum AttitudeEnum {
-    	NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"),S36("S36"),MAN("MAN");
-    	String s;
-    	AttitudeEnum(String value) {
-    		this.s = value;
-    	}
-    	@Override
-    	public String toString() {
-    		return this.s;
-    	}
+        NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"), S36("S36"), MAN("MAN");
+
+        String value;
+
+        AttitudeEnum(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
     }
 
     private final int seqnoBeginIdx = 0;
@@ -167,7 +169,8 @@ public class LACDumpParser {
                     attitude = line.substring(this.attitudeBeginIdx,
                             this.attitudeBeginIdx + this.attitudeLength - 1).trim();
                     log.debug("ACM " + attitude);
-                    if (EnumUtils.isValidEnum(AttitudeEnum.class, attitude)) {
+                    if (isValidAttitudeValue(attitude)) { // use ad-hoc validation method (forbidden
+                                                          // chars in the String)
                         entity.setAttitudeStatus(attitude);
                     }
                     // direction
@@ -243,7 +246,7 @@ public class LACDumpParser {
                         rigidity = Double.valueOf(
                                 line.substring(this.rigidityBeginIdx,
                                         this.rigidityBeginIdx + this.rigidityLength - 1).trim())
-                                .doubleValue();
+                                        .doubleValue();
                         log.debug("RIG " + rigidity);
                         entity.setCutoffRigidity(rigidity);
                     } catch (NumberFormatException e) {
@@ -257,7 +260,7 @@ public class LACDumpParser {
                         elevation = Double.valueOf(
                                 line.substring(this.elevationBeginIdx,
                                         this.elevationBeginIdx + this.elevationLength - 1).trim())
-                                .doubleValue();
+                                        .doubleValue();
                         log.debug("EELV " + elevation);
                         entity.setElevation(elevation);
                     } catch (NumberFormatException e) {
@@ -271,7 +274,7 @@ public class LACDumpParser {
                         raDeg = Double.valueOf(
                                 line.substring(this.raDegBeginIndex,
                                         this.raDegBeginIndex + this.raDegLength - 1).trim())
-                                .doubleValue();
+                                        .doubleValue();
                         log.debug("RA " + raDeg);
                         entity.setRaDegB1950(raDeg);
                     } catch (NumberFormatException e) {
@@ -285,7 +288,7 @@ public class LACDumpParser {
                         decDeg = Double.valueOf(
                                 line.substring(this.decDegBeginIndex,
                                         this.decDegBeginIndex + this.decDegLength - 1).trim())
-                                .doubleValue();
+                                        .doubleValue();
                         log.debug("DEC " + decDeg);
                         entity.setDecDegB1950(decDeg);
                     } catch (NumberFormatException e) {
@@ -337,8 +340,8 @@ public class LACDumpParser {
                                         line.substring(
                                                 this.spinAxisDecDegBeginIdx,
                                                 this.spinAxisDecDegBeginIdx
-                                                        + this.spinAxisDecDegLength - 1).trim())
-                                .doubleValue();
+                                                + this.spinAxisDecDegLength - 1).trim())
+                                                .doubleValue();
                         log.debug("SPIN AXIS DEC " + spinAxisDecDeg);
                         entity.setSpinAxisDecDeg(spinAxisDecDeg);
                     } catch (NumberFormatException e) {
@@ -364,6 +367,16 @@ public class LACDumpParser {
         }
 
         return entityList;
+    }
+
+    public static boolean isValidAttitudeValue(String value) {
+        AttitudeEnum[] attitudeList = AttitudeEnum.values();
+        for (int i = 0; i < attitudeList.length; i++) {
+            if (attitudeList[i].getValue().equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
