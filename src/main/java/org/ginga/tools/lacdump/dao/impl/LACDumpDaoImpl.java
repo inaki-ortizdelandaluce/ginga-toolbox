@@ -17,7 +17,7 @@ public class LACDumpDaoImpl implements LACDumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#save(org.ginga.tools.lacdump.LACDumpEntity)
      */
     @Override
@@ -36,7 +36,7 @@ public class LACDumpDaoImpl implements LACDumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#findById(long)
      */
     @Override
@@ -57,7 +57,7 @@ public class LACDumpDaoImpl implements LACDumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#findMany(org.hibernate.Query)
      */
     @SuppressWarnings("unchecked")
@@ -78,7 +78,7 @@ public class LACDumpDaoImpl implements LACDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.ginga.tools.lacdump.dao.LACDumpDao#saveList(org.ginga.tools.lacdump.LACDumpEntityList)
      */
@@ -91,7 +91,7 @@ public class LACDumpDaoImpl implements LACDumpDao {
             for (Iterator<LACDumpEntity> iterator = entityList.iterator(); iterator.hasNext();) {
                 entity = iterator.next();
                 hibernateSession.saveOrUpdate(entity);
-                log.info(entity.getSuperFrame() + ":" + entity.getSequenceNumber()
+                log.debug(entity.getSuperFrame() + ":" + entity.getSequenceNumber()
                         + " stored into the database successfully");
             }
             HibernateUtil.commitTransaction();
