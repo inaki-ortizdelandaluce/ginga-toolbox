@@ -1,7 +1,7 @@
 mysql -u root -p
 Enter password: 
 mysql> LOAD DATA LOCAL INFILE 'ginga_obs.dump'
-    -> INTO TABLE ginga.ginga_obs 
+    -> INTO TABLE ginga.GINGA_OBS
     -> FIELDS TERMINATED BY '|'
     -> LINES TERMINATED BY '\n'
     -> IGNORE 15 LINES
