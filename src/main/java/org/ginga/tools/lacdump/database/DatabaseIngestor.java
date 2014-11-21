@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LACDumpEntityList;
+import org.ginga.tools.lacdump.LacDumpEntityList;
 import org.ginga.tools.lacdump.dao.DaoException;
-import org.ginga.tools.lacdump.dao.LACDumpDao;
-import org.ginga.tools.lacdump.dao.impl.LACDumpDaoImpl;
-import org.ginga.tools.lacdump.utils.LACDumpParser;
+import org.ginga.tools.lacdump.dao.LacDumpDao;
+import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
+import org.ginga.tools.lacdump.utils.LacDumpParser;
 
 public class DatabaseIngestor {
 
@@ -46,9 +46,9 @@ public class DatabaseIngestor {
             Arrays.sort(lacdumpFiles);
 
             log.info(lacdumpFiles.length + " file(s) found");
-            LACDumpParser parser = new LACDumpParser();
-            LACDumpDao dao = new LACDumpDaoImpl();
-            LACDumpEntityList entityList = null;
+            LacDumpParser parser = new LacDumpParser();
+            LacDumpDao dao = new LacDumpDaoImpl();
+            LacDumpEntityList entityList = null;
             for (int i = 0; i < lacdumpFiles.length; i++) {
                 try {
                     entityList = parser.parse(lacdumpFiles[i]);

@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class LACDumpEntityList {
+public class LacDumpEntityList {
 
-    private List<LACDumpEntity> entities = new ArrayList<LACDumpEntity>();
+    private List<LacDumpEntity> entities = new ArrayList<LacDumpEntity>();
 
-    public LACDumpEntityList() {
+    public LacDumpEntityList() {
 
     }
 
-    public void addEntity(LACDumpEntity row) {
+    public void addEntity(LacDumpEntity row) {
         this.entities.add(row);
     }
 
@@ -23,7 +23,7 @@ public class LACDumpEntityList {
         return this.entities.size();
     }
 
-    public Iterator<LACDumpEntity> iterator() {
+    public Iterator<LacDumpEntity> iterator() {
         return this.entities.iterator();
     }
 }

@@ -10,8 +10,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LACDumpEntity;
-import org.ginga.tools.lacdump.LACDumpEntityList;
+import org.ginga.tools.lacdump.LacDumpEntity;
+import org.ginga.tools.lacdump.LacDumpEntityList;
 
 public class LacDumpParser {
 
@@ -89,15 +89,15 @@ public class LacDumpParser {
     public LacDumpParser() {
     }
 
-    public LACDumpEntityList parse(File lacdumpFile) throws IOException {
-        LACDumpEntityList entityList = new LACDumpEntityList();
+    public LacDumpEntityList parse(File lacdumpFile) throws IOException {
+        LacDumpEntityList entityList = new LacDumpEntityList();
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(lacdumpFile));
 
             String line = null;
             String lastSuperFrame = null;
-            LACDumpEntity entity = null;
+            LacDumpEntity entity = null;
 
             int seqno;
             Date date;
@@ -129,7 +129,7 @@ public class LacDumpParser {
                 } else if (line.contains(LHV_ON_DATA_PREFIX)) {
                     continue;
                 } else {
-                    entity = new LACDumpEntity();
+                    entity = new LacDumpEntity();
                     entity.setSuperFrame(lastSuperFrame);
                     // seqno
                     seqno = Integer.valueOf(
@@ -391,7 +391,7 @@ public class LacDumpParser {
             }
             try {
                 LacDumpParser parser = new LacDumpParser();
-                LACDumpEntityList entityList = parser.parse(f);
+                LacDumpEntityList entityList = parser.parse(f);
                 log.info("LACDUMP contains " + entityList.getEntityCount() + " row(s)");
             } catch (IOException e) {
                 log.error("Error parsing LACDUMP " + f.getPath() + ". Message=" + e.getMessage());

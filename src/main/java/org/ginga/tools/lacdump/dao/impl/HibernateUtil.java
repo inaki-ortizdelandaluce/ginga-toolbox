@@ -1,6 +1,6 @@
 package org.ginga.tools.lacdump.dao.impl;
 
-import org.ginga.tools.lacdump.LACDumpEntity;
+import org.ginga.tools.lacdump.LacDumpEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -61,7 +61,7 @@ public class HibernateUtil {
             // configuration.setProperty("hibernate.cache.use_query_cache","true");
 
             // ADD ANNOTATED CLASSES
-            configuration.addAnnotatedClass(LACDumpEntity.class);
+            configuration.addAnnotatedClass(LacDumpEntity.class);
 
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
             .applySettings(configuration.getProperties());

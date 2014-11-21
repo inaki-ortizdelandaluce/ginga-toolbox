@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "LACDUMP")
-public class LACDumpEntity {
+public class LacDumpEntity {
 
     @Id
     @Column(name = "ID")

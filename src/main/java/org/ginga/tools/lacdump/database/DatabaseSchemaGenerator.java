@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ginga.tools.lacdump.LACDumpEntity;
+import org.ginga.tools.lacdump.LacDumpEntity;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -59,6 +59,6 @@ public class DatabaseSchemaGenerator {
 
     public static void main(String[] args) {
         DatabaseSchemaGenerator schemaGen = new DatabaseSchemaGenerator();
-        schemaGen.generate(LACDumpEntity.class, new File("/tmp/lacdump-CREATE_TABLE.sql"));
+        schemaGen.generate(LacDumpEntity.class, new File("/tmp/lacdump-CREATE_TABLE.sql"));
     }
 }
