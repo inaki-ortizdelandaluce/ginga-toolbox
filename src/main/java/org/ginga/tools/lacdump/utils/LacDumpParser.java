@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LACDumpEntity;
 import org.ginga.tools.lacdump.LACDumpEntityList;
 
-public class LACDumpParser {
+public class LacDumpParser {
 
-    private static final Logger log = Logger.getLogger(LACDumpParser.class);
+    private static final Logger log = Logger.getLogger(LacDumpParser.class);
 
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
@@ -86,7 +86,7 @@ public class LACDumpParser {
     private final int spinAxisDecDegBeginIdx = 125;
     private final int spinAxisDecDegLength = 7;
 
-    public LACDumpParser() {
+    public LacDumpParser() {
     }
 
     public LACDumpEntityList parse(File lacdumpFile) throws IOException {
@@ -390,7 +390,7 @@ public class LACDumpParser {
                 System.exit(1);
             }
             try {
-                LACDumpParser parser = new LACDumpParser();
+                LacDumpParser parser = new LacDumpParser();
                 LACDumpEntityList entityList = parser.parse(f);
                 log.info("LACDUMP contains " + entityList.getEntityCount() + " row(s)");
             } catch (IOException e) {
