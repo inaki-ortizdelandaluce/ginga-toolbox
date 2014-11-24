@@ -9,3 +9,9 @@ mysql> LOAD DATA LOCAL INFILE 'ginga_obs.dump'
     -> SET STARTTIME=STR_TO_DATE(@start_time_variable,'%d-%b-%Y'), ENDTIME=STR_TO_DATE(@end_time_variable,'%d-%b-%Y');
 Query OK, 7318 rows affected, 53364 warnings (0.10 sec)
 Records: 7318  Deleted: 0  Skipped: 0  Warnings: 53364
+
+Load ginga_obs
+GINGA_OBS entity, dao
+GTI Writer: LACDUMP Query, SIMBAD
+LACDUMP, GINGA_OBS Diagnosis/Report Tool
+Improve performance: database indexes
