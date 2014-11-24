@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacDumpEntity;
-import org.ginga.tools.lacdump.LacDumpEntityList;
 
 public class LacDumpParser {
 
@@ -89,8 +90,8 @@ public class LacDumpParser {
     public LacDumpParser() {
     }
 
-    public LacDumpEntityList parse(File lacdumpFile) throws IOException {
-        LacDumpEntityList entityList = new LacDumpEntityList();
+    public List<LacDumpEntity> parse(File lacdumpFile) throws IOException {
+        List<LacDumpEntity> entityList = new ArrayList<LacDumpEntity>();
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(lacdumpFile));
@@ -170,7 +171,7 @@ public class LacDumpParser {
                             this.attitudeBeginIdx + this.attitudeLength - 1).trim();
                     log.debug("ACM " + attitude);
                     if (isValidAttitudeValue(attitude)) { // use ad-hoc validation method (forbidden
-                                                          // chars in the String)
+                        // chars in the String)
                         entity.setAttitudeStatus(attitude);
                     }
                     // direction
@@ -351,7 +352,7 @@ public class LacDumpParser {
                                         .trim());
                     }
                     // add entity to list
-                    entityList.addEntity(entity);
+                    entityList.add(entity);
                 }
             }
         } catch (IOException | ParseException e) {
@@ -391,8 +392,8 @@ public class LacDumpParser {
             }
             try {
                 LacDumpParser parser = new LacDumpParser();
-                LacDumpEntityList entityList = parser.parse(f);
-                log.info("LACDUMP contains " + entityList.getEntityCount() + " row(s)");
+                List<LacDumpEntity> entityList = parser.parse(f);
+                log.info("LACDUMP contains " + entityList.size() + " row(s)");
             } catch (IOException e) {
                 log.error("Error parsing LACDUMP " + f.getPath() + ". Message=" + e.getMessage());
             }

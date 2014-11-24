@@ -1,11 +1,9 @@
 package org.ginga.tools.lacdump.dao.impl;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacDumpEntity;
-import org.ginga.tools.lacdump.LacDumpEntityList;
 import org.ginga.tools.lacdump.dao.DaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.hibernate.Query;
@@ -17,8 +15,8 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see org.ginga.tools.lacdump.dao.LACDumpDao#save(org.ginga.tools.lacdump.LACDumpEntity)
+     *
+     * @see org.ginga.tools.lacdump.dao.LacDumpDao#save(org.ginga.tools.lacdump.LACDumpEntity)
      */
     @Override
     public void save(LacDumpEntity entity) throws DaoException {
@@ -36,8 +34,8 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see org.ginga.tools.lacdump.dao.LACDumpDao#findById(long)
+     *
+     * @see org.ginga.tools.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
     public LacDumpEntity findById(long id) throws DaoException {
@@ -57,8 +55,8 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see org.ginga.tools.lacdump.dao.LACDumpDao#findMany(org.hibernate.Query)
+     *
+     * @see org.ginga.tools.lacdump.dao.LacDumpDao#findMany(org.hibernate.Query)
      */
     @SuppressWarnings("unchecked")
     @Override
@@ -78,18 +76,15 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     *
-     * @see
-     * org.ginga.tools.lacdump.dao.LACDumpDao#saveList(org.ginga.tools.lacdump.LACDumpEntityList)
+     * 
+     * @see org.ginga.tools.lacdump.dao.LACDumpDao#saveList(lava.util.List<LacDumpEntity>)
      */
     @Override
-    public void saveList(LacDumpEntityList entityList) throws DaoException {
+    public void saveList(List<LacDumpEntity> entityList) throws DaoException {
         try {
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
-            LacDumpEntity entity = null;
-            for (Iterator<LacDumpEntity> iterator = entityList.iterator(); iterator.hasNext();) {
-                entity = iterator.next();
+            for (LacDumpEntity entity : entityList) {
                 hibernateSession.saveOrUpdate(entity);
                 log.debug(entity.getSuperFrame() + ":" + entity.getSequenceNumber()
                         + " stored into the database successfully");
