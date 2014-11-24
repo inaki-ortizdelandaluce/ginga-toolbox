@@ -3,7 +3,6 @@ package org.ginga.tools.lacdump.dao;
 import java.util.List;
 
 import org.ginga.tools.lacdump.LacDumpEntity;
-import org.hibernate.Query;
 
 public interface LacDumpDao {
 
@@ -13,6 +12,6 @@ public interface LacDumpDao {
 
     public LacDumpEntity findById(long id) throws DaoException;
 
-    public List<LacDumpEntity> findMany(Query query) throws DaoException;
+    public List<LacDumpEntity> findManyBySf(String sf) throws DaoException;
 
 }

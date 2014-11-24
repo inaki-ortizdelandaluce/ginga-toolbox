@@ -61,10 +61,15 @@ public class LacDumpDaoImpl implements LacDumpDao {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<LacDumpEntity> findMany(Query query) throws DaoException {
+    public List<LacDumpEntity> findManyBySf(String sf) throws DaoException {
         List<LacDumpEntity> entityList = null;
         try {
+            String hql = "FROM LacDumpEntity WHERE SF = :sf ORDER BY ID";
             HibernateUtil.beginTransaction();
+            Session hibernateSession = HibernateUtil.getSession();
+            Query query = hibernateSession.createQuery(hql);
+            query.setString("sf", sf);
+
             entityList = query.list();
             HibernateUtil.commitTransaction();
         } catch (Exception e) {

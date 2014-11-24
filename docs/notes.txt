@@ -15,3 +15,5 @@ GINGA_OBS entity, dao
 GTI Writer: LACDUMP Query, SIMBAD
 LACDUMP, GINGA_OBS Diagnosis/Report Tool
 Improve performance: database indexes
+
+Ideas: Taverna
