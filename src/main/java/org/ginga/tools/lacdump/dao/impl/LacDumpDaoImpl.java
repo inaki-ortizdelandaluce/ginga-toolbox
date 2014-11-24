@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacDumpEntity;
 import org.ginga.tools.lacdump.dao.DaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
+import org.ginga.tools.utils.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 

@@ -1,4 +1,4 @@
-package org.ginga.tools.lacdump.dao.impl;
+package org.ginga.tools.utils;
 
 import org.ginga.tools.lacdump.LacDumpEntity;
 import org.hibernate.Session;

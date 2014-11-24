@@ -14,7 +14,7 @@
  *
  * @author iortiz
  */
-package org.ginga.tools.lacdump.dao.impl;
+package org.ginga.tools.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
