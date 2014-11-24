@@ -11,7 +11,6 @@ import org.ginga.tools.lacdump.LacDumpSfEntity;
 import org.ginga.tools.lacdump.dao.DaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
-import org.ginga.tools.lacdump.utils.LacDumpParser;
 
 public class DatabaseIngestor {
 

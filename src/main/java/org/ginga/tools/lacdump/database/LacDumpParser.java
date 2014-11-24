@@ -1,4 +1,4 @@
-package org.ginga.tools.lacdump.utils;
+package org.ginga.tools.lacdump.database;
 
 import java.io.File;
 import java.io.FileReader;
