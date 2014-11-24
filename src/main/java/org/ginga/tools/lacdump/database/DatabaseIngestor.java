@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.lacdump.dao.DaoException;
+import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
 
@@ -59,7 +59,7 @@ public class DatabaseIngestor {
                     log.error("Error parsing LACDUMP " + lacdumpFiles[i].getPath() + ". Message="
                             + e.getMessage(), e);
                     System.exit(1);
-                } catch (DaoException e) {
+                } catch (LacDumpDaoException e) {
                     log.error("Error ingesting LACDUMP " + lacdumpFiles[i].getPath()
                             + " into the database. Message=" + e.getMessage(), e);
                     System.exit(1);

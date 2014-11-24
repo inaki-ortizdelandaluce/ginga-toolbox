@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.lacdump.dao.DaoException;
+import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.utils.HibernateUtil;
 import org.hibernate.Query;
@@ -20,14 +20,14 @@ public class LacDumpDaoImpl implements LacDumpDao {
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#save(org.ginga.tools.lacdump.LACDumpEntity)
      */
     @Override
-    public void save(LacDumpSfEntity sf) throws DaoException {
+    public void save(LacDumpSfEntity sf) throws LacDumpDaoException {
         try {
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
             hibernateSession.saveOrUpdate(sf);
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new DaoException(e);
+            throw new LacDumpDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }
@@ -39,7 +39,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
-    public LacDumpSfEntity findById(long id) throws DaoException {
+    public LacDumpSfEntity findById(long id) throws LacDumpDaoException {
         LacDumpSfEntity entity = null;
         try {
             HibernateUtil.beginTransaction();
@@ -47,7 +47,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
             entity = (LacDumpSfEntity) hibernateSession.get(LacDumpSfEntity.class, id);
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new DaoException(e);
+            throw new LacDumpDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }
@@ -60,7 +60,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#saveList(lava.util.List<LacDumpSfEntity>)
      */
     @Override
-    public void saveList(List<LacDumpSfEntity> entityList) throws DaoException {
+    public void saveList(List<LacDumpSfEntity> entityList) throws LacDumpDaoException {
         try {
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
@@ -71,7 +71,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
             }
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new DaoException(e);
+            throw new LacDumpDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }
@@ -87,7 +87,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
     @Override
     public List<LacDumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws DaoException {
+            throws LacDumpDaoException {
         List<LacDumpSfEntity> sfList = null;
         try {
             String hql = "FROM LacDumpSfEntity WHERE BR =:br and MODE =:mode and TARGET like :target and "
@@ -107,7 +107,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
             sfList = query.list();
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new DaoException(e);
+            throw new LacDumpDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }

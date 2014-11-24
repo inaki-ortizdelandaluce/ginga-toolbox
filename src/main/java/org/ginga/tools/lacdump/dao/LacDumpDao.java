@@ -6,14 +6,14 @@ import org.ginga.tools.lacdump.LacDumpSfEntity;
 
 public interface LacDumpDao {
 
-    public void save(LacDumpSfEntity sf) throws DaoException;
+    public void save(LacDumpSfEntity sf) throws LacDumpDaoException;
 
-    public void saveList(List<LacDumpSfEntity> sfList) throws DaoException;
+    public void saveList(List<LacDumpSfEntity> sfList) throws LacDumpDaoException;
 
-    public LacDumpSfEntity findById(long id) throws DaoException;
+    public LacDumpSfEntity findById(long id) throws LacDumpDaoException;
 
     public List<LacDumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws DaoException;
+            throws LacDumpDaoException;
 
 }
