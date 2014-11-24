@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name = "OBSLOG")
 public class ObsLogEntity {
@@ -18,49 +20,50 @@ public class ObsLogEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @Column(name = "SEQ_NO", nullable = false)
+    @Column(name = "SEQ_NO")
     private int sequenceNumber;
 
-    @Column(name = "NUM_PASSES", nullable = false)
+    @Column(name = "NUM_PASSES")
     private int numOfPasses;
     
-    @Column(name = "TARGET_NAME", length=80, nullable = false)
+    @Column(name = "TARGET_NAME", length=80)
     private String targetName;
     
-    @Column(name = "AVE_ALPHA", nullable = false)
+    @Column(name = "AVE_ALPHA")
     private float aveAlpha;
     
-    @Column(name = "AVE_DELTA", nullable = false)
+    @Column(name = "AVE_DELTA")
     private float aveDelta;
 
-    @Column(name = "MAX_ALPHA", nullable = false)
+    @Column(name = "MAX_ALPHA")
     private float maxAlpha;
     
-    @Column(name = "MAX_DELTA", nullable = false)
+    @Column(name = "MAX_DELTA")
     private float maxDelta;
 
-    @Column(name = "MIN_ALPHA", nullable = false)
+    @Column(name = "MIN_ALPHA")
     private float minAlpha;
     
-    @Column(name = "MIN_DELTA", nullable = false)
+    @Column(name = "MIN_DELTA")
     private float minDelta;
 
-    @Column(name = "FLAG", length=4, nullable = false)
+    @Column(name = "FLAG", length=4)
     private String flag;
     
-    @Column(name = "DISTANCE", nullable = false)
+    @Column(name = "DISTANCE")
     private float distance;
 
-    @Column(name = "STARTTIME", nullable = false)
+    @Column(name = "STARTTIME")
     private Date startTime;
 
-    @Column(name = "ENDTIME", nullable = false)
+    @Column(name = "ENDTIME")
     private Date endTime;
 
     @Column(name = "POINTING")
     private float pointing;
 
-    @Column(name = "PASS_NAMES", length=100)
+    @Column(name = "PASS_NAMES")
+    @Type(type="text")
     private String passNames;
 
 	public long getId() {
