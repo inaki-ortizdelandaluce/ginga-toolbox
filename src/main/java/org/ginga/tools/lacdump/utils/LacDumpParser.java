@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpEntity;
+import org.ginga.tools.lacdump.LacDumpSfEntity;
 
 public class LacDumpParser {
 
@@ -90,15 +90,15 @@ public class LacDumpParser {
     public LacDumpParser() {
     }
 
-    public List<LacDumpEntity> parse(File lacdumpFile) throws IOException {
-        List<LacDumpEntity> entityList = new ArrayList<LacDumpEntity>();
+    public List<LacDumpSfEntity> parse(File lacdumpFile) throws IOException {
+        List<LacDumpSfEntity> entityList = new ArrayList<LacDumpSfEntity>();
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(lacdumpFile));
 
             String line = null;
             String lastSuperFrame = null;
-            LacDumpEntity entity = null;
+            LacDumpSfEntity entity = null;
 
             int seqno;
             Date date;
@@ -130,7 +130,7 @@ public class LacDumpParser {
                 } else if (line.contains(LHV_ON_DATA_PREFIX)) {
                     continue;
                 } else {
-                    entity = new LacDumpEntity();
+                    entity = new LacDumpSfEntity();
                     entity.setSuperFrame(lastSuperFrame);
                     // seqno
                     seqno = Integer.valueOf(
@@ -247,7 +247,7 @@ public class LacDumpParser {
                         rigidity = Double.valueOf(
                                 line.substring(this.rigidityBeginIdx,
                                         this.rigidityBeginIdx + this.rigidityLength - 1).trim())
-                                        .doubleValue();
+                                .doubleValue();
                         log.debug("RIG " + rigidity);
                         entity.setCutoffRigidity(rigidity);
                     } catch (NumberFormatException e) {
@@ -261,7 +261,7 @@ public class LacDumpParser {
                         elevation = Double.valueOf(
                                 line.substring(this.elevationBeginIdx,
                                         this.elevationBeginIdx + this.elevationLength - 1).trim())
-                                        .doubleValue();
+                                .doubleValue();
                         log.debug("EELV " + elevation);
                         entity.setElevation(elevation);
                     } catch (NumberFormatException e) {
@@ -275,7 +275,7 @@ public class LacDumpParser {
                         raDeg = Double.valueOf(
                                 line.substring(this.raDegBeginIndex,
                                         this.raDegBeginIndex + this.raDegLength - 1).trim())
-                                        .doubleValue();
+                                .doubleValue();
                         log.debug("RA " + raDeg);
                         entity.setRaDegB1950(raDeg);
                     } catch (NumberFormatException e) {
@@ -289,7 +289,7 @@ public class LacDumpParser {
                         decDeg = Double.valueOf(
                                 line.substring(this.decDegBeginIndex,
                                         this.decDegBeginIndex + this.decDegLength - 1).trim())
-                                        .doubleValue();
+                                .doubleValue();
                         log.debug("DEC " + decDeg);
                         entity.setDecDegB1950(decDeg);
                     } catch (NumberFormatException e) {
@@ -341,8 +341,8 @@ public class LacDumpParser {
                                         line.substring(
                                                 this.spinAxisDecDegBeginIdx,
                                                 this.spinAxisDecDegBeginIdx
-                                                + this.spinAxisDecDegLength - 1).trim())
-                                                .doubleValue();
+                                                        + this.spinAxisDecDegLength - 1).trim())
+                                .doubleValue();
                         log.debug("SPIN AXIS DEC " + spinAxisDecDeg);
                         entity.setSpinAxisDecDeg(spinAxisDecDeg);
                     } catch (NumberFormatException e) {
@@ -392,8 +392,8 @@ public class LacDumpParser {
             }
             try {
                 LacDumpParser parser = new LacDumpParser();
-                List<LacDumpEntity> entityList = parser.parse(f);
-                log.info("LACDUMP contains " + entityList.size() + " row(s)");
+                List<LacDumpSfEntity> sfList = parser.parse(f);
+                log.info("LACDUMP contains " + sfList.size() + " row(s)");
             } catch (IOException e) {
                 log.error("Error parsing LACDUMP " + f.getPath() + ". Message=" + e.getMessage());
             }

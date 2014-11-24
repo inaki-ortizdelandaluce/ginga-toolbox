@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpEntity;
+import org.ginga.tools.lacdump.LacDumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
 
@@ -19,25 +19,25 @@ public class GtiFileWriter {
         String target = "GS2000+25";
         File f = new File("/tmp/" + target + "_REGION.DATA");
         try {
-            GtiFileWriter gtiWriter = new GtiFileWriter();
-
+            // query entities matching the criteria
             LacDumpDao dao = new LacDumpDaoImpl();
-
-            List<LacDumpEntity> entityList = dao.findManyBySf("S8802230639");
-            log.info("Query executed successfully. " + entityList.size() + " result(s) found");
-
-            gtiWriter.write(entityList, target, false, new FileWriter(f));
+            List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
+                    "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
+            log.info("Query executed successfully. " + sfList.size() + " result(s) found");
+            // save matching results into a GTI file
+            GtiFileWriter gtiWriter = new GtiFileWriter();
+            gtiWriter.write(target, sfList, false, new FileWriter(f));
             log.debug("GTI file " + f.getPath() + " written successfully");
         } catch (Exception e) {
             log.error("Error generating GTI file " + f.getPath(), e);
         }
     }
 
-    public void write(List<LacDumpEntity> entityList, String target, boolean isBackgroundGti,
+    public void write(String target, List<LacDumpSfEntity> sfList, boolean isBackground,
             FileWriter writer) throws IOException {
         try {
             // add TGT line with target resolved into B1950 coordinates
-            if (!isBackgroundGti) {
+            if (!isBackground) {
                 try {
                     SimbadTargetResolver resolver = new SimbadTargetResolver();
                     TargetFk4Coordinates coords = resolver.resolve(target);
@@ -59,19 +59,19 @@ public class GtiFileWriter {
             // add Super Frame and Sequence Numbers
             String lastSuperFrame = null;
             int lastSeqNo = -1;
-            for (LacDumpEntity entity : entityList) {
-                if (!entity.getSuperFrame().equals(lastSuperFrame)) { // new SF
+            for (LacDumpSfEntity sf : sfList) {
+                if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
                     if (lastSuperFrame != null) {
                         writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
                     }
-                    writer.write("'PASS' " + entity.getSuperFrame() + "\n");
-                    writer.write("'B' " + entity.getSequenceNumber() + "  0   0\n"); // begin
-                } else if (entity.getSequenceNumber() > lastSeqNo + 1) {
+                    writer.write("'PASS' " + sf.getSuperFrame() + "\n");
+                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0\n"); // begin
+                } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
                     writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
-                    writer.write("'B' " + entity.getSequenceNumber() + "  0   0\n"); // begin
+                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0\n"); // begin
                 }
-                lastSeqNo = entity.getSequenceNumber();
-                lastSuperFrame = entity.getSuperFrame();
+                lastSeqNo = sf.getSequenceNumber();
+                lastSuperFrame = sf.getSuperFrame();
             }
             if (lastSeqNo > 0) {
                 writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
