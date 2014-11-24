@@ -1,4 +1,4 @@
-package org.ginga.tools.lacdump.database;
+package org.ginga.tools.lacdump;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpSfEntity;
 
 public class LacDumpParser {
 

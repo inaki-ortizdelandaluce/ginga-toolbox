@@ -1,4 +1,4 @@
-package org.ginga.tools.lacdump.database;
+package org.ginga.tools.lacdump;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
