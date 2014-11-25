@@ -11,7 +11,7 @@ import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
 
-public class DatabaseIngestor {
+public class LacDumpDatabaseIngestor {
 
     private final static Logger log = Logger.getRootLogger();
 
