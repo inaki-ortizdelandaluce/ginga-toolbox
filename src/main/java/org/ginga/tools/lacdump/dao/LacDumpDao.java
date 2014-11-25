@@ -16,4 +16,7 @@ public interface LacDumpDao {
             String startTime, String endTime, double elevation, double rigidity)
             throws LacDumpDaoException;
 
+    public List<LacDumpSfEntity> findSfList(String mode, String target,
+            String startTime, String endTime, double elevation, double rigidity)
+            throws LacDumpDaoException;
 }

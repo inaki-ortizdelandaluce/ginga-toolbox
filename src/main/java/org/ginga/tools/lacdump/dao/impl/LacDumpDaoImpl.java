@@ -114,4 +114,34 @@ public class LacDumpDaoImpl implements LacDumpDao {
         return sfList;
     }
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LacDumpSfEntity> findSfList(String mode, String target,
+			String startTime, String endTime, double elevation, double rigidity)
+			throws LacDumpDaoException {
+        List<LacDumpSfEntity> sfList = null;
+        try {
+            String hql = "FROM LacDumpSfEntity WHERE MODE =:mode and TARGET like :target and "
+                    + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
+
+            HibernateUtil.beginTransaction();
+            Session hibernateSession = HibernateUtil.getSession();
+            Query query = hibernateSession.createQuery(hql);
+            query.setString("mode", mode);
+            query.setString("target", "%" + target + "%");
+            query.setString("start", startTime);
+            query.setString("end", endTime);
+            query.setDouble("eelv", elevation);
+            query.setDouble("rig", rigidity);
+
+            sfList = query.list();
+            HibernateUtil.commitTransaction();
+        } catch (Exception e) {
+            throw new LacDumpDaoException(e);
+        } finally {
+            HibernateUtil.closeSession();
+        }
+        return sfList;
+	}
+
 }
