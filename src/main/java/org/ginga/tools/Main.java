@@ -33,7 +33,7 @@ public class Main {
 		}
 		// find start/end time for MPC3
 		LacDumpDao lacDumpDao = new LacDumpDaoImpl();
-		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String startTime, endTime;
 		for(ObsLogEntity obs: obsList) {
 			startTime = dateFmt.format(obs.getStartTime());

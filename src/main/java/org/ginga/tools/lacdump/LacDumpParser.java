@@ -50,7 +50,7 @@ public class LacDumpParser {
     private final int seqnoLength = 5;
     private final int dateBeginIdx = 5;
     private final int dateLength = 16;
-    private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd hh:mm:s");
+    private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd HH:mm:s");
     private final int bitRateBeginIdx = 21;
     private final int bitRateLength = 2;
     private final int modeBeginIdx = 23;
