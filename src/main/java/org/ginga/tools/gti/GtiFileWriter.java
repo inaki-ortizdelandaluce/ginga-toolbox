@@ -21,8 +21,10 @@ public class GtiFileWriter {
         try {
             // query entities matching the criteria
             LacDumpDao dao = new LacDumpDaoImpl();
-            List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
-                    "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
+            //List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
+            //        "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
+            List<LacDumpSfEntity> sfList = dao.findSfList("MPC3", target,
+                    "1988-05-02 01:34:31", "1988-05-02 03:09:27", 5.0, 10.0);
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
             // save matching results into a GTI file
             GtiFileWriter gtiWriter = new GtiFileWriter();
@@ -62,19 +64,19 @@ public class GtiFileWriter {
             for (LacDumpSfEntity sf : sfList) {
                 if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
                     if (lastSuperFrame != null) {
-                        writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
+                        writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
                     }
-                    writer.write("'PASS' " + sf.getSuperFrame() + "\n");
-                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0\n"); // begin
+                    writer.write("'PASS' '" + sf.getSuperFrame() + "' / \n");
+                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
                 } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
-                    writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
-                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0\n"); // begin
+                    writer.write("'E' " + lastSeqNo + " 63  63 /\n"); // end previous
+                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
                 }
                 lastSeqNo = sf.getSequenceNumber();
                 lastSuperFrame = sf.getSuperFrame();
             }
             if (lastSeqNo > 0) {
-                writer.write("'E' " + lastSeqNo + " 63  63 \n"); // end previous
+                writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
             }
             // close DATA
             writer.write("'END'\n");
