@@ -45,7 +45,7 @@ public class Main {
 				    log.info("MPC3 found between " + startTime + " and " + endTime); 
 				    log.info("  MPC3 Start Time " + dateFmt.format(sfList.get(0).getDate())); 
 				    log.info("  MPC3 End Time " + dateFmt.format(sfList.get(sfList.size()-1).getDate())); 
-				    
+				    log.info("\n");
 				}
 			} catch (LacDumpDaoException e) {
                 log.error("Could not find sf item(s) between " + startTime + " and " + endTime); 
