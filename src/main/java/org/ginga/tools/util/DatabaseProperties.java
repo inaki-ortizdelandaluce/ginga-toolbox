@@ -14,7 +14,7 @@
  *
  * @author iortiz
  */
-package org.ginga.tools.utils;
+package org.ginga.tools.util;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -26,7 +26,7 @@ public class LacSpecInputFileWriter {
         Velocity.setProperty("classpath.resource.loader.class",
                 ClasspathResourceLoader.class.getName());
         Velocity.init();
-        this.template = Velocity.getTemplate("org/ginga/tools/templates/lacspec_template.vm");
+        this.template = Velocity.getTemplate("org/ginga/tools/template/lacspec_template.vm");
 
     }
 

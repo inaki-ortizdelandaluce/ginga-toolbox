@@ -5,7 +5,7 @@ import java.util.List;
 import org.ginga.tools.obslog.ObsLogEntity;
 import org.ginga.tools.obslog.dao.ObsLogDao;
 import org.ginga.tools.obslog.dao.ObsLogDaoException;
-import org.ginga.tools.utils.HibernateUtil;
+import org.ginga.tools.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 

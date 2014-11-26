@@ -1,4 +1,4 @@
-package org.ginga.tools.utils;
+package org.ginga.tools.util;
 
 import org.ginga.tools.lacdump.LacDumpSfEntity;
 import org.ginga.tools.obslog.ObsLogEntity;
