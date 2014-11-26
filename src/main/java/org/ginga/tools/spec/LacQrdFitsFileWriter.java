@@ -1,4 +1,4 @@
-package org.ginga.tools.spectra;
+package org.ginga.tools.spec;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -1,4 +1,4 @@
-package org.ginga.tools.spectra;
+package org.ginga.tools.spec;
 
 public class LacSpecInputModel {
 
