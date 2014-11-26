@@ -12,14 +12,14 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class LacQrdFitsFileWriter {
+public class LacQrdFitsInputFileWriter {
 
     private final static Logger log = Logger.getLogger(LacQrdFitsInputModel.class);
 
     private LacQrdFitsInputModel inputModel;
     private Template template;
 
-    public LacQrdFitsFileWriter(LacQrdFitsInputModel model) {
+    public LacQrdFitsInputFileWriter(LacQrdFitsInputModel model) {
         this.inputModel = model;
         // init velocity
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -64,7 +64,7 @@ public class LacQrdFitsFileWriter {
             model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
             model.setTimingFileName("GS2000+25_TIMING.fits");
             
-            LacQrdFitsFileWriter writer = new LacQrdFitsFileWriter(model);
+            LacQrdFitsInputFileWriter writer = new LacQrdFitsInputFileWriter(model);
             writer.writeToFile(new File("/tmp/lacqrd.input"));
             log.info("Input file /tmp/lacqrd.input saved successfully");
         } catch (Exception e) {
