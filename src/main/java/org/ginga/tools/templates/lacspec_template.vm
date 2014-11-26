@@ -11,7 +11,7 @@ $template.psFileName/vps
 'ACE'   0                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
 #end
 'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
-'ENG' 1   '22.0,35.0'   / ENERGY SCALE,  LEVEL, ' DATA '                
+'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA '                
 'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.channelToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
 #if( $template.hasBackground )       
 'BGD'   $template.bgMethodInt, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
