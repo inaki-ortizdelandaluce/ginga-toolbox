@@ -1,19 +1,23 @@
-gs2000+25_1.ps/vps
-'MONI'  '$monitorFile' / 
-'RIG'  10.0 20.0/ MIN/MAX CUT-OFF RIGIDITY                               
+$template.psFileName/vps
+'MONI'  '$template.monitorFileName' / 
+'RIG'  $template.minRigidity $template.maxRigidity/ MIN/MAX CUT-OFF RIGIDITY                               
 'TMP'  -30.0   60.0   20.0/ MIN/MAX AVE TEMP, MAX TEMP GRADIENT         
-'TRN'    0            / MINIMUM TRANSMISSION OF THE TARGET SOURCE       
-'BIT'   '$bitRate'            / BITRATE SELECTION , 'ANY', 'HI' 'MID', 'LOW' 
+'TRN'    $template.minTransmission            / MINIMUM TRANSMISSION OF THE TARGET SOURCE       
+'BIT'   '$template.bitRate'            / BITRATE SELECTION , 'ANY', 'HI' 'MID', 'LOW' 
 'SYNC'  0                / MIMIMUM NUMBER OF BAD FRAMES                 
-'ACE'   1                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE    
-'ELV'   3.0   999.0     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
-'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA '                
-'COR'   1  1  1  1  1  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
-#if( $template.hasBackground )       
-'BGD'   $bgMethodInt, ' ''$bgFileName'', $bgSubFileNumber, ''NONE'' ' /
+#if( $template.pointingMode )       
+'ACE'   1                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
+#else
+'ACE'   0                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
 #end
-'LAC'   $channel1 $channel2 $channel3 $channel4 $channel5 $channel6 $channel7 $channel8  '$mode'  $mixedMode /                                   
+'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
+'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA '                
+'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.channelToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
+#if( $template.hasBackground )       
+'BGD'   $template.bgMethodInt, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
+#end
+'LAC'   $template.channel1 $template.channel2 $template.channel3 $template.channel4 $template.channel5 $template.channel6 $template.channel7 $template.channel8  '$template.mode'  $template.mixedMode /                                   
 'PLT' 1 , 1  0  1.0  50.0, 1 1 1.0E+1 1.0E-1 /
-'BIT'  '$bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'               
-'OUT'   '$spectralFile' /                                   
-'FILE'  '$regionFile' /
+'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'               
+'OUT'   '$template.spectralFileName' /                                   
+'FILE'  '$template.regionFileName' /
