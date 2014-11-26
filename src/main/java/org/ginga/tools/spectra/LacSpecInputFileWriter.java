@@ -38,10 +38,13 @@ public class LacSpecInputFileWriter {
 			Context context = new VelocityContext();
 			context.put("template", model);
 		
-			//File f = new File("/tmp/lacspec-2.input");
-			StringWriter sw = new StringWriter();
-			template.merge(context, sw);
-			log.info("\n" + sw.toString());
+			//File f = new File("/tmp/lacspec.input");
+			//FileWriter writer = new FileWriter(f);
+			StringWriter writer = new StringWriter();
+			template.merge(context, writer);
+			writer.flush();
+			writer.close();
+			log.info("\n" + writer.toString());
 			//log.info("lacspec input file " + f.getName() + " generated successfully");
 		} catch (Exception e) {
 			log.error("lacspec input file could not be generated",e);
