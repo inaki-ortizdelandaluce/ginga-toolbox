@@ -1,4 +1,4 @@
-lacqrd-880908-133rd-SU.ps/vps
+$template.psFileName/vps
 'CALFILE' 'CARD.LACQR.NORMAL8' /
 'TRP'  0.0   0.5  0.05   / PROPORTIONAL TO TRAPPED PARTICLES C/SEC/S    
 'CHK' 'SFL'   1 1 1  / SOLAR CONTAMI  POS,IMPOS,BOTH                    
