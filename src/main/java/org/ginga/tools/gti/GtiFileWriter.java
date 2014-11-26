@@ -21,22 +21,23 @@ public class GtiFileWriter {
         try {
             // query entities matching the criteria
             LacDumpDao dao = new LacDumpDaoImpl();
-            //List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
-            //        "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
-            List<LacDumpSfEntity> sfList = dao.findSfList("MPC3", target,
-                    "1988-05-02 01:34:31", "1988-05-02 03:09:27", 5.0, 10.0);
+            // List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
+            // "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
+            List<LacDumpSfEntity> sfList = dao.findSfList("MPC3", target, "1988-05-02 01:34:31",
+                    "1988-05-02 03:09:27", 5.0, 10.0);
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
             // save matching results into a GTI file
             GtiFileWriter gtiWriter = new GtiFileWriter();
-            gtiWriter.write(target, sfList, false, new FileWriter(f));
+            gtiWriter.writeToFile(target, sfList, false, f);
             log.debug("GTI file " + f.getPath() + " written successfully");
         } catch (Exception e) {
             log.error("Error generating GTI file " + f.getPath(), e);
         }
     }
 
-    public void write(String target, List<LacDumpSfEntity> sfList, boolean isBackground,
-            FileWriter writer) throws IOException {
+    public void writeToFile(String target, List<LacDumpSfEntity> sfList, boolean isBackground,
+            File file) throws IOException {
+        FileWriter writer = new FileWriter(file);
         try {
             // add TGT line with target resolved into B1950 coordinates
             if (!isBackground) {

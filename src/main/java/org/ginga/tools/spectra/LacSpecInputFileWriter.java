@@ -1,6 +1,8 @@
 package org.ginga.tools.spectra;
 
-import java.io.StringWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.apache.velocity.Template;
@@ -12,44 +14,65 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 public class LacSpecInputFileWriter {
 
-	private final static Logger log = Logger.getLogger(LacSpecInputModel.class);
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			LacSpecInputModel model = new LacSpecInputModel();
-			model.setHasBackground(false);
-			model.setLacMode("MPC2");
-			model.setPsFileName("gs2000+25.ps");
-			model.setMinElevation(5.0);
-			model.setMinRigidity(10.0);
-			model.setRegionFileName("GS2000+25_REGION.DATA");
-			model.setSpectralFileName("GS2000+25_SPEC.FILE");
-			model.setMonitorFileName("MONI.SPEC");
-			
-			Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-			Velocity.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-			Velocity.init();
-		
-			Template template = Velocity.getTemplate("org/ginga/tools/templates/lacspec_template.vm");
+    private final static Logger log = Logger.getLogger(LacSpecInputModel.class);
 
-			// Create the context
-			Context context = new VelocityContext();
-			context.put("template", model);
-		
-			//File f = new File("/tmp/lacspec.input");
-			//FileWriter writer = new FileWriter(f);
-			StringWriter writer = new StringWriter();
-			template.merge(context, writer);
-			writer.flush();
-			writer.close();
-			log.info("\n" + writer.toString());
-			//log.info("lacspec input file " + f.getName() + " generated successfully");
-		} catch (Exception e) {
-			log.error("lacspec input file could not be generated",e);
-		}
-		
-	}
+    private LacSpecInputModel inputModel;
+    private Template template;
 
+    public LacSpecInputFileWriter(LacSpecInputModel model) {
+        this.inputModel = model;
+        // init velocity
+        Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        Velocity.setProperty("classpath.resource.loader.class",
+                ClasspathResourceLoader.class.getName());
+        Velocity.init();
+        this.template = Velocity.getTemplate("org/ginga/tools/templates/lacspec_template.vm");
+
+    }
+
+    public void writeToFile(File file) throws IOException {
+        FileWriter writer = new FileWriter(file);
+        // create the context
+        Context context = new VelocityContext();
+        context.put("template", this.inputModel);
+        // merge context and template
+        this.template.merge(context, writer);
+        // flush/close writer
+        try {
+            writer.flush();
+            log.debug("\n" + writer.toString());
+        } catch (IOException e) {
+            log.warn("Error flushing writer stream");
+        } finally {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                log.warn("Error closing writer stream");
+            }
+        }
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            LacSpecInputModel model = new LacSpecInputModel();
+            model.setHasBackground(false);
+            model.setLacMode("MPC2");
+            model.setPsFileName("gs2000+25.ps");
+            model.setMinElevation(5.0);
+            model.setMinRigidity(10.0);
+            model.setRegionFileName("GS2000+25_REGION.DATA");
+            model.setSpectralFileName("GS2000+25_SPEC.FILE");
+            model.setMonitorFileName("MONI.SPEC");
+
+            LacSpecInputFileWriter writer = new LacSpecInputFileWriter(model);
+            writer.writeToFile(new File("/tmp/lacspec.input"));
+            log.info("Input file /tmp/lacspec.input saved successfully");
+        } catch (Exception e) {
+            log.error("lacspec input file could not be generated", e);
+        }
+
+    }
 }
