@@ -1,7 +1,7 @@
-package org.ginga.tools.spec;
+package org.ginga.tools.spectrum;
 
-import org.ginga.tools.spec.LacSpecInputModel.LacCounterModeEnum;
-import org.ginga.tools.spec.LacSpecInputModel.LacModeEnum;
+import org.ginga.tools.spectrum.LacSpecInputModel.LacCounterModeEnum;
+import org.ginga.tools.spectrum.LacSpecInputModel.LacModeEnum;
 
 public class LacQrdFitsInputModel {
 
