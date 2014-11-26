@@ -5,8 +5,10 @@ $template.psFileName/vps
 'CHK' 'ELV'  $template.minElevation   $template.maxElevation  / ELEVATION ANGLE  
 #if( $template.lacMode == "MPC1" )       
 'CALFILE' 'CARD.LACQR.BGD590'/
-#else
+#elseif ( $template.lacMode == "MPC2" || $template.lacMode == "MPC3")
 'CALFILE' 'CARD.LACQR.BGD590SU'/
+#else
+'CALFILE' 'CARD.LACQR.BGD590ML'/
 #end
 'RMK' '   BGD590  : 5PARAMETERS FOR MPC1 MODE               '           
 'RMK' '              MADE AT 1990.6      '                              
@@ -23,7 +25,7 @@ $template.psFileName/vps
 'RMK' '                                                    '            
 'RMK' '  MODELS WERE MADE BASED ON THE DATA UPTO MAY 1990  '            
 'TAB' 'CARD.LACQR.DIRBGTAB' / DATA FOR SUD AND MID 
-'COR'  $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.deadTimeCorrection    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
+'COR'  $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.delayTimeCorrection    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
 'TIM'  $template.timeResolutionSec /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF          
 'SUD' 1 1 1 1  1 1 1 1 ,2.0  22.0  1.0  ,37.0, 0.0 /                    
 'PIM' 1 1 1 1  1 1 1 1 ,0.5  10.5  0.5 , 0.0 /                          
@@ -31,7 +33,7 @@ $template.psFileName/vps
 'SPC' 'CNT'  1 /                                                        
 'SPC' 'ENG'   1 ,       ' 22.1  35.2' /                                 
 'SPC' 'PLT'   1 ,       1    0   1.0 50.0,   1    1 10000.0 0.0 /       
-'SPC' 'LAC' $template.channel1 $template.channel2 $template.channel3 $template.channel4 $template.channel5 $template.channel6 $template.channel7 $template.channel8  '$template.mode'  $template.mixedMode /                                   
+'SPC' 'LAC' $template.channel1 $template.channel2 $template.channel3 $template.channel4 $template.channel5 $template.channel6 $template.channel7 $template.channel8  '$template.lacMode'  $template.mixedMode /                                   
 'SPC' 'OUT'   '$template.spectralFileName'  'OLD'    / 
 'SPC' 'MON' 'SPEC.MONI'  'OLD'  0 /  work file
 'CHT' 'WRK' 'COEF1.WORK'  /                                      

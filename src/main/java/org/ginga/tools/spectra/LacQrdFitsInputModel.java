@@ -24,7 +24,7 @@ public class LacQrdFitsInputModel {
 	private int channel6 = 3;
 	private int channel7 = 3;
 	private int channel8 = 3;
-	private int mixMode = 1;
+	private int mixedMode = 1;
 	private String spectralFileName;
 	private String timingFileName;
 	private String regionFileName;
@@ -210,13 +210,13 @@ public class LacQrdFitsInputModel {
 	}
 
 
-	public int getMixMode() {
-		return mixMode;
+	public int getMixedMode() {
+		return mixedMode;
 	}
 
 
-	public void setMixMode(int mixMode) {
-		this.mixMode = mixMode;
+	public void setMixMode(int mixedMode) {
+		this.mixedMode = mixedMode;
 	}
 
 

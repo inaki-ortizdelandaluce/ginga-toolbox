@@ -34,7 +34,7 @@ public class LacSpecInputModel {
 	private int channel7 = 3;
 	private int channel8 = 3;
 	private LacModeEnum lacMode;
-	private int mixMode = 1;
+	private int mixedMode = 1;
 	private String spectralFileName;
 	private String regionFileName;
 	
@@ -277,11 +277,11 @@ public class LacSpecInputModel {
 			this.lacMode = LacModeEnum.INIT;
 		}
 	}
-	public int getMixMode() {
-		return mixMode;
+	public int getMixedMode() {
+		return mixedMode;
 	}
-	public void setMixMode(int mixMode) {
-		this.mixMode = mixMode;
+	public void setMixedMode(int mixedMode) {
+		this.mixedMode = mixedMode;
 	}
 	public String getSpectralFileName() {
 		return spectralFileName;

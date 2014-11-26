@@ -62,6 +62,7 @@ public class LacQrdFitsFileWriter {
             model.setMinElevation(5.0);
             model.setRegionFileName("GS2000+25_REGION.DATA");
             model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
+            model.setTimingFileName("GS2000+25_TIMING.fits");
             
             LacQrdFitsFileWriter writer = new LacQrdFitsFileWriter(model);
             writer.writeToFile(new File("/tmp/lacqrd.input"));

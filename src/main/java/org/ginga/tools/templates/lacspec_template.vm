@@ -16,7 +16,7 @@ $template.psFileName/vps
 #if( $template.hasBackground )       
 'BGD'   $template.bgMethodInt, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
 #end
-'LAC'   $template.channel1 $template.channel2 $template.channel3 $template.channel4 $template.channel5 $template.channel6 $template.channel7 $template.channel8  '$template.mode'  $template.mixedMode /                                   
+'LAC'   $template.channel1 $template.channel2 $template.channel3 $template.channel4 $template.channel5 $template.channel6 $template.channel7 $template.channel8  '$template.lacMode'  $template.mixedMode /                                   
 'PLT' 1 , 1  0  1.0  50.0, 1 1 1.0E+1 1.0E-1 /
 'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'               
 'OUT'   '$template.spectralFileName' /                                   
