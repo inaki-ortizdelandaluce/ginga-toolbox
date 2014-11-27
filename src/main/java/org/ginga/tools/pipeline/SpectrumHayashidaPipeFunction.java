@@ -51,7 +51,7 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
                 log.error("Error executing command " + cmd);
             }
         } catch (IOException e) {
-            log.error("", e);
+            log.error("Error generating spectrum with lacqrdfits", e);
         }
         return null;
     }
