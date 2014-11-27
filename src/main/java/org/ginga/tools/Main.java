@@ -16,6 +16,7 @@ import org.ginga.tools.obslog.dao.ObsLogDaoException;
 import org.ginga.tools.obslog.dao.impl.ObsLogDaoImpl;
 import org.ginga.tools.pipeline.SpectrumHayashidaPipeFunction;
 import org.ginga.tools.spectrum.LacQrdFitsInputModel;
+import org.ginga.tools.util.EnvironmentUtil;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
@@ -28,6 +29,8 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		EnvironmentUtil.printEnv();
+		
         LacQrdFitsInputModel model = new LacQrdFitsInputModel();
         model.setLacMode("MPC2");
         model.setPsFileName("gs2000+25_lacqrd.ps");
