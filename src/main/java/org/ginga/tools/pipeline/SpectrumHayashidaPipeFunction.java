@@ -19,47 +19,37 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
     @Override
     public File compute(LacQrdFitsInputModel inputModel) {
         try {
-        	GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
-            // create input file name
-            File workingDir = new File(gingaEnv.getGingaWrkDir()); // new File(System.getProperty("user.dir"));
+            GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
+            File workingDir = new File(gingaEnv.getGingaWrkDir());
             log.info("Working directory " + workingDir.getAbsolutePath());
-            String fileName = FileUtil.nextFileName(workingDir, "lacqrd", "input");
-            File lacQrdInputFile = new File(workingDir, fileName);
-            log.info("Input file to be created " + lacQrdInputFile.getPath());
 
-            // write input file from model
+            // create input file
+            File inputFile = new File(workingDir, FileUtil.nextFileName(workingDir, "lacqrd",
+                    "input"));
             LacQrdFitsInputFileWriter lacQrdInputFileWriter = new LacQrdFitsInputFileWriter(
                     inputModel);
-            lacQrdInputFileWriter.writeToFile(lacQrdInputFile);
-            log.info("Input file " + lacQrdInputFile.getPath() + " created successfully");
+            lacQrdInputFileWriter.writeToFile(inputFile);
+            log.info("Input file " + inputFile.getPath() + " created successfully");
 
-            // execute 'lacqrdfits' routine
-            File logFile = new File(workingDir,
-                    FileUtil.splitFileBaseAndExtension(lacQrdInputFile)[0] + ".log");
-            String cmd = "lacqrdfits < " + lacQrdInputFile.getName(); // + " > " + logFile;
-            //String cmd = gingaEnv.getGingaBinDir() + "/lacqrdfits ";
+            // create output file
+            File outputFile = new File(workingDir, FileUtil.splitFileBaseAndExtension(inputFile)[0]
+                    + ".log");
+
+            // create 'lacqrdfits' command
+            String cmd = gingaEnv.getGingaBinDir() + "/lacqrdfits";
+
+            // execute command
+            GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, cmd, inputFile,
+                    outputFile);
             log.info("Executing command " + cmd + " ...");
-            GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, cmd, logFile);
-            Process p = runtime.exec();
-            int exitValue = runtime.exitValue(p);
+            int exitValue = runtime.exec();
             log.info("Exit value " + exitValue);
-            if (exitValue == 0) {
-                // return 'lacqrdfits' output file
+            if (exitValue == 0) { // return 'lacqrdfits' output file
+                log.info("Command " + cmd + " executed successfully");
                 return new File(workingDir, inputModel.getSpectralFileName());
             } else {
                 log.error("Error executing command " + cmd);
             }
-            // assert pb.redirectInput() == Redirect.PIPE;
-            // assert pb.redirectOutput().file() == logFile;
-            // assert p.getInputStream().read() == -1;
-            // Process p = Runtime.getRuntime().exec(cmd, new String[]{"PATH=$PATH"}, null);
-            // if(p.exitValue() == 0) {
-            // // return 'lacqrdfits' output file
-            // return new File(workingDir, inputModel.getSpectralFileName());
-            // } else {
-            // log.error("Error executing command " + cmd);
-            // }
-
         } catch (IOException e) {
             log.error("", e);
         }
