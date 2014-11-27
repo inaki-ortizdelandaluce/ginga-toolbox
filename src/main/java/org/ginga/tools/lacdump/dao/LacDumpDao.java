@@ -2,6 +2,7 @@ package org.ginga.tools.lacdump.dao;
 
 import java.util.List;
 
+import org.ginga.tools.lacdump.LacDumpQuery;
 import org.ginga.tools.lacdump.LacDumpSfEntity;
 
 public interface LacDumpDao {
@@ -14,9 +15,10 @@ public interface LacDumpDao {
 
     public List<LacDumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws LacDumpDaoException;
+                    throws LacDumpDaoException;
 
-    public List<LacDumpSfEntity> findSfList(String mode, String target,
-            String startTime, String endTime, double elevation, double rigidity)
-            throws LacDumpDaoException;
+    public List<LacDumpSfEntity> findSfList(String mode, String target, String startTime,
+            String endTime, double elevation, double rigidity) throws LacDumpDaoException;
+
+    public List<LacDumpSfEntity> findSfList(LacDumpQuery query) throws LacDumpDaoException;
 }

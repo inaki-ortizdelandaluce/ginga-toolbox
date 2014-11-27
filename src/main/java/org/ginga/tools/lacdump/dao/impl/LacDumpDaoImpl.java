@@ -1,11 +1,13 @@
 package org.ginga.tools.lacdump.dao.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.ginga.tools.lacdump.LacDumpQuery;
 import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
+import org.ginga.tools.lacdump.dao.LacDumpDaoException;
 import org.ginga.tools.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,6 +15,7 @@ import org.hibernate.Session;
 public class LacDumpDaoImpl implements LacDumpDao {
 
     private static final Logger log = Logger.getLogger(LacDumpDaoImpl.class);
+    public final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /*
      * (non-Javadoc)
@@ -114,11 +117,10 @@ public class LacDumpDaoImpl implements LacDumpDao {
         return sfList;
     }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<LacDumpSfEntity> findSfList(String mode, String target,
-			String startTime, String endTime, double elevation, double rigidity)
-			throws LacDumpDaoException {
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<LacDumpSfEntity> findSfList(String mode, String target, String startTime,
+            String endTime, double elevation, double rigidity) throws LacDumpDaoException {
         List<LacDumpSfEntity> sfList = null;
         try {
             String hql = "FROM LacDumpSfEntity WHERE MODE =:mode and TARGET like :target and "
@@ -142,6 +144,83 @@ public class LacDumpDaoImpl implements LacDumpDao {
             HibernateUtil.closeSession();
         }
         return sfList;
-	}
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.ginga.tools.lacdump.dao.LacDumpDao#findSfList(org.ginga.tools.lacdump.LacDumpQuery)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<LacDumpSfEntity> findSfList(LacDumpQuery query) throws LacDumpDaoException {
+        List<LacDumpSfEntity> sfList = null;
+        try {
+            String hql = "FROM LacDumpSfEntity WHERE";
+            String startTime = null, endTime = null, mode = null, bitRate = null, target = null;
+            double rigidity = 0, elevation = 0;
+
+            if ((bitRate = query.getBitRate()) != null) {
+                hql += " BR =:br and";
+            }
+            if ((mode = query.getMode()) != null) {
+                hql += " MODE =:mode and";
+            }
+            if ((target = query.getTargetName()) != null) {
+                hql += " TARGET like :target and";
+            }
+            if (query.getStartTime() != null) {
+                startTime = this.dateFmt.format(query.getStartTime());
+                hql += " DATE >=:start and";
+            }
+            if (query.getEndTime() != null) {
+                endTime = this.dateFmt.format(query.getEndTime());
+                hql += " DATE <=:end and";
+            }
+            if ((elevation = query.getMinElevation()) > 0) {
+                hql += "  EELV > :eelv and";
+            }
+            if ((elevation = query.getMinElevation()) > 0) {
+                hql += "  RIG >= :rig and";
+            }
+            // remove last and
+            hql = hql.substring(0, hql.lastIndexOf("and") + 1);
+
+            hql += "     ORDER BY ID";
+
+            HibernateUtil.beginTransaction();
+            Session hibernateSession = HibernateUtil.getSession();
+            Query hquery = hibernateSession.createQuery(hql);
+            if (bitRate != null) {
+                hquery.setString("br", bitRate);
+            }
+            if (mode != null) {
+                hquery.setString("mode", mode);
+            }
+            if (target != null) {
+                hquery.setString("target", "%" + target + "%");
+            }
+            if (startTime != null) {
+                hquery.setString("start", startTime);
+            }
+            if (endTime != null) {
+                hquery.setString("end", endTime);
+            }
+            if (elevation > 0) {
+                hquery.setDouble("eelv", elevation);
+            }
+            if (rigidity > 0) {
+                hquery.setDouble("rig", rigidity);
+            }
+
+            sfList = hquery.list();
+            HibernateUtil.commitTransaction();
+        } catch (Exception e) {
+            throw new LacDumpDaoException(e);
+        } finally {
+            HibernateUtil.closeSession();
+        }
+        return sfList;
+    }
 
 }
