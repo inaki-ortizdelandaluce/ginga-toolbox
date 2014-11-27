@@ -69,39 +69,56 @@ public class GingaToolsEnvironment {
 
     public String getGingaHome() {
         try {
-            return this.properties.getProperty("GINGA_HOME", "/home/inaki/ginga/ginga_tools/v1.02");
+            return this.properties.getProperty("GINGA_HOME", "$HOME/ginga/ginga_tools/v1.02");
         } catch (Exception e) {
             log.warn("Cannot access GINGA_HOME, using default value", e);
-            return "/home/inaki/ginga/ginga_tools/v1.02";
+            return "$HOME/ginga/ginga_tools/v1.02";
         }
     }
 
     public String getGingaCalDir() {
         try {
-            return this.properties.getProperty("GINGA_CALDIR",
-                    "/home/inaki/ginga/ginga_tools/v1.02/cal");
+            return this.properties.getProperty("GINGA_CALDIR", "$GINGA_HOME/cal");
         } catch (Exception e) {
             log.warn("Cannot access GINGA_CALDIR, using default value", e);
-            return "/home/inaki/ginga/ginga_tools/v1.02/cal";
+            return "$GINGA_HOME/cal";
         }
     }
 
     public String getGingaFrfDir() {
         try {
-            return this.properties.getProperty("GINGA_FRFDIR",
-                    "/home/inaki/ginga/ginga_tools/v1.02/frf");
+            return this.properties.getProperty("GINGA_FRFDIR", "$HOME/ginga/data/frf");
         } catch (Exception e) {
             log.warn("Cannot access GINGA_FRFDIR, using default value", e);
-            return "/home/inaki/ginga/ginga_tools/v1.02/frf";
+            return "$HOME/ginga/data/frf";
         }
     }
 
     public String getGingaWrkDir() {
         try {
-            return this.properties.getProperty("GINGA_WRKDIR", "/home/inaki/ginga/work");
+            return this.properties.getProperty("GINGA_WRKDIR", "$HOME/ginga/work");
         } catch (Exception e) {
             log.warn("Cannot access GINGA_WRKDIR, using default value", e);
-            return "/home/inaki/ginga/work";
+            return "$HOME/ginga/data/frf";
+        }
+    }
+
+    public String getPfiles() {
+        try {
+            return this.properties.getProperty("PFILES", "$HOME/pfiles");
+        } catch (Exception e) {
+            log.warn("Cannot access PFILES, using default value", e);
+            return "$HOME/pfiles";
+        }
+    }
+
+    public String getPgPlotFont() {
+        try {
+            return this.properties.getProperty("PGPLOT_FONT",
+                    "$HOME/ginga/ginga_ledas/bin/grfont.dat");
+        } catch (Exception e) {
+            log.warn("Cannot access PGPLOT_FONT, using default value", e);
+            return "$HOME/ginga/ginga_ledas/bin/grfont.dat";
         }
     }
 
@@ -112,6 +129,8 @@ public class GingaToolsEnvironment {
         env.put("GINGA_CALDIR", getGingaCalDir());
         env.put("GINGA_FRFDIR", getGingaFrfDir());
         env.put("GINGA_WRKDIR", getGingaWrkDir());
+        env.put("PFILES", getPfiles());
+        env.put("PG_PLOT_FONT", getPgPlotFont());
         return env;
     }
 
