@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.ginga.tools.lacdump.LacDumpQuery;
 import org.ginga.tools.lacdump.LacDumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacDumpDao;
 import org.ginga.tools.lacdump.dao.LacDumpDaoException;
@@ -14,8 +15,7 @@ import org.ginga.tools.obslog.ObsLogEntity;
 import org.ginga.tools.obslog.dao.ObsLogDao;
 import org.ginga.tools.obslog.dao.ObsLogDaoException;
 import org.ginga.tools.obslog.dao.impl.ObsLogDaoImpl;
-import org.ginga.tools.pipeline.SpectrumHayashidaPipeFunction;
-import org.ginga.tools.spectrum.LacQrdFitsInputModel;
+import org.ginga.tools.pipeline.GoodTimeIntervalPipeFunction;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
@@ -28,22 +28,41 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        LacQrdFitsInputModel model = new LacQrdFitsInputModel();
-        model.setLacMode("MPC2");
-        model.setPsFileName("gs2000+25_lacqrd.ps");
-        model.setMinElevation(5.0);
-        model.setRegionFileName("GS2000+25_REGION.DATA");
-        model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
-        model.setTimingFileName("GS2000+25_TIMING.fits");
+        // LacQrdFitsInputModel model = new LacQrdFitsInputModel();
+        // model.setLacMode("MPC2");
+        // model.setPsFileName("gs2000+25_lacqrd.ps");
+        // model.setMinElevation(5.0);
+        // model.setRegionFileName("GS2000+25_REGION.DATA");
+        // model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
+        // model.setTimingFileName("GS2000+25_TIMING.fits");
+        //
+        // Pipe<LacQrdFitsInputModel, File> pipe2 = new TransformFunctionPipe<LacQrdFitsInputModel,
+        // File>(
+        // new SpectrumHayashidaPipeFunction());
+        // log.info("Starting SpectrumHayashidaPipeFunction");
+        // pipe2.setStarts(Arrays.asList(model));
+        // while (pipe2.hasNext()) {
+        // pipe2.next();
+        // }
+        // log.info("SpectrumHayashidaPipeFunction completed");
 
-        Pipe<LacQrdFitsInputModel, File> pipe = new TransformFunctionPipe<LacQrdFitsInputModel, File>(
-                new SpectrumHayashidaPipeFunction());
-        log.info("Starting SpectrumHayashidaPipeFunction");
-        pipe.setStarts(Arrays.asList(model));
-        while (pipe.hasNext()) {
-            pipe.next();
+        LacDumpQuery query = new LacDumpQuery();
+        query.setMode("MPC3");
+        query.setTargetName("GS2000+25");
+        query.setStartTime("1988-05-02 01:34:31");
+        query.setEndTime("1988-05-02 01:34:31");
+        query.setMinElevation(5.0);
+        query.setMinRigidity(10.0);
+
+        Pipe<LacDumpQuery, File> pipe1 = new TransformFunctionPipe<LacDumpQuery, File>(
+                new GoodTimeIntervalPipeFunction());
+        log.info("Starting GoodTimeIntervalPipeFunction");
+        pipe1.setStarts(Arrays.asList(query));
+        while (pipe1.hasNext()) {
+            pipe1.next();
         }
-        log.info("SpectrumHayashidaPipeFunction completed");
+        log.info("GoodTimeIntervalPipeFunction completed");
+
     }
 
     public static void sfLookup() {

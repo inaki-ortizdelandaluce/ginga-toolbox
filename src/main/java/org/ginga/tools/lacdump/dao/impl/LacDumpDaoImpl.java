@@ -178,13 +178,13 @@ public class LacDumpDaoImpl implements LacDumpDao {
             if ((elevation = query.getMinElevation()) > 0) {
                 hql += "  EELV > :eelv and";
             }
-            if ((elevation = query.getMinElevation()) > 0) {
+            if ((rigidity = query.getMinRigidity()) > 0) {
                 hql += "  RIG >= :rig and";
             }
             // remove last and
-            hql = hql.substring(0, hql.lastIndexOf("and") + 1);
+            hql = hql.substring(0, hql.lastIndexOf("and"));
 
-            hql += "     ORDER BY ID";
+            hql += " ORDER BY ID";
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
