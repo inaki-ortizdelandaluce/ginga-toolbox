@@ -19,5 +19,6 @@ Improve performance: database indexes
 Ideas: 
 Taverna
 Apache CLI
+Maven application bundle
 
 hh vs. HH!! LacDumpParser, Main
