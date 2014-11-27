@@ -81,20 +81,20 @@ public class DatabaseProperties {
 
     private void initialize() {
         InputStream in = null;
-        String propertiesFilePath = System.getProperty("propertiesFilePath");
+        String propertiesFilePath = System.getProperty("databasePropertiesFile");
         if (propertiesFilePath == null) {
             // if system property is not specified use classpath properties
-            log.debug("Using environment properties found in classpath");
+            log.debug("Using database properties found in classpath");
             in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
                     "database.properties");
         } else {
             try {
                 in = new FileInputStream(new File(propertiesFilePath));
-                log.debug("Using environment properties found in " + propertiesFilePath);
+                log.debug("Using database properties found in " + propertiesFilePath);
             } catch (FileNotFoundException e) {
-                log.warn("System property 'propertiesFilePath' badly defined. Value: "
+                log.warn("System property 'databasePropertiesFile' badly defined. Value: "
                         + propertiesFilePath);
-                log.debug("Using environment properties found in classpath");
+                log.debug("Using database properties found in classpath");
                 in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
                         "database.properties");
             }
