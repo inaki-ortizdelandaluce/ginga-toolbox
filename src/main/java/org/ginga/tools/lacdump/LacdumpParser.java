@@ -13,9 +13,9 @@ import java.util.List;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
 
-public class LacDumpParser {
+public class LacdumpParser {
 
-    private static final Logger log = Logger.getLogger(LacDumpParser.class);
+    private static final Logger log = Logger.getLogger(LacdumpParser.class);
 
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
@@ -86,18 +86,18 @@ public class LacDumpParser {
     private final int spinAxisDecDegBeginIdx = 125;
     private final int spinAxisDecDegLength = 7;
 
-    public LacDumpParser() {
+    public LacdumpParser() {
     }
 
-    public List<LacDumpSfEntity> parse(File lacdumpFile) throws IOException {
-        List<LacDumpSfEntity> entityList = new ArrayList<LacDumpSfEntity>();
+    public List<LacdumpSfEntity> parse(File lacdumpFile) throws IOException {
+        List<LacdumpSfEntity> entityList = new ArrayList<LacdumpSfEntity>();
         LineNumberReader reader = null;
         try {
             reader = new LineNumberReader(new FileReader(lacdumpFile));
 
             String line = null;
             String lastSuperFrame = null;
-            LacDumpSfEntity entity = null;
+            LacdumpSfEntity entity = null;
 
             int seqno;
             Date date;
@@ -129,7 +129,7 @@ public class LacDumpParser {
                 } else if (line.contains(LHV_ON_DATA_PREFIX)) {
                     continue;
                 } else {
-                    entity = new LacDumpSfEntity();
+                    entity = new LacdumpSfEntity();
                     entity.setSuperFrame(lastSuperFrame);
                     // seqno
                     seqno = Integer.valueOf(
@@ -390,8 +390,8 @@ public class LacDumpParser {
                 System.exit(1);
             }
             try {
-                LacDumpParser parser = new LacDumpParser();
-                List<LacDumpSfEntity> sfList = parser.parse(f);
+                LacdumpParser parser = new LacdumpParser();
+                List<LacdumpSfEntity> sfList = parser.parse(f);
                 log.info("LACDUMP contains " + sfList.size() + " row(s)");
             } catch (IOException e) {
                 log.error("Error parsing LACDUMP " + f.getPath() + ". Message=" + e.getMessage());

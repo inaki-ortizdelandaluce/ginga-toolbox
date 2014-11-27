@@ -7,9 +7,9 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.lacdump.dao.LacDumpDao;
-import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
+import org.ginga.tools.lacdump.LacdumpSfEntity;
+import org.ginga.tools.lacdump.dao.LacdumpDao;
+import org.ginga.tools.lacdump.dao.impl.LacdumpDaoImpl;
 
 public class GtiFileWriter {
 
@@ -20,10 +20,10 @@ public class GtiFileWriter {
         File f = new File("/tmp/" + target + "_REGION.DATA");
         try {
             // query entities matching the criteria
-            LacDumpDao dao = new LacDumpDaoImpl();
+            LacdumpDao dao = new LacdumpDaoImpl();
             // List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
             // "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
-            List<LacDumpSfEntity> sfList = dao.findSfList("MPC3", target, "1988-05-02 01:34:31",
+            List<LacdumpSfEntity> sfList = dao.findSfList("MPC3", target, "1988-05-02 01:34:31",
                     "1988-05-02 03:09:27", 5.0, 10.0);
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
             // save matching results into a GTI file
@@ -35,7 +35,7 @@ public class GtiFileWriter {
         }
     }
 
-    public void writeToFile(String target, List<LacDumpSfEntity> sfList, boolean isBackground,
+    public void writeToFile(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
             File file) throws IOException {
         FileWriter writer = new FileWriter(file);
         try {
@@ -62,7 +62,7 @@ public class GtiFileWriter {
             // add Super Frame and Sequence Numbers
             String lastSuperFrame = null;
             int lastSeqNo = -1;
-            for (LacDumpSfEntity sf : sfList) {
+            for (LacdumpSfEntity sf : sfList) {
                 if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
                     if (lastSuperFrame != null) {
                         writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous

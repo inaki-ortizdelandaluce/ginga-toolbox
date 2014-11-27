@@ -12,14 +12,14 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class LacQrdFitsInputFileWriter {
+public class LacqrdfitsInputFileWriter {
 
-    private final static Logger log = Logger.getLogger(LacQrdFitsInputModel.class);
+    private final static Logger log = Logger.getLogger(LacqrdfitsInputModel.class);
 
-    private LacQrdFitsInputModel inputModel;
+    private LacqrdfitsInputModel inputModel;
     private Template template;
 
-    public LacQrdFitsInputFileWriter(LacQrdFitsInputModel model) {
+    public LacqrdfitsInputFileWriter(LacqrdfitsInputModel model) {
         this.inputModel = model;
         // init velocity
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -56,7 +56,7 @@ public class LacQrdFitsInputFileWriter {
      */
     public static void main(String[] args) {
         try {
-            LacQrdFitsInputModel model = new LacQrdFitsInputModel();
+            LacqrdfitsInputModel model = new LacqrdfitsInputModel();
             model.setLacMode("MPC2");
             model.setPsFileName("gs2000+25_lacqrd.ps");
             model.setMinElevation(5.0);
@@ -64,7 +64,7 @@ public class LacQrdFitsInputFileWriter {
             model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
             model.setTimingFileName("GS2000+25_TIMING.fits");
             
-            LacQrdFitsInputFileWriter writer = new LacQrdFitsInputFileWriter(model);
+            LacqrdfitsInputFileWriter writer = new LacqrdfitsInputFileWriter(model);
             writer.writeToFile(new File("/tmp/lacqrd.input"));
             log.info("Input file /tmp/lacqrd.input saved successfully");
         } catch (Exception e) {

@@ -13,7 +13,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "OBSLOG")
-public class ObsLogEntity {
+public class ObslogEntity {
 
     @Id
     @Column(name = "ID")

@@ -12,14 +12,14 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class LacSpecInputFileWriter {
+public class LacspecInputFileWriter {
 
-    private final static Logger log = Logger.getLogger(LacSpecInputModel.class);
+    private final static Logger log = Logger.getLogger(LacspecInputModel.class);
 
-    private LacSpecInputModel inputModel;
+    private LacspecInputModel inputModel;
     private Template template;
 
-    public LacSpecInputFileWriter(LacSpecInputModel model) {
+    public LacspecInputFileWriter(LacspecInputModel model) {
         this.inputModel = model;
         // init velocity
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -57,7 +57,7 @@ public class LacSpecInputFileWriter {
      */
     public static void main(String[] args) {
         try {
-            LacSpecInputModel model = new LacSpecInputModel();
+            LacspecInputModel model = new LacspecInputModel();
             model.setHasBackground(false);
             model.setLacMode("MPC2");
             model.setPsFileName("gs2000+25_lacspec.ps");
@@ -67,7 +67,7 @@ public class LacSpecInputFileWriter {
             model.setSpectralFileName("GS2000+25_SPEC_lacspec.FILE");
             model.setMonitorFileName("MONI.SPEC");
 
-            LacSpecInputFileWriter writer = new LacSpecInputFileWriter(model);
+            LacspecInputFileWriter writer = new LacspecInputFileWriter(model);
             writer.writeToFile(new File("/tmp/lacspec.input"));
             log.info("Input file /tmp/lacspec.input saved successfully");
         } catch (Exception e) {

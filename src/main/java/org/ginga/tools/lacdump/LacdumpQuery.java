@@ -1,7 +1,7 @@
 package org.ginga.tools.lacdump;
 
 
-public class LacDumpQuery {
+public class LacdumpQuery {
 
     private String startTime;
 

@@ -1,6 +1,6 @@
 package org.ginga.tools.spectrum;
 
-public class LacSpecInputModel {
+public class LacspecInputModel {
 
 	public enum BitRateEnum { ANY, HI,  MID, LOW }
 	public enum LacModeEnum { MPC1, MPC2, MPC3, PC, INIT }

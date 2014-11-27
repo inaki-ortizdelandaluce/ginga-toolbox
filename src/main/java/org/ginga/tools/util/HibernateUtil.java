@@ -1,7 +1,7 @@
 package org.ginga.tools.util;
 
-import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.obslog.ObsLogEntity;
+import org.ginga.tools.lacdump.LacdumpSfEntity;
+import org.ginga.tools.obslog.ObslogEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -62,8 +62,8 @@ public class HibernateUtil {
             // configuration.setProperty("hibernate.cache.use_query_cache","true");
 
             // ADD ANNOTATED CLASSES
-            configuration.addAnnotatedClass(LacDumpSfEntity.class);
-            configuration.addAnnotatedClass(ObsLogEntity.class);
+            configuration.addAnnotatedClass(LacdumpSfEntity.class);
+            configuration.addAnnotatedClass(ObslogEntity.class);
 
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
             .applySettings(configuration.getProperties());

@@ -6,18 +6,18 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.ginga.tools.runtime.GingaToolsEnvironment;
 import org.ginga.tools.runtime.GingaToolsRuntime;
-import org.ginga.tools.spectrum.LacQrdFitsInputFileWriter;
-import org.ginga.tools.spectrum.LacQrdFitsInputModel;
+import org.ginga.tools.spectrum.LacqrdfitsInputFileWriter;
+import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.FileUtil;
 
 import com.tinkerpop.pipes.PipeFunction;
 
-public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInputModel, File> {
+public class LacqrdfitsPipe implements PipeFunction<LacqrdfitsInputModel, File> {
 
-    private static final Logger log = Logger.getLogger(SpectrumHayashidaPipeFunction.class);
+    private static final Logger log = Logger.getLogger(LacqrdfitsPipe.class);
 
     @Override
-    public File compute(LacQrdFitsInputModel inputModel) {
+    public File compute(LacqrdfitsInputModel inputModel) {
         try {
             GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
             File workingDir = new File(gingaEnv.getGingaWrkDir());
@@ -26,7 +26,7 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
             // create input file
             File inputFile = new File(workingDir, FileUtil.nextFileName(workingDir, "lacqrd",
                     "input"));
-            LacQrdFitsInputFileWriter lacQrdInputFileWriter = new LacQrdFitsInputFileWriter(
+            LacqrdfitsInputFileWriter lacQrdInputFileWriter = new LacqrdfitsInputFileWriter(
                     inputModel);
             lacQrdInputFileWriter.writeToFile(inputFile);
             log.info("Input file " + inputFile.getPath() + " created successfully");

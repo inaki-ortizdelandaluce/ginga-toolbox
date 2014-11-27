@@ -2,20 +2,20 @@ package org.ginga.tools.obslog.dao.impl;
 
 import java.util.List;
 
-import org.ginga.tools.obslog.ObsLogEntity;
-import org.ginga.tools.obslog.dao.ObsLogDao;
-import org.ginga.tools.obslog.dao.ObsLogDaoException;
+import org.ginga.tools.obslog.ObslogEntity;
+import org.ginga.tools.obslog.dao.ObslogDao;
+import org.ginga.tools.obslog.dao.ObslogDaoException;
 import org.ginga.tools.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class ObsLogDaoImpl implements ObsLogDao {
+public class ObslogDaoImpl implements ObslogDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ObsLogEntity> findListByTarget(String target)
-			throws ObsLogDaoException {
-        List<ObsLogEntity> obsList = null;
+	public List<ObslogEntity> findListByTarget(String target)
+			throws ObslogDaoException {
+        List<ObslogEntity> obsList = null;
         try {
             String hql = "FROM ObsLogEntity WHERE TARGET_NAME like :target ORDER BY ID";
 
@@ -27,7 +27,7 @@ public class ObsLogDaoImpl implements ObsLogDao {
             obsList = query.list();
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new ObsLogDaoException(e);
+            throw new ObslogDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }

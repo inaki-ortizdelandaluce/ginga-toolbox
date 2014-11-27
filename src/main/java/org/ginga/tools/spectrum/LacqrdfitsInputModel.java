@@ -1,9 +1,9 @@
 package org.ginga.tools.spectrum;
 
-import org.ginga.tools.spectrum.LacSpecInputModel.LacCounterModeEnum;
-import org.ginga.tools.spectrum.LacSpecInputModel.LacModeEnum;
+import org.ginga.tools.spectrum.LacspecInputModel.LacCounterModeEnum;
+import org.ginga.tools.spectrum.LacspecInputModel.LacModeEnum;
 
-public class LacQrdFitsInputModel {
+public class LacqrdfitsInputModel {
 
 	public enum TimeResolutionEnum { SF1, SF1_2, SF1_4 }
 	

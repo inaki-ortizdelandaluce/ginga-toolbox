@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.dao.LacDumpDaoException;
-import org.ginga.tools.lacdump.dao.LacDumpDao;
-import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
+import org.ginga.tools.lacdump.dao.LacdumpDaoException;
+import org.ginga.tools.lacdump.dao.LacdumpDao;
+import org.ginga.tools.lacdump.dao.impl.LacdumpDaoImpl;
 
-public class LacDumpDatabaseIngestor {
+public class LacdumpDatabaseIngestor {
 
     private final static Logger log = Logger.getRootLogger();
 
@@ -45,9 +45,9 @@ public class LacDumpDatabaseIngestor {
             Arrays.sort(lacdumpFiles);
 
             log.info(lacdumpFiles.length + " file(s) found");
-            LacDumpParser parser = new LacDumpParser();
-            LacDumpDao dao = new LacDumpDaoImpl();
-            List<LacDumpSfEntity> sfList = null;
+            LacdumpParser parser = new LacdumpParser();
+            LacdumpDao dao = new LacdumpDaoImpl();
+            List<LacdumpSfEntity> sfList = null;
             for (int i = 0; i < lacdumpFiles.length; i++) {
                 try {
                     sfList = parser.parse(lacdumpFiles[i]);
@@ -58,7 +58,7 @@ public class LacDumpDatabaseIngestor {
                     log.error("Error parsing LACDUMP " + lacdumpFiles[i].getPath() + ". Message="
                             + e.getMessage(), e);
                     System.exit(1);
-                } catch (LacDumpDaoException e) {
+                } catch (LacdumpDaoException e) {
                     log.error("Error ingesting LACDUMP " + lacdumpFiles[i].getPath()
                             + " into the database. Message=" + e.getMessage(), e);
                     System.exit(1);

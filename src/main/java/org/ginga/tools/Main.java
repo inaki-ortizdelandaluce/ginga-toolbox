@@ -6,18 +6,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacDumpQuery;
-import org.ginga.tools.lacdump.LacDumpSfEntity;
-import org.ginga.tools.lacdump.dao.LacDumpDao;
-import org.ginga.tools.lacdump.dao.LacDumpDaoException;
-import org.ginga.tools.lacdump.dao.impl.LacDumpDaoImpl;
-import org.ginga.tools.obslog.ObsLogEntity;
-import org.ginga.tools.obslog.dao.ObsLogDao;
-import org.ginga.tools.obslog.dao.ObsLogDaoException;
-import org.ginga.tools.obslog.dao.impl.ObsLogDaoImpl;
-import org.ginga.tools.pipeline.GoodTimeIntervalPipeFunction;
-import org.ginga.tools.pipeline.SpectrumHayashidaPipeFunction;
-import org.ginga.tools.spectrum.LacQrdFitsInputModel;
+import org.ginga.tools.lacdump.LacdumpQuery;
+import org.ginga.tools.lacdump.LacdumpSfEntity;
+import org.ginga.tools.lacdump.dao.LacdumpDao;
+import org.ginga.tools.lacdump.dao.LacdumpDaoException;
+import org.ginga.tools.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.tools.obslog.ObslogEntity;
+import org.ginga.tools.obslog.dao.ObslogDao;
+import org.ginga.tools.obslog.dao.ObslogDaoException;
+import org.ginga.tools.obslog.dao.impl.ObslogDaoImpl;
+import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
+import org.ginga.tools.pipeline.LacqrdfitsPipe;
+import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.transform.TransformFunctionPipe;
@@ -30,7 +30,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-         LacQrdFitsInputModel model = new LacQrdFitsInputModel();
+         LacqrdfitsInputModel model = new LacqrdfitsInputModel();
          model.setLacMode("MPC2");
          model.setPsFileName("gs2000+25_lacqrd.ps");
          model.setMinElevation(5.0);
@@ -38,8 +38,8 @@ public class Main {
          model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
          model.setTimingFileName("GS2000+25_TIMING.fits");
         
-         Pipe<LacQrdFitsInputModel, File> pipe2 = 
-        		 new TransformFunctionPipe<LacQrdFitsInputModel,File>(new SpectrumHayashidaPipeFunction());
+         Pipe<LacqrdfitsInputModel, File> pipe2 = 
+        		 new TransformFunctionPipe<LacqrdfitsInputModel,File>(new LacqrdfitsPipe());
          log.info("Starting SpectrumHayashidaPipeFunction");
          pipe2.setStarts(Arrays.asList(model));
          while (pipe2.hasNext()) {
@@ -47,7 +47,7 @@ public class Main {
          }
          log.info("SpectrumHayashidaPipeFunction completed");
 
-        LacDumpQuery query = new LacDumpQuery();
+        LacdumpQuery query = new LacdumpQuery();
         query.setMode("MPC3");
         query.setTargetName("GS2000+25");
         query.setStartTime("1988-05-02 01:34:31");
@@ -55,8 +55,8 @@ public class Main {
         query.setMinElevation(5.0);
         query.setMinRigidity(10.0);
 
-        Pipe<LacDumpQuery, File> pipe1 = new TransformFunctionPipe<LacDumpQuery, File>(
-                new GoodTimeIntervalPipeFunction());
+        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = 
+        		new TransformFunctionPipe<LacdumpQuery, LacqrdfitsInputModel>(new LacqrdfitsInputPipe());
         log.info("Starting GoodTimeIntervalPipeFunction");
         pipe1.setStarts(Arrays.asList(query));
         while (pipe1.hasNext()) {
@@ -69,22 +69,22 @@ public class Main {
     public static void sfLookup() {
         String target = "GS2000+25";
         // find observation list by target
-        ObsLogDao obsLogDao = new ObsLogDaoImpl();
-        List<ObsLogEntity> obsList = null;
+        ObslogDao obsLogDao = new ObslogDaoImpl();
+        List<ObslogEntity> obsList = null;
         try {
             obsList = obsLogDao.findListByTarget(target);
             log.info(obsList.size() + " " + target + " observation(s) found");
-        } catch (ObsLogDaoException e) {
+        } catch (ObslogDaoException e) {
             log.error(target + " observation(s) not found", e);
         }
         // find start/end time for MPC3
-        LacDumpDao lacDumpDao = new LacDumpDaoImpl();
+        LacdumpDao lacDumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String startTime, endTime;
-        for (ObsLogEntity obs : obsList) {
+        for (ObslogEntity obs : obsList) {
             startTime = dateFmt.format(obs.getStartTime());
             endTime = dateFmt.format(obs.getEndTime());
-            List<LacDumpSfEntity> sfList;
+            List<LacdumpSfEntity> sfList;
             try {
                 sfList = lacDumpDao.findSfList("MPC3", target, startTime, endTime, 10.0, 5.0);
                 if (sfList.size() > 0) {
@@ -94,7 +94,7 @@ public class Main {
                             + dateFmt.format(sfList.get(sfList.size() - 1).getDate()));
                     log.info("\n");
                 }
-            } catch (LacDumpDaoException e) {
+            } catch (LacdumpDaoException e) {
                 log.error("Could not find sf item(s) between " + startTime + " and " + endTime);
             }
         }
