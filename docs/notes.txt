@@ -22,3 +22,4 @@ Apache CLI
 Maven application bundle
 
 hh vs. HH!! LacDumpParser, Main
+ModeEnum... etc on utils or somewhere else
