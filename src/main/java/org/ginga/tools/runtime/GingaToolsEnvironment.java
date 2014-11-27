@@ -103,6 +103,15 @@ public class GingaToolsEnvironment {
         }
     }
 
+    public String getGingaBinDir() {
+        try {
+            return this.properties.getProperty("GINGA_BINDIR", "$GINGA_HOME/bin/linux");
+        } catch (Exception e) {
+            log.warn("Cannot access GINGA_BINDIR, using default value", e);
+            return "$GINGA_HOME/bin/linux";
+        }
+    }
+    
     public String getPfiles() {
         try {
             return this.properties.getProperty("PFILES", "$HOME/pfiles");
@@ -126,6 +135,7 @@ public class GingaToolsEnvironment {
         Map<String, String> env = new HashMap<String, String>();
         // add ginga specific environment
         env.put("GINGA_HOME", getGingaHome());
+        env.put("GINGA_BINDIR", getGingaBinDir());
         env.put("GINGA_CALDIR", getGingaCalDir());
         env.put("GINGA_FRFDIR", getGingaFrfDir());
         env.put("GINGA_WRKDIR", getGingaWrkDir());
