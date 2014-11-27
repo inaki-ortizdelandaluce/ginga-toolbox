@@ -19,7 +19,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#save(org.ginga.tools.lacdump.LACDumpEntity)
      */
     @Override
@@ -38,7 +38,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -59,7 +59,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#saveList(lava.util.List<LacDumpSfEntity>)
      */
     @Override
@@ -82,7 +82,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -90,7 +90,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
     @Override
     public List<LacDumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws LacDumpDaoException {
+                    throws LacDumpDaoException {
         List<LacDumpSfEntity> sfList = null;
         try {
             String hql = "FROM LacDumpSfEntity WHERE BR =:br and MODE =:mode and TARGET like :target and "
@@ -148,7 +148,7 @@ public class LacDumpDaoImpl implements LacDumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findSfList(org.ginga.tools.lacdump.LacDumpQuery)
      */
     @SuppressWarnings("unchecked")
@@ -169,12 +169,10 @@ public class LacDumpDaoImpl implements LacDumpDao {
             if ((target = query.getTargetName()) != null) {
                 hql += " TARGET like :target and";
             }
-            if (query.getStartTime() != null) {
-                startTime = this.dateFmt.format(query.getStartTime());
+            if ((startTime = query.getStartTime()) != null) {
                 hql += " DATE >=:start and";
             }
-            if (query.getEndTime() != null) {
-                endTime = this.dateFmt.format(query.getEndTime());
+            if ((endTime = query.getEndTime()) != null) {
                 hql += " DATE <=:end and";
             }
             if ((elevation = query.getMinElevation()) > 0) {

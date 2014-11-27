@@ -1,12 +1,11 @@
 package org.ginga.tools.lacdump;
 
-import java.util.Date;
 
 public class LacDumpQuery {
 
-    private Date startTime;
+    private String startTime;
 
-    private Date endTime;
+    private String endTime;
 
     private String mode;
 
@@ -21,28 +20,28 @@ public class LacDumpQuery {
     /**
      * @return the startTime
      */
-    public Date getStartTime() {
+    public String getStartTime() {
         return this.startTime;
     }
 
     /**
      * @param startTime the startTime to set
      */
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
     /**
      * @return the endTime
      */
-    public Date getEndTime() {
+    public String getEndTime() {
         return this.endTime;
     }
 
     /**
      * @param endTime the endTime to set
      */
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
