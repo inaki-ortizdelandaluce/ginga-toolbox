@@ -2,6 +2,7 @@ package org.ginga.tools.pipeline;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.ginga.tools.runtime.GingaToolsEnvironment;
@@ -10,15 +11,22 @@ import org.ginga.tools.spectrum.LacqrdfitsInputFileWriter;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.FileUtil;
 
-import com.tinkerpop.pipes.PipeFunction;
+import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsPipe implements PipeFunction<LacqrdfitsInputModel, File> {
+public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File> 
+	implements TransformPipe<LacqrdfitsInputModel, File> {
 
     private static final Logger log = Logger.getLogger(LacqrdfitsPipe.class);
 
-    @Override
-    public File compute(LacqrdfitsInputModel inputModel) {
+    /*
+     * Receives a LacqrdfitsInputModel, writes it to an input file, executes the lacqrdfits
+     * routine and finally emits the resulting spectrum file
+     */
+	@Override
+	protected File processNextStart() throws NoSuchElementException {
         try {
+        	LacqrdfitsInputModel inputModel = this.starts.next();
             GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
             File workingDir = new File(gingaEnv.getGingaWrkDir());
             log.info("Working directory " + workingDir.getAbsolutePath());

@@ -17,10 +17,11 @@ import org.ginga.tools.obslog.dao.ObslogDaoException;
 import org.ginga.tools.obslog.dao.impl.ObslogDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
+import org.ginga.tools.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 
 import com.tinkerpop.pipes.Pipe;
-import com.tinkerpop.pipes.transform.TransformFunctionPipe;
+import com.tinkerpop.pipes.util.Pipeline;
 
 public class Main {
 
@@ -30,6 +31,23 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+        LacdumpQuery query = new LacdumpQuery();
+        query.setMode("MPC2");
+        query.setTargetName("GS2000+25");
+        query.setStartTime("1988-04-30 04:40:07");
+        query.setEndTime("1988-04-30 04:53:23");
+        query.setMinElevation(5.0);
+        query.setMinRigidity(10.0);
+
+    	LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
+    	LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
+    	Pipeline<LacdumpQuery, File> specHayashidaPipeline = new SpectrumHayashidaPipeline(pipe1, pipe2);
+    	specHayashidaPipeline.setStarts(Arrays.asList(query));
+    	File file = specHayashidaPipeline.next();
+    	log.info("Spectrum " + file.getPath() + " generated successfully");
+    }
+    
+    public static void samplePipeExec() {
          LacqrdfitsInputModel model = new LacqrdfitsInputModel();
          model.setLacMode("MPC2");
          model.setPsFileName("gs2000+25_lacqrd.ps");
@@ -39,7 +57,7 @@ public class Main {
          model.setTimingFileName("GS2000+25_TIMING.fits");
         
          Pipe<LacqrdfitsInputModel, File> pipe2 = 
-        		 new TransformFunctionPipe<LacqrdfitsInputModel,File>(new LacqrdfitsPipe());
+        		 new LacqrdfitsPipe();
          log.info("Starting SpectrumHayashidaPipeFunction");
          pipe2.setStarts(Arrays.asList(model));
          while (pipe2.hasNext()) {
@@ -56,7 +74,7 @@ public class Main {
         query.setMinRigidity(10.0);
 
         Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = 
-        		new TransformFunctionPipe<LacdumpQuery, LacqrdfitsInputModel>(new LacqrdfitsInputPipe());
+        		new LacqrdfitsInputPipe();
         log.info("Starting GoodTimeIntervalPipeFunction");
         pipe1.setStarts(Arrays.asList(query));
         while (pipe1.hasNext()) {
@@ -66,7 +84,7 @@ public class Main {
 
     }
 
-    public static void sfLookup() {
+    public static void sampleSfLookup() {
         String target = "GS2000+25";
         // find observation list by target
         ObslogDao obsLogDao = new ObslogDaoImpl();
