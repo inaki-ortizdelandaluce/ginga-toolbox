@@ -39,13 +39,13 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
             String cmd = gingaEnv.getGingaBinDir() + "/lacqrdfits";
 
             // execute command
-            GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, cmd, inputFile,
-                    outputFile);
+            GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile, outputFile,
+                    cmd);
             log.info("Executing command " + cmd + " ...");
             int exitValue = runtime.exec();
             log.info("Exit value " + exitValue);
             if (exitValue == 0) { // return 'lacqrdfits' output file
-                log.info("Command " + cmd + " executed successfully");
+                log.info("Command executed successfully");
                 return new File(workingDir, inputModel.getSpectralFileName());
             } else {
                 log.error("Error executing command " + cmd);

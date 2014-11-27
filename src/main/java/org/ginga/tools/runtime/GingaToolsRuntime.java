@@ -16,7 +16,7 @@ public class GingaToolsRuntime {
     private File outputFile = null;
     private File workingDir = null;
 
-    public GingaToolsRuntime(File wrkDir, String command, File inputFile, File outputFile) {
+    public GingaToolsRuntime(File wrkDir, File inputFile, File outputFile, String... command) {
         this.workingDir = wrkDir;
         this.pb = new ProcessBuilder(command);
         this.inputFile = inputFile;
