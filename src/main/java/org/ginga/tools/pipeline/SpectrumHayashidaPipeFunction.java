@@ -34,7 +34,8 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
             log.info("Input file " + lacQrdInputFile.getPath() + " created successfully");
 
             // execute 'lacqrdfits' routine
-            File logFile = new File(FileUtil.splitFileBaseAndExtension(lacQrdInputFile)[0] + ".log");
+            File logFile = new File(workingDir,
+                    FileUtil.splitFileBaseAndExtension(lacQrdInputFile)[0] + ".log");
             // String cmd = "lacqrdfits < " + lacQrdInputFile.getName() + " > " + logFile;
             String cmd = "lacqrdfits ";
 
