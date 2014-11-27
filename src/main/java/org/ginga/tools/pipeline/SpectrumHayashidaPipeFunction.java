@@ -36,6 +36,7 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
 			
 			log.info("Executing command " + cmd + " ...");
 			// TODO PATH, Env Variables, Input/output using stdin, stdout, sterr frmm process
+			// TODO User ProcessBuilder instead
 			Process p = Runtime.getRuntime().exec(cmd, new String[]{"PATH=$PATH"}, null);
 			if(p.exitValue() == 0) {
 				// return 'lacqrdfits' output file 
