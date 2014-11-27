@@ -33,7 +33,7 @@ public class GoodTimeIntervalPipeFunction implements PipeFunction<LacDumpQuery, 
 
             String target = query.getTargetName();
             // set output file name
-            File outputFile = new File(workingDir, FileUtil.nextFileName(workingDir,
+            File gtiFile = new File(workingDir, FileUtil.nextFileName(workingDir,
                     query.getTargetName() + "_REGION", "DATA"));
 
             // query entities matching the criteria
@@ -43,8 +43,9 @@ public class GoodTimeIntervalPipeFunction implements PipeFunction<LacDumpQuery, 
 
             // save matching results into a GTI file
             GtiFileWriter gtiWriter = new GtiFileWriter();
-            gtiWriter.writeToFile(target, sfList, false, outputFile);
-            log.debug("GTI file " + outputFile.getPath() + " written successfully");
+            gtiWriter.writeToFile(target, sfList, false, gtiFile);
+            log.debug("GTI file " + gtiFile.getPath() + " written successfully");
+            return gtiFile;
         } catch (Exception e) {
             log.error("Error generating GTI file ", e);
         }
