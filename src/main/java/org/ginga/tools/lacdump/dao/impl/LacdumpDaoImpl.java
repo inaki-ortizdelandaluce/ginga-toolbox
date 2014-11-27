@@ -93,7 +93,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
                     throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
-            String hql = "FROM LacDumpSfEntity WHERE BR =:br and MODE =:mode and TARGET like :target and "
+            String hql = "FROM LacdumpSfEntity WHERE BR =:br and MODE =:mode and TARGET like :target and "
                     + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
 
             HibernateUtil.beginTransaction();

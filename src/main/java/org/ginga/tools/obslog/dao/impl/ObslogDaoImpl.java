@@ -17,7 +17,7 @@ public class ObslogDaoImpl implements ObslogDao {
 			throws ObslogDaoException {
         List<ObslogEntity> obsList = null;
         try {
-            String hql = "FROM ObsLogEntity WHERE TARGET_NAME like :target ORDER BY ID";
+            String hql = "FROM ObslogEntity WHERE TARGET_NAME like :target ORDER BY ID";
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
