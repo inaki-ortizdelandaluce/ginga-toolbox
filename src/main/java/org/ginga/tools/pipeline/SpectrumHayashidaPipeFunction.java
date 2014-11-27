@@ -19,9 +19,9 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
     @Override
     public File compute(LacQrdFitsInputModel inputModel) {
         try {
-
+        	GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
             // create input file name
-            File workingDir = new File(GingaToolsEnvironment.getInstance().getGingaWrkDir());
+            File workingDir = new File(gingaEnv.getGingaWrkDir()); // new File(System.getProperty("user.dir"));
             log.info("Working directory " + workingDir.getAbsolutePath());
             String fileName = FileUtil.nextFileName(workingDir, "lacqrd", "input");
             File lacQrdInputFile = new File(workingDir, fileName);
@@ -36,9 +36,8 @@ public class SpectrumHayashidaPipeFunction implements PipeFunction<LacQrdFitsInp
             // execute 'lacqrdfits' routine
             File logFile = new File(workingDir,
                     FileUtil.splitFileBaseAndExtension(lacQrdInputFile)[0] + ".log");
-            // String cmd = "lacqrdfits < " + lacQrdInputFile.getName() + " > " + logFile;
-            String cmd = "lacqrdfits ";
-
+            String cmd = "lacqrdfits < " + lacQrdInputFile.getName(); // + " > " + logFile;
+            //String cmd = gingaEnv.getGingaBinDir() + "/lacqrdfits ";
             log.info("Executing command " + cmd + " ...");
             GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, cmd, logFile);
             Process p = runtime.exec();
