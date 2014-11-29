@@ -23,8 +23,12 @@ public class FileUtil {
 	public static String nextFileName(File directory, String prefix, String extension) {
 		String fileName = null;
 		
+		// escape reserved characters in the prefix
+		String prefixEscaped = Pattern.quote(prefix);
+		log.debug("Prefix escaped" + prefixEscaped);
+		
 		// list files starting with same prefix
-		File[] files = listAndSortFiles(directory, "^" + prefix+"-\\d{3}\\." + extension);
+		File[] files = listAndSortFiles(directory, "^" + prefixEscaped+"-\\d{3}\\." + extension);
 		log.debug(files.length + " file(s) found");
 		
 		// get latest and increase index
@@ -38,7 +42,7 @@ public class FileUtil {
 		  log.debug("Latest file extension " + tokens[1]);
 		  
 		  // increase number by one
-		  Pattern pattern = Pattern.compile("^" + prefix+"-(\\d{3})");
+		  Pattern pattern = Pattern.compile("^" + prefixEscaped+"-(\\d{3})");
 		  Matcher matcher = pattern.matcher(tokens[0]);
 		  if(matcher.matches()) {
 			  int index = Integer.valueOf(matcher.group(1)).intValue() +1;
