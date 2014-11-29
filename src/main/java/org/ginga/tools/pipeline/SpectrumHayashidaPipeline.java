@@ -1,15 +1,31 @@
 package org.ginga.tools.pipeline;
 
-import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
-import org.ginga.tools.lacdump.LacdumpQuery;
+import org.ginga.tools.obslog.ObslogEntity;
 
-import com.tinkerpop.pipes.util.Pipeline;
+import com.tinkerpop.pipes.Pipe;
 
-public class SpectrumHayashidaPipeline extends Pipeline<LacdumpQuery, File>{
+public class SpectrumHayashidaPipeline {
 
-
-	public SpectrumHayashidaPipeline(LacqrdfitsInputPipe pipe1, LacqrdfitsPipe pipe2){
-		super(pipe1,pipe2); 
+	private List<String> targets;
+	
+	public SpectrumHayashidaPipeline(List<String> targets){
+		 this.targets = targets;
+	}
+	
+	public SpectrumHayashidaPipeline(String... targets){
+		 this.targets = Arrays.asList(targets);
+	}
+	
+	public void execute() {
+		Pipe<String, List<ObslogEntity>> obslogLookupPipe = new TargetObslogLookupPipe();
+		obslogLookupPipe.setStarts(this.targets);
+		// look for Ginga observations available for each target
+		while(obslogLookupPipe.hasNext()) {
+			//List<ObslogEntity> obsList = obslogLookupPipe.next();
+			//Arrays.asList(LacMode.MPC1, LacMode.MPC2);
+		}
 	}
 }
