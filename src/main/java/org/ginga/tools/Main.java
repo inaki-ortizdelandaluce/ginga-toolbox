@@ -17,7 +17,6 @@ import org.ginga.tools.obslog.dao.ObslogDaoException;
 import org.ginga.tools.obslog.dao.impl.ObslogDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
-import org.ginga.tools.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 
 import com.tinkerpop.pipes.Pipe;
@@ -41,7 +40,7 @@ public class Main {
 
     	LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
     	LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
-    	Pipeline<LacdumpQuery, File> specHayashidaPipeline = new SpectrumHayashidaPipeline(pipe1, pipe2);
+    	Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery,File>(pipe1, pipe2);
     	specHayashidaPipeline.setStarts(Arrays.asList(query));
     	File file = specHayashidaPipeline.next();
     	log.info("Spectrum " + file.getPath() + " generated successfully");
