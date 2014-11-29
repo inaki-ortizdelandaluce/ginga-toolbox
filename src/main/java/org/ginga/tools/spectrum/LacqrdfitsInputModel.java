@@ -1,16 +1,15 @@
 package org.ginga.tools.spectrum;
 
-import org.ginga.tools.spectrum.LacspecInputModel.LacCounterModeEnum;
-import org.ginga.tools.spectrum.LacspecInputModel.LacModeEnum;
+import org.ginga.tools.util.Constants.LacCounterMode;
+import org.ginga.tools.util.Constants.LacMode;
+import org.ginga.tools.util.Constants.TimeResolution;
 
 public class LacqrdfitsInputModel {
 
-	public enum TimeResolutionEnum { SF1, SF1_2, SF1_4 }
-	
 	private String psFileName;
 	private double minElevation;
 	private double maxElevation = 180.0;
-	private LacModeEnum lacMode;
+	private LacMode lacMode;
 	private int bgCorrection = 1;
 	private int aspectCorrection = 1;
 	private int deadTimeCorrection = 1;
@@ -60,12 +59,12 @@ public class LacqrdfitsInputModel {
 	}
 
 
-	public LacModeEnum getLacMode() {
+	public LacMode getLacMode() {
 		return lacMode;
 	}
 
 
-	public void setLacMode(LacModeEnum lacMode) {
+	public void setLacMode(LacMode lacMode) {
 		this.lacMode = lacMode;
 	}
 
@@ -119,12 +118,12 @@ public class LacqrdfitsInputModel {
 		this.timeResolutionSec = timeResolutionSec;
 	}
 	
-	public void setTimeResolutionSec(TimeResolutionEnum timeResolution) {
-		if(timeResolution.equals(TimeResolutionEnum.SF1)) {
+	public void setTimeResolutionSec(TimeResolution timeResolution) {
+		if(timeResolution.equals(TimeResolution.ONE)) {
 		    this.timeResolutionSec = -1;
-		} else if(timeResolution.equals(TimeResolutionEnum.SF1_2)) {
+		} else if(timeResolution.equals(TimeResolution.ONE_OVER_TWO)) {
 			this.timeResolutionSec = -2;
-	    } else { // SF1_4
+	    } else { // 1/4
 	    	this.timeResolutionSec = -4;
 	    }
 	}
@@ -252,11 +251,11 @@ public class LacqrdfitsInputModel {
 
 	public void setLacMode(String mode) {
 		if(mode.equals("MPC1")) {
-			this.lacMode = LacModeEnum.MPC1;
+			this.lacMode = LacMode.MPC1;
 		} else if(mode.equals("MPC2")) {
-			this.lacMode = LacModeEnum.MPC2;
+			this.lacMode = LacMode.MPC2;
 		} else if(mode.equals("MPC3")) {
-			this.lacMode = LacModeEnum.MPC3;
+			this.lacMode = LacMode.MPC3;
 		} else {
 			throw new IllegalArgumentException("Accepted LAC Modes are MPC1, MPC2 and MPC3");
 		}
@@ -277,80 +276,80 @@ public class LacqrdfitsInputModel {
 		this.bgCorrection = (enable)? 1: 0;
 	}
 
-	public void setChannel1(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel1(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel1 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel1 = 2;
 		} else {
 			this.channel1 = 3;
 		}
 	}
 	
-	public void setChannel2(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel2(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel2 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel2 = 2;
 		} else {
 			this.channel2 = 3;
 		}
 	}
 	
-	public void setChannel3(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel3(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel3 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel3 = 2;
 		} else {
 			this.channel3 = 3;
 		}
 	}
 
-	public void setChannel4(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel4(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel4 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel4 = 2;
 		} else {
 			this.channel4 = 3;
 		}
 	}
 
-	public void setChannel5(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel5(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel5 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel5 = 2;
 		} else {
 			this.channel5 = 3;
 		}
 	}
 
-	public void setChannel6(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel6(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel6 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel6 = 2;
 		} else {
 			this.channel6 = 3;
 		}
 	}
 
-	public void setChannel7(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel7(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel7 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel7 = 2;
 		} else {
 			this.channel7 = 3;
 		}
 	}
 
-	public void setChannel8(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel8(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel8 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel8 = 2;
 		} else {
 			this.channel8 = 3;

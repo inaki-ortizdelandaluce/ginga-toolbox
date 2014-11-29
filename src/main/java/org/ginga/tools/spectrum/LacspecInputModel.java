@@ -1,18 +1,18 @@
 package org.ginga.tools.spectrum;
 
+import org.ginga.tools.util.Constants.BgSubtractionMethod;
+import org.ginga.tools.util.Constants.BitRate;
+import org.ginga.tools.util.Constants.LacCounterMode;
+import org.ginga.tools.util.Constants.LacMode;
+
 public class LacspecInputModel {
 
-	public enum BitRateEnum { ANY, HI,  MID, LOW }
-	public enum LacModeEnum { MPC1, MPC2, MPC3, PC, INIT }
-	public enum BgSubtractionMethodEnum { SIMPLE, SUD_SORT, HAYASHIDA }
-	public enum LacCounterModeEnum { MIDDLE, TOP, BOTH }
-	
 	private String psFileName;
 	private String monitorFileName;
 	private double minRigidity;
 	private double maxRigidity = 20;
 	private double minTransmission = 0;
-	private BitRateEnum bitRate = BitRateEnum.ANY;
+	private BitRate bitRate = BitRate.ANY;
 	private boolean pointingMode = true; 
 	private double minElevation;
 	private double maxElevation = 999.0;
@@ -33,7 +33,7 @@ public class LacspecInputModel {
 	private int channel6 = 3;
 	private int channel7 = 3;
 	private int channel8 = 3;
-	private LacModeEnum lacMode;
+	private LacMode lacMode;
 	private int mixedMode = 1;
 	private String spectralFileName;
 	private String regionFileName;
@@ -68,10 +68,10 @@ public class LacspecInputModel {
 	public void setMinTransmission(double minTransmission) {
 		this.minTransmission = minTransmission;
 	}
-	public BitRateEnum getBitRate() {
+	public BitRate getBitRate() {
 		return bitRate;
 	}
-	public void setBitRate(BitRateEnum bitRate) {
+	public void setBitRate(BitRate bitRate) {
 		this.bitRate = bitRate;
 	}
 	public boolean getPointingMode() {
@@ -144,10 +144,10 @@ public class LacspecInputModel {
 	public void setChannel1(int channel1) {
 		this.channel1 = channel1;
 	}
-	public void setChannel1(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel1(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel1 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel1 = 2;
 		} else {
 			this.channel1 = 3;
@@ -159,10 +159,10 @@ public class LacspecInputModel {
 	public void setChannel2(int channel2) {
 		this.channel2 = channel2;
 	}
-	public void setChannel2(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel2(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel2 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel2 = 2;
 		} else {
 			this.channel2 = 3;
@@ -174,10 +174,10 @@ public class LacspecInputModel {
 	public void setChannel3(int channel3) {
 		this.channel3 = channel3;
 	}
-	public void setChannel3(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel3(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel3 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel3 = 2;
 		} else {
 			this.channel3 = 3;
@@ -189,10 +189,10 @@ public class LacspecInputModel {
 	public void setChannel4(int channel4) {
 		this.channel4 = channel4;
 	}
-	public void setChannel4(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel4(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel4 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel4 = 2;
 		} else {
 			this.channel4 = 3;
@@ -204,10 +204,10 @@ public class LacspecInputModel {
 	public void setChannel5(int channel5) {
 		this.channel5 = channel5;
 	}
-	public void setChannel5(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel5(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel5 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel5 = 2;
 		} else {
 			this.channel5 = 3;
@@ -219,10 +219,10 @@ public class LacspecInputModel {
 	public void setChannel6(int channel6) {
 		this.channel6 = channel6;
 	}
-	public void setChannel6(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel6(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel6 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel6 = 2;
 		} else {
 			this.channel6 = 3;
@@ -234,10 +234,10 @@ public class LacspecInputModel {
 	public void setChannel7(int channel7) {
 		this.channel7 = channel7;
 	}
-	public void setChannel7(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel7(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel7 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel7 = 2;
 		} else {
 			this.channel7 = 3;
@@ -249,32 +249,32 @@ public class LacspecInputModel {
 	public void setChannel8(int channel8) {
 		this.channel8 = channel8;
 	}
-	public void setChannel8(LacCounterModeEnum mode) {
-		if(mode.equals(LacCounterModeEnum.MIDDLE)) {
+	public void setChannel8(LacCounterMode mode) {
+		if(mode.equals(LacCounterMode.MIDDLE)) {
 			this.channel8 = 1;
-		} else if (mode.equals(LacCounterModeEnum.TOP)) {
+		} else if (mode.equals(LacCounterMode.TOP)) {
 			this.channel8 = 2;
 		} else {
 			this.channel8 = 3;
 		}
 	}
-	public LacModeEnum getLacMode() {
+	public LacMode getLacMode() {
 		return lacMode;
 	}
-	public void setLacMode(LacModeEnum mode) {
+	public void setLacMode(LacMode mode) {
 		this.lacMode = mode;
 	}
 	public void setLacMode(String mode) {
 		if(mode.equals("MPC1")) {
-			this.lacMode = LacModeEnum.MPC1;
+			this.lacMode = LacMode.MPC1;
 		} else if(mode.equals("MPC2")) {
-			this.lacMode = LacModeEnum.MPC2;
+			this.lacMode = LacMode.MPC2;
 		} else if(mode.equals("MPC3")) {
-			this.lacMode = LacModeEnum.MPC3;
+			this.lacMode = LacMode.MPC3;
 		} else if (mode.equals("PC")) {
-			this.lacMode = LacModeEnum.PC;
+			this.lacMode = LacMode.PC;
 		} else {
-			this.lacMode = LacModeEnum.INIT;
+			this.lacMode = LacMode.INIT;
 		}
 	}
 	public int getMixedMode() {
@@ -307,10 +307,10 @@ public class LacspecInputModel {
 	public void setBgMethodInt(int bgMethodInt) {
 		this.bgMethodInt = bgMethodInt;
 	}
-	public void setBgMethodInt(BgSubtractionMethodEnum method) {
-		if(method.equals(BgSubtractionMethodEnum.SIMPLE)) {
+	public void setBgMethodInt(BgSubtractionMethod method) {
+		if(method.equals(BgSubtractionMethod.SIMPLE)) {
 			this.bgMethodInt = 1;
-		} else if(method.equals(BgSubtractionMethodEnum.SUD_SORT)) {
+		} else if(method.equals(BgSubtractionMethod.SUD_SORT)) {
 			this.bgMethodInt = 2;
 		} else { // HAYASHIDA
 			this.bgMethodInt = 3;
