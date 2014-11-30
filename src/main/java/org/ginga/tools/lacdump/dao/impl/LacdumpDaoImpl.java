@@ -237,4 +237,35 @@ public class LacdumpDaoImpl implements LacdumpDao {
 		return sfList;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> findModes(String target, String startTime,
+			String endTime, double elevation, double rigidity)
+			throws LacdumpDaoException {
+		List<String> modes = null;
+		try {
+			String hql = "SELECT distinct(lacdump.mode) FROM "
+					+ LacdumpSfEntity.class.getSimpleName() + " as lacdump"
+					+ " WHERE TARGET like :target and "
+					+ "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY mode";
+
+			HibernateUtil.beginTransaction();
+			Session hibernateSession = HibernateUtil.getSession();
+			Query query = hibernateSession.createQuery(hql);
+			query.setString("target", "%" + target + "%");
+			query.setString("start", startTime);
+			query.setString("end", endTime);
+			query.setDouble("eelv", elevation);
+			query.setDouble("rig", rigidity);
+
+			modes = query.list();
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			throw new LacdumpDaoException(e);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return modes;
+	}
+
 }

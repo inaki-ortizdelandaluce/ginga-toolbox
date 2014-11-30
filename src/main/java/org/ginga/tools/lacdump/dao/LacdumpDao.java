@@ -21,4 +21,7 @@ public interface LacdumpDao {
             String endTime, double elevation, double rigidity) throws LacdumpDaoException;
 
     public List<LacdumpSfEntity> findSfList(LacdumpQuery query) throws LacdumpDaoException;
+    
+    public List<String> findModes(String target, String startTime, String endTime, double elevation, 
+    		double rigidity) throws LacdumpDaoException; 
 }
