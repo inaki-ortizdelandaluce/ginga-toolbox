@@ -17,28 +17,27 @@ import org.ginga.tools.observation.dao.ObservationDaoException;
 import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
-import org.ginga.tools.pipeline.SpectrumExtractorPipeline;
-import org.ginga.tools.pipeline.TargetObservationScannerPipe;
+import org.ginga.tools.pipeline.TargetObservationListPipe;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
 
-public class Main {
+public class Test {
 
-    private static final Logger log = Logger.getLogger(Main.class);
+    private static final Logger log = Logger.getLogger(Test.class);
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        SpectrumExtractorPipeline pipeline = new SpectrumExtractorPipeline();
-        pipeline.executeWithHayashidaSubtraction("GS2000+25");
+        SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
+        pipeline.execute("GS2000+25");
     }
 
     public static void scanObservations(String[] args) {
-        Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationScannerPipe();
+        Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationListPipe();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
         if (obsPipe.hasNext()) {
             List<ObservationEntity> obsSummary = obsPipe.next();
