@@ -14,12 +14,12 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacdumpConstraintsPipe extends
-AbstractPipe<ObservationModeDetails, LacdumpConstraints> implements
-TransformPipe<ObservationModeDetails, LacdumpConstraints> {
+        AbstractPipe<ObservationModeDetails, LacdumpConstraints> implements
+        TransformPipe<ObservationModeDetails, LacdumpConstraints> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.tinkerpop.pipes.AbstractPipe#processNextStart()
      */
     @Override
@@ -29,7 +29,7 @@ TransformPipe<ObservationModeDetails, LacdumpConstraints> {
         constraints.setTargetName(modeDetails.getTarget());
         constraints.setStartTime(modeDetails.getStartTime());
         constraints.setEndTime(modeDetails.getEndTime());
-        constraints.setBitRate(BitRate.HI);
+        constraints.setBitRate(BitRate.H);
         constraints.setMode(modeDetails.getLacMode());
         constraints.setMinRigidity(Constants.DEFAULT_MIN_RIGIDITY);
         constraints.setMinElevation(Constants.DEFAULT_MIN_ELEVATION);

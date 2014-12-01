@@ -21,7 +21,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class TargetObservationScannerPipe extends AbstractPipe<String, List<ObservationEntity>>
-        implements TransformPipe<String, List<ObservationEntity>> {
+implements TransformPipe<String, List<ObservationEntity>> {
 
     private static Logger log = Logger.getLogger(TargetObservationScannerPipe.class);
 
@@ -35,7 +35,7 @@ public class TargetObservationScannerPipe extends AbstractPipe<String, List<Obse
         try {
             obsList = obsDao.findListByTarget(target);
             // obsList = new ArrayList<>();
-            // obsList.add(obsDao.findListByTarget(target).get(1));
+            // obsList.add(obsDao.findListByTarget(target).get(0));
             log.info(obsList.size() + " " + target + " observation(s) found");
         } catch (ObservationDaoException e) {
             log.error(target + " observation(s) could not be found", e);
