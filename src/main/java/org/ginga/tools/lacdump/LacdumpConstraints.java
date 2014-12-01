@@ -3,7 +3,7 @@ package org.ginga.tools.lacdump;
 import org.ginga.tools.util.Constants.BitRate;
 import org.ginga.tools.util.Constants.LacMode;
 
-public class LacdumpQuery {
+public class LacdumpConstraints {
 
     private String startTime;
 

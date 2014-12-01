@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacdumpQuery;
+import org.ginga.tools.lacdump.LacdumpConstraints;
 import org.ginga.tools.lacdump.LacdumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacdumpDao;
 import org.ginga.tools.lacdump.dao.LacdumpDaoException;
@@ -21,7 +21,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#save(org.ginga.tools.lacdump. LACDumpEntity)
      */
     @Override
@@ -40,7 +40,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -61,7 +61,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -84,7 +84,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -92,7 +92,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws LacdumpDaoException {
+                    throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
@@ -152,12 +152,13 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.tools.lacdump.dao.LacDumpDao#findSfList(org.ginga.tools.lacdump .LacDumpQuery)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<LacdumpSfEntity> findSfList(LacdumpQuery query) throws LacdumpDaoException {
+    public List<LacdumpSfEntity> findSfList(LacdumpConstraints constraints)
+            throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName() + " WHERE";
@@ -166,25 +167,25 @@ public class LacdumpDaoImpl implements LacdumpDao {
             LacMode mode = null;
             BitRate bitRate = null;
 
-            if ((bitRate = query.getBitRate()) != null) {
+            if ((bitRate = constraints.getBitRate()) != null) {
                 hql += " BR =:br and";
             }
-            if ((mode = query.getMode()) != null) {
+            if ((mode = constraints.getMode()) != null) {
                 hql += " MODE =:mode and";
             }
-            if ((target = query.getTargetName()) != null) {
+            if ((target = constraints.getTargetName()) != null) {
                 hql += " TARGET like :target and";
             }
-            if ((startTime = query.getStartTime()) != null) {
+            if ((startTime = constraints.getStartTime()) != null) {
                 hql += " DATE >=:start and";
             }
-            if ((endTime = query.getEndTime()) != null) {
+            if ((endTime = constraints.getEndTime()) != null) {
                 hql += " DATE <=:end and";
             }
-            if ((elevation = query.getMinElevation()) > 0) {
+            if ((elevation = constraints.getMinElevation()) > 0) {
                 hql += "  EELV > :eelv and";
             }
-            if ((rigidity = query.getMinRigidity()) > 0) {
+            if ((rigidity = constraints.getMinRigidity()) > 0) {
                 hql += "  RIG >= :rig and";
             }
             // remove last and
