@@ -1,6 +1,5 @@
 package org.ginga.tools.lacdump.dao.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,7 +16,7 @@ import org.hibernate.Session;
 public class LacdumpDaoImpl implements LacdumpDao {
 
     private static final Logger log = Logger.getLogger(LacdumpDaoImpl.class);
-    public final SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
 
     /*
      * (non-Javadoc)

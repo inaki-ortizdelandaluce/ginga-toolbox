@@ -1,5 +1,7 @@
 package org.ginga.tools.util;
 
+import java.text.SimpleDateFormat;
+
 public class Constants {
 
     public enum BitRate {
@@ -27,5 +29,7 @@ public class Constants {
     public static final double DEFAULT_MIN_RIGIDITY = 10.0;
     public static final double DEFAULT_MAX_RIGIDITY = 20.0;
     public static final BitRate DEFAULT_BIT_RATE = BitRate.H;
-
+    
+    public static final SimpleDateFormat DATE_FORMAT_DATABASE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT_LACDUMP = new SimpleDateFormat("yyMMdd HH:mm:s");
 }

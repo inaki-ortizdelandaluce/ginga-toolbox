@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
+import org.ginga.tools.util.Constants;
 
 public class LacdumpParser {
 
@@ -50,7 +51,6 @@ public class LacdumpParser {
     private final int seqnoLength = 5;
     private final int dateBeginIdx = 5;
     private final int dateLength = 16;
-    private final SimpleDateFormat dateFmt = new SimpleDateFormat("yyMMdd HH:mm:s");
     private final int bitRateBeginIdx = 21;
     private final int bitRateLength = 2;
     private final int modeBeginIdx = 23;
@@ -139,7 +139,7 @@ public class LacdumpParser {
                     entity.setSequenceNumber(seqno);
 
                     // datetime
-                    date = this.dateFmt.parse(line.substring(this.dateBeginIdx,
+                    date = Constants.DATE_FORMAT_LACDUMP.parse(line.substring(this.dateBeginIdx,
                             this.dateBeginIdx + this.dateLength).trim());
                     log.debug("DATE " + new SimpleDateFormat("yyy-MM-dd'T'hh:mm:ss").format(date));
                     entity.setDate(date);
