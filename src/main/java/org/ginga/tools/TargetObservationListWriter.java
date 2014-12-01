@@ -107,7 +107,7 @@ public class TargetObservationListWriter {
     }    
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            System.out.println("Usage org.ginga.tools.TargetObsListWriter <target>");
+            System.out.println("Usage org.ginga.tools.TargetObservationListWriter <target>");
             System.exit(1);
         }
         File workingDir = new File(GingaToolsEnvironment.getInstance().getGingaWrkDir());
