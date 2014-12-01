@@ -18,7 +18,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpConstraints, LacqrdfitsInputModel>
-        implements TransformPipe<LacdumpConstraints, LacqrdfitsInputModel> {
+implements TransformPipe<LacdumpConstraints, LacqrdfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(LacqrdfitsInputPipe.class);
 
@@ -47,24 +47,26 @@ public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpConstraints, Lacqrd
                 List<LacdumpSfEntity> sfList = dao.findSfList(constraints);
                 log.info("Query executed successfully. " + sfList.size() + " result(s) found");
 
-                // save matching results into a GTI file
-                GtiFileWriter gtiWriter = new GtiFileWriter();
-                gtiWriter.writeToFile(target, sfList, false, gtiFile);
-                log.debug("GTI file " + gtiFile.getPath() + " written successfully");
+                if (sfList.size() > 0) {
+                    // save matching results into a GTI file
+                    GtiFileWriter gtiWriter = new GtiFileWriter();
+                    gtiWriter.writeToFile(target, sfList, false, gtiFile);
+                    log.debug("GTI file " + gtiFile.getPath() + " written successfully");
 
-                // emit lacqrdfits input model
-                LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
-                inputModel.setLacMode(constraints.getMode());
-                inputModel.setMinElevation(constraints.getMinElevation());
-                inputModel.setPsFileName(FileUtil
-                        .nextFileName(workingDir, target + "_lacqrd", "ps"));
-                inputModel.setRegionFileName(gtiFile.getName());
-                inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, target
-                        + "_SPEC_lacqrd", "FILE"));
-                inputModel.setTimingFileName(FileUtil.nextFileName(workingDir, target + "_TIMING",
-                        "fits"));
+                    // emit lacqrdfits input model
+                    LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
+                    inputModel.setLacMode(constraints.getMode());
+                    inputModel.setMinElevation(constraints.getMinElevation());
+                    inputModel.setPsFileName(FileUtil.nextFileName(workingDir, target + "_lacqrd",
+                            "ps"));
+                    inputModel.setRegionFileName(gtiFile.getName());
+                    inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, target
+                            + "_SPEC_lacqrd", "FILE"));
+                    inputModel.setTimingFileName(FileUtil.nextFileName(workingDir, target
+                            + "_TIMING", "fits"));
 
-                return inputModel;
+                    return inputModel;
+                }
             } else {
                 throw new NoSuchElementException();
             }

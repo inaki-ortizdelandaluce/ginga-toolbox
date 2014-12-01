@@ -31,3 +31,6 @@ SpecExtractorHayashida: LacQuery -> LacqrdInputFile -> Spectrum File
 
 Fiel naming convenion using datetime
 Input files  
+
+
+LACDUMP MODE(MPC1,MPC2,MPC3,PCHK,ACS) which are the null values from?

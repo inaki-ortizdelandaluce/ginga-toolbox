@@ -41,10 +41,12 @@ public class SpectrumExtractorPipeline {
             File file = null;
             while (specExtractor.hasNext()) {
                 file = specExtractor.next();
-                log.info("Spectrum file " + file.getName() + " created successfully");
-                log.info("Pipeline chain " + specExtractor.getCurrentPath());
+                if (file != null) {
+                    log.info("Spectrum file " + file.getName() + " created successfully");
+                    log.info("Pipeline chain " + specExtractor.getCurrentPath());
+                    return;
+                }
             }
-            return; // TODO To be removed
         }
     }
 }
