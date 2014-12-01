@@ -17,6 +17,7 @@ import org.ginga.tools.observation.dao.ObservationDaoException;
 import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
+import org.ginga.tools.pipeline.SpectrumExtractorPipeline;
 import org.ginga.tools.pipeline.TargetObservationScannerPipe;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.Constants.LacMode;
@@ -32,6 +33,11 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+        SpectrumExtractorPipeline pipeline = new SpectrumExtractorPipeline();
+        pipeline.executeWithHayashidaSubtraction("GS2000+25");
+    }
+
+    public static void scanObservations(String[] args) {
         Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationScannerPipe();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
         if (obsPipe.hasNext()) {

@@ -20,8 +20,8 @@ import org.ginga.tools.util.Constants;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class TargetObservationScannerPipe extends AbstractPipe<String, List<ObservationEntity>> implements
-TransformPipe<String, List<ObservationEntity>> {
+public class TargetObservationScannerPipe extends AbstractPipe<String, List<ObservationEntity>>
+implements TransformPipe<String, List<ObservationEntity>> {
 
     private static Logger log = Logger.getLogger(TargetObservationScannerPipe.class);
 
@@ -60,7 +60,6 @@ TransformPipe<String, List<ObservationEntity>> {
                 List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
                 ObservationModeDetails modeDetails = null;
                 for (String mode : modes) {
-                    log.info(mode + " found between " + startTime + " and " + endTime);
                     try {
                         sfList = lacdumpDao.findSfList(mode, target, startTime, endTime,
                                 Constants.DEFAULT_MIN_ELEVATION, Constants.DEFAULT_MIN_RIGIDITY);
@@ -71,8 +70,7 @@ TransformPipe<String, List<ObservationEntity>> {
                         String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                         String modeEndTime = dateFmt
                                 .format(sfList.get(sfList.size() - 1).getDate());
-                        log.info("  " + mode + " Start Time " + modeStartTime);
-                        log.info("  " + mode + " End Time " + modeEndTime);
+                        log.info("[" + mode + ", " + modeStartTime + ", " + endTime + "]");
                         modeDetails = new ObservationModeDetails();
                         modeDetails.setObsId(obsEntity.getId());
                         modeDetails.setTarget(target);
@@ -83,7 +81,6 @@ TransformPipe<String, List<ObservationEntity>> {
                         obsEntity.addAvailableModeDetails(modeDetails);
                     }
                 }
-                log.info("\n");
             }
             return obsList;
         } else {
