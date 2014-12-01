@@ -82,6 +82,7 @@ public class ObservationScannerPipe extends AbstractPipe<String, List<Observatio
 	                    log.info("  " + mode+ " End Time " + modeEndTime);
 	                    obsMode = new ObservationMode();
 	                    obsMode.setObsId(obsEntity.getId());
+	                    obsMode.setTarget(target);
 	                    obsMode.setMode(mode);
 	                    obsMode.setStartTime(modeStartTime);
 	                    obsMode.setEndTime(modeEndTime);

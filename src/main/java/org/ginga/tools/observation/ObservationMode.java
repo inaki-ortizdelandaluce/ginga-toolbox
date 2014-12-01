@@ -3,6 +3,7 @@ package org.ginga.tools.observation;
 public class ObservationMode {
 
 	private long obsId;
+	private String target;
 	private String mode;
 	private String startTime;
 	private String endTime;
@@ -54,5 +55,11 @@ public class ObservationMode {
 	 */
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+	public String getTarget() {
+		return target;
+	}
+	public void setTarget(String target) {
+		this.target = target;
 	}
 }
