@@ -16,6 +16,7 @@ import org.ginga.tools.observation.dao.ObservationDao;
 import org.ginga.tools.observation.dao.ObservationDaoException;
 import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.tools.util.Constants;
+import org.ginga.tools.util.DateUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
@@ -41,7 +42,7 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
 
         // find available LAC modes and date ranges for each observation
         LacdumpDao lacdumpDao = new LacdumpDaoImpl();
-        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFmt = DateUtil.DATE_FORMAT_DATABASE;
         for (ObservationEntity obsEntity : obsList) {
             log.info("Scanning observation " + obsEntity.getSequenceNumber() + "...");
             // find available LAC modes

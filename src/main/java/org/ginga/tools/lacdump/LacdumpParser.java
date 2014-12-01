@@ -5,14 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
-import org.ginga.tools.util.Constants;
+import org.ginga.tools.util.DateUtil;
 
 public class LacdumpParser {
 
@@ -139,9 +138,9 @@ public class LacdumpParser {
                     entity.setSequenceNumber(seqno);
 
                     // datetime
-                    date = Constants.DATE_FORMAT_LACDUMP.parse(line.substring(this.dateBeginIdx,
+                    date = DateUtil.parseDatabaseFormat(line.substring(this.dateBeginIdx,
                             this.dateBeginIdx + this.dateLength).trim());
-                    log.debug("DATE " + new SimpleDateFormat("yyy-MM-dd'T'hh:mm:ss").format(date));
+                    log.debug("DATE " + DateUtil.DATE_FORMAT_DATABASE.format(date));
                     entity.setDate(date);
 
                     // bitrate

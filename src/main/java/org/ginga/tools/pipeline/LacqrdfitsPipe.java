@@ -30,6 +30,9 @@ TransformPipe<LacqrdfitsInputModel, File> {
             if (inputModel != null) {
                 GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
                 File workingDir = new File(gingaEnv.getGingaWrkDir());
+                if(!workingDir.exists()) {
+                	workingDir.mkdirs();
+                }
                 log.info("Working directory " + workingDir.getAbsolutePath());
 
                 // create input file

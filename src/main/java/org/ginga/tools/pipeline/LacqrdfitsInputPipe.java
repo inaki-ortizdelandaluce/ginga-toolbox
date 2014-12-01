@@ -32,17 +32,20 @@ public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpConstraints, Lacqrd
     protected LacqrdfitsInputModel processNextStart() throws NoSuchElementException {
         try {
             LacdumpConstraints constraints = this.starts.next();
-
+            
             // set working directory
             GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
             File workingDir = new File(gingaEnv.getGingaWrkDir());
+            if(!workingDir.exists()) {
+            	workingDir.mkdirs();
+            }
             log.info("Working directory " + workingDir.getAbsolutePath());
 
             String target = constraints.getTargetName();
             // set output file name
             File gtiFile = new File(workingDir, FileUtil.nextFileName(workingDir, target
                     + "_REGION", "DATA"));
-
+            
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(constraints);
@@ -63,8 +66,8 @@ public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpConstraints, Lacqrd
                 inputModel.setRegionFileName(gtiFile.getName());
                 inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, target
                         + "_SPEC_lacqrd", "FILE"));
-                inputModel.setTimingFileName(FileUtil.nextFileName(workingDir, target + "_TIMING",
-                        "fits"));
+                inputModel.setTimingFileName(FileUtil.nextFileName(workingDir, target + "_TIMING"
+                        , "fits"));
 
                 return inputModel;
             }

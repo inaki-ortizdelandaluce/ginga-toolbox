@@ -20,6 +20,7 @@ import org.ginga.tools.pipeline.LacqrdfitsPipe;
 import org.ginga.tools.pipeline.TargetObservationListPipe;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.Constants.LacMode;
+import org.ginga.tools.util.DateUtil;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -125,7 +126,7 @@ public class Test {
         }
         // find start/end time for MPC3
         LacdumpDao lacDumpDao = new LacdumpDaoImpl();
-        SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFmt = DateUtil.DATE_FORMAT_DATABASE;
         String startTime, endTime;
         for (ObservationEntity obs : obsList) {
             startTime = dateFmt.format(obs.getStartTime());
