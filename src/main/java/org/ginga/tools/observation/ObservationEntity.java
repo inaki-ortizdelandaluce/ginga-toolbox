@@ -1,6 +1,8 @@
-package org.ginga.tools.obslog;
+package org.ginga.tools.observation;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,12 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "OBSLOG")
-public class ObslogEntity {
+public class ObservationEntity {
 
     @Id
     @Column(name = "ID")
@@ -65,6 +68,9 @@ public class ObslogEntity {
     @Column(name = "PASS_NAMES")
     @Type(type="text")
     private String passNames;
+    
+    @Transient
+    private List<ObservationMode> availableModes;
 
 	public long getId() {
 		return id;
@@ -192,6 +198,21 @@ public class ObslogEntity {
 
 	public void setPassNames(String passNames) {
 		this.passNames = passNames;
+	}
+
+	public List<ObservationMode> getAvailableModes() {
+		return availableModes;
+	}
+
+	public void setAvailableModes(List<ObservationMode> availableModes) {
+		this.availableModes = availableModes;
+	}
+	
+	public void addAvailableMode(ObservationMode mode) {
+		if(this.availableModes == null) {
+			this.availableModes = new ArrayList<ObservationMode>();
+		}
+		this.availableModes.add(mode);
 	}
 
 }

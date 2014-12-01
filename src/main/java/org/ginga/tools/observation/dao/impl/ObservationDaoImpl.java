@@ -1,23 +1,24 @@
-package org.ginga.tools.obslog.dao.impl;
+package org.ginga.tools.observation.dao.impl;
 
 import java.util.List;
 
-import org.ginga.tools.obslog.ObslogEntity;
-import org.ginga.tools.obslog.dao.ObslogDao;
-import org.ginga.tools.obslog.dao.ObslogDaoException;
+import org.ginga.tools.observation.ObservationEntity;
+import org.ginga.tools.observation.dao.ObservationDao;
+import org.ginga.tools.observation.dao.ObservationDaoException;
 import org.ginga.tools.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class ObslogDaoImpl implements ObslogDao {
+public class ObservationDaoImpl implements ObservationDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ObslogEntity> findListByTarget(String target)
-			throws ObslogDaoException {
-        List<ObslogEntity> obsList = null;
+	public List<ObservationEntity> findListByTarget(String target)
+			throws ObservationDaoException {
+        List<ObservationEntity> obsList = null;
         try {
-            String hql = "FROM ObslogEntity WHERE TARGET_NAME like :target ORDER BY ID";
+            String hql = "FROM " + ObservationEntity.class.getSimpleName() + 
+            		" WHERE TARGET_NAME like :target ORDER BY ID";
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
@@ -27,7 +28,7 @@ public class ObslogDaoImpl implements ObslogDao {
             obsList = query.list();
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
-            throw new ObslogDaoException(e);
+            throw new ObservationDaoException(e);
         } finally {
             HibernateUtil.closeSession();
         }

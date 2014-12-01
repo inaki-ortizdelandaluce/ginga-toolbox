@@ -3,7 +3,7 @@ package org.ginga.tools.pipeline;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ginga.tools.obslog.ObslogEntity;
+import org.ginga.tools.observation.ObservationEntity;
 
 import com.tinkerpop.pipes.Pipe;
 
@@ -20,10 +20,10 @@ public class SpectrumHayashidaPipeline {
 	}
 	
 	public void execute() {
-		Pipe<String, List<ObslogEntity>> obslogLookupPipe = new TargetObslogLookupPipe();
-		obslogLookupPipe.setStarts(this.targets);
+		Pipe<String, List<ObservationEntity>> obsScannerPipe = new ObservationScannerPipe();
+		obsScannerPipe.setStarts(this.targets);
 		// look for Ginga observations available for each target
-		while(obslogLookupPipe.hasNext()) {
+		while(obsScannerPipe.hasNext()) {
 			//List<ObslogEntity> obsList = obslogLookupPipe.next();
 			//Arrays.asList(LacMode.MPC1, LacMode.MPC2);
 		}

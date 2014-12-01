@@ -11,12 +11,13 @@ import org.ginga.tools.lacdump.LacdumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacdumpDao;
 import org.ginga.tools.lacdump.dao.LacdumpDaoException;
 import org.ginga.tools.lacdump.dao.impl.LacdumpDaoImpl;
-import org.ginga.tools.obslog.ObslogEntity;
-import org.ginga.tools.obslog.dao.ObslogDao;
-import org.ginga.tools.obslog.dao.ObslogDaoException;
-import org.ginga.tools.obslog.dao.impl.ObslogDaoImpl;
+import org.ginga.tools.observation.ObservationEntity;
+import org.ginga.tools.observation.dao.ObservationDao;
+import org.ginga.tools.observation.dao.ObservationDaoException;
+import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
+import org.ginga.tools.pipeline.ObservationScannerPipe;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 
 import com.tinkerpop.pipes.Pipe;
@@ -30,6 +31,28 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+    	Pipe<String, List<ObservationEntity>> obsPipe = new ObservationScannerPipe();
+    	obsPipe.setStarts(Arrays.asList("GS2000+25"));
+    	if(obsPipe.hasNext()) {
+    		List<ObservationEntity> obsSummary = obsPipe.next();
+    		log.info(obsSummary.size() + " observation(s) scanned");
+    	}
+    }
+    
+    public static void findModes() {
+    	try {
+    		LacdumpDao dao = new LacdumpDaoImpl();
+        	List<String> modes;
+    		modes = dao.findModes("GS2000+25", "1988-04-30 04:40:07", "1988-04-30 04:53:23", 5.0, 10.0);
+    		for(String mode: modes) {
+    			log.info("Mode " + mode);
+    		}
+    	} catch (LacdumpDaoException e) {
+			log.error(e);
+		}
+    }
+    
+    public static void samplePipeExec2() {
         LacdumpQuery query = new LacdumpQuery();
         query.setMode("MPC2");
         query.setTargetName("GS2000+25");
@@ -86,19 +109,19 @@ public class Main {
     public static void sampleSfLookup() {
         String target = "GS2000+25";
         // find observation list by target
-        ObslogDao obsLogDao = new ObslogDaoImpl();
-        List<ObslogEntity> obsList = null;
+        ObservationDao obsLogDao = new ObservationDaoImpl();
+        List<ObservationEntity> obsList = null;
         try {
             obsList = obsLogDao.findListByTarget(target);
             log.info(obsList.size() + " " + target + " observation(s) found");
-        } catch (ObslogDaoException e) {
+        } catch (ObservationDaoException e) {
             log.error(target + " observation(s) not found", e);
         }
         // find start/end time for MPC3
         LacdumpDao lacDumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String startTime, endTime;
-        for (ObslogEntity obs : obsList) {
+        for (ObservationEntity obs : obsList) {
             startTime = dateFmt.format(obs.getStartTime());
             endTime = dateFmt.format(obs.getEndTime());
             List<LacdumpSfEntity> sfList;
