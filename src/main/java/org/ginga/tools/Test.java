@@ -1,6 +1,8 @@
 package org.ginga.tools;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +20,7 @@ import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
 import org.ginga.tools.pipeline.TargetObservationListPipe;
+import org.ginga.tools.runtime.GingaToolsEnvironment;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
 import org.ginga.tools.util.Constants.LacMode;
 import org.ginga.tools.util.DateUtil;
@@ -32,9 +35,21 @@ public class Test {
     /**
      * @param args
      */
-    public static void main(String[] args) {
-        SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
-        pipeline.execute("GS2000+25"); // GS1124-68
+    public static void main(String[] args) throws IOException {
+    	String target = "GS1124-68"; // "GS2000+25"; 
+        
+    	// extract all spectra
+    	SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
+        pipeline.execute(target); 
+        // write observation list
+        File workingDir = new File(GingaToolsEnvironment.getInstance().getGingaWrkDir());
+        if(!workingDir.exists()) {
+        	workingDir.mkdirs();
+        }
+        File file = new File(workingDir, "observation.list");
+        FileWriter writer = new FileWriter(file);
+        TargetObservationListWriter summary = new TargetObservationListWriter(writer);
+        summary.printSpectralModes(target);
     }
 
     public static void scanObservations(String[] args) {
