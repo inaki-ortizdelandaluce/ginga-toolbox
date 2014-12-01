@@ -1,5 +1,6 @@
 package org.ginga.tools.spectrum;
 
+import org.ginga.tools.util.Constants;
 import org.ginga.tools.util.Constants.LacCounterMode;
 import org.ginga.tools.util.Constants.LacMode;
 import org.ginga.tools.util.Constants.TimeResolution;
@@ -7,8 +8,8 @@ import org.ginga.tools.util.Constants.TimeResolution;
 public class LacqrdfitsInputModel {
 
 	private String psFileName;
-	private double minElevation;
-	private double maxElevation = 180.0;
+	private double minElevation = Constants.DEFAULT_MIN_ELEVATION;
+	private double maxElevation = Constants.DEFAULT_MAX_ELEVATION;
 	private LacMode lacMode;
 	private int bgCorrection = 1;
 	private int aspectCorrection = 1;

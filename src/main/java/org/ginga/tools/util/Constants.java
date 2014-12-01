@@ -8,5 +8,10 @@ public class Constants {
 	public enum LacCounterMode { MIDDLE, TOP, BOTH }
 	public enum TimeResolution { ONE, ONE_OVER_TWO, ONE_OVER_FOR }
 	
+	public static final double DEFAULT_MIN_ELEVATION = 5.0;
+	public static final double DEFAULT_MAX_ELEVATION = 180.0;
+	public static final double DEFAULT_MIN_RIGIDITY = 10.0;
+	public static final double DEFAULT_MAX_RIGIDITY = 20.0;
+	
 
 }

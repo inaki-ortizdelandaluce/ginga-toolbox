@@ -15,6 +15,7 @@ import org.ginga.tools.observation.ObservationEntity;
 import org.ginga.tools.observation.dao.ObservationDao;
 import org.ginga.tools.observation.dao.ObservationDaoException;
 import org.ginga.tools.observation.dao.impl.ObservationDaoImpl;
+import org.ginga.tools.util.Constants;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
@@ -53,7 +54,8 @@ public class ObservationScannerPipe extends AbstractPipe<String, List<Observatio
 					modes = lacdumpDao.findModes(target,
 							startTime, 
 							endTime, 
-							5.0, 10.0); // EELV > 5.0, RIG > 10.0
+							Constants.DEFAULT_MIN_ELEVATION, 
+							Constants.DEFAULT_MIN_RIGIDITY); 
 				} catch (LacdumpDaoException e) {
 					log.error("Modes for target " + target + " could not be found", e);
 				} 
@@ -64,9 +66,12 @@ public class ObservationScannerPipe extends AbstractPipe<String, List<Observatio
 				for(String mode: modes) {
 					log.info(mode + " found between " + startTime + " and " + endTime);
 					try {
-						sfList = lacdumpDao.findSfList(mode, target, 
-								startTime, endTime, 
-								5.0, 10.0); // EELV > 5.0, RIG > 10.0
+						sfList = lacdumpDao.findSfList(mode, 
+								target, 
+								startTime, 
+								endTime, 
+								Constants.DEFAULT_MIN_ELEVATION, 
+								Constants.DEFAULT_MIN_RIGIDITY); 
 					} catch (LacdumpDaoException e) {
 						log.error("Modes for target " + target + " could not be found", e);
 					} 
