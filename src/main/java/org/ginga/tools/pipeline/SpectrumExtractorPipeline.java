@@ -20,33 +20,39 @@ public class SpectrumExtractorPipeline {
 
     public void executeWithHayashidaSubtraction(String target) {
         // initialize all pipes needed
-        Pipe<String, List<ObservationEntity>> scanner = new TargetObservationScannerPipe();
         Pipe<ObservationModeDetails, ObservationModeDetails> modeFilter = new FilterFunctionPipe<ObservationModeDetails>(
                 new SpectrumModeFilterPipe());
         Pipe<ObservationModeDetails, LacdumpConstraints> constraintsBuilder = new LacdumpConstraintsPipe();
         Pipe<LacdumpConstraints, LacqrdfitsInputModel> lacqrdfitsInputBuilder = new LacqrdfitsInputPipe();
         Pipe<LacqrdfitsInputModel, File> lacqrdfitsExecutor = new LacqrdfitsPipe();
 
-        // scan observations for input targets
+        // scan observations for input target
+        Pipe<String, List<ObservationEntity>> scanner = new TargetObservationScannerPipe();
         scanner.setStarts(Arrays.asList(target));
-
         List<ObservationEntity> obsList = scanner.next();
 
+        Pipeline<ObservationModeDetails, File> specExtractor = null;
+        List<ObservationModeDetails> obsModeDetails = null;
         for (ObservationEntity obsEntity : obsList) {
+            log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
+            obsModeDetails = obsEntity.getAvailableModesDetails();
             // extract spectrum for all relevant modes
-            // run pipeline
-            Pipeline<ObservationModeDetails, File> specExtractor = new Pipeline<ObservationModeDetails, File>(
-                    modeFilter, constraintsBuilder, lacqrdfitsInputBuilder, lacqrdfitsExecutor);
-            specExtractor.setStarts(obsEntity.getAvailableModesDetails());
-            File file = null;
-            while (specExtractor.hasNext()) {
-                file = specExtractor.next();
-                if (file != null) {
-                    log.info("Spectrum file " + file.getName() + " created successfully");
-                    log.info("Pipeline chain " + specExtractor.getCurrentPath());
-                    return;
+            if (obsModeDetails != null) {
+                // run pipeline
+                specExtractor = new Pipeline<ObservationModeDetails, File>(modeFilter,
+                        constraintsBuilder, lacqrdfitsInputBuilder, lacqrdfitsExecutor);
+                specExtractor.setStarts(obsEntity.getAvailableModesDetails());
+                File file = null;
+                while (specExtractor.hasNext()) {
+                    file = specExtractor.next();
+                    if (file != null) {
+                        log.info("Spectrum file " + file.getName() + " created successfully");
+                        log.info("Pipeline chain " + specExtractor.getCurrentPath());
+                        return;
+                    }
                 }
             }
+            log.info("Observation " + obsEntity.getSequenceNumber() + " processed successfully");
         }
     }
 }

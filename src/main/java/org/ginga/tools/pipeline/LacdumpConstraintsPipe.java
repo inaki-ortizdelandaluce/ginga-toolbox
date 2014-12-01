@@ -24,20 +24,16 @@ TransformPipe<ObservationModeDetails, LacdumpConstraints> {
      */
     @Override
     protected LacdumpConstraints processNextStart() throws NoSuchElementException {
-        if (this.starts.hasNext()) {
-            ObservationModeDetails modeDetails = this.starts.next();
-            LacdumpConstraints constraints = new LacdumpConstraints();
-            constraints.setTargetName(modeDetails.getTarget());
-            constraints.setStartTime(modeDetails.getStartTime());
-            constraints.setEndTime(modeDetails.getEndTime());
-            constraints.setBitRate(BitRate.HI);
-            constraints.setMode(modeDetails.getLacMode());
-            constraints.setMinRigidity(Constants.DEFAULT_MIN_RIGIDITY);
-            constraints.setMinElevation(Constants.DEFAULT_MIN_ELEVATION);
-            return constraints;
-        } else {
-            throw new NoSuchElementException();
-        }
+        ObservationModeDetails modeDetails = this.starts.next();
+        LacdumpConstraints constraints = new LacdumpConstraints();
+        constraints.setTargetName(modeDetails.getTarget());
+        constraints.setStartTime(modeDetails.getStartTime());
+        constraints.setEndTime(modeDetails.getEndTime());
+        constraints.setBitRate(BitRate.HI);
+        constraints.setMode(modeDetails.getLacMode());
+        constraints.setMinRigidity(Constants.DEFAULT_MIN_RIGIDITY);
+        constraints.setMinElevation(Constants.DEFAULT_MIN_ELEVATION);
+        return constraints;
     }
 
 }
