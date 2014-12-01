@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.tools.lacdump.LacdumpQuery;
+import org.ginga.tools.lacdump.LacdumpConstraints;
 import org.ginga.tools.lacdump.LacdumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacdumpDao;
 import org.ginga.tools.lacdump.dao.LacdumpDaoException;
@@ -19,6 +19,7 @@ import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
 import org.ginga.tools.pipeline.ObservationScannerPipe;
 import org.ginga.tools.spectrum.LacqrdfitsInputModel;
+import org.ginga.tools.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -31,74 +32,74 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-    	Pipe<String, List<ObservationEntity>> obsPipe = new ObservationScannerPipe();
-    	obsPipe.setStarts(Arrays.asList("GS2000+25"));
-    	if(obsPipe.hasNext()) {
-    		List<ObservationEntity> obsSummary = obsPipe.next();
-    		log.info(obsSummary.size() + " observation(s) scanned");
-    	}
+        Pipe<String, List<ObservationEntity>> obsPipe = new ObservationScannerPipe();
+        obsPipe.setStarts(Arrays.asList("GS2000+25"));
+        if (obsPipe.hasNext()) {
+            List<ObservationEntity> obsSummary = obsPipe.next();
+            log.info(obsSummary.size() + " observation(s) scanned");
+        }
     }
-    
+
     public static void findModes() {
-    	try {
-    		LacdumpDao dao = new LacdumpDaoImpl();
-        	List<String> modes;
-    		modes = dao.findModes("GS2000+25", "1988-04-30 04:40:07", "1988-04-30 04:53:23", 5.0, 10.0);
-    		for(String mode: modes) {
-    			log.info("Mode " + mode);
-    		}
-    	} catch (LacdumpDaoException e) {
-			log.error(e);
-		}
+        try {
+            LacdumpDao dao = new LacdumpDaoImpl();
+            List<String> modes;
+            modes = dao.findModes("GS2000+25", "1988-04-30 04:40:07", "1988-04-30 04:53:23", 5.0,
+                    10.0);
+            for (String mode : modes) {
+                log.info("Mode " + mode);
+            }
+        } catch (LacdumpDaoException e) {
+            log.error(e);
+        }
     }
-    
+
     public static void samplePipeExec2() {
-        LacdumpQuery query = new LacdumpQuery();
-        query.setMode("MPC2");
-        query.setTargetName("GS2000+25");
-        query.setStartTime("1988-04-30 04:40:07");
-        query.setEndTime("1988-04-30 04:53:23");
-        query.setMinElevation(5.0);
-        query.setMinRigidity(10.0);
+        LacdumpConstraints constraints = new LacdumpConstraints();
+        constraints.setMode(LacMode.MPC2);
+        constraints.setTargetName("GS2000+25");
+        constraints.setStartTime("1988-04-30 04:40:07");
+        constraints.setEndTime("1988-04-30 04:53:23");
+        constraints.setMinElevation(5.0);
+        constraints.setMinRigidity(10.0);
 
-    	LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
-    	LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
-    	Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery,File>(pipe1, pipe2);
-    	specHayashidaPipeline.setStarts(Arrays.asList(query));
-    	File file = specHayashidaPipeline.next();
-    	log.info("Spectrum " + file.getPath() + " generated successfully");
+        LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
+        LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
+        Pipeline<LacdumpConstraints, File> specHayashidaPipeline = new Pipeline<LacdumpConstraints, File>(
+                pipe1, pipe2);
+        specHayashidaPipeline.setStarts(Arrays.asList(constraints));
+        File file = specHayashidaPipeline.next();
+        log.info("Spectrum " + file.getPath() + " generated successfully");
     }
-    
+
     public static void samplePipeExec() {
-         LacqrdfitsInputModel model = new LacqrdfitsInputModel();
-         model.setLacMode("MPC2");
-         model.setPsFileName("gs2000+25_lacqrd.ps");
-         model.setMinElevation(5.0);
-         model.setRegionFileName("GS2000+25_REGION.DATA");
-         model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
-         model.setTimingFileName("GS2000+25_TIMING.fits");
-        
-         Pipe<LacqrdfitsInputModel, File> pipe2 = 
-        		 new LacqrdfitsPipe();
-         log.info("Starting SpectrumHayashidaPipeFunction");
-         pipe2.setStarts(Arrays.asList(model));
-         while (pipe2.hasNext()) {
-         pipe2.next();
-         }
-         log.info("SpectrumHayashidaPipeFunction completed");
+        LacqrdfitsInputModel model = new LacqrdfitsInputModel();
+        model.setLacMode("MPC2");
+        model.setPsFileName("gs2000+25_lacqrd.ps");
+        model.setMinElevation(5.0);
+        model.setRegionFileName("GS2000+25_REGION.DATA");
+        model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
+        model.setTimingFileName("GS2000+25_TIMING.fits");
 
-        LacdumpQuery query = new LacdumpQuery();
-        query.setMode("MPC3");
-        query.setTargetName("GS2000+25");
-        query.setStartTime("1988-05-02 01:34:31");
-        query.setEndTime("1988-05-02 01:34:31");
-        query.setMinElevation(5.0);
-        query.setMinRigidity(10.0);
+        Pipe<LacqrdfitsInputModel, File> pipe2 = new LacqrdfitsPipe();
+        log.info("Starting SpectrumHayashidaPipeFunction");
+        pipe2.setStarts(Arrays.asList(model));
+        while (pipe2.hasNext()) {
+            pipe2.next();
+        }
+        log.info("SpectrumHayashidaPipeFunction completed");
 
-        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = 
-        		new LacqrdfitsInputPipe();
+        LacdumpConstraints constraints = new LacdumpConstraints();
+        constraints.setMode(LacMode.MPC3);
+        constraints.setTargetName("GS2000+25");
+        constraints.setStartTime("1988-05-02 01:34:31");
+        constraints.setEndTime("1988-05-02 01:34:31");
+        constraints.setMinElevation(5.0);
+        constraints.setMinRigidity(10.0);
+
+        Pipe<LacdumpConstraints, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe();
         log.info("Starting GoodTimeIntervalPipeFunction");
-        pipe1.setStarts(Arrays.asList(query));
+        pipe1.setStarts(Arrays.asList(constraints));
         while (pipe1.hasNext()) {
             pipe1.next();
         }
