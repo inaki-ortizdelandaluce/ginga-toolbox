@@ -34,7 +34,7 @@ public class Test {
      */
     public static void main(String[] args) {
         SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
-        pipeline.execute("GS2000+25");
+        pipeline.execute("GS2000+25"); // GS1124-68
     }
 
     public static void scanObservations(String[] args) {
