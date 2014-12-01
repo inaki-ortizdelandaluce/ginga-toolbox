@@ -20,10 +20,10 @@ import org.ginga.tools.util.Constants;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class TargetObservationScannerPipe extends AbstractPipe<String, List<ObservationEntity>>
-implements TransformPipe<String, List<ObservationEntity>> {
+public class TargetObservationListPipe extends AbstractPipe<String, List<ObservationEntity>>
+        implements TransformPipe<String, List<ObservationEntity>> {
 
-    private static Logger log = Logger.getLogger(TargetObservationScannerPipe.class);
+    private static Logger log = Logger.getLogger(TargetObservationListPipe.class);
 
     @Override
     protected List<ObservationEntity> processNextStart() throws NoSuchElementException {
@@ -34,8 +34,6 @@ implements TransformPipe<String, List<ObservationEntity>> {
         List<ObservationEntity> obsList = null;
         try {
             obsList = obsDao.findListByTarget(target);
-            // obsList = new ArrayList<>();
-            // obsList.add(obsDao.findListByTarget(target).get(0));
             log.info(obsList.size() + " " + target + " observation(s) found");
         } catch (ObservationDaoException e) {
             log.error(target + " observation(s) could not be found", e);
