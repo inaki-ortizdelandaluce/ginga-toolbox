@@ -79,32 +79,6 @@ public class TargetObservationListWriter {
         this.writer.close();
     }
 
-    public void printMpc2Modes(String target) {
-        TargetObservationListPipe pipe = new TargetObservationListPipe();
-        pipe.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = pipe.next();
-
-        List<ObservationModeDetails> obsModeList = null;
-        for (ObservationEntity obsEntity : obsList) {
-            obsModeList = obsEntity.getAvailableModesDetails();
-            if (obsModeList != null) {
-                for (ObservationModeDetails obsMode : obsModeList) {
-                	LacMode mode = obsMode.getLacMode();
-                	if(mode.equals(LacMode.MPC2)) {
-                        this.writer.println(" "
-                                + String.format(
-                                        "%18s",
-                                        obsEntity.getSequenceNumber() + " "
-                                                + String.format("%8s", obsMode.getMode()) + " "
-                                                + String.format("%20s", obsMode.getStartTime()) + " "
-                                                + String.format("%20s", obsMode.getEndTime())));
-                	}
-                }
-            }
-        }
-        this.writer.flush();
-        this.writer.close();
-    }    
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.out.println("Usage org.ginga.tools.TargetObservationListWriter <target>");
@@ -118,7 +92,5 @@ public class TargetObservationListWriter {
         FileWriter writer = new FileWriter(file);
         TargetObservationListWriter summary = new TargetObservationListWriter(writer);
         summary.printSpectralModes(args[0]);
-        //summary.printMpc2Modes(args[0]);
-        //summary.printAllModes(args[0]);
     }
 }
