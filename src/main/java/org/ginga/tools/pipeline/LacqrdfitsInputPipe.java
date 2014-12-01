@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.ginga.tools.gti.GtiFileWriter;
-import org.ginga.tools.lacdump.LacdumpQuery;
+import org.ginga.tools.lacdump.LacdumpConstraints;
 import org.ginga.tools.lacdump.LacdumpSfEntity;
 import org.ginga.tools.lacdump.dao.LacdumpDao;
 import org.ginga.tools.lacdump.dao.impl.LacdumpDaoImpl;
@@ -18,14 +18,14 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacqrdfitsInputPipe extends
-		AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
-		TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+		AbstractPipe<LacdumpConstraints, LacqrdfitsInputModel> implements
+		TransformPipe<LacdumpConstraints, LacqrdfitsInputModel> {
 
 	private final static Logger log = Logger
 			.getLogger(LacqrdfitsInputPipe.class);
 
 	/*
-	 * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a
+	 * Receives a LacdumpConstraints, creates a GTI/Region file and finally emits a
 	 * LacqrdfitsInputModel referencing such file
 	 */
 	@Override
@@ -33,7 +33,7 @@ public class LacqrdfitsInputPipe extends
 			throws NoSuchElementException {
 		try {
 			if (this.starts.hasNext()) {
-				LacdumpQuery query = this.starts.next();
+				LacdumpConstraints query = this.starts.next();
 
 				// set working directory
 				GingaToolsEnvironment gingaEnv = GingaToolsEnvironment
