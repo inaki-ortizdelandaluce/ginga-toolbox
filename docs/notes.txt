@@ -24,3 +24,10 @@ Maven application bundle
 hh vs. HH!! LacDumpParser, Main
 ModeEnum... etc on utils or somewhere else
 Scanner to build LacQuery
+
+Pipelines...
+SpecQueryBuilder: Target -> List<ObsEntity> -> List<LacModes> (Filter MPC1, MPC2, Write summary file) -> List<LacQuery>
+SpecExtractorHayashida: LacQuery -> LacqrdInputFile -> Spectrum File
+
+Fiel naming convenion using datetime
+Input files  
