@@ -1,5 +1,7 @@
 package org.ginga.tools.lacdump;
 
+import org.ginga.tools.util.Constants.BitRate;
+import org.ginga.tools.util.Constants.LacMode;
 
 public class LacdumpQuery {
 
@@ -7,7 +9,7 @@ public class LacdumpQuery {
 
     private String endTime;
 
-    private String mode;
+    private LacMode mode;
 
     private String targetName;
 
@@ -15,7 +17,7 @@ public class LacdumpQuery {
 
     private double minElevation;
 
-    private String bitRate;
+    private BitRate bitRate;
 
     /**
      * @return the startTime
@@ -48,14 +50,14 @@ public class LacdumpQuery {
     /**
      * @return the mode
      */
-    public String getMode() {
+    public LacMode getMode() {
         return this.mode;
     }
 
     /**
      * @param mode the mode to set
      */
-    public void setMode(String mode) {
+    public void setMode(LacMode mode) {
         this.mode = mode;
     }
 
@@ -104,14 +106,14 @@ public class LacdumpQuery {
     /**
      * @return the bitRate
      */
-    public String getBitRate() {
+    public BitRate getBitRate() {
         return this.bitRate;
     }
 
     /**
      * @param bitRate the bitRate to set
      */
-    public void setBitRate(String bitRate) {
+    public void setBitRate(BitRate bitRate) {
         this.bitRate = bitRate;
     }
 
