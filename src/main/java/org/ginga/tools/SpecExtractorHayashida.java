@@ -61,8 +61,6 @@ public class SpecExtractorHayashida {
                     file = specExtractor.next();
                     if (file != null) {
                         log.info("Spectrum file " + file.getName() + " created successfully");
-                        log.info("Pipeline chain " + specExtractor.getCurrentPath());
-                        return;
                     }
                 }
             }
