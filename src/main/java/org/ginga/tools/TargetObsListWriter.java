@@ -117,8 +117,8 @@ public class TargetObsListWriter {
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
         TargetObsListWriter summary = new TargetObsListWriter(writer);
-        summary.printMpc2Modes(args[0]);
-        // summary.printSpectralModes(args[0]);
+        summary.printSpectralModes(args[0]);
+        //summary.printMpc2Modes(args[0]);
         //summary.printAllModes(args[0]);
     }
 }
