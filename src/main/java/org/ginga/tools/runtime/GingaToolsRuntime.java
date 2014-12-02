@@ -16,6 +16,10 @@ public class GingaToolsRuntime {
     private File outputFile = null;
     private File workingDir = null;
 
+    public GingaToolsRuntime(File wrkDir, String... command) {
+        this(wrkDir, null, null, command);
+    }
+
     public GingaToolsRuntime(File wrkDir, File inputFile, File outputFile, String... command) {
         this.workingDir = wrkDir;
         this.pb = new ProcessBuilder(command);
@@ -40,10 +44,13 @@ public class GingaToolsRuntime {
         // set working directory
         this.pb.directory(this.workingDir);
         // set input redirection
-        this.pb.redirectInput(this.inputFile); // this.pb.redirectInput(Redirect.PIPE);
+        if (this.inputFile != null) {
+            this.pb.redirectInput(this.inputFile); // this.pb.redirectInput(Redirect.PIPE);
+        }
         // set output redirection
-        this.pb.redirectOutput(this.outputFile); // this.pb.redirectOutput(Redirect.PIPE);
-        // set error redirection
+        if (this.outputFile != null) {
+            this.pb.redirectOutput(this.outputFile); // this.pb.redirectOutput(Redirect.PIPE);
+        }// set error redirection
         this.pb.redirectErrorStream(true);
     }
 

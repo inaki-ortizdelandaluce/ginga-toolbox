@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.ginga.tools.lacdump.LacdumpConstraints;
 import org.ginga.tools.observation.ObservationEntity;
 import org.ginga.tools.observation.ObservationModeDetails;
+import org.ginga.tools.pipeline.Lac2xspecPipe;
 import org.ginga.tools.pipeline.LacdumpConstraintsPipe;
 import org.ginga.tools.pipeline.LacqrdfitsInputPipe;
 import org.ginga.tools.pipeline.LacqrdfitsPipe;
@@ -38,7 +39,8 @@ public class SpecExtractorHayashida {
                 new SpectrumModeFilterPipe());
         Pipe<ObservationModeDetails, LacdumpConstraints> constraintsBuilder = new LacdumpConstraintsPipe();
         Pipe<LacdumpConstraints, LacqrdfitsInputModel> lacqrdfitsInputBuilder = new LacqrdfitsInputPipe();
-        Pipe<LacqrdfitsInputModel, File> lacqrdfitsExecutor = new LacqrdfitsPipe();
+        Pipe<LacqrdfitsInputModel, File> lacqrdfits = new LacqrdfitsPipe();
+        Pipe<File, File> lac2xspec = new Lac2xspecPipe();
 
         // scan observations for input target
         Pipe<String, List<ObservationEntity>> scanner = new TargetObservationListPipe();
@@ -54,7 +56,7 @@ public class SpecExtractorHayashida {
             if (obsModeDetails != null) {
                 // run pipeline
                 specExtractor = new Pipeline<ObservationModeDetails, File>(modeFilter,
-                        constraintsBuilder, lacqrdfitsInputBuilder, lacqrdfitsExecutor);
+                        constraintsBuilder, lacqrdfitsInputBuilder, lacqrdfits, lac2xspec);
                 specExtractor.setStarts(obsEntity.getAvailableModesDetails());
                 File file = null;
                 while (specExtractor.hasNext()) {
