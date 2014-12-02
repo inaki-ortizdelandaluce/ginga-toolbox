@@ -1,3 +1,4 @@
+[DONE] Load Ginga observations into database
 mysql -u root -p
 Enter password: 
 mysql> LOAD DATA LOCAL INFILE 'ginga_obs.dump'
@@ -10,27 +11,20 @@ mysql> LOAD DATA LOCAL INFILE 'ginga_obs.dump'
 Query OK, 7318 rows affected, 53364 warnings (0.10 sec)
 Records: 7318  Deleted: 0  Skipped: 0  Warnings: 53364
 
-Load ginga_obs
-GINGA_OBS entity, dao
-GTI Writer: LACDUMP Query, SIMBAD
-LACDUMP, GINGA_OBS Diagnosis/Report Tool
-Improve performance: database indexes
+[DONE] Improve performance: database indexes on DATE and TARGET
+
+[DONE] Date format:hh vs. HH!! LacDumpParser, Main
+
+File naming convenion using datetime
+
+LACDUMP MODE(MPC1,MPC2,MPC3,PCHK,ACS) which are the null values from?
+
+Correlate spectral files with observation list
+
+Add timing
 
 Ideas: 
 Taverna
 Apache CLI
 Maven application bundle
 
-hh vs. HH!! LacDumpParser, Main
-ModeEnum... etc on utils or somewhere else
-Scanner to build LacQuery
-
-Pipelines...
-SpecQueryBuilder: Target -> List<ObsEntity> -> List<LacModes> (Filter MPC1, MPC2, Write summary file) -> List<LacQuery>
-SpecExtractorHayashida: LacQuery -> LacqrdInputFile -> Spectrum File
-
-Fiel naming convenion using datetime
-Input files  
-
-
-LACDUMP MODE(MPC1,MPC2,MPC3,PCHK,ACS) which are the null values from?
