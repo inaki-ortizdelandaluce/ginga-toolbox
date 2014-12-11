@@ -19,61 +19,83 @@ import org.ginga.tools.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpConstraints, LacqrdfitsInputModel>
-        implements TransformPipe<LacdumpConstraints, LacqrdfitsInputModel> {
+public class LacqrdfitsInputPipe extends
+		AbstractPipe<LacdumpConstraints, LacqrdfitsInputModel> implements
+		TransformPipe<LacdumpConstraints, LacqrdfitsInputModel> {
 
-    private final static Logger log = Logger.getLogger(LacqrdfitsInputPipe.class);
+	private final static Logger log = Logger
+			.getLogger(LacqrdfitsInputPipe.class);
 
-    /*
-     * Receives a LacdumpConstraints, creates a GTI/Region file and finally emits a
-     * LacqrdfitsInputModel referencing such file
-     */
-    @Override
-    protected LacqrdfitsInputModel processNextStart() throws NoSuchElementException {
-        try {
-            LacdumpConstraints constraints = this.starts.next();
-            
-            // set working directory
-            GingaToolsEnvironment gingaEnv = GingaToolsEnvironment.getInstance();
-            File workingDir = new File(gingaEnv.getGingaWrkDir());
-            if(!workingDir.exists()) {
-            	workingDir.mkdirs();
-            }
-            log.info("Working directory " + workingDir.getAbsolutePath());
+	/*
+	 * Receives a LacdumpConstraints, creates a GTI/Region file and finally
+	 * emits a LacqrdfitsInputModel referencing such file
+	 */
+	@Override
+	protected LacqrdfitsInputModel processNextStart()
+			throws NoSuchElementException {
+		try {
+			LacdumpConstraints constraints = this.starts.next();
 
-            String target = constraints.getTargetName();
-            // set output file name
-            File gtiFile = new File(workingDir, FileUtil.nextFileName(workingDir, target
-                    + "_REGION", "DATA"));
-            
-            // query entities matching the criteria
-            LacdumpDao dao = new LacdumpDaoImpl();
-            List<LacdumpSfEntity> sfList = dao.findSfList(constraints);
-            log.info("Query executed successfully. " + sfList.size() + " result(s) found");
+			// set working directory
+			GingaToolsEnvironment gingaEnv = GingaToolsEnvironment
+					.getInstance();
+			File workingDir = new File(gingaEnv.getGingaWrkDir());
+			if (!workingDir.exists()) {
+				workingDir.mkdirs();
+			}
+			log.info("Working directory " + workingDir.getAbsolutePath());
 
-            if (sfList.size() > 0) {
-                // save matching results into a GTI file
-                GtiFileWriter gtiWriter = new GtiFileWriter();
-                gtiWriter.writeToFile(target, sfList, false, gtiFile);
-                log.debug("GTI file " + gtiFile.getPath() + " written successfully");
+			String target = constraints.getTargetName();
+			// set output file name
+			// File gtiFile = new File(workingDir,
+			// FileUtil.nextFileName(workingDir, target
+			// + "_REGION", "DATA"));
+			File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", constraints.getStartTime(), constraints
+					.getMode().toString(), "DATA"));
 
-                // emit lacqrdfits input model
-                LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
-                inputModel.setLacMode(constraints.getMode());
-                inputModel.setMinElevation(constraints.getMinElevation());
-                inputModel.setPsFileName(FileUtil
-                        .nextFileName(workingDir, target + "_lacqrd", "ps"));
-                inputModel.setRegionFileName(gtiFile.getName());
-                inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, target
-                        + "_SPEC_lacqrd", "FILE"));
-                inputModel.setTimingFileName(FileUtil.nextFileName(workingDir, target + "_TIMING"
-                        , "fits"));
+			// query entities matching the criteria
+			LacdumpDao dao = new LacdumpDaoImpl();
+			List<LacdumpSfEntity> sfList = dao.findSfList(constraints);
+			log.info("Query executed successfully. " + sfList.size()
+					+ " result(s) found");
 
-                return inputModel;
-            }
-        } catch (IOException | LacdumpDaoException e) {
-            log.error("Error generating GTI file. Message= " + e.getMessage(), e);
-        }
-        return null;
-    }
+			if (sfList.size() > 0) {
+				// save matching results into a GTI file
+				GtiFileWriter gtiWriter = new GtiFileWriter();
+				gtiWriter.writeToFile(target, sfList, false, gtiFile);
+				log.debug("GTI file " + gtiFile.getPath()
+						+ " written successfully");
+
+				// emit lacqrdfits input model
+				LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
+				inputModel.setLacMode(constraints.getMode());
+				inputModel.setStartTime(constraints.getStartTime());
+				inputModel.setMinElevation(constraints.getMinElevation());
+				// inputModel.setPsFileName(FileUtil
+				// .nextFileName(workingDir, target + "_lacqrd", "ps"));
+				inputModel.setPsFileName(FileUtil.nextFileName("lacqrd",
+						constraints.getStartTime(), constraints.getMode()
+								.toString(), "ps"));
+				inputModel.setRegionFileName(gtiFile.getName());
+				// inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir,
+				// target
+				// + "_SPEC_lacqrd", "FILE"));
+				// inputModel.setTimingFileName(FileUtil.nextFileName(workingDir,
+				// target + "_TIMING"
+				// , "fits"));
+				inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
+						constraints.getStartTime(), constraints.getMode()
+								.toString(), "FILE"));
+				inputModel.setTimingFileName(FileUtil.nextFileName("TIMING",
+						constraints.getStartTime(), constraints.getMode()
+								.toString(), "fits"));
+
+				return inputModel;
+			}
+		} catch (IOException | LacdumpDaoException e) {
+			log.error("Error generating GTI file. Message= " + e.getMessage(),
+					e);
+		}
+		return null;
+	}
 }

@@ -28,7 +28,7 @@ public class LacqrdfitsInputModel {
 	private String spectralFileName;
 	private String timingFileName;
 	private String regionFileName;
-
+	private String startTime;
 	
 	public String getPsFileName() {
 		return psFileName;
@@ -355,5 +355,15 @@ public class LacqrdfitsInputModel {
 		} else {
 			this.channel8 = 3;
 		}
+	}
+
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 }

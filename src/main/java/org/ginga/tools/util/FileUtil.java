@@ -2,6 +2,7 @@ package org.ginga.tools.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +19,18 @@ public class FileUtil {
 
     public static String[] splitFileBaseAndExtension(File file) {
         return file.getName().split("\\.(?=[^\\.]+$)");
+    }
+
+    public static String nextFileName(String prefix, String startTime, String mode, String extension) {
+    	String fileName = prefix;
+    	try {
+			fileName += "_" + DateUtil.convertDatabaseToFileFormat(startTime);
+		} catch (ParseException e) {
+			fileName += "_" + startTime;
+		}
+    	fileName += "_" + mode;
+    	fileName += "." + extension;
+    	return fileName;
     }
 
     public static String nextFileName(File directory, String prefix, String extension) {
