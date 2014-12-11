@@ -52,7 +52,7 @@ public class TargetObservationListWriter {
         this.writer.close();
     }
 
-    public void printSpectralModes(String target) {
+    public void writeSpectralModes(String target) {
         TargetObservationListPipe pipe = new TargetObservationListPipe();
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
@@ -91,6 +91,6 @@ public class TargetObservationListWriter {
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
         TargetObservationListWriter summary = new TargetObservationListWriter(writer);
-        summary.printSpectralModes(args[0]);
+        summary.writeSpectralModes(args[0]);
     }
 }

@@ -36,7 +36,7 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-    	String target = "GS1124-68"; // "GS2000+25"; 
+    	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
         
     	// extract all spectra
     	SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
@@ -49,7 +49,7 @@ public class Test {
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
         TargetObservationListWriter summary = new TargetObservationListWriter(writer);
-        summary.printSpectralModes(target);
+        summary.writeSpectralModes(target);
     }
 
     public static void scanObservations(String[] args) {
