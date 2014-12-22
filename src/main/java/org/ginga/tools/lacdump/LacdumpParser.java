@@ -138,9 +138,9 @@ public class LacdumpParser {
                     entity.setSequenceNumber(seqno);
 
                     // datetime
-                    date = DateUtil.parseDatabaseFormat(line.substring(this.dateBeginIdx,
+                    date = DateUtil.parseLacdumpFormat(line.substring(this.dateBeginIdx,
                             this.dateBeginIdx + this.dateLength).trim());
-                    log.debug("DATE " + DateUtil.DATE_FORMAT_DATABASE.format(date));
+                    log.debug("DATE " + DateUtil.DATE_FORMAT_LACDUMP.format(date));
                     entity.setDate(date);
 
                     // bitrate
@@ -300,7 +300,9 @@ public class LacdumpParser {
                     target = line.substring(this.targetBeginIdx,
                             this.targetBeginIdx + this.targetLength - 1).trim();
                     log.debug("TARGET " + target);
-                    entity.setTarget(target);
+                    if(target.length() > 0) {
+                        entity.setTarget(target);
+                    }
 
                     // transmission
                     try {
