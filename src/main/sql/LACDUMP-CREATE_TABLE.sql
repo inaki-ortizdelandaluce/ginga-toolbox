@@ -22,5 +22,7 @@
         SF varchar(12) not null,
         TARGET varchar(255),
         TRANSMISSION double precision,
-        primary key (ID)
+        primary key (ID),
+        KEY `idx_LACDUMP_DATE` (`DATE`),
+        KEY `idx_LACDUMP_TARGET` (`TARGET`)
     ) ENGINE=InnoDB;
