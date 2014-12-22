@@ -1,0 +1,86 @@
+package org.ginga.toolbox.pipeline;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
+import org.ginga.toolbox.lacdump.LacdumpSfEntity;
+import org.ginga.toolbox.lacdump.dao.LacdumpDao;
+import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
+import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.toolbox.observation.ObservationEntity;
+import org.ginga.toolbox.observation.ObservationModeDetails;
+import org.ginga.toolbox.observation.dao.ObservationDao;
+import org.ginga.toolbox.observation.dao.ObservationDaoException;
+import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
+import org.ginga.toolbox.util.Constants;
+import org.ginga.toolbox.util.DateUtil;
+
+import com.tinkerpop.pipes.AbstractPipe;
+import com.tinkerpop.pipes.transform.TransformPipe;
+
+public class TargetObservationListPipe extends AbstractPipe<String, List<ObservationEntity>>
+        implements TransformPipe<String, List<ObservationEntity>> {
+
+    private static Logger log = Logger.getLogger(TargetObservationListPipe.class);
+
+    @Override
+    protected List<ObservationEntity> processNextStart() throws NoSuchElementException {
+        String target = this.starts.next();
+
+        // find observation list by target
+        ObservationDao obsDao = new ObservationDaoImpl();
+        List<ObservationEntity> obsList = null;
+        try {
+            obsList = obsDao.findListByTarget(target);
+            log.info(obsList.size() + " " + target + " observation(s) found");
+        } catch (ObservationDaoException e) {
+            log.error(target + " observation(s) could not be found", e);
+        }
+
+        // find available LAC modes and date ranges for each observation
+        LacdumpDao lacdumpDao = new LacdumpDaoImpl();
+        SimpleDateFormat dateFmt = DateUtil.DATE_FORMAT_DATABASE;
+        for (ObservationEntity obsEntity : obsList) {
+            log.info("Scanning observation " + obsEntity.getSequenceNumber() + "...");
+            // find available LAC modes
+            String startTime = dateFmt.format(obsEntity.getStartTime());
+            String endTime = dateFmt.format(obsEntity.getEndTime());
+            List<String> modes = new ArrayList<String>();
+            try {
+                modes = lacdumpDao.findModes(target, startTime, endTime,
+                        Constants.DEFAULT_MIN_ELEVATION, Constants.DEFAULT_MIN_RIGIDITY);
+            } catch (LacdumpDaoException e) {
+                log.error("Modes for target " + target + " could not be found", e);
+            }
+
+            // find date ranges for each mode
+            List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
+            ObservationModeDetails modeDetails = null;
+            for (String mode : modes) {
+                try {
+                    sfList = lacdumpDao.findSfList(mode, target, startTime, endTime,
+                            Constants.DEFAULT_MIN_ELEVATION, Constants.DEFAULT_MIN_RIGIDITY);
+                } catch (LacdumpDaoException e) {
+                    log.error("Modes for target " + target + " could not be found", e);
+                }
+                if (sfList.size() > 0) {
+                    String modeStartTime = dateFmt.format(sfList.get(0).getDate());
+                    String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
+                    log.info("[" + mode + ", " + modeStartTime + ", " + endTime + "]");
+                    modeDetails = new ObservationModeDetails();
+                    modeDetails.setObsId(obsEntity.getId());
+                    modeDetails.setTarget(target);
+                    modeDetails.setMode(mode);
+                    modeDetails.setStartTime(modeStartTime);
+                    modeDetails.setEndTime(modeEndTime);
+                    // add observation mode to observation summary
+                    obsEntity.addAvailableModeDetails(modeDetails);
+                }
+            }
+        }
+        return obsList;
+    }
+}
