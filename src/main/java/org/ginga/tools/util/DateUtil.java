@@ -18,4 +18,8 @@ public class DateUtil {
 	public static Date parseDatabaseFormat(String date) throws ParseException {
 		return DATE_FORMAT_DATABASE.parse(date);
 	}
+	
+	public static Date parseLacdumpFormat(String date) throws ParseException {
+		return DATE_FORMAT_LACDUMP.parse(date);
+	}
 }
