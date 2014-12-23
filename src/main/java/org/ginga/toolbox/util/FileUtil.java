@@ -82,4 +82,11 @@ public class FileUtil {
         Arrays.sort(files);
         return files;
     }
+    
+    public static class LacdumpFileFilter implements FilenameFilter {
+		@Override
+		public boolean accept(File dir, String name) {
+			return name.matches("J[0-9]{6}");
+		}
+    }
 }

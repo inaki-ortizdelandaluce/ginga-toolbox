@@ -1,7 +1,6 @@
 package org.ginga.toolbox.lacdump;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.toolbox.util.FileUtil;
 
 public class LacdumpDatabaseIngestor {
 
@@ -35,13 +35,7 @@ public class LacdumpDatabaseIngestor {
                 System.exit(1);
             }
 
-            File[] lacdumpFiles = f.listFiles(new FilenameFilter() {
-
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.matches("J[0-9]{6}");
-                }
-            });
+            File[] lacdumpFiles = f.listFiles(new FileUtil.LacdumpFileFilter());
             Arrays.sort(lacdumpFiles);
 
             log.info(lacdumpFiles.length + " file(s) found");

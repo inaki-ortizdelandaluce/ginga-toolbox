@@ -35,4 +35,21 @@ public class ObservationDaoImpl implements ObservationDao {
         return obsList;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ObservationEntity> findAll() throws ObservationDaoException {
+		List<ObservationEntity> obsList = null;
+		try {
+			HibernateUtil.beginTransaction();
+			Session hibernateSession = HibernateUtil.getSession();
+			Query query = hibernateSession.createQuery("from " + ObservationEntity.class.getName());
+			obsList = query.list();
+        } catch (Exception e) {
+            throw new ObservationDaoException(e);
+        } finally {
+            HibernateUtil.closeSession();
+        }
+        return obsList;
+	}
+
 }
