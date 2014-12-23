@@ -1,6 +1,8 @@
 package org.ginga.toolbox.util;
 
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
+import org.ginga.toolbox.observation.ObsLacdumpBgEntity;
+import org.ginga.toolbox.observation.ObsLacdumpDataEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -64,7 +66,9 @@ public class HibernateUtil {
             // ADD ANNOTATED CLASSES
             configuration.addAnnotatedClass(LacdumpSfEntity.class);
             configuration.addAnnotatedClass(ObservationEntity.class);
-
+            configuration.addAnnotatedClass(ObsLacdumpBgEntity.class);
+            configuration.addAnnotatedClass(ObsLacdumpDataEntity.class);
+            
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
             .applySettings(configuration.getProperties());
             SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());

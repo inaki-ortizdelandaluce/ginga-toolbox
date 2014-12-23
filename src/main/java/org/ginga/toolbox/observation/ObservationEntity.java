@@ -3,12 +3,15 @@ package org.ginga.toolbox.observation;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,7 +22,7 @@ import org.hibernate.annotations.Type;
 public class ObservationEntity {
 
     @Id
-    @Column(name = "ID")
+    @Column(name = "OBSERVATION_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -68,6 +71,12 @@ public class ObservationEntity {
     @Column(name = "PASS_NAMES")
     @Type(type = "text")
     private String passNames;
+    
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
+    private Set<ObsLacdumpBgEntity> obsLacdumpBgSet;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
+    private Set<ObsLacdumpDataEntity> obsLacdumpDataSet;
 
     @Transient
     private List<ObservationModeDetails> availableModeDetails;
@@ -215,4 +224,19 @@ public class ObservationEntity {
         this.availableModeDetails.add(modeDetails);
     }
 
+	public Set<ObsLacdumpBgEntity> getObsLacdumpBgSet() {
+		return obsLacdumpBgSet;
+	}
+
+	public void setObsLacdumpBgSet(Set<ObsLacdumpBgEntity> obsLacdumpBgSet) {
+		this.obsLacdumpBgSet = obsLacdumpBgSet;
+	}
+
+	public Set<ObsLacdumpDataEntity> getObsLacdumpDataSet() {
+		return obsLacdumpDataSet;
+	}
+
+	public void setObsLacdumpDataSet(Set<ObsLacdumpDataEntity> obsLacdumpDataSet) {
+		this.obsLacdumpDataSet = obsLacdumpDataSet;
+	}
 }
