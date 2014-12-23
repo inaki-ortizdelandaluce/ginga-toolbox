@@ -52,4 +52,19 @@ public class ObservationDaoImpl implements ObservationDao {
         return obsList;
 	}
 
+	@Override
+	public void update(ObservationEntity observation)
+			throws ObservationDaoException {
+		try {
+			HibernateUtil.beginTransaction();
+			Session hibernateSession = HibernateUtil.getSession();
+			hibernateSession.update(observation);
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			throw new ObservationDaoException(e);
+		} finally {
+			HibernateUtil.closeSession();
+		}
+	}
+
 }

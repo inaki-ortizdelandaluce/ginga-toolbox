@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -72,11 +73,11 @@ public class ObservationEntity {
     @Type(type = "text")
     private String passNames;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
-    private Set<ObservationBgEntity> obsLacdumpBgSet;
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "observation")
+    private Set<ObservationBgEntity> obsBgSet;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
-    private Set<ObservationDataEntity> obsLacdumpDataSet;
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, mappedBy = "observation")
+    private Set<ObservationDataEntity> obsDataSet;
 
     @Transient
     private List<ObservationModeDetails> availableModeDetails;
@@ -224,19 +225,19 @@ public class ObservationEntity {
         this.availableModeDetails.add(modeDetails);
     }
 
-	public Set<ObservationBgEntity> getObsLacdumpBgSet() {
-		return obsLacdumpBgSet;
+	public Set<ObservationBgEntity> getObsBgSet() {
+		return obsBgSet;
 	}
 
-	public void setObsLacdumpBgSet(Set<ObservationBgEntity> obsLacdumpBgSet) {
-		this.obsLacdumpBgSet = obsLacdumpBgSet;
+	public void setObsBgSet(Set<ObservationBgEntity> obsBgSet) {
+		this.obsBgSet = obsBgSet;
 	}
 
-	public Set<ObservationDataEntity> getObsLacdumpDataSet() {
-		return obsLacdumpDataSet;
+	public Set<ObservationDataEntity> getObsDataSet() {
+		return obsDataSet;
 	}
 
-	public void setObsLacdumpDataSet(Set<ObservationDataEntity> obsLacdumpDataSet) {
-		this.obsLacdumpDataSet = obsLacdumpDataSet;
+	public void setObsDataSet(Set<ObservationDataEntity> obsDataSet) {
+		this.obsDataSet = obsDataSet;
 	}
 }
