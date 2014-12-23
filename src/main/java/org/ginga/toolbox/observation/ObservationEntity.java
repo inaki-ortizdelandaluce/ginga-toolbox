@@ -73,10 +73,10 @@ public class ObservationEntity {
     private String passNames;
     
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
-    private Set<ObsLacdumpBgEntity> obsLacdumpBgSet;
+    private Set<ObservationBgEntity> obsLacdumpBgSet;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "observation")
-    private Set<ObsLacdumpDataEntity> obsLacdumpDataSet;
+    private Set<ObservationDataEntity> obsLacdumpDataSet;
 
     @Transient
     private List<ObservationModeDetails> availableModeDetails;
@@ -224,19 +224,19 @@ public class ObservationEntity {
         this.availableModeDetails.add(modeDetails);
     }
 
-	public Set<ObsLacdumpBgEntity> getObsLacdumpBgSet() {
+	public Set<ObservationBgEntity> getObsLacdumpBgSet() {
 		return obsLacdumpBgSet;
 	}
 
-	public void setObsLacdumpBgSet(Set<ObsLacdumpBgEntity> obsLacdumpBgSet) {
+	public void setObsLacdumpBgSet(Set<ObservationBgEntity> obsLacdumpBgSet) {
 		this.obsLacdumpBgSet = obsLacdumpBgSet;
 	}
 
-	public Set<ObsLacdumpDataEntity> getObsLacdumpDataSet() {
+	public Set<ObservationDataEntity> getObsLacdumpDataSet() {
 		return obsLacdumpDataSet;
 	}
 
-	public void setObsLacdumpDataSet(Set<ObsLacdumpDataEntity> obsLacdumpDataSet) {
+	public void setObsLacdumpDataSet(Set<ObservationDataEntity> obsLacdumpDataSet) {
 		this.obsLacdumpDataSet = obsLacdumpDataSet;
 	}
 }

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
-import org.ginga.toolbox.observation.ObsLacdumpBgEntity;
-import org.ginga.toolbox.observation.ObsLacdumpDataEntity;
+import org.ginga.toolbox.observation.ObservationBgEntity;
+import org.ginga.toolbox.observation.ObservationDataEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -65,8 +65,8 @@ public class DatabaseSchemaGenerator {
         schemaGen.generate(LacdumpSfEntity.class, new File("/tmp/lacdump-CREATE_TABLE.sql"));
         List<Class<?>> annotatedClasses = new ArrayList<>();
         annotatedClasses.add(ObservationEntity.class);
-        annotatedClasses.add(ObsLacdumpBgEntity.class);
-        annotatedClasses.add(ObsLacdumpDataEntity.class);
+        annotatedClasses.add(ObservationBgEntity.class);
+        annotatedClasses.add(ObservationDataEntity.class);
         schemaGen.generate(annotatedClasses, new File("/tmp/observation-CREATE_TABLE.sql"));
     }
 }
