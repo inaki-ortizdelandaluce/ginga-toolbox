@@ -129,6 +129,7 @@ public class LacdumpParser {
                     continue;
                 } else {
                     entity = new LacdumpSfEntity();
+                    entity.setLacdumpFile(lacdumpFile.getName());
                     entity.setSuperFrame(lastSuperFrame);
                     // seqno
                     seqno = Integer.valueOf(

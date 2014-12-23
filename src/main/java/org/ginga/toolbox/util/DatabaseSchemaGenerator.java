@@ -61,6 +61,6 @@ public class DatabaseSchemaGenerator {
     public static void main(String[] args) {
         DatabaseSchemaGenerator schemaGen = new DatabaseSchemaGenerator();
         schemaGen.generate(LacdumpSfEntity.class, new File("/tmp/lacdump-CREATE_TABLE.sql"));
-        schemaGen.generate(ObservationEntity.class, new File("/tmp/ginga_obslog-CREATE_TABLE.sql"));
+        schemaGen.generate(ObservationEntity.class, new File("/tmp/observation-CREATE_TABLE.sql"));
     }
 }

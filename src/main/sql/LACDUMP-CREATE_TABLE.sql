@@ -13,6 +13,7 @@
         EELV double precision,
         GMU varchar(3),
         LAC_H double precision,
+        LACDUMP_FILE varchar(7) not null,
         LAC_L double precision,
         MODE enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK'),
         RA_DEG_B1950 double precision,
@@ -22,7 +23,5 @@
         SF varchar(12) not null,
         TARGET varchar(255),
         TRANSMISSION double precision,
-        primary key (ID),
-        KEY `idx_LACDUMP_DATE` (`DATE`),
-        KEY `idx_LACDUMP_TARGET` (`TARGET`)
+        primary key (ID)
     ) ENGINE=InnoDB;

@@ -18,6 +18,9 @@ public class LacdumpSfEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "LACDUMP_FILE", nullable = false, length = 7)
+    private String lacdumpFile;
+    
     @Column(name = "SF", nullable = false, length = 12)
     private String superFrame;
 
@@ -353,4 +356,12 @@ public class LacdumpSfEntity {
     public void setId(long id) {
         this.id = id;
     }
+
+	public String getLacdumpFile() {
+		return lacdumpFile;
+	}
+
+	public void setLacdumpFile(String lacdumpFile) {
+		this.lacdumpFile = lacdumpFile;
+	}
 }
