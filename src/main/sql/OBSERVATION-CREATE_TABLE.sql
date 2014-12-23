@@ -1,6 +1,6 @@
-    drop table if exists ginga.OBSLOG;
+    drop table if exists ginga.OBSERVATION;
 
-    create table ginga.OBSLOG (
+    create table ginga.OBSERVATION (
         ID bigint not null auto_increment,
         AVE_ALPHA float,
         AVE_DELTA float,
