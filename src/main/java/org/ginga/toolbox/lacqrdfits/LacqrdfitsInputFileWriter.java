@@ -1,4 +1,4 @@
-package org.ginga.toolbox.spectrum;
+package org.ginga.toolbox.lacqrdfits;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,22 +12,21 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-public class LacspecInputFileWriter {
+public class LacqrdfitsInputFileWriter {
 
-    private final static Logger log = Logger.getLogger(LacspecInputModel.class);
+    private final static Logger log = Logger.getLogger(LacqrdfitsInputModel.class);
 
-    private LacspecInputModel inputModel;
+    private LacqrdfitsInputModel inputModel;
     private Template template;
 
-    public LacspecInputFileWriter(LacspecInputModel model) {
+    public LacqrdfitsInputFileWriter(LacqrdfitsInputModel model) {
         this.inputModel = model;
         // init velocity
         Velocity.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         Velocity.setProperty("classpath.resource.loader.class",
                 ClasspathResourceLoader.class.getName());
         Velocity.init();
-        this.template = Velocity.getTemplate("org/ginga/toolbox/template/lacspec_template.vm");
-
+        this.template = Velocity.getTemplate("org/ginga/toolbox/template/lacqrdfits_template.vm");
     }
 
     public void writeToFile(File file) throws IOException {
@@ -57,19 +56,17 @@ public class LacspecInputFileWriter {
      */
     public static void main(String[] args) {
         try {
-            LacspecInputModel model = new LacspecInputModel();
-            model.setHasBackground(false);
+            LacqrdfitsInputModel model = new LacqrdfitsInputModel();
             model.setLacMode("MPC2");
-            model.setPsFileName("gs2000+25_lacspec.ps");
+            model.setPsFileName("gs2000+25_lacqrd.ps");
             model.setMinElevation(5.0);
-            model.setMinRigidity(10.0);
             model.setRegionFileName("GS2000+25_REGION.DATA");
-            model.setSpectralFileName("GS2000+25_SPEC_lacspec.FILE");
-            model.setMonitorFileName("MONI.SPEC");
-
-            LacspecInputFileWriter writer = new LacspecInputFileWriter(model);
-            writer.writeToFile(new File("/tmp/lacspec.input"));
-            log.info("Input file /tmp/lacspec.input saved successfully");
+            model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
+            model.setTimingFileName("GS2000+25_TIMING.fits");
+            
+            LacqrdfitsInputFileWriter writer = new LacqrdfitsInputFileWriter(model);
+            writer.writeToFile(new File("/tmp/lacqrd.input"));
+            log.info("Input file /tmp/lacqrd.input saved successfully");
         } catch (Exception e) {
             log.error("lacspec input file could not be generated", e);
         }

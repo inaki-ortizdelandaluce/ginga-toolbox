@@ -13,6 +13,7 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
@@ -21,7 +22,6 @@ import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.runtime.GingaToolsEnvironment;
-import org.ginga.toolbox.spectrum.LacqrdfitsInputModel;
 import org.ginga.toolbox.util.DateUtil;
 import org.ginga.toolbox.util.Constants.LacMode;
 

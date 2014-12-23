@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputFileWriter;
+import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.runtime.GingaToolsEnvironment;
 import org.ginga.toolbox.runtime.GingaToolsRuntime;
-import org.ginga.toolbox.spectrum.LacqrdfitsInputFileWriter;
-import org.ginga.toolbox.spectrum.LacqrdfitsInputModel;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;

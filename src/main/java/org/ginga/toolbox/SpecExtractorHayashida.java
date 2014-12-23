@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpConstraints;
+import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.ObservationModeDetails;
 import org.ginga.toolbox.pipeline.Lac2xspecPipe;
@@ -14,7 +15,6 @@ import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.SpectrumModeFilterPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
-import org.ginga.toolbox.spectrum.LacqrdfitsInputModel;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;

@@ -1,4 +1,4 @@
-package org.ginga.toolbox.spectrum;
+package org.ginga.toolbox.lacqrdfits;
 
 import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.LacCounterMode;
