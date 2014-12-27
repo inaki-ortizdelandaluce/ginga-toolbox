@@ -1,13 +1,17 @@
 package org.ginga.toolbox.observation.dao.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.util.HibernateUtil;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 
 public class ObservationDaoImpl implements ObservationDao {
 
@@ -65,6 +69,35 @@ public class ObservationDaoImpl implements ObservationDao {
 		} finally {
 			HibernateUtil.closeSession();
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Set<String> findAllTargets()
+			throws ObservationDaoException {
+		Set<String> targetList = new TreeSet<String>(); // sorted
+		List<String> criteriaList = null;
+		try {
+			HibernateUtil.beginTransaction();
+			Session hibernateSession = HibernateUtil.getSession();
+			Criteria criteria = hibernateSession.createCriteria(ObservationEntity.class);
+			criteria.setProjection(Projections.distinct(Projections.property("targetName")));
+			criteriaList = criteria.list();
+			// values contains concatenated targets with comma separator
+			for (String colValue: criteriaList) {
+				String[] sArray = colValue.split(",");
+				for (int i = 0; i < sArray.length; i++) {
+					targetList.add(sArray[i].trim());
+				}
+			}
+        } catch (Exception e) {
+            throw new ObservationDaoException(e);
+        } finally {
+            HibernateUtil.closeSession();
+        }
+		// remove BGD as target list
+		targetList.remove("BGD");
+        return targetList;
 	}
 
 }
