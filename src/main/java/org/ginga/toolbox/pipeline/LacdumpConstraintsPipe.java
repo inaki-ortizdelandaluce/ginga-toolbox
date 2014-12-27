@@ -24,13 +24,13 @@ public class LacdumpConstraintsPipe extends
      */
     @Override
     protected LacdumpConstraints processNextStart() throws NoSuchElementException {
-        TargetObservationSingleMode modeDetails = this.starts.next();
+        TargetObservationSingleMode targetObservation = this.starts.next();
         LacdumpConstraints constraints = new LacdumpConstraints();
-        constraints.setTargetName(modeDetails.getTarget());
-        constraints.setStartTime(modeDetails.getStartTime());
-        constraints.setEndTime(modeDetails.getEndTime());
+        constraints.setTargetName(targetObservation.getTarget());
+        constraints.setStartTime(targetObservation.getStartTime());
+        constraints.setEndTime(targetObservation.getEndTime());
         constraints.setBitRate(BitRate.H);
-        constraints.setMode(modeDetails.getLacMode());
+        constraints.setMode(targetObservation.getLacMode());
         constraints.setMinRigidity(Constants.DEFAULT_MIN_RIGIDITY);
         constraints.setMinElevation(Constants.DEFAULT_MIN_ELEVATION);
         return constraints;
