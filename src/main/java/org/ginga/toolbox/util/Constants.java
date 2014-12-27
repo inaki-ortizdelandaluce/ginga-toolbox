@@ -22,7 +22,7 @@ public class Constants {
         ONE, ONE_OVER_TWO, ONE_OVER_FOR
     }
 
-    public enum BackgroundSubractionMethod {
+    public enum BackgroundSubtractionMethod {
         SIMPLE, SUD_SORT, HAYASHIDA
     }
     

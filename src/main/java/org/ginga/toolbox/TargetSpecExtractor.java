@@ -9,7 +9,7 @@ import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.TargetObservationSingleMode;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
-import org.ginga.toolbox.util.Constants.BackgroundSubractionMethod;
+import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
 
@@ -20,7 +20,7 @@ public class TargetSpecExtractor {
     public TargetSpecExtractor() {
     }
 
-    public void extractAllSpectra(String target, BackgroundSubractionMethod method) {
+    public void extractAllSpectra(String target, BackgroundSubtractionMethod method) {
   	switch(method) {
     	case HAYASHIDA:
     		extractAllSpectraHayashida(target);
@@ -32,7 +32,7 @@ public class TargetSpecExtractor {
     	}
     }
     
-    public void extractSingleSpectrum(BackgroundSubractionMethod method) {
+    public void extractSingleSpectrum(BackgroundSubtractionMethod method) {
     	switch(method) {
     	case HAYASHIDA:
         	// TODO Scanner to build target observation single mode
@@ -86,7 +86,7 @@ public class TargetSpecExtractor {
     
     private static String getBackgroundSubtractionMethods() {
     	String s = "";
-    	BackgroundSubractionMethod[] methods = BackgroundSubractionMethod.values();
+    	BackgroundSubtractionMethod[] methods = BackgroundSubtractionMethod.values();
     	for (int i = 0; i < methods.length; i++) {
     		s += " " + methods[i].toString() + ",";
 		}
@@ -101,7 +101,7 @@ public class TargetSpecExtractor {
         }
         TargetSpecExtractor extractor = new TargetSpecExtractor();
         try {
-        	BackgroundSubractionMethod method = Enum.valueOf(BackgroundSubractionMethod.class, args[1]);
+        	BackgroundSubtractionMethod method = Enum.valueOf(BackgroundSubtractionMethod.class, args[1]);
         	extractor.extractAllSpectra(args[0], method);
         } catch (IllegalArgumentException e) {
         	log.error("Unknown background subtraction method " + args[1]);

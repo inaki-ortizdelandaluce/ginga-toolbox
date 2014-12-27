@@ -23,7 +23,7 @@ import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.DateUtil;
-import org.ginga.toolbox.util.Constants.BackgroundSubractionMethod;
+import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.Pipe;
@@ -41,7 +41,7 @@ public class Test {
         
     	// extract all spectra
     	TargetSpecExtractor pipeline = new TargetSpecExtractor();
-        pipeline.extractAllSpectra(target, BackgroundSubractionMethod.HAYASHIDA); 
+        pipeline.extractAllSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
         // write observation list
         File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {
