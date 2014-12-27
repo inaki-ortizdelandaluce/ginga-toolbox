@@ -80,7 +80,7 @@ public class ObservationEntity {
     private Set<ObservationDataEntity> obsDataSet;
 
     @Transient
-    private List<ObservationModeDetails> availableModeDetails;
+    private List<TargetObservationSingleMode> singleModeList;
 
     public long getId() {
         return this.id;
@@ -210,21 +210,6 @@ public class ObservationEntity {
         this.passNames = passNames;
     }
 
-    public List<ObservationModeDetails> getAvailableModesDetails() {
-        return this.availableModeDetails;
-    }
-
-    public void setAvailableModeDetails(List<ObservationModeDetails> availableModeDetails) {
-        this.availableModeDetails = availableModeDetails;
-    }
-
-    public void addAvailableModeDetails(ObservationModeDetails modeDetails) {
-        if (this.availableModeDetails == null) {
-            this.availableModeDetails = new ArrayList<ObservationModeDetails>();
-        }
-        this.availableModeDetails.add(modeDetails);
-    }
-
 	public Set<ObservationBgEntity> getObsBgSet() {
 		return obsBgSet;
 	}
@@ -240,4 +225,19 @@ public class ObservationEntity {
 	public void setObsDataSet(Set<ObservationDataEntity> obsDataSet) {
 		this.obsDataSet = obsDataSet;
 	}
+
+	public List<TargetObservationSingleMode> getSingleModeList() {
+		return singleModeList;
+	}
+
+	public void setSingleModeList(List<TargetObservationSingleMode> singleModeList) {
+		this.singleModeList = singleModeList;
+	}
+	
+    public void addSingleMode(TargetObservationSingleMode singleMode) {
+        if (this.singleModeList == null) {
+            this.singleModeList = new ArrayList<TargetObservationSingleMode>();
+        }
+        this.singleModeList.add(singleMode);
+    }
 }

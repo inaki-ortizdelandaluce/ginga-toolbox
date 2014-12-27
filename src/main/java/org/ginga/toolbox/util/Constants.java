@@ -22,6 +22,10 @@ public class Constants {
         ONE, ONE_OVER_TWO, ONE_OVER_FOR
     }
 
+    public enum BackgroundSubractionMethod {
+        SIMPLE, SUD_SORT, HAYASHIDA
+    }
+    
     public static final double DEFAULT_MIN_ELEVATION = 5.0;
     public static final double DEFAULT_MAX_ELEVATION = 180.0;
     public static final double DEFAULT_MIN_RIGIDITY = 10.0;

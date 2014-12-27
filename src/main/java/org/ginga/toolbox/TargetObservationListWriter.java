@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.ObservationModeDetails;
+import org.ginga.toolbox.observation.TargetObservationSingleMode;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -32,11 +32,11 @@ public class TargetObservationListWriter {
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
-        List<ObservationModeDetails> obsModeList = null;
+        List<TargetObservationSingleMode> obsModeList = null;
         for (ObservationEntity obsEntity : obsList) {
-            obsModeList = obsEntity.getAvailableModesDetails();
+            obsModeList = obsEntity.getSingleModeList();
             if (obsModeList != null) {
-                for (ObservationModeDetails obsMode : obsModeList) {
+                for (TargetObservationSingleMode obsMode : obsModeList) {
                     this.writer.println(" "
                             + String.format(
                                     "%18s",
@@ -57,11 +57,11 @@ public class TargetObservationListWriter {
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
-        List<ObservationModeDetails> obsModeList = null;
+        List<TargetObservationSingleMode> obsModeList = null;
         for (ObservationEntity obsEntity : obsList) {
-            obsModeList = obsEntity.getAvailableModesDetails();
+            obsModeList = obsEntity.getSingleModeList();
             if (obsModeList != null) {
-                for (ObservationModeDetails obsMode : obsModeList) {
+                for (TargetObservationSingleMode obsMode : obsModeList) {
                 	LacMode mode = obsMode.getLacMode();
                 	if(mode.equals(LacMode.MPC1) || mode.equals(LacMode.MPC2)) {
                         this.writer.println(" "
