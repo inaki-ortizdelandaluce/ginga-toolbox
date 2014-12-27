@@ -61,7 +61,7 @@ public class TargetSpecExtractor {
     }
     
     public void extractSpectraHayashida(List<ObservationEntity> obsList) {
-        SpectrumHayashidaPipeline specHayashidaPipeline = null;
+        SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
         List<TargetObservationSingleMode> singleModeList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
@@ -69,7 +69,6 @@ public class TargetSpecExtractor {
             // extract spectrum for all relevant modes
             if (singleModeList != null) {
                 // run pipeline
-            	specHayashidaPipeline = new SpectrumHayashidaPipeline();
                 specHayashidaPipeline.run(singleModeList);
                 File file = null;
                 while (specHayashidaPipeline.hasNext()) {
@@ -82,4 +81,16 @@ public class TargetSpecExtractor {
             log.info("Observation " + obsEntity.getSequenceNumber() + " processed successfully");
         }
     }
+    public void extractSpectrumHayashida(TargetObservationSingleMode singleMode) {
+        if (singleMode != null) {
+        	// run pipeline
+        	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
+            specHayashidaPipeline.run(Arrays.asList(singleMode));
+            File file = specHayashidaPipeline.next();
+            if (file != null) {
+            	log.info("Spectrum file " + file.getName() + " created successfully");
+            }
+        }
+    }
+
 }
