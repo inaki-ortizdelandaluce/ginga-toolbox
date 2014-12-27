@@ -41,7 +41,7 @@ public class Test {
         
     	// extract all spectra
     	TargetSpecExtractor pipeline = new TargetSpecExtractor();
-        pipeline.extractSpectra(target, BackgroundSubractionMethod.HAYASHIDA); 
+        pipeline.extractAllSpectra(target, BackgroundSubractionMethod.HAYASHIDA); 
         // write observation list
         File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {

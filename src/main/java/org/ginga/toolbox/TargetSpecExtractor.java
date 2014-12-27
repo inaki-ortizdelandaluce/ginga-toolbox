@@ -20,38 +20,14 @@ public class TargetSpecExtractor {
     public TargetSpecExtractor() {
     }
 
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage org.ginga.toolbox.TargetSpecExtractor <target> <background subtraction method>");
-            System.out.println("\t Background subtraction methods: " + getBackgroundSubtractionMethods());
-            System.exit(1);
-        }
-        TargetSpecExtractor extractor = new TargetSpecExtractor();
-        try {
-        	BackgroundSubractionMethod method = Enum.valueOf(BackgroundSubractionMethod.class, args[1]);
-        	extractor.extractSpectra(args[0], method);
-        } catch (IllegalArgumentException e) {
-        	log.error("Unknown background subtraction method " + args[1]);
-        }
-    }
-
-    public static String getBackgroundSubtractionMethods() {
-    	String s = "";
-    	BackgroundSubractionMethod[] methods = BackgroundSubractionMethod.values();
-    	for (int i = 0; i < methods.length; i++) {
-    		s += " " + methods[i].toString() + ",";
-		}
-    	return s.substring(0, s.length()-1);
-    } 
-    
-    public void extractSpectra(String target, BackgroundSubractionMethod method) {
+    public void extractAllSpectra(String target, BackgroundSubractionMethod method) {
         // find all observations for input target
         Pipe<String, List<ObservationEntity>> scanner = new TargetObservationListPipe();
         scanner.setStarts(Arrays.asList(target));
         // extract spectra for all observations
     	switch(method) {
     	case HAYASHIDA:
-    		extractSpectraHayashida(scanner.next());
+    		extractAllSpectraHayashida(scanner.next());
     	case SIMPLE:
     	case SUD_SORT:
     	default:
@@ -60,7 +36,20 @@ public class TargetSpecExtractor {
     	}
     }
     
-    public void extractSpectraHayashida(List<ObservationEntity> obsList) {
+    public void extractSingleSpectrum(BackgroundSubractionMethod method) {
+    	switch(method) {
+    	case HAYASHIDA:
+    		// TODO Scanner to build target observation single mode
+    		extractSingleSpectrumHayashida(null);
+    	case SIMPLE:
+    	case SUD_SORT:
+    	default:
+    		log.error(method + " background subtraction method not supported");
+    		System.exit(1);
+    	}
+    }
+
+    private void extractAllSpectraHayashida(List<ObservationEntity> obsList) {
         SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
         List<TargetObservationSingleMode> singleModeList = null;
         for (ObservationEntity obsEntity : obsList) {
@@ -81,7 +70,8 @@ public class TargetSpecExtractor {
             log.info("Observation " + obsEntity.getSequenceNumber() + " processed successfully");
         }
     }
-    public void extractSpectrumHayashida(TargetObservationSingleMode singleMode) {
+
+    private void extractSingleSpectrumHayashida(TargetObservationSingleMode singleMode) {
         if (singleMode != null) {
         	// run pipeline
         	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
@@ -92,5 +82,28 @@ public class TargetSpecExtractor {
             }
         }
     }
-
+    
+    private static String getBackgroundSubtractionMethods() {
+    	String s = "";
+    	BackgroundSubractionMethod[] methods = BackgroundSubractionMethod.values();
+    	for (int i = 0; i < methods.length; i++) {
+    		s += " " + methods[i].toString() + ",";
+		}
+    	return s.substring(0, s.length()-1);
+    }
+    
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Usage org.ginga.toolbox.TargetSpecExtractor <target> <background subtraction method>");
+            System.out.println("\t Background subtraction methods: " + getBackgroundSubtractionMethods());
+            System.exit(1);
+        }
+        TargetSpecExtractor extractor = new TargetSpecExtractor();
+        try {
+        	BackgroundSubractionMethod method = Enum.valueOf(BackgroundSubractionMethod.class, args[1]);
+        	extractor.extractAllSpectra(args[0], method);
+        } catch (IllegalArgumentException e) {
+        	log.error("Unknown background subtraction method " + args[1]);
+        }
+    }
 }
