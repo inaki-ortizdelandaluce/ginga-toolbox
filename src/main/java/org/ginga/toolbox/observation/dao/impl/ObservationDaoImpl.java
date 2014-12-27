@@ -18,7 +18,7 @@ public class ObservationDaoImpl implements ObservationDao {
         List<ObservationEntity> obsList = null;
         try {
             String hql = "FROM " + ObservationEntity.class.getSimpleName() + 
-            		" WHERE TARGET_NAME like :target ORDER BY ID";
+            		" WHERE TARGET_NAME like :target ORDER BY OBSERVATION_ID";
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
