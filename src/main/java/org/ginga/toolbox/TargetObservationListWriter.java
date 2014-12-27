@@ -84,13 +84,14 @@ public class TargetObservationListWriter {
             System.out.println("Usage org.ginga.toolbox.TargetObservationListWriter <target>");
             System.exit(1);
         }
+        String target = args[0];
         File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }
-        File file = new File(workingDir, "observation.list");
+        File file = new File(workingDir, target.replace(" ", "_")+ "-observations.txt");
         FileWriter writer = new FileWriter(file);
         TargetObservationListWriter summary = new TargetObservationListWriter(writer);
-        summary.writeSpectralModes(args[0]);
+        summary.writeSpectralModes(target);
     }
 }

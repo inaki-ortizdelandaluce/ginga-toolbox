@@ -50,7 +50,7 @@ public class TargetListWriter {
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }
-        File f = new File(workingDir, "target.list");
+        File f = new File(workingDir, "Ginga-targets.txt");
         FileWriter fw = new FileWriter(f);
         TargetListWriter writer = new TargetListWriter(fw);
         writer.write();
