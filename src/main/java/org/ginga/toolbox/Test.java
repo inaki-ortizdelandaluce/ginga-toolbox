@@ -40,7 +40,7 @@ public class Test {
     	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
         
     	// extract all spectra
-    	TargetSpectrumExtractor pipeline = new TargetSpectrumExtractor();
+    	TargetSpecExtractor pipeline = new TargetSpecExtractor();
         pipeline.extractSpectra(target, BackgroundSubractionMethod.HAYASHIDA); 
         // write observation list
         File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
