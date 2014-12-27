@@ -9,10 +9,10 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.ObservationModeDetails;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
-import org.ginga.toolbox.runtime.GingaToolsEnvironment;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class TargetObservationListWriter {
@@ -84,7 +84,7 @@ public class TargetObservationListWriter {
             System.out.println("Usage org.ginga.toolbox.TargetObservationListWriter <target>");
             System.exit(1);
         }
-        File workingDir = new File(GingaToolsEnvironment.getInstance().getGingaWrkDir());
+        File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }

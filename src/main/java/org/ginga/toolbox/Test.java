@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.lacdump.LacdumpConstraints;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
@@ -21,7 +22,6 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
-import org.ginga.toolbox.runtime.GingaToolsEnvironment;
 import org.ginga.toolbox.util.DateUtil;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -42,7 +42,7 @@ public class Test {
     	SpecExtractorHayashida pipeline = new SpecExtractorHayashida();
         pipeline.execute(target); 
         // write observation list
-        File workingDir = new File(GingaToolsEnvironment.getInstance().getGingaWrkDir());
+        File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }

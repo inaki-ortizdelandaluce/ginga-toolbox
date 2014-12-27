@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.gti.GtiFileWriter;
 import org.ginga.toolbox.lacdump.LacdumpConstraints;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -13,7 +14,6 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
-import org.ginga.toolbox.runtime.GingaToolsEnvironment;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
@@ -37,7 +37,7 @@ public class LacqrdfitsInputPipe extends
 			LacdumpConstraints constraints = this.starts.next();
 
 			// set working directory
-			GingaToolsEnvironment gingaEnv = GingaToolsEnvironment
+			GingaToolboxEnvironment gingaEnv = GingaToolboxEnvironment
 					.getInstance();
 			File workingDir = new File(gingaEnv.getGingaWrkDir());
 			if (!workingDir.exists()) {

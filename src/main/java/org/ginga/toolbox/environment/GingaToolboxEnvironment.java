@@ -1,4 +1,4 @@
-package org.ginga.toolbox.runtime;
+package org.ginga.toolbox.environment;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,42 +12,42 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.util.DatabaseProperties;
 
-public class GingaToolsEnvironment {
+public class GingaToolboxEnvironment {
 
     private static final Logger log = Logger.getLogger(DatabaseProperties.class);
 
     private Properties properties;
-    private static GingaToolsEnvironment instance;
+    private static GingaToolboxEnvironment instance;
 
-    public static GingaToolsEnvironment getInstance() {
+    public static GingaToolboxEnvironment getInstance() {
         if (instance == null) {
-            instance = new GingaToolsEnvironment();
+            instance = new GingaToolboxEnvironment();
         }
         return instance;
     }
 
-    private GingaToolsEnvironment() {
+    private GingaToolboxEnvironment() {
         initialize();
     }
 
     private void initialize() {
         InputStream in = null;
-        String propertiesFilePath = System.getProperty("gingaToolsPropertiesFile");
+        String propertiesFilePath = System.getProperty("gingaToolboxPropertiesFile");
         if (propertiesFilePath == null) {
             // if system property is not specified use classpath properties
             log.debug("Using Ginga Tools environment properties found in classpath");
             in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
-                    "gingatools.properties");
+                    "gingatoolbox.properties");
         } else {
             try {
                 in = new FileInputStream(new File(propertiesFilePath));
                 log.debug("Using Ginga Tools environment properties found in " + propertiesFilePath);
             } catch (FileNotFoundException e) {
-                log.warn("System property 'gingaToolsPropertiesFile' badly defined. Value: "
+                log.warn("System property 'gingaToolboxPropertiesFile' badly defined. Value: "
                         + propertiesFilePath);
                 log.debug("UsingGinga Tools environment properties found in classpath");
                 in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
-                        "gingatools.properties");
+                        "gingatoolbox.properties");
             }
         }
         loadProperties(in);
@@ -60,10 +60,10 @@ public class GingaToolsEnvironment {
             try {
                 this.properties.load(in);
             } catch (IOException e) {
-                log.warn("Could not read 'gingatools.properties'. Cause: " + e.getMessage());
+                log.warn("Could not read 'gingatoolbox.properties'. Cause: " + e.getMessage());
             }
         } else {
-            log.warn("Property file 'gingatools.properties' not found in classpath");
+            log.warn("Property file 'gingatoolbox.properties' not found in classpath");
         }
     }
 

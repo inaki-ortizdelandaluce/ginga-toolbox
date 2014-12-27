@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 
 public class GingaToolsRuntime {
 
@@ -31,7 +32,7 @@ public class GingaToolsRuntime {
     private void initialize() {
         Map<String, String> env = this.pb.environment();
         // update environment variables with ginga tools environment
-        GingaToolsEnvironment gte = GingaToolsEnvironment.getInstance();
+        GingaToolboxEnvironment gte = GingaToolboxEnvironment.getInstance();
         Map<String, String> gingaEnv = gte.getEnv();
         for (Iterator<String> iterator = gingaEnv.keySet().iterator(); iterator.hasNext();) {
             String key = iterator.next();

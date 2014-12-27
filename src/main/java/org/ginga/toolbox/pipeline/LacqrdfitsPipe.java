@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputFileWriter;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
-import org.ginga.toolbox.runtime.GingaToolsEnvironment;
 import org.ginga.toolbox.runtime.GingaToolsRuntime;
 import org.ginga.toolbox.util.FileUtil;
 
@@ -28,7 +28,7 @@ public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File>
 		try {
 			LacqrdfitsInputModel inputModel = this.starts.next();
 			if (inputModel != null) {
-				GingaToolsEnvironment gingaEnv = GingaToolsEnvironment
+				GingaToolboxEnvironment gingaEnv = GingaToolboxEnvironment
 						.getInstance();
 				File workingDir = new File(gingaEnv.getGingaWrkDir());
 				if (!workingDir.exists()) {
