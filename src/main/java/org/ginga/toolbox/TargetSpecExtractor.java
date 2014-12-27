@@ -21,13 +21,9 @@ public class TargetSpecExtractor {
     }
 
     public void extractAllSpectra(String target, BackgroundSubractionMethod method) {
-        // find all observations for input target
-        Pipe<String, List<ObservationEntity>> scanner = new TargetObservationListPipe();
-        scanner.setStarts(Arrays.asList(target));
-        // extract spectra for all observations
-    	switch(method) {
+  	switch(method) {
     	case HAYASHIDA:
-    		extractAllSpectraHayashida(scanner.next());
+    		extractAllSpectraHayashida(target);
     	case SIMPLE:
     	case SUD_SORT:
     	default:
@@ -39,7 +35,7 @@ public class TargetSpecExtractor {
     public void extractSingleSpectrum(BackgroundSubractionMethod method) {
     	switch(method) {
     	case HAYASHIDA:
-    		// TODO Scanner to build target observation single mode
+        	// TODO Scanner to build target observation single mode
     		extractSingleSpectrumHayashida(null);
     	case SIMPLE:
     	case SUD_SORT:
@@ -49,8 +45,13 @@ public class TargetSpecExtractor {
     	}
     }
 
-    private void extractAllSpectraHayashida(List<ObservationEntity> obsList) {
-        SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
+    private void extractAllSpectraHayashida(String target) {
+        // find all observations for input target
+        Pipe<String, List<ObservationEntity>> obsListPipe = new TargetObservationListPipe();
+        obsListPipe.setStarts(Arrays.asList(target));
+        List<ObservationEntity> obsList = obsListPipe.next();
+        // extract spectra for all observations
+    	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
         List<TargetObservationSingleMode> singleModeList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
@@ -72,7 +73,7 @@ public class TargetSpecExtractor {
     }
 
     private void extractSingleSpectrumHayashida(TargetObservationSingleMode singleMode) {
-        if (singleMode != null) {
+		if (singleMode != null) {
         	// run pipeline
         	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
             specHayashidaPipeline.run(Arrays.asList(singleMode));
