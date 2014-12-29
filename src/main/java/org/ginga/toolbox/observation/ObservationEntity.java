@@ -80,7 +80,7 @@ public class ObservationEntity {
     private Set<ObservationDataEntity> obsDataSet;
 
     @Transient
-    private List<TargetSingleModeObservation> singleModeObsList;
+    private List<SingleModeTargetObservation> singleModeObsList;
 
     public long getId() {
         return this.id;
@@ -226,17 +226,17 @@ public class ObservationEntity {
 		this.obsDataSet = obsDataSet;
 	}
 
-	public List<TargetSingleModeObservation> getSingleModeObsList() {
+	public List<SingleModeTargetObservation> getSingleModeObsList() {
 		return singleModeObsList;
 	}
 
-	public void setSingleModeList(List<TargetSingleModeObservation> singleModeObsList) {
+	public void setSingleModeList(List<SingleModeTargetObservation> singleModeObsList) {
 		this.singleModeObsList = singleModeObsList;
 	}
 	
-    public void addSingleModeObs(TargetSingleModeObservation singleModeObs) {
+    public void addSingleModeObs(SingleModeTargetObservation singleModeObs) {
         if (this.singleModeObsList == null) {
-            this.singleModeObsList = new ArrayList<TargetSingleModeObservation>();
+            this.singleModeObsList = new ArrayList<SingleModeTargetObservation>();
         }
         this.singleModeObsList.add(singleModeObs);
     }

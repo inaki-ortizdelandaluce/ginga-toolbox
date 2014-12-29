@@ -14,7 +14,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.TargetSingleModeObservation;
+import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
@@ -42,7 +42,7 @@ public class TargetSpecExtractor {
     	}
     }
     
-    public void extractSingleSpectrum(TargetSingleModeObservation obs, BackgroundSubtractionMethod method) {
+    public void extractSingleSpectrum(SingleModeTargetObservation obs, BackgroundSubtractionMethod method) {
     	switch(method) {
     	case HAYASHIDA:
     		extractSingleSpectrumHayashida(obs);
@@ -61,7 +61,7 @@ public class TargetSpecExtractor {
         List<ObservationEntity> obsList = obsListPipe.next();
         // extract spectra for all observations
     	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
-        List<TargetSingleModeObservation> singleModeObsList = null;
+        List<SingleModeTargetObservation> singleModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
             singleModeObsList = obsEntity.getSingleModeObsList();
@@ -81,7 +81,7 @@ public class TargetSpecExtractor {
         }
     }
 
-    private void extractSingleSpectrumHayashida(TargetSingleModeObservation obs) {
+    private void extractSingleSpectrumHayashida(SingleModeTargetObservation obs) {
 		if (obs != null) {
         	// run pipeline
         	SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
@@ -130,7 +130,7 @@ public class TargetSpecExtractor {
     		if(commandLine.hasOption("a")) { // extract all spectra
     			extractor.extractAllSpectra(target, method);
 	        } else { // extract single spectra
-	        	TargetSingleModeObservation obs = getSingleModeObservationFromInput();
+	        	SingleModeTargetObservation obs = getSingleModeObservationFromInput();
 	        	obs.setTarget(target);
 	        	//extractor.extractSingleSpectrum(obs, method);
 	        }
@@ -140,8 +140,8 @@ public class TargetSpecExtractor {
 		}
     }
     
-    private static TargetSingleModeObservation getSingleModeObservationFromInput() {
-    	TargetSingleModeObservation obs = new TargetSingleModeObservation();
+    private static SingleModeTargetObservation getSingleModeObservationFromInput() {
+    	SingleModeTargetObservation obs = new SingleModeTargetObservation();
     	Scanner scanner = new Scanner(System.in);
     	try {
         	// OBSERVATION ID 

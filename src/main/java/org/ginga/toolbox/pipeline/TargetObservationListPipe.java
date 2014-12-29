@@ -11,7 +11,7 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.TargetSingleModeObservation;
+import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
@@ -58,7 +58,7 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
 
             // find date ranges for each mode
             List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
-            TargetSingleModeObservation singleModeObs = null;
+            SingleModeTargetObservation singleModeObs = null;
             for (String mode : modes) {
                 try {
                     sfList = lacdumpDao.findSfList(mode, target, startTime, endTime,
@@ -69,8 +69,8 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
                 if (sfList.size() > 0) {
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
-                    log.info("[" + mode + ", " + modeStartTime + ", " + endTime + "]");
-                    singleModeObs = new TargetSingleModeObservation();
+                    log.info("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
+                    singleModeObs = new SingleModeTargetObservation();
                     singleModeObs.setObsId(obsEntity.getId());
                     singleModeObs.setTarget(target);
                     singleModeObs.setMode(mode);

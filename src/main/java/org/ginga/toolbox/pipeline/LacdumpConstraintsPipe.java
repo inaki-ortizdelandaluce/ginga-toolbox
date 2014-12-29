@@ -6,7 +6,7 @@ package org.ginga.toolbox.pipeline;
 import java.util.NoSuchElementException;
 
 import org.ginga.toolbox.lacdump.LacdumpConstraints;
-import org.ginga.toolbox.observation.TargetSingleModeObservation;
+import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.BitRate;
 
@@ -14,8 +14,8 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacdumpConstraintsPipe extends
-        AbstractPipe<TargetSingleModeObservation, LacdumpConstraints> implements
-        TransformPipe<TargetSingleModeObservation, LacdumpConstraints> {
+        AbstractPipe<SingleModeTargetObservation, LacdumpConstraints> implements
+        TransformPipe<SingleModeTargetObservation, LacdumpConstraints> {
 
     /*
      * (non-Javadoc)
@@ -24,7 +24,7 @@ public class LacdumpConstraintsPipe extends
      */
     @Override
     protected LacdumpConstraints processNextStart() throws NoSuchElementException {
-        TargetSingleModeObservation targetObservation = this.starts.next();
+        SingleModeTargetObservation targetObservation = this.starts.next();
         LacdumpConstraints constraints = new LacdumpConstraints();
         constraints.setTargetName(targetObservation.getTarget());
         constraints.setStartTime(targetObservation.getStartTime());
