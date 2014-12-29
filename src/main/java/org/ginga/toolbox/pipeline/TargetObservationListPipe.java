@@ -11,7 +11,7 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.TargetObservationSingleMode;
+import org.ginga.toolbox.observation.TargetSingleModeObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
@@ -58,7 +58,7 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
 
             // find date ranges for each mode
             List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
-            TargetObservationSingleMode singleMode = null;
+            TargetSingleModeObservation singleModeObs = null;
             for (String mode : modes) {
                 try {
                     sfList = lacdumpDao.findSfList(mode, target, startTime, endTime,
@@ -70,14 +70,14 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
                     log.info("[" + mode + ", " + modeStartTime + ", " + endTime + "]");
-                    singleMode = new TargetObservationSingleMode();
-                    singleMode.setObsId(obsEntity.getId());
-                    singleMode.setTarget(target);
-                    singleMode.setMode(mode);
-                    singleMode.setStartTime(modeStartTime);
-                    singleMode.setEndTime(modeEndTime);
+                    singleModeObs = new TargetSingleModeObservation();
+                    singleModeObs.setObsId(obsEntity.getId());
+                    singleModeObs.setTarget(target);
+                    singleModeObs.setMode(mode);
+                    singleModeObs.setStartTime(modeStartTime);
+                    singleModeObs.setEndTime(modeEndTime);
                     // add observation mode to observation summary
-                    obsEntity.addSingleMode(singleMode);
+                    obsEntity.addSingleModeObs(singleModeObs);
                 }
             }
         }

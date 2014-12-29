@@ -4,12 +4,12 @@
 package org.ginga.toolbox.pipeline;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.observation.TargetObservationSingleMode;
+import org.ginga.toolbox.observation.TargetSingleModeObservation;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.PipeFunction;
 
-public class SpectrumModeFilterPipe implements PipeFunction<TargetObservationSingleMode, Boolean> {
+public class SpectrumModeFilterPipe implements PipeFunction<TargetSingleModeObservation, Boolean> {
 
     @SuppressWarnings("unused")
     private static final Logger log = Logger.getLogger(SpectrumModeFilterPipe.class);
@@ -20,8 +20,8 @@ public class SpectrumModeFilterPipe implements PipeFunction<TargetObservationSin
      * @see com.tinkerpop.pipes.PipeFunction#compute(java.lang.Object)
      */
     @Override
-    public Boolean compute(TargetObservationSingleMode obsMode) {
-        LacMode mode = obsMode.getLacMode();
+    public Boolean compute(TargetSingleModeObservation observation) {
+        LacMode mode = observation.getLacMode();
         if (mode == null)
             return Boolean.FALSE;
         if (mode.equals(LacMode.MPC1) || mode.equals(LacMode.MPC2)) {

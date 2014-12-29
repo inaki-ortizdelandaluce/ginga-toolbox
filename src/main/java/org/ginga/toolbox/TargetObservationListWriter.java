@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.TargetObservationSingleMode;
+import org.ginga.toolbox.observation.TargetSingleModeObservation;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -32,18 +32,19 @@ public class TargetObservationListWriter {
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
-        List<TargetObservationSingleMode> obsModeList = null;
+        List<TargetSingleModeObservation> singleModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
-            obsModeList = obsEntity.getSingleModeList();
-            if (obsModeList != null) {
-                for (TargetObservationSingleMode obsMode : obsModeList) {
+        	singleModeObsList = obsEntity.getSingleModeObsList();
+            if (singleModeObsList != null) {
+                for (TargetSingleModeObservation singleModeObs : singleModeObsList) {
                     this.writer.println(" "
                             + String.format(
                                     "%18s",
-                                    obsEntity.getSequenceNumber() + " "
-                                            + String.format("%8s", obsMode.getMode()) + " "
-                                            + String.format("%20s", obsMode.getStartTime()) + " "
-                                            + String.format("%20s", obsMode.getEndTime())));
+                                    obsEntity.getId() + " " 
+                                    + obsEntity.getSequenceNumber() + " "
+                                            + String.format("%8s", singleModeObs.getMode()) + " "
+                                            + String.format("%20s", singleModeObs.getStartTime()) + " "
+                                            + String.format("%20s", singleModeObs.getEndTime())));
                 }
                 this.writer.println("----------------------------------------------------------");
             }
@@ -57,20 +58,21 @@ public class TargetObservationListWriter {
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
-        List<TargetObservationSingleMode> obsModeList = null;
+        List<TargetSingleModeObservation> singleModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
-            obsModeList = obsEntity.getSingleModeList();
-            if (obsModeList != null) {
-                for (TargetObservationSingleMode obsMode : obsModeList) {
-                	LacMode mode = obsMode.getLacMode();
+        	singleModeObsList = obsEntity.getSingleModeObsList();
+            if (singleModeObsList != null) {
+                for (TargetSingleModeObservation singleModeObs : singleModeObsList) {
+                	LacMode mode = singleModeObs.getLacMode();
                 	if(mode.equals(LacMode.MPC1) || mode.equals(LacMode.MPC2)) {
                         this.writer.println(" "
                                 + String.format(
                                         "%18s",
-                                        obsEntity.getSequenceNumber() + " "
-                                                + String.format("%8s", obsMode.getMode()) + " "
-                                                + String.format("%20s", obsMode.getStartTime()) + " "
-                                                + String.format("%20s", obsMode.getEndTime())));
+                                        obsEntity.getId() + " " 
+                                        + obsEntity.getSequenceNumber() + " "
+                                                + String.format("%8s", singleModeObs.getMode()) + " "
+                                                + String.format("%20s", singleModeObs.getStartTime()) + " "
+                                                + String.format("%20s", singleModeObs.getEndTime())));
                 	}
                 }
             }

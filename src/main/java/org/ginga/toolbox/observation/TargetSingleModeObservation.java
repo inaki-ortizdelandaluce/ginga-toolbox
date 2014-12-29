@@ -2,7 +2,7 @@ package org.ginga.toolbox.observation;
 
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class TargetObservationSingleMode {
+public class TargetSingleModeObservation {
 
     private long obsId;
     private String target;
