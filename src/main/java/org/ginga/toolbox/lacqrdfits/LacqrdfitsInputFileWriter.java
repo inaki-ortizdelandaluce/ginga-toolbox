@@ -26,7 +26,7 @@ public class LacqrdfitsInputFileWriter {
         Velocity.setProperty("classpath.resource.loader.class",
                 ClasspathResourceLoader.class.getName());
         Velocity.init();
-        this.template = Velocity.getTemplate("org/ginga/toolbox/template/lacqrdfits_template.vm");
+        this.template = Velocity.getTemplate("org/ginga/toolbox/lacqrdfits/template/lacqrdfits_template.vm");
     }
 
     public void writeToFile(File file) throws IOException {
