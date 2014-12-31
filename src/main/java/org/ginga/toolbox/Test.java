@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.command.TargetObservationListWriterCmd;
+import org.ginga.toolbox.command.SpectraExtractorCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.lacdump.LacdumpConstraints;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -40,8 +42,7 @@ public class Test {
     	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
         
     	// extract all spectra
-    	TargetSpecExtractor pipeline = new TargetSpecExtractor();
-        pipeline.extractAllSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
+        SpectraExtractorCmd.extractSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
         // write observation list
         File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
         if(!workingDir.exists()) {
@@ -49,7 +50,7 @@ public class Test {
         }
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
-        TargetObservationListWriter summary = new TargetObservationListWriter(writer);
+        TargetObservationListWriterCmd summary = new TargetObservationListWriterCmd(writer);
         summary.writeSpectralModes(target);
     }
 

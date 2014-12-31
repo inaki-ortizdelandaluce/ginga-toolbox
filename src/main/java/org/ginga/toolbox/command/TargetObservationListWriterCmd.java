@@ -1,4 +1,4 @@
-package org.ginga.toolbox;
+package org.ginga.toolbox.command;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,21 +9,98 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ginga.toolbox.environment.GingaToolboxEnvironment;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.log4j.Logger;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class TargetObservationListWriter {
+public class TargetObservationListWriterCmd {
 
 	private PrintWriter writer;
+	public static final Logger log = Logger.getLogger(TargetListWriterCmd.class);
 	
-	public TargetObservationListWriter(Writer writer) {
+	public static void main(String[] args) {
+		try {
+			CommandLine commandLine = new BasicParser().parse(getOptions(), args);
+			// read command line argument values 
+	        Writer writer = null;
+	        String target = commandLine.getOptionValue("t");
+			if(commandLine.hasOption("f")) {
+				String filePath = commandLine.getOptionValue("f");
+				File f = new File(filePath);
+				// create parent directory if it does not exist
+				if(!f.getParentFile().exists()) {
+					f.getParentFile().mkdirs();
+				}
+				writer = new FileWriter(f);
+			} else {
+				writer = new PrintWriter(System.out);
+			}
+			// write target list 
+			TargetObservationListWriterCmd cmd = new TargetObservationListWriterCmd(writer);
+			if(commandLine.hasOption("a")) {
+				cmd.writeAllModes(target);
+			} else {
+				cmd.writeSpectralModes(target);
+			}
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			HelpFormatter helpFormatter = new HelpFormatter();
+	    	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
+		} catch (IOException e) {
+			log.error(e.getMessage(),e);
+		} 
+    }
+	
+	@SuppressWarnings("static-access")
+	private static Options getOptions() {
+    	Options options = new Options();
+    	
+    	Option targetOption = OptionBuilder.withArgName("target")
+    			.withLongOpt("target")
+    			.isRequired()
+    			.withDescription("Target name")
+    			.hasArg()
+    			.create("t");
+    	
+    	Option fileOption = OptionBuilder.withArgName("file path")
+    			.withLongOpt("file")
+    			.withDescription("write target list to file")
+    			.hasArg()
+    			.create("f");
+    	
+    	Option consoleOption = new Option("c", "console", false, "write target list to console");
+    	
+    	OptionGroup group1 = new OptionGroup();
+    	group1.setRequired(true);
+    	group1.addOption(fileOption);
+    	group1.addOption(consoleOption);
+    	
+    	OptionGroup group2 = new OptionGroup();
+    	group2.setRequired(true);
+    	group2.addOption(new Option("a", "all-modes", false, "include all LAC modes"));
+    	group2.addOption(new Option("s", "spectral-modes-only", false, "include MPC1 and MPC2 LAC modes only"));
+    	
+    	options.addOption(targetOption);
+    	options.addOptionGroup(group1);
+    	options.addOptionGroup(group2);
+    	return options;
+	}
+
+	public TargetObservationListWriterCmd(Writer writer) {
 		this.writer = new PrintWriter(writer);
 	}
 	
-	public TargetObservationListWriter(PrintStream stream) {
+	public TargetObservationListWriterCmd(PrintStream stream) {
 		this.writer = new PrintWriter(stream);
 	}
 	
@@ -79,21 +156,5 @@ public class TargetObservationListWriter {
         }
         this.writer.flush();
         this.writer.close();
-    }
-
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            System.out.println("Usage org.ginga.toolbox.TargetObservationListWriter <target>");
-            System.exit(1);
-        }
-        String target = args[0];
-        File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
-        if(!workingDir.exists()) {
-        	workingDir.mkdirs();
-        }
-        File file = new File(workingDir, target.replace(" ", "_")+ "-observations.txt");
-        FileWriter writer = new FileWriter(file);
-        TargetObservationListWriter summary = new TargetObservationListWriter(writer);
-        summary.writeSpectralModes(target);
     }
 }
