@@ -40,20 +40,27 @@ public class TargetListWriterCmd {
 					f.getParentFile().mkdirs();
 				}
 				writer = new FileWriter(f);
-			} else {
+			} else if(commandLine.hasOption("c")){
 				writer = new PrintWriter(System.out);
+			} else {
+				printHelp();
+				System.exit(0);
 			}
 			// write target list 
 			TargetListWriterCmd cmd = new TargetListWriterCmd(writer);
 			cmd.write();
 		} catch (ParseException e) {
 			log.error(e.getMessage());
-			HelpFormatter helpFormatter = new HelpFormatter();
-	    	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
+			printHelp();
 		} catch (IOException e) {
 			log.error(e.getMessage(),e);
 		} 
     }
+
+	private static void printHelp() {
+		HelpFormatter helpFormatter = new HelpFormatter();
+    	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
+	}
 	
 	@SuppressWarnings("static-access")
 	private static Options getOptions() {
@@ -64,8 +71,11 @@ public class TargetListWriterCmd {
     			.hasArg()
     			.create("f");
     	Option consoleOption = new Option("c", "console", false, "write target list to console");
+    	Option helpOption = new Option("h", "help", false, "show command help");
+    	
     	OptionGroup group = new OptionGroup();
     	group.setRequired(true);
+    	group.addOption(helpOption);
     	group.addOption(fileOption);
     	group.addOption(consoleOption);
     	options.addOptionGroup(group);

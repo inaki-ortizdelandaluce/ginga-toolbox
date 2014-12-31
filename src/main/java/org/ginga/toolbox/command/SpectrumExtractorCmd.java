@@ -106,6 +106,7 @@ public class SpectrumExtractorCmd {
 			} else {
 				endTime = scanner.scanEndTime();
 			}
+			scanner.close(); 
 			// build single mode target observation instance from arguments
 			SingleModeTargetObservation obs = new SingleModeTargetObservation();
 			obs.setObsId(obsId);

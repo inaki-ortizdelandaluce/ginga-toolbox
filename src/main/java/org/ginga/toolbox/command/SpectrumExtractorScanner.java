@@ -17,7 +17,9 @@ public class SpectrumExtractorScanner {
 	}
 	
 	public void close() {
-		this.scanner.close();
+		if(this.scanner != null) {
+			this.scanner.close();
+		}
 	}
 	
 	private void initialize() {
