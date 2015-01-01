@@ -11,21 +11,22 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-public class GingaToolboxEnvironment {
+public class GingaToolboxEnv {
 
-    private static final Logger log = Logger.getLogger(GingaToolboxEnvironment.class);
+    private static final Logger log = Logger.getLogger(GingaToolboxEnv.class);
+    private static GingaToolboxEnv instance;
 
     private Properties properties;
-    private static GingaToolboxEnvironment instance;
-
-    public static GingaToolboxEnvironment getInstance() {
+    private DataReductionEnv dataReductionEnv;
+    
+    public static GingaToolboxEnv getInstance() {
         if (instance == null) {
-            instance = new GingaToolboxEnvironment();
+            instance = new GingaToolboxEnv();
         }
         return instance;
     }
 
-    private GingaToolboxEnvironment() {
+    private GingaToolboxEnv() {
         initialize();
     }
 
@@ -35,7 +36,7 @@ public class GingaToolboxEnvironment {
         if (propertiesFilePath == null) {
             // if system property is not specified use classpath properties
             log.debug("Using Ginga Tools environment properties found in classpath");
-            in = GingaToolboxEnvironment.class.getClassLoader().getResourceAsStream(
+            in = GingaToolboxEnv.class.getClassLoader().getResourceAsStream(
                     "gingatoolbox.properties");
         } else {
             try {
@@ -45,14 +46,10 @@ public class GingaToolboxEnvironment {
                 log.warn("System property 'gingaToolboxPropertiesFile' badly defined. Value: "
                         + propertiesFilePath);
                 log.debug("UsingGinga Tools environment properties found in classpath");
-                in = GingaToolboxEnvironment.class.getClassLoader().getResourceAsStream(
+                in = GingaToolboxEnv.class.getClassLoader().getResourceAsStream(
                         "gingatoolbox.properties");
             }
         }
-        loadProperties(in);
-    }
-
-    private void loadProperties(InputStream in) {
         // read properties file
         this.properties = new Properties();
         if (in != null) {
@@ -64,8 +61,10 @@ public class GingaToolboxEnvironment {
         } else {
             log.warn("Property file 'gingatoolbox.properties' not found in classpath");
         }
+        // load default data reduction environment
+        this.dataReductionEnv = SystematicDataReductionEnv.getInstance(this.properties);
     }
-
+    
     public String getGingaToolsHome() {
         try {
             return this.properties.getProperty("GINGA_HOME", "$HOME/ginga/ginga_tools/v1.02");
@@ -164,6 +163,16 @@ public class GingaToolboxEnvironment {
             log.warn("Cannot access JDBC database password, using default value", e);
             return "dbadmin";
         }
+    }
+
+    public enum DataReductionEnvType { SYSTEMATIC, INTERACTIVE }
+    
+    public void setDataReductionEnv(DataReductionEnv env) {
+    	this.dataReductionEnv = env;
+    }
+    
+    public DataReductionEnv getDataReductionEnv() {
+    	return this.dataReductionEnv;
     }
 
     public Map<String, String> getEnv() {

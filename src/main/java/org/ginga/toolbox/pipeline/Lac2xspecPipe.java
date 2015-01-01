@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.GingaToolboxEnvironment;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.runtime.GingaToolsRuntime;
 import org.ginga.toolbox.util.FileUtil;
 
@@ -28,7 +28,7 @@ public class Lac2xspecPipe extends AbstractPipe<File, File> implements Transform
         try {
             File specAsciiFile = this.starts.next();
             if (specAsciiFile != null && specAsciiFile.exists()) {
-                GingaToolboxEnvironment env = GingaToolboxEnvironment.getInstance();
+                GingaToolboxEnv env = GingaToolboxEnv.getInstance();
                 File workingDir = new File(env.getWorkingDir());
                 if (!workingDir.exists()) {
                     workingDir.mkdirs();

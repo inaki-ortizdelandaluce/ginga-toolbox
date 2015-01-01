@@ -1,6 +1,5 @@
 package org.ginga.toolbox.lacspec;
 
-import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacCounterMode;
@@ -10,13 +9,13 @@ public class LacspecInputModel {
 
 	private String psFileName;
 	private String monitorFileName;
-	private double minRigidity = Constants.DEFAULT_MIN_RIGIDITY;
-	private double maxRigidity = Constants.DEFAULT_MAX_RIGIDITY;
+	private double minRigidity;
+	private double maxRigidity;
 	private double minTransmission = 0;
 	private BitRate bitRate = BitRate.ANY;
 	private boolean pointingMode = true; 
-	private double minElevation = Constants.DEFAULT_MIN_ELEVATION;
-	private double maxElevation = Constants.DEFAULT_MAX_ELEVATION;
+	private double minElevation;
+	private double maxElevation;
 	private int bgCorrection = 1;
 	private int aspectCorrection = 1;
 	private int deadTimeCorrection = 1;

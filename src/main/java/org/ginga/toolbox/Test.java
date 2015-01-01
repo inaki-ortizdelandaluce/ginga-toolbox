@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.command.TargetObservationListWriterCmd;
 import org.ginga.toolbox.command.SpectraExtractorCmd;
-import org.ginga.toolbox.environment.GingaToolboxEnvironment;
-import org.ginga.toolbox.lacdump.LacdumpConstraints;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
@@ -44,7 +44,7 @@ public class Test {
     	// extract all spectra
         SpectraExtractorCmd.extractSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
         // write observation list
-        File workingDir = new File(GingaToolboxEnvironment.getInstance().getWorkingDir());
+        File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }
@@ -78,17 +78,17 @@ public class Test {
     }
 
     public static void samplePipeExec2() {
-        LacdumpConstraints constraints = new LacdumpConstraints();
+        LacdumpQuery constraints = new LacdumpQuery();
         constraints.setMode(LacMode.MPC2);
         constraints.setTargetName("GS2000+25");
         constraints.setStartTime("1988-04-30 04:40:07");
         constraints.setEndTime("1988-04-30 04:53:23");
         constraints.setMinElevation(5.0);
-        constraints.setMinRigidity(10.0);
+        constraints.setMinCutOffRigidity(10.0);
 
         LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
         LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
-        Pipeline<LacdumpConstraints, File> specHayashidaPipeline = new Pipeline<LacdumpConstraints, File>(
+        Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery, File>(
                 pipe1, pipe2);
         specHayashidaPipeline.setStarts(Arrays.asList(constraints));
         File file = specHayashidaPipeline.next();
@@ -112,15 +112,15 @@ public class Test {
         }
         log.info("SpectrumHayashidaPipeFunction completed");
 
-        LacdumpConstraints constraints = new LacdumpConstraints();
+        LacdumpQuery constraints = new LacdumpQuery();
         constraints.setMode(LacMode.MPC3);
         constraints.setTargetName("GS2000+25");
         constraints.setStartTime("1988-05-02 01:34:31");
         constraints.setEndTime("1988-05-02 01:34:31");
         constraints.setMinElevation(5.0);
-        constraints.setMinRigidity(10.0);
+        constraints.setMinCutOffRigidity(10.0);
 
-        Pipe<LacdumpConstraints, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe();
+        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe();
         log.info("Starting GoodTimeIntervalPipeFunction");
         pipe1.setStarts(Arrays.asList(constraints));
         while (pipe1.hasNext()) {

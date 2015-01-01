@@ -3,7 +3,7 @@ package org.ginga.toolbox.lacdump;
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class LacdumpConstraints {
+public class LacdumpQuery {
 
     private String startTime;
 
@@ -13,12 +13,12 @@ public class LacdumpConstraints {
 
     private String targetName;
 
-    private double minRigidity;
+    private Double minCutOffRigidity;
 
-    private double minElevation;
-
+    private Double minElevation;
+    
     private BitRate bitRate;
-
+    
     /**
      * @return the startTime
      */
@@ -76,34 +76,34 @@ public class LacdumpConstraints {
     }
 
     /**
-     * @return the minRigidity
+     * @return the minCutOffRigidity
      */
-    public double getMinRigidity() {
-        return this.minRigidity;
+    public Double getMinCutOffRigidity() {
+        return this.minCutOffRigidity;
     }
 
     /**
-     * @param minRigidity the minRigidity to set
+     * @param minCutOffRigidity the minCutOffRigidity to set
      */
-    public void setMinRigidity(double minRigidity) {
-        this.minRigidity = minRigidity;
+    public void setMinCutOffRigidity(Double minCutOffRigidity) {
+        this.minCutOffRigidity = minCutOffRigidity;
     }
 
-    /**
+	/**
      * @return the minElevation
      */
-    public double getMinElevation() {
+    public Double getMinElevation() {
         return this.minElevation;
     }
 
     /**
      * @param minElevation the minElevation to set
      */
-    public void setMinElevation(double minElevation) {
+    public void setMinElevation(Double minElevation) {
         this.minElevation = minElevation;
     }
 
-    /**
+ 	/**
      * @return the bitRate
      */
     public BitRate getBitRate() {
@@ -116,5 +116,4 @@ public class LacdumpConstraints {
     public void setBitRate(BitRate bitRate) {
         this.bitRate = bitRate;
     }
-
 }

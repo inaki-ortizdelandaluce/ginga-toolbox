@@ -25,10 +25,4 @@ public class Constants {
     public enum BackgroundSubtractionMethod {
         SIMPLE, SUD_SORT, HAYASHIDA
     }
-    
-    public static final double DEFAULT_MIN_ELEVATION = 5.0;
-    public static final double DEFAULT_MAX_ELEVATION = 180.0;
-    public static final double DEFAULT_MIN_RIGIDITY = 10.0;
-    public static final double DEFAULT_MAX_RIGIDITY = 20.0;
-    public static final BitRate DEFAULT_BIT_RATE = BitRate.H;
 }

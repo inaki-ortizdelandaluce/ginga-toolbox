@@ -1,6 +1,5 @@
 package org.ginga.toolbox.lacqrdfits;
 
-import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.LacCounterMode;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.Constants.TimeResolution;
@@ -8,8 +7,8 @@ import org.ginga.toolbox.util.Constants.TimeResolution;
 public class LacqrdfitsInputModel {
 
 	private String psFileName;
-	private double minElevation = Constants.DEFAULT_MIN_ELEVATION;
-	private double maxElevation = Constants.DEFAULT_MAX_ELEVATION;
+	private double minElevation;
+	private double maxElevation;
 	private LacMode lacMode;
 	private int bgCorrection = 1;
 	private int aspectCorrection = 1;

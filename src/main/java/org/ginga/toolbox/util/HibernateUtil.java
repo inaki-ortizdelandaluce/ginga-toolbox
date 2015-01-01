@@ -1,6 +1,6 @@
 package org.ginga.toolbox.util;
 
-import org.ginga.toolbox.environment.GingaToolboxEnvironment;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationDataEntity;
@@ -21,7 +21,7 @@ public class HibernateUtil {
             // SET CONFIGURATION PROPERTIES
 
             // connection properties
-            GingaToolboxEnvironment env = GingaToolboxEnvironment.getInstance();
+            GingaToolboxEnv env = GingaToolboxEnv.getInstance();
             configuration.setProperty("hibernate.connection.driver_class",
                     env.getDatabaseDriverClassName());
 

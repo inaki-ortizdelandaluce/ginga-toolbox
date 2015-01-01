@@ -3,7 +3,7 @@ package org.ginga.toolbox.lacdump.dao.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.lacdump.LacdumpConstraints;
+import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
@@ -156,35 +156,35 @@ public class LacdumpDaoImpl implements LacdumpDao {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<LacdumpSfEntity> findSfList(LacdumpConstraints constraints)
+    public List<LacdumpSfEntity> findSfList(LacdumpQuery query)
             throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName() + " WHERE";
             String startTime = null, endTime = null, target = null;
-            double rigidity = 0, elevation = 0;
+            Double minRigidity = null, minElevation = null;
             LacMode mode = null;
             BitRate bitRate = null;
 
-            if ((bitRate = constraints.getBitRate()) != null) {
+            if ((bitRate = query.getBitRate()) != null) {
                 hql += " BR =:br and";
             }
-            if ((mode = constraints.getMode()) != null) {
+            if ((mode = query.getMode()) != null) {
                 hql += " MODE =:mode and";
             }
-            if ((target = constraints.getTargetName()) != null) {
+            if ((target = query.getTargetName()) != null) {
                 hql += " TARGET like :target and";
             }
-            if ((startTime = constraints.getStartTime()) != null) {
+            if ((startTime = query.getStartTime()) != null) {
                 hql += " DATE >=:start and";
             }
-            if ((endTime = constraints.getEndTime()) != null) {
+            if ((endTime = query.getEndTime()) != null) {
                 hql += " DATE <=:end and";
             }
-            if ((elevation = constraints.getMinElevation()) > 0) {
+            if ((minElevation = query.getMinElevation()) != null) {
                 hql += "  EELV > :eelv and";
             }
-            if ((rigidity = constraints.getMinRigidity()) > 0) {
+            if ((minRigidity = query.getMinCutOffRigidity()) != null) {
                 hql += "  RIG >= :rig and";
             }
             // remove last and
@@ -210,11 +210,11 @@ public class LacdumpDaoImpl implements LacdumpDao {
             if (endTime != null) {
                 hquery.setString("end", endTime);
             }
-            if (elevation > 0) {
-                hquery.setDouble("eelv", elevation);
+            if (minElevation != null) {
+                hquery.setDouble("eelv", minElevation);
             }
-            if (rigidity > 0) {
-                hquery.setDouble("rig", rigidity);
+            if (minRigidity != null) {
+                hquery.setDouble("rig", minRigidity);
             }
 
             sfList = hquery.list();
