@@ -1,5 +1,6 @@
 package org.ginga.toolbox.util;
 
+import org.ginga.toolbox.environment.GingaToolboxEnvironment;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationDataEntity;
@@ -20,15 +21,15 @@ public class HibernateUtil {
             // SET CONFIGURATION PROPERTIES
 
             // connection properties
-            DatabaseProperties jdbcProperties = DatabaseProperties.getInstance();
+            GingaToolboxEnvironment env = GingaToolboxEnvironment.getInstance();
             configuration.setProperty("hibernate.connection.driver_class",
-                    jdbcProperties.getDatabaseDriverClassName());
+                    env.getDatabaseDriverClassName());
 
-            configuration.setProperty("hibernate.connection.url", jdbcProperties.getDatabaseUrl());
+            configuration.setProperty("hibernate.connection.url", env.getDatabaseUrl());
             configuration.setProperty("hibernate.connection.username",
-                    jdbcProperties.getDatabaseUser());
+                    env.getDatabaseUser());
             configuration.setProperty("hibernate.connection.password",
-                    jdbcProperties.getDatabasePassword());
+                    env.getDatabasePassword());
             configuration.setProperty("hibernate.default_schema", "ginga");
 
             // dialect properties:

@@ -28,8 +28,8 @@ public class Lac2xspecPipe extends AbstractPipe<File, File> implements Transform
         try {
             File specAsciiFile = this.starts.next();
             if (specAsciiFile != null && specAsciiFile.exists()) {
-                GingaToolboxEnvironment gingaEnv = GingaToolboxEnvironment.getInstance();
-                File workingDir = new File(gingaEnv.getGingaWrkDir());
+                GingaToolboxEnvironment env = GingaToolboxEnvironment.getInstance();
+                File workingDir = new File(env.getWorkingDir());
                 if (!workingDir.exists()) {
                     workingDir.mkdirs();
                 }
@@ -37,7 +37,7 @@ public class Lac2xspecPipe extends AbstractPipe<File, File> implements Transform
 
                 // create 'lac2xspec' command
                 String specAsciiFileBase = FileUtil.splitFileBaseAndExtension(specAsciiFile)[0];
-                String[] cmd = new String[] { gingaEnv.getGingaBinDir() + "/lac2xspec", // lac2xspec
+                String[] cmd = new String[] { env.getGingaToolsBinDir() + "/lac2xspec", // lac2xspec
                         specAsciiFile.getName(), // Ginga ASCII Spectral File
                         "1", // sub file number
                         "1", // data number

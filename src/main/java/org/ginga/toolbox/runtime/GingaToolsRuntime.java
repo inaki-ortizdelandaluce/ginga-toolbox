@@ -39,7 +39,7 @@ public class GingaToolsRuntime {
             env.put(key, gingaEnv.get(key));
         }
         // update PATH
-        String path = gte.getGingaBinDir() + ":" + env.get("PATH");
+        String path = gte.getGingaToolsBinDir() + ":" + env.get("PATH");
         env.put("PATH", path);
         log.info("PATH=" + env.get("PATH"));
         // set working directory

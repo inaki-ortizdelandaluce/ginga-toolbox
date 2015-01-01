@@ -28,9 +28,9 @@ public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File>
 		try {
 			LacqrdfitsInputModel inputModel = this.starts.next();
 			if (inputModel != null) {
-				GingaToolboxEnvironment gingaEnv = GingaToolboxEnvironment
+				GingaToolboxEnvironment env = GingaToolboxEnvironment
 						.getInstance();
-				File workingDir = new File(gingaEnv.getGingaWrkDir());
+				File workingDir = new File(env.getWorkingDir());
 				if (!workingDir.exists()) {
 					workingDir.mkdirs();
 				}
@@ -55,7 +55,7 @@ public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File>
 								+ ".log");
 
 				// create 'lacqrdfits' command
-				String cmd = gingaEnv.getGingaBinDir() + "/lacqrdfits";
+				String cmd = env.getGingaToolsBinDir() + "/lacqrdfits";
 
 				// execute command
 				GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir,

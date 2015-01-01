@@ -44,7 +44,7 @@ public class Test {
     	// extract all spectra
         SpectraExtractorCmd.extractSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
         // write observation list
-        File workingDir = new File(GingaToolboxEnvironment.getInstance().getGingaWrkDir());
+        File workingDir = new File(GingaToolboxEnvironment.getInstance().getWorkingDir());
         if(!workingDir.exists()) {
         	workingDir.mkdirs();
         }

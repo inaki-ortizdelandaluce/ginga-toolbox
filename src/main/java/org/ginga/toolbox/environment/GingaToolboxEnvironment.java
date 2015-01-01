@@ -10,11 +10,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.util.DatabaseProperties;
 
 public class GingaToolboxEnvironment {
 
-    private static final Logger log = Logger.getLogger(DatabaseProperties.class);
+    private static final Logger log = Logger.getLogger(GingaToolboxEnvironment.class);
 
     private Properties properties;
     private static GingaToolboxEnvironment instance;
@@ -36,7 +35,7 @@ public class GingaToolboxEnvironment {
         if (propertiesFilePath == null) {
             // if system property is not specified use classpath properties
             log.debug("Using Ginga Tools environment properties found in classpath");
-            in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
+            in = GingaToolboxEnvironment.class.getClassLoader().getResourceAsStream(
                     "gingatoolbox.properties");
         } else {
             try {
@@ -46,7 +45,7 @@ public class GingaToolboxEnvironment {
                 log.warn("System property 'gingaToolboxPropertiesFile' badly defined. Value: "
                         + propertiesFilePath);
                 log.debug("UsingGinga Tools environment properties found in classpath");
-                in = DatabaseProperties.class.getClassLoader().getResourceAsStream(
+                in = GingaToolboxEnvironment.class.getClassLoader().getResourceAsStream(
                         "gingatoolbox.properties");
             }
         }
@@ -67,7 +66,7 @@ public class GingaToolboxEnvironment {
         }
     }
 
-    public String getGingaHome() {
+    public String getGingaToolsHome() {
         try {
             return this.properties.getProperty("GINGA_HOME", "$HOME/ginga/ginga_tools/v1.02");
         } catch (Exception e) {
@@ -76,7 +75,7 @@ public class GingaToolboxEnvironment {
         }
     }
 
-    public String getGingaCalDir() {
+    public String getGingaToolsCalDir() {
         try {
             return this.properties.getProperty("GINGA_CALDIR", "$GINGA_HOME/cal");
         } catch (Exception e) {
@@ -85,7 +84,7 @@ public class GingaToolboxEnvironment {
         }
     }
 
-    public String getGingaFrfDir() {
+    public String getGingaToolsFrfDir() {
         try {
             return this.properties.getProperty("GINGA_FRFDIR", "$HOME/ginga/data/frf");
         } catch (Exception e) {
@@ -94,16 +93,16 @@ public class GingaToolboxEnvironment {
         }
     }
 
-    public String getGingaWrkDir() {
+    public String getWorkingDir() {
         try {
-            return this.properties.getProperty("GINGA_WRKDIR", "$HOME/ginga/work");
+            return this.properties.getProperty("working.dir", "$HOME/ginga/work");
         } catch (Exception e) {
-            log.warn("Cannot access GINGA_WRKDIR, using default value", e);
-            return "$HOME/ginga/data/frf";
+            log.warn("Cannot access working.dir property, using default value", e);
+            return "$HOME/ginga/work";
         }
     }
 
-    public String getGingaBinDir() {
+    public String getGingaToolsBinDir() {
         try {
             return this.properties.getProperty("GINGA_BINDIR", "$GINGA_HOME/bin/linux");
         } catch (Exception e) {
@@ -112,7 +111,7 @@ public class GingaToolboxEnvironment {
         }
     }
     
-    public String getPfiles() {
+    public String getGingaToolsPfiles() {
         try {
             return this.properties.getProperty("PFILES", "$HOME/pfiles");
         } catch (Exception e) {
@@ -121,7 +120,7 @@ public class GingaToolboxEnvironment {
         }
     }
 
-    public String getPgPlotFont() {
+    public String getGingaToolsPgPlotFont() {
         try {
             return this.properties.getProperty("PGPLOT_FONT",
                     "$HOME/ginga/ginga_ledas/bin/grfont.dat");
@@ -130,17 +129,52 @@ public class GingaToolboxEnvironment {
             return "$HOME/ginga/ginga_ledas/bin/grfont.dat";
         }
     }
+    
+    public String getDatabaseDriverClassName() {
+        try {
+            return this.properties.getProperty("jdbc.driverClassName", "com.mysql.jdbc.Driver");
+        } catch (Exception e) {
+            log.warn("Cannot access JDBC driver classname, using default value", e);
+            return "com.mysql.jdbc.Driver";
+        }
+    }
+
+    public String getDatabaseUrl() {
+        try {
+            return this.properties.getProperty("jdbc.url", "jdbc:mysql://localhost:3306");
+        } catch (Exception e) {
+            log.warn("Cannot access JDBC database url, using default value", e);
+            return "jdbc:mysql://localhost:3306";
+        }
+    }
+
+    public String getDatabaseUser() {
+        try {
+            return this.properties.getProperty("jdbc.user", "dbadmin");
+        } catch (Exception e) {
+            log.warn("Cannot access JDBC database user, using default value", e);
+            return "dbadmin";
+        }
+    }
+
+    public String getDatabasePassword() {
+        try {
+            return this.properties.getProperty("jdbc.password", "dbadmin");
+        } catch (Exception e) {
+            log.warn("Cannot access JDBC database password, using default value", e);
+            return "dbadmin";
+        }
+    }
 
     public Map<String, String> getEnv() {
         Map<String, String> env = new HashMap<String, String>();
         // add ginga specific environment
-        env.put("GINGA_HOME", getGingaHome());
-        env.put("GINGA_BINDIR", getGingaBinDir());
-        env.put("GINGA_CALDIR", getGingaCalDir());
-        env.put("GINGA_FRFDIR", getGingaFrfDir());
-        env.put("GINGA_WRKDIR", getGingaWrkDir());
-        env.put("PFILES", getPfiles());
-        env.put("PG_PLOT_FONT", getPgPlotFont());
+        env.put("GINGA_HOME", getGingaToolsHome());
+        env.put("GINGA_BINDIR", getGingaToolsBinDir());
+        env.put("GINGA_CALDIR", getGingaToolsCalDir());
+        env.put("GINGA_FRFDIR", getGingaToolsFrfDir());
+        env.put("PFILES", getGingaToolsPfiles());
+        env.put("PG_PLOT_FONT", getGingaToolsPgPlotFont());
         return env;
     }
 

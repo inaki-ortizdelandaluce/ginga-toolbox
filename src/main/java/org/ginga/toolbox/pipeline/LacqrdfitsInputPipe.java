@@ -37,9 +37,9 @@ public class LacqrdfitsInputPipe extends
 			LacdumpConstraints constraints = this.starts.next();
 
 			// set working directory
-			GingaToolboxEnvironment gingaEnv = GingaToolboxEnvironment
+			GingaToolboxEnvironment env = GingaToolboxEnvironment
 					.getInstance();
-			File workingDir = new File(gingaEnv.getGingaWrkDir());
+			File workingDir = new File(env.getWorkingDir());
 			if (!workingDir.exists()) {
 				workingDir.mkdirs();
 			}
