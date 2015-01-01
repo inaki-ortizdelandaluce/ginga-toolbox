@@ -38,8 +38,8 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.EELV.max"));
         } catch (Exception e) {
-            log.warn("Cannot access systematic.EELV.max, using default null value", e);
-            return null;
+            log.warn("Cannot access systematic.EELV.max, using default value", e);
+            return Double.valueOf("180.0");
         }
     }
 
@@ -58,8 +58,8 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.RIG.max"));
         } catch (Exception e) {
-            log.warn("Cannot access systematic.RIG.max, using default null value", e);
-            return null;
+            log.warn("Cannot access systematic.RIG.max, using default value", e);
+            return Double.valueOf("20.0");
         }
     }
     
