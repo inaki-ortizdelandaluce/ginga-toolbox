@@ -217,6 +217,7 @@ public class SpectrumExtractorCmd {
 		switch(method) {
 		case HAYASHIDA:
 			extractSpectrumHayashida(obs);
+			break;
 		case SIMPLE:
 		case SUD_SORT:
 		default:
