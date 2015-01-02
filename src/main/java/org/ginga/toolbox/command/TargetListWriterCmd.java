@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Comparator;
 import java.util.Set;
 
 import org.apache.commons.cli.BasicParser;
@@ -59,6 +60,16 @@ public class TargetListWriterCmd {
 
 	private static void printHelp() {
 		HelpFormatter helpFormatter = new HelpFormatter();
+		helpFormatter.setOptionComparator(new Comparator<Option>() {
+			private static final String OPTS_ORDER = "fch"; // short option names
+			
+		    @Override
+			public int compare(Option o1, Option o2) {
+		    	String argCharOption1 = o1.getLongOpt().substring(0, 1);
+		    	String argCharOption2 = o2.getLongOpt().substring(0, 1);
+		    	return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
+			}
+		});
     	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
 	}
 	

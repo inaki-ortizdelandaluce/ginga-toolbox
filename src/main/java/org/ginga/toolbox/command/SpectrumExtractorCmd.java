@@ -2,6 +2,7 @@ package org.ginga.toolbox.command;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -134,32 +135,32 @@ public class SpectrumExtractorCmd {
     	Options options = new Options();
     	Option obsIdOption = OptionBuilder.withArgName("observation id")
     			.withLongOpt("observation-id")
-    			.withDescription("Observation identifier")
+    			.withDescription("[OPTIONAL] Observation identifier")
     			.hasArg()
     			.create("o");
     	Option targetOption = OptionBuilder.withArgName("target")
     			.withLongOpt("target")
-    			.withDescription("Target name")
+    			.withDescription("[OPTIONAL] Target name")
     			.hasArg()
     			.create("t");
     	Option lacModeOption = OptionBuilder.withArgName("LAC mode")
     			.withLongOpt("mode")
-    			.withDescription("LAC mode. Possible values: " + getLacModes())
+    			.withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes())
     			.hasArg()
     			.create("m");
     	Option methodOption = OptionBuilder.withArgName("method")
     			.withLongOpt("background-method")
-    			.withDescription("Background subtraction method. Possible values: " + getBackgroundSubtractionMethods())
+    			.withDescription("[OPTIONAL] Background subtraction method. Possible values: " + getBackgroundSubtractionMethods())
     			.hasArg()
     			.create("b");
     	Option startTimeOption = OptionBuilder.withArgName("start time")
     			.withLongOpt("start-time")
-    			.withDescription("Start time in " + DATE_FORMAT_PATTERN + " format")
+    			.withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
     			.hasArg()
     			.create();
     	Option endTimeOption = OptionBuilder.withArgName("end time")
     			.withLongOpt("end-time")
-    			.withDescription("End time in " + DATE_FORMAT_PATTERN + " format")
+    			.withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
     			.hasArg()
     			.create();
     	OptionGroup group1 = new OptionGroup();
@@ -199,7 +200,16 @@ public class SpectrumExtractorCmd {
 
 	private static void printHelp() {
 		HelpFormatter helpFormatter = new HelpFormatter();
-		helpFormatter.setOptionComparator(null);
+		helpFormatter.setOptionComparator(new Comparator<Option>() {
+			private static final String OPTS_ORDER = "isetbom"; // short option names
+			
+		    @Override
+			public int compare(Option o1, Option o2) {
+		    	String argCharOption1 = o1.getLongOpt().substring(0, 1);
+		    	String argCharOption2 = o2.getLongOpt().substring(0, 1);
+		    	return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
+			}
+		});
     	helpFormatter.printHelp(SpectrumExtractorCmd.class.getCanonicalName(), getOptions());
     }   
 	

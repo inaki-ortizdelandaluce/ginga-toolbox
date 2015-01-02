@@ -2,6 +2,7 @@ package org.ginga.toolbox.command;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.cli.BasicParser;
@@ -78,8 +79,15 @@ public class SpectraExtractorCmd {
 
 	private static void printHelp() {
 		HelpFormatter helpFormatter = new HelpFormatter();
-		helpFormatter.setOptionComparator(null);
-    	helpFormatter.printHelp(SpectraExtractorCmd.class.getCanonicalName(), getOptions());
+		helpFormatter.setOptionComparator(new Comparator<Option>() {
+			private static final String OPTS_ORDER = "tb"; // short option names
+			
+		    @Override
+			public int compare(Option o1, Option o2) {
+		    	return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
+			}
+		});
+		helpFormatter.printHelp(SpectraExtractorCmd.class.getCanonicalName(), getOptions());
     }   
 	
 	public static void extractSpectra(String target, BackgroundSubtractionMethod method) {

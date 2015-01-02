@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.cli.BasicParser;
@@ -60,8 +61,7 @@ public class TargetObservationListWriterCmd {
 			}
 		} catch (ParseException e) {
 			log.error(e.getMessage());
-			HelpFormatter helpFormatter = new HelpFormatter();
-	    	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
+			printHelp();
 		} catch (IOException e) {
 			log.error(e.getMessage(),e);
 		} 
@@ -80,11 +80,11 @@ public class TargetObservationListWriterCmd {
     	
     	Option fileOption = OptionBuilder.withArgName("file path")
     			.withLongOpt("file")
-    			.withDescription("write target list to file")
+    			.withDescription("write observation list to file")
     			.hasArg()
     			.create("f");
     	
-    	Option consoleOption = new Option("c", "console", false, "write target list to console");
+    	Option consoleOption = new Option("c", "console", false, "write observation list to console");
     	
     	OptionGroup group1 = new OptionGroup();
     	group1.setRequired(true);
@@ -107,6 +107,19 @@ public class TargetObservationListWriterCmd {
     	options.addOptionGroup(group3);
     	return options;
 	}
+	
+	private static void printHelp() {
+		HelpFormatter helpFormatter = new HelpFormatter();
+		helpFormatter.setOptionComparator(new Comparator<Option>() {
+			private static final String OPTS_ORDER = "tamcfis"; // short option names
+			
+		    @Override
+			public int compare(Option o1, Option o2) {
+		    	return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
+			}
+		});
+    	helpFormatter.printHelp(TargetObservationListWriterCmd.class.getCanonicalName(), getOptions());
+    }   
 
 	public TargetObservationListWriterCmd(Writer writer) {
 		this.writer = new PrintWriter(writer);
