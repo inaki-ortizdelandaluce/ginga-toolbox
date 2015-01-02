@@ -94,12 +94,12 @@ public class TargetObservationListWriterCmd {
     	OptionGroup group2 = new OptionGroup();
     	group2.setRequired(true);
     	group2.addOption(new Option("a", "all-modes", false, "include all LAC modes"));
-    	group2.addOption(new Option("s", "spectral-modes-only", false, "include MPC1 and MPC2 LAC modes only"));
+    	group2.addOption(new Option("m", "spectral-modes-only", false, "include MPC1 and MPC2 LAC modes only"));
     	
     	OptionGroup group3 = new OptionGroup();
     	group3.setRequired(true);
     	group3.addOption(new Option("i", "interactive", false, "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
-    	group3.addOption(new Option("d", "default", false, "use default systematic values present in configuration file gingatoolbox.properties "));
+    	group3.addOption(new Option("s", "systematic", false, "use default systematic values present in configuration file gingatoolbox.properties "));
     	
     	options.addOption(targetOption);
     	options.addOptionGroup(group1);
