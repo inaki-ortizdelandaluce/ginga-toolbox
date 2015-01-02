@@ -107,7 +107,7 @@ public class TargetListWriterCmd {
 		try {
 			targetList = dao.findAllTargets();
 			for (String target : targetList) {
-				log.info("Target " + target);
+				log.debug("Target " + target);
 	        	this.writer.println(target);
 	        }
 		} catch (ObservationDaoException e) {

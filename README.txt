@@ -1,0 +1,1 @@
+mvn clean package jar:jar appassembler:assemble assembly:assembly
