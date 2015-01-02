@@ -32,8 +32,9 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
         String target = this.starts.next();
         // read environment 
         DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
-        double minCutOffRigidity = env.getCutOffRigidityMin();
         double minElevation = env.getElevationMin();
+        double minCutOffRigidity = env.getCutOffRigidityMin();
+        
         
         // find observation list by target
         ObservationDao obsDao = new ObservationDaoImpl();

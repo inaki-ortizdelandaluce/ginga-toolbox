@@ -25,4 +25,20 @@ public class Constants {
     public enum BackgroundSubtractionMethod {
         SIMPLE, SUD_SORT, HAYASHIDA
     }
+    
+    public static String[] getLacModes() {
+    	return getEnumValues(LacMode.class);
+    }
+    
+    public static String[] getBitRates() {
+    	return getEnumValues(BitRate.class);
+    }
+    
+    private static String[] getEnumValues(Class<?> enumClass) {
+    	String[] sArray = new String[enumClass.getEnumConstants().length];
+    	for (int i = 0; i < sArray.length; i++) {
+    		sArray[i] = enumClass.getEnumConstants()[i].toString();
+		}
+    	return sArray;
+    }
 }

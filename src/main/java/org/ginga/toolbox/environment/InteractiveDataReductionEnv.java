@@ -1,29 +1,72 @@
 package org.ginga.toolbox.environment;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
+import org.apache.log4j.Logger;
+import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.BitRate;
 
 public class InteractiveDataReductionEnv implements DataReductionEnv {
+
+	@SuppressWarnings("unused")
+	private static final Logger log = Logger.getLogger(InteractiveDataReductionEnv.class);
 
 	private Double elevationMin;
 	private Double elevationMax;
 	private Double cutOffRigidityMin;
 	private Double cutOffRigidityMax;
 	private BitRate bitRate;
+	private Scanner scanner;
 	
-	private static InteractiveDataReductionEnv instance;
-	
-	private InteractiveDataReductionEnv() {
+	protected InteractiveDataReductionEnv() {
+		this.scanner = new Scanner(System.in);
 	}
 	
-	protected static InteractiveDataReductionEnv getInstance() {
-		if(instance == null) {
-			instance = new InteractiveDataReductionEnv();
-		}
-		return instance;
+	private String readEnumFromInput(String message, String[] values) {
+		String s = null;
+		boolean catcher = false;
+		do {
+            try {
+                System.out.print(message);
+                s = scanner.next();
+                if(!Arrays.asList(values).contains(s)) {
+                	throw new IllegalArgumentException();
+                }
+            	catcher = true;
+            } catch (Exception e) {
+            	System.out.println("Value is not valid, please try again");
+            } finally {
+            	scanner.nextLine();
+            }
+        }
+        while (!catcher);
+		return s;
+	}
+	
+	private Double readDoubleFromInput(String message) {
+		Double d = null;
+		boolean catcher = false;
+        do {
+            try {
+                System.out.print(message);
+                d = scanner.nextDouble();
+                catcher = true;
+            } catch (Exception e) {
+            	System.out.println("Value is not a number, please try again");
+            } finally {
+            	scanner.nextLine();
+            }
+        }
+        while (!catcher);
+		return d;
 	}
 	
 	@Override
 	public Double getElevationMin() {
+		if(this.elevationMin == null) {
+			this.elevationMin = readDoubleFromInput("Enter a minimum elevation angle in degrees:");
+		}
 		return elevationMin;
 	}
 	/**
@@ -37,6 +80,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Double getElevationMax() {
+		if(this.elevationMax == null) {
+			this.elevationMax = readDoubleFromInput("Enter a maximum elevation angle in degrees:");
+		}
 		return elevationMax;
 	}
 	/**
@@ -50,6 +96,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Double getCutOffRigidityMin() {
+		if(this.cutOffRigidityMin == null) {
+			this.cutOffRigidityMin = readDoubleFromInput("Enter a minimum cutt-off rigidity value in GeV/c:");
+		}
 		return cutOffRigidityMin;
 	}
 	/**
@@ -63,6 +112,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Double getCutOffRigidityMax() {
+		if(this.cutOffRigidityMax == null) {
+			this.cutOffRigidityMax = readDoubleFromInput("Enter a maximum cutt-off rigidity value in GeV/c:");
+		}
 		return cutOffRigidityMax;
 	}
 	/**
@@ -76,8 +128,13 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public BitRate getBitRate() {
+		if(this.bitRate == null) {
+			this.bitRate = BitRate.valueOf(
+					readEnumFromInput("Enter a bit rate ('ANY', 'H', 'M' and 'L'):", Constants.getBitRates()));
+		}
 		return bitRate;
 	}
+	
 	/**
 	 * @param bitRate the bitRate to set
 	 */

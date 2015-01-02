@@ -61,8 +61,8 @@ public class GingaToolboxEnv {
         } else {
             log.warn("Property file 'gingatoolbox.properties' not found in classpath");
         }
-        // load default data reduction environment
-        this.dataReductionEnv = SystematicDataReductionEnv.getInstance(this.properties);
+        // set default data reduction environment
+        setDataReductionEnvironment(DataReductionMode.SYSTEMATIC);
     }
     
     public String getGingaToolsHome() {
@@ -165,10 +165,20 @@ public class GingaToolboxEnv {
         }
     }
 
-    public enum DataReductionEnvType { SYSTEMATIC, INTERACTIVE }
+    public enum DataReductionMode { DEFAULT, SYSTEMATIC, INTERACTIVE }
     
-    public void setDataReductionEnv(DataReductionEnv env) {
-    	this.dataReductionEnv = env;
+    public void setDataReductionEnvironment(DataReductionMode mode) {
+    	switch(mode) {
+    	case SYSTEMATIC:
+    	case DEFAULT:
+    		log.info("Selecting systematic data reduction");
+    		this.dataReductionEnv = SystematicDataReductionEnv.getInstance(this.properties);
+    		break;
+    	case INTERACTIVE:
+    		log.info("Selecting interactive data reduction");
+    		this.dataReductionEnv = new InteractiveDataReductionEnv();
+    		break;
+    	}
     }
     
     public DataReductionEnv getDataReductionEnv() {

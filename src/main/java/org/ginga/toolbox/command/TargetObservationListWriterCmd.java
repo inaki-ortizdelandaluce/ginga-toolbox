@@ -18,6 +18,8 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
@@ -44,6 +46,10 @@ public class TargetObservationListWriterCmd {
 				writer = new FileWriter(f);
 			} else {
 				writer = new PrintWriter(System.out);
+			}
+			if(commandLine.hasOption("i")) { // set interactive mode
+				GingaToolboxEnv.getInstance()
+					.setDataReductionEnvironment(DataReductionMode.INTERACTIVE);
 			}
 			// write target list 
 			TargetObservationListWriterCmd cmd = new TargetObservationListWriterCmd(writer);
@@ -90,9 +96,15 @@ public class TargetObservationListWriterCmd {
     	group2.addOption(new Option("a", "all-modes", false, "include all LAC modes"));
     	group2.addOption(new Option("s", "spectral-modes-only", false, "include MPC1 and MPC2 LAC modes only"));
     	
+    	OptionGroup group3 = new OptionGroup();
+    	group3.setRequired(true);
+    	group3.addOption(new Option("i", "interactive", false, "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
+    	group3.addOption(new Option("d", "default", false, "use default systematic values present in configuration file gingatoolbox.properties "));
+    	
     	options.addOption(targetOption);
     	options.addOptionGroup(group1);
     	options.addOptionGroup(group2);
+    	options.addOptionGroup(group3);
     	return options;
 	}
 
