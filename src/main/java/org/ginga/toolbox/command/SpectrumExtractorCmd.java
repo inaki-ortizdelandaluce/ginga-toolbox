@@ -8,8 +8,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.util.DateUtil;
@@ -106,7 +109,11 @@ public class SpectrumExtractorCmd {
 			} else {
 				endTime = scanner.scanEndTime();
 			}
-			scanner.close(); 
+			scanner.close();
+			if(commandLine.hasOption("i")) { // set interactive mode
+				GingaToolboxEnv.getInstance()
+					.setDataReductionEnvironment(DataReductionMode.INTERACTIVE);
+			}
 			// build single mode target observation instance from arguments
 			SingleModeTargetObservation obs = new SingleModeTargetObservation();
 			obs.setObsId(obsId);
@@ -155,6 +162,10 @@ public class SpectrumExtractorCmd {
     			.withDescription("End time in " + DATE_FORMAT_PATTERN + " format")
     			.hasArg()
     			.create();
+    	OptionGroup group1 = new OptionGroup();
+    	group1.setRequired(true);
+    	group1.addOption(new Option("i", "interactive", false, "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
+    	group1.addOption(new Option("s", "systematic", false, "use default systematic values present in configuration file gingatoolbox.properties "));
     	
     	options.addOption(targetOption);
     	options.addOption(methodOption);
@@ -162,6 +173,8 @@ public class SpectrumExtractorCmd {
     	options.addOption(lacModeOption);
     	options.addOption(startTimeOption);
     	options.addOption(endTimeOption);
+    	
+    	options.addOptionGroup(group1);
     	
     	return options;
 	}
