@@ -96,6 +96,7 @@ public class SpectrumExtractorCmd {
 			} else {
 				startTime = scanner.scanStartTime();
 			}
+			startTime = startTime.replace("T", " ");
 			String endTime = null;
 			// END TIME
 			if(commandLine.hasOption("start-time")) {
@@ -110,6 +111,7 @@ public class SpectrumExtractorCmd {
 			} else {
 				endTime = scanner.scanEndTime();
 			}
+			endTime = endTime.replace("T", " ");
 			scanner.close();
 			if(commandLine.hasOption("i")) { // set interactive mode
 				GingaToolboxEnv.getInstance()
@@ -121,7 +123,7 @@ public class SpectrumExtractorCmd {
 			obs.setTarget(target);
 			obs.setMode(mode);
 			obs.setStartTime(startTime);
-			obs.setStartTime(endTime);
+			obs.setEndTime(endTime);
 			// extract spectrum
 			extractSpectrum(obs, method);
 		} catch (Exception e) {
