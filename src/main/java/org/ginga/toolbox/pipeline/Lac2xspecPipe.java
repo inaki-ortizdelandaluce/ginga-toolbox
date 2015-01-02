@@ -53,7 +53,7 @@ public class Lac2xspecPipe extends AbstractPipe<File, File> implements Transform
                 GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, null, outputFile, cmd);
                 log.info("Executing command " + cmd[0] + " ...");
                 int exitValue = runtime.exec();
-                log.info("Exit value " + exitValue);
+                log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lac2xspec' output file
                     log.info("Command executed successfully");
                     return new File(workingDir, specAsciiFileBase + ".pha");

@@ -166,7 +166,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
             LacMode mode = null;
             BitRate bitRate = null;
 
-            if ((bitRate = query.getBitRate()) != null) {
+            if ((bitRate = query.getBitRate()) != null && !bitRate.equals(BitRate.ANY)) {
                 hql += " BR =:br and";
             }
             if ((mode = query.getMode()) != null) {
@@ -192,10 +192,11 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
             hql += " ORDER BY ID";
 
+            log.info("LACDUMP Query: " + hql);
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
             Query hquery = hibernateSession.createQuery(hql);
-            if (bitRate != null) {
+            if (bitRate != null && !bitRate.equals(BitRate.ANY)) {
                 hquery.setString("br", bitRate.toString());
             }
             if (mode != null) {

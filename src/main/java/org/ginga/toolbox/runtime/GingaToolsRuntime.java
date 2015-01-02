@@ -41,7 +41,7 @@ public class GingaToolsRuntime {
         // update PATH
         String path = gte.getGingaToolsBinDir() + ":" + env.get("PATH");
         env.put("PATH", path);
-        log.info("PATH=" + env.get("PATH"));
+        log.debug("PATH=" + env.get("PATH"));
         // set working directory
         this.pb.directory(this.workingDir);
         // set input redirection
