@@ -62,7 +62,7 @@ public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File>
 						inputFile, outputFile, cmd);
 				log.info("Executing command " + cmd + " ...");
 				int exitValue = runtime.exec();
-				log.info("Exit value " + exitValue);
+				log.debug("Exit value " + exitValue);
 				if (exitValue == 0) { // return 'lacqrdfits' output file
 					log.info("Command executed successfully");
 					return new File(workingDir,
