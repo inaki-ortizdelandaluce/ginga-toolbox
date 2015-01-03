@@ -50,7 +50,7 @@ public class TargetLookupCmd {
 		    	return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
 			}
 		});
-    	helpFormatter.printHelp(TargetListWriterCmd.class.getCanonicalName(), getOptions());
+    	helpFormatter.printHelp(TargetListPrinterCmd.class.getCanonicalName(), getOptions());
 	}
 	
 	@SuppressWarnings("static-access")
