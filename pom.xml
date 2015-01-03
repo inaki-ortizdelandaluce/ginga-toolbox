@@ -97,32 +97,40 @@
           <programs>
             <program>
               <mainClass>org.ginga.toolbox.command.TargetListWriterCmd</mainClass>
-              <id>targetListWriter</id>
+              <id>print_target_list</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.TargetObservationListWriterCmd</mainClass>
-              <id>observationListWriter</id>
+              <id>print_observation_list</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass>
-              <id>spectrumExtractor</id>
+              <id>extract_spectrum</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.SpectraExtractorCmd</mainClass>
-              <id>spectraExtractor</id>
+              <id>extract_spectra</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
+            <program>
+              <mainClass>org.ginga.toolbox.command.TargetLookupCmd</mainClass>
+              <id>lookup_target</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+            
           </programs>
         </configuration>
       </plugin>
