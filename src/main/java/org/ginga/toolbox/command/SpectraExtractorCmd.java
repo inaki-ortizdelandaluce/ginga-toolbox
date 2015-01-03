@@ -17,7 +17,7 @@ import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
-import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
 
@@ -30,9 +30,9 @@ public class SpectraExtractorCmd {
 			CommandLine commandLine = new BasicParser().parse(getOptions(), args);
 			// read command line argument values 
 	        String target = commandLine.getOptionValue("t");
-			BackgroundSubtractionMethod method = null;
+			BgSubtractionMethod method = null;
 			try {
-				method = Enum.valueOf(BackgroundSubtractionMethod.class,
+				method = Enum.valueOf(BgSubtractionMethod.class,
 					commandLine.getOptionValue("b"));
 	    	} catch (IllegalArgumentException e) {
 	    		log.error("Unknown background subtraction method " 
@@ -60,7 +60,7 @@ public class SpectraExtractorCmd {
     	Option methodOption = OptionBuilder.withArgName("method")
     			.withLongOpt("background-method")
     			.isRequired(true)
-    			.withDescription("Background subtraction method. Possible values: " + getBackgroundSubtractionMethods())
+    			.withDescription("Background subtraction method. Possible values: " + getBgSubtractionMethods())
     			.hasArg()
     			.create("b");
     	options.addOption(targetOption);
@@ -68,9 +68,9 @@ public class SpectraExtractorCmd {
     	return options;
 	}
 	
-	private static String getBackgroundSubtractionMethods() {
+	private static String getBgSubtractionMethods() {
     	String s = "";
-    	BackgroundSubtractionMethod[] methods = BackgroundSubtractionMethod.values();
+    	BgSubtractionMethod[] methods = BgSubtractionMethod.values();
     	for (int i = 0; i < methods.length; i++) {
     		s += methods[i].toString() + ", ";
 		}
@@ -90,7 +90,7 @@ public class SpectraExtractorCmd {
 		helpFormatter.printHelp(SpectraExtractorCmd.class.getCanonicalName(), getOptions());
     }   
 	
-	public static void extractSpectra(String target, BackgroundSubtractionMethod method) {
+	public static void extractSpectra(String target, BgSubtractionMethod method) {
 		switch(method) {
 		case HAYASHIDA:
 			extractSpectraHayashida(target);

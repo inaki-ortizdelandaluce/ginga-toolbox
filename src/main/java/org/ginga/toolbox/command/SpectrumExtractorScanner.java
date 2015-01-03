@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Scanner;
 
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
-import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.DateUtil;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -70,15 +70,15 @@ public class SpectrumExtractorScanner {
     	return mode;
 	}
 	
-	public BackgroundSubtractionMethod scanBackgroundMethod() throws IllegalArgumentException {
+	public BgSubtractionMethod scanBackgroundMethod() throws IllegalArgumentException {
 		if(this.scanner == null) {
 			initialize();
 		}
-		System.out.print("Enter Background Subtraction Method (" + SpectrumExtractorCmd.getBackgroundSubtractionMethods() + "): ");
+		System.out.print("Enter Background Subtraction Method (" + SpectrumExtractorCmd.getBgSubtractionMethods() + "): ");
     	String method = scanner.next();
     	// check value
     	try {
-    		return BackgroundSubtractionMethod.valueOf(method);
+    		return BgSubtractionMethod.valueOf(method);
     	} catch(IllegalArgumentException e2) {
     		throw new IllegalArgumentException(method + " is not a valid background subtraction method");
     	}

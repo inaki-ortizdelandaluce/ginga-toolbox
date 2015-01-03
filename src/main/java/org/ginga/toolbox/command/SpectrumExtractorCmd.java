@@ -17,7 +17,7 @@ import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.util.DateUtil;
-import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class SpectrumExtractorCmd {
@@ -38,10 +38,10 @@ public class SpectrumExtractorCmd {
 	        	target = scanner.scanTarget();
 	        }
 	        // BACKGROUND SUBTRACTION METHOD
-	        BackgroundSubtractionMethod method = null;
+	        BgSubtractionMethod method = null;
 	        if(commandLine.hasOption("b")) {
 	        	try {
-	        		method = Enum.valueOf(BackgroundSubtractionMethod.class,
+	        		method = Enum.valueOf(BgSubtractionMethod.class,
 	        				commandLine.getOptionValue("b"));
 	        	} catch (IllegalArgumentException e) {
 	        		log.error("Unknown background subtraction method " 
@@ -152,7 +152,7 @@ public class SpectrumExtractorCmd {
     			.create("m");
     	Option methodOption = OptionBuilder.withArgName("method")
     			.withLongOpt("background-method")
-    			.withDescription("[OPTIONAL] Background subtraction method. Possible values: " + getBackgroundSubtractionMethods())
+    			.withDescription("[OPTIONAL] Background subtraction method. Possible values: " + getBgSubtractionMethods())
     			.hasArg()
     			.create("b");
     	Option startTimeOption = OptionBuilder.withArgName("start time")
@@ -191,9 +191,9 @@ public class SpectrumExtractorCmd {
     	return s.substring(0, s.length()-2);
     }
     
-    protected static String getBackgroundSubtractionMethods() {
+    protected static String getBgSubtractionMethods() {
     	String s = "";
-    	BackgroundSubtractionMethod[] methods = BackgroundSubtractionMethod.values();
+    	BgSubtractionMethod[] methods = BgSubtractionMethod.values();
     	for (int i = 0; i < methods.length; i++) {
     		s += methods[i].toString() + ", ";
 		}
@@ -215,7 +215,7 @@ public class SpectrumExtractorCmd {
     	helpFormatter.printHelp(SpectrumExtractorCmd.class.getCanonicalName(), getOptions());
     }   
 	
-	public static void extractSpectrum(SingleModeTargetObservation obs, BackgroundSubtractionMethod method) {
+	public static void extractSpectrum(SingleModeTargetObservation obs, BgSubtractionMethod method) {
 		switch(method) {
 		case HAYASHIDA:
 			extractSpectrumHayashida(obs);

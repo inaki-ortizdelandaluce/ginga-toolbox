@@ -7,7 +7,7 @@ public class Constants {
     }
 
     public enum LacMode {
-        MPC1, MPC2, MPC3, ACS, PCHK, PC, INIT
+        MPC1, MPC2, MPC3, ACS, PCHK, INIT
     }
 
     public enum BgSubtractionMethod {
@@ -20,10 +20,6 @@ public class Constants {
 
     public enum TimeResolution {
         ONE, ONE_OVER_TWO, ONE_OVER_FOR
-    }
-
-    public enum BackgroundSubtractionMethod {
-        SIMPLE, SUD_SORT, HAYASHIDA
     }
     
     public static String[] getLacModes() {
