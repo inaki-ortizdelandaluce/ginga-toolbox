@@ -72,4 +72,100 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
             return BitRate.ANY;
         }
     }
+
+	@Override
+	public Integer getTransmissionMin() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isAcePointingMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isAspectCorrection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isDeadTimeCorrection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isChannelToEnergyCorrection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isDataUnitCorrection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter1() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter2() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter3() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter4() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter5() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter6() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter7() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getLacCounter8() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean isLacMixedMode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getBgSubFileNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
