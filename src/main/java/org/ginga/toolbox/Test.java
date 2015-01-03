@@ -25,7 +25,7 @@ import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.DateUtil;
-import org.ginga.toolbox.util.Constants.BackgroundSubtractionMethod;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.Pipe;
@@ -42,7 +42,7 @@ public class Test {
     	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
         
     	// extract all spectra
-        SpectraExtractorCmd.extractSpectra(target, BackgroundSubtractionMethod.HAYASHIDA); 
+        SpectraExtractorCmd.extractSpectra(target, BgSubtractionMethod.HAYASHIDA); 
         // write observation list
         File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
         if(!workingDir.exists()) {
