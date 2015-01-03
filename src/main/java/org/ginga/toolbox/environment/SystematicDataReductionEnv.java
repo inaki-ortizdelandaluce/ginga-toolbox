@@ -26,9 +26,9 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
 	@Override
     public Double getElevationMin() {
         try {
-            return Double.valueOf(this.properties.getProperty("systematic.EELV.min"));
+            return Double.valueOf(this.properties.getProperty("systematic.ELV.min"));
         } catch (NullPointerException e) {
-            log.warn("Cannot access systematic.EELV.min, using default value", e);
+            log.warn("Cannot access systematic.ELV.min, using default value", e);
             return Double.valueOf("5.0");
         }
     }
@@ -36,9 +36,9 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
 	@Override
     public Double getElevationMax() {
         try {
-            return Double.valueOf(this.properties.getProperty("systematic.EELV.max"));
+            return Double.valueOf(this.properties.getProperty("systematic.ELV.max"));
         } catch (Exception e) {
-            log.warn("Cannot access systematic.EELV.max, using default value", e);
+            log.warn("Cannot access systematic.ELV.max, using default value", e);
             return Double.valueOf("180.0");
         }
     }
