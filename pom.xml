@@ -96,14 +96,14 @@
           </platforms>
           <programs>
             <program>
-              <mainClass>org.ginga.toolbox.command.TargetListWriterCmd</mainClass>
+              <mainClass>org.ginga.toolbox.command.TargetListPrinterCmd</mainClass>
               <id>print_target_list</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
-              <mainClass>org.ginga.toolbox.command.TargetObservationListWriterCmd</mainClass>
+              <mainClass>org.ginga.toolbox.command.TargetObservationListPrinterCmd</mainClass>
               <id>print_observation_list</id>
               <platforms>
                 <platform>unix</platform>
