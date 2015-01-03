@@ -11,30 +11,30 @@ public class LacspecInputModel {
 	private String monitorFileName;
 	private double minRigidity;
 	private double maxRigidity;
-	private double minTransmission = 0;
-	private BitRate bitRate = BitRate.ANY;
-	private boolean pointingMode = true; 
+	private double minTransmission;
+	private String bitRate;
+	private int ace; 
 	private double minElevation;
 	private double maxElevation;
-	private int bgCorrection = 1;
-	private int aspectCorrection = 1;
-	private int deadTimeCorrection = 1;
-	private int channelToEnergy = 1;
-	private int dataUnit = 1;
+	private int bgCorrection;
+	private int aspectCorrection;
+	private int deadTimeCorrection;
+	private int counterToEnergy;
+	private int dataUnit;
 	private boolean hasBackground;
-	private int bgMethodInt;
+	private int bgMethod;
 	private String bgFileName;
-	private int bgSubFileNumber = 1;
-	private int channel1 = 3;
-	private int channel2 = 3;
-	private int channel3 = 3;
-	private int channel4 = 3;
-	private int channel5 = 3;
-	private int channel6 = 3;
-	private int channel7 = 3;
-	private int channel8 = 3;
-	private LacMode lacMode;
-	private int mixedMode = 1;
+	private int bgSubFileNumber;
+	private int counter1;
+	private int counter2;
+	private int counter3;
+	private int counter4;
+	private int counter5;
+	private int counter6;
+	private int counter7;
+	private int counter8;
+	private String lacMode;
+	private int mixedMode;
 	private String spectralFileName;
 	private String regionFileName;
 	
@@ -68,17 +68,31 @@ public class LacspecInputModel {
 	public void setMinTransmission(double minTransmission) {
 		this.minTransmission = minTransmission;
 	}
-	public BitRate getBitRate() {
-		return bitRate;
+	public String getBitRate() {
+		return this.bitRate;
 	}
 	public void setBitRate(BitRate bitRate) {
-		this.bitRate = bitRate;
+		switch (bitRate) {
+		case ANY:
+		default:
+			this.bitRate = "ANY";
+			break;
+		case H:
+			this.bitRate = "HI";
+			break;
+		case M:
+			this.bitRate = "MED";
+			break;
+		case L:
+			this.bitRate = "LOW";
+			break;
+		}
 	}
-	public boolean getPointingMode() {
-		return pointingMode;
+	public int getAce() {
+		return this.ace;
 	}
-	public void setPointingMode(boolean pointingMode) {
-		this.pointingMode = pointingMode;
+	public void setAce(int ace) {
+		this.ace = ace;
 	}
 	public double getMinElevation() {
 		return minElevation;
@@ -120,14 +134,14 @@ public class LacspecInputModel {
 	public void setDeadTimeCorrection(boolean enable) {
 		this.deadTimeCorrection = (enable)? 1: 0;
 	}
-	public int getChannelToEnergy() {
-		return channelToEnergy;
+	public int getCounterToEnergy() {
+		return counterToEnergy;
 	}
-	public void setChannelToEnergy(int channelToEnergy) {
-		this.channelToEnergy = channelToEnergy;
+	public void setCounterToEnergy(int counterToEnergy) {
+		this.counterToEnergy = counterToEnergy;
 	}
-	public void setChannelToEnergy(boolean enable) {
-		this.channelToEnergy = (enable)? 1: 0;
+	public void setCounterToEnergy(boolean enable) {
+		this.counterToEnergy = (enable)? 1: 0;
 	}
 	public int getDataUnit() {
 		return dataUnit;
@@ -138,144 +152,144 @@ public class LacspecInputModel {
 	public void setDataUnit(boolean enable) {
 		this.dataUnit = (enable)? 1: 0;
 	}
-	public int getChannel1() {
-		return channel1;
+	public int getCounter1() {
+		return counter1;
 	}
-	public void setChannel1(int channel1) {
-		this.channel1 = channel1;
+	public void setCounter1(int counter1) {
+		this.counter1 = counter1;
 	}
-	public void setChannel1(LacCounterMode mode) {
+	public void setCounter1(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel1 = 1;
+			this.counter1 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel1 = 2;
+			this.counter1 = 2;
 		} else {
-			this.channel1 = 3;
+			this.counter1 = 3;
 		}
 	}
-	public int getChannel2() {
-		return channel2;
+	public int getCounter2() {
+		return counter2;
 	}
-	public void setChannel2(int channel2) {
-		this.channel2 = channel2;
+	public void setCounter2(int counter2) {
+		this.counter2 = counter2;
 	}
-	public void setChannel2(LacCounterMode mode) {
+	public void setCounter2(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel2 = 1;
+			this.counter2 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel2 = 2;
+			this.counter2 = 2;
 		} else {
-			this.channel2 = 3;
+			this.counter2 = 3;
 		}
 	}
-	public int getChannel3() {
-		return channel3;
+	public int getCounter3() {
+		return counter3;
 	}
-	public void setChannel3(int channel3) {
-		this.channel3 = channel3;
+	public void setCounter3(int counter3) {
+		this.counter3 = counter3;
 	}
-	public void setChannel3(LacCounterMode mode) {
+	public void setCounter3(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel3 = 1;
+			this.counter3 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel3 = 2;
+			this.counter3 = 2;
 		} else {
-			this.channel3 = 3;
+			this.counter3 = 3;
 		}
 	}
-	public int getChannel4() {
-		return channel4;
+	public int getCounter4() {
+		return counter4;
 	}
-	public void setChannel4(int channel4) {
-		this.channel4 = channel4;
+	public void setCounter4(int counter4) {
+		this.counter4 = counter4;
 	}
-	public void setChannel4(LacCounterMode mode) {
+	public void setCounter4(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel4 = 1;
+			this.counter4 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel4 = 2;
+			this.counter4 = 2;
 		} else {
-			this.channel4 = 3;
+			this.counter4 = 3;
 		}
 	}
-	public int getChannel5() {
-		return channel5;
+	public int getCounter5() {
+		return counter5;
 	}
-	public void setChannel5(int channel5) {
-		this.channel5 = channel5;
+	public void setCounter5(int counter5) {
+		this.counter5 = counter5;
 	}
-	public void setChannel5(LacCounterMode mode) {
+	public void setCounter5(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel5 = 1;
+			this.counter5 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel5 = 2;
+			this.counter5 = 2;
 		} else {
-			this.channel5 = 3;
+			this.counter5 = 3;
 		}
 	}
-	public int getChannel6() {
-		return channel6;
+	public int getCounter6() {
+		return counter6;
 	}
-	public void setChannel6(int channel6) {
-		this.channel6 = channel6;
+	public void setCounter6(int counter6) {
+		this.counter6 = counter6;
 	}
-	public void setChannel6(LacCounterMode mode) {
+	public void setCounter6(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel6 = 1;
+			this.counter6 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel6 = 2;
+			this.counter6 = 2;
 		} else {
-			this.channel6 = 3;
+			this.counter6 = 3;
 		}
 	}
-	public int getChannel7() {
-		return channel7;
+	public int getCounter7() {
+		return counter7;
 	}
-	public void setChannel7(int channel7) {
-		this.channel7 = channel7;
+	public void setCounter7(int counter7) {
+		this.counter7 = counter7;
 	}
-	public void setChannel7(LacCounterMode mode) {
+	public void setCounter7(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel7 = 1;
+			this.counter7 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel7 = 2;
+			this.counter7 = 2;
 		} else {
-			this.channel7 = 3;
+			this.counter7 = 3;
 		}
 	}
-	public int getChannel8() {
-		return channel8;
+	public int getCounter8() {
+		return counter8;
 	}
-	public void setChannel8(int channel8) {
-		this.channel8 = channel8;
+	public void setCounter8(int counter8) {
+		this.counter8 = counter8;
 	}
-	public void setChannel8(LacCounterMode mode) {
+	public void setCounter8(LacCounterMode mode) {
 		if(mode.equals(LacCounterMode.MIDDLE)) {
-			this.channel8 = 1;
+			this.counter8 = 1;
 		} else if (mode.equals(LacCounterMode.TOP)) {
-			this.channel8 = 2;
+			this.counter8 = 2;
 		} else {
-			this.channel8 = 3;
+			this.counter8 = 3;
 		}
 	}
-	public LacMode getLacMode() {
-		return lacMode;
+	public String getLacMode() {
+		return this.lacMode;
 	}
 	public void setLacMode(LacMode mode) {
-		this.lacMode = mode;
-	}
-	public void setLacMode(String mode) {
-		if(mode.equals("MPC1")) {
-			this.lacMode = LacMode.MPC1;
-		} else if(mode.equals("MPC2")) {
-			this.lacMode = LacMode.MPC2;
-		} else if(mode.equals("MPC3")) {
-			this.lacMode = LacMode.MPC3;
-		} else if (mode.equals("PC")) {
-			this.lacMode = LacMode.PC;
-		} else {
-			this.lacMode = LacMode.INIT;
+		switch (mode) {
+		case MPC1:
+		case MPC2:
+		case MPC3:
+			this.lacMode=mode.toString();
+			break;
+		case PCHK:
+			this.lacMode="PC";
+		case INIT:
+		default:
+			this.lacMode="INIT";
+			break;
 		}
+		this.lacMode = mode.toString();
 	}
 	public int getMixedMode() {
 		return mixedMode;
@@ -301,19 +315,16 @@ public class LacspecInputModel {
 	public void setHasBackground(boolean hasBackground) {
 		this.hasBackground = hasBackground;
 	}
-	public int getBgMethodInt() {
-		return bgMethodInt;
+	public int getBgMethod() {
+		return bgMethod;
 	}
-	public void setBgMethodInt(int bgMethodInt) {
-		this.bgMethodInt = bgMethodInt;
-	}
-	public void setBgMethodInt(BgSubtractionMethod method) {
+	public void setBgMethod(BgSubtractionMethod method) {
 		if(method.equals(BgSubtractionMethod.SIMPLE)) {
-			this.bgMethodInt = 1;
+			this.bgMethod = 1;
 		} else if(method.equals(BgSubtractionMethod.SUD_SORT)) {
-			this.bgMethodInt = 2;
+			this.bgMethod = 2;
 		} else { // HAYASHIDA
-			this.bgMethodInt = 3;
+			this.bgMethod = 3;
 		}
 	}
 	public String getBgFileName() {
