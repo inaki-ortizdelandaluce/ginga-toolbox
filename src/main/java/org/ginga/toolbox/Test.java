@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.command.TargetObservationListWriterCmd;
+import org.ginga.toolbox.command.TargetObservationListPrinterCmd;
 import org.ginga.toolbox.command.SpectraExtractorCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
@@ -50,8 +50,8 @@ public class Test {
         }
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
-        TargetObservationListWriterCmd summary = new TargetObservationListWriterCmd(writer);
-        summary.writeSpectralModes(target);
+        TargetObservationListPrinterCmd printer = new TargetObservationListPrinterCmd(writer);
+        printer.printSpectralModes(target);
     }
 
     public static void scanObservations(String[] args) {
