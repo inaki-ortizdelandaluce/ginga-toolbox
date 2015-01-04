@@ -19,7 +19,7 @@ public class LacspecInputModel {
 	private int bgCorrection;
 	private int aspectCorrection;
 	private int deadTimeCorrection;
-	private int counterToEnergy;
+	private int channelToEnergy;
 	private int dataUnit;
 	private boolean hasBackground;
 	private int bgMethod;
@@ -135,13 +135,13 @@ public class LacspecInputModel {
 		this.deadTimeCorrection = (enable)? 1: 0;
 	}
 	public int getCounterToEnergy() {
-		return counterToEnergy;
+		return channelToEnergy;
 	}
-	public void setCounterToEnergy(int counterToEnergy) {
-		this.counterToEnergy = counterToEnergy;
+	public void setChannelToEnergy(int channelToEnergy) {
+		this.channelToEnergy = channelToEnergy;
 	}
-	public void setCounterToEnergy(boolean enable) {
-		this.counterToEnergy = (enable)? 1: 0;
+	public void setChannelToEnergy(boolean enable) {
+		this.channelToEnergy = (enable)? 1: 0;
 	}
 	public int getDataUnit() {
 		return dataUnit;
@@ -297,6 +297,10 @@ public class LacspecInputModel {
 	public void setMixedMode(int mixedMode) {
 		this.mixedMode = mixedMode;
 	}
+	public void setMixedMode(boolean enabled) {
+		this.mixedMode = (enabled)? 1:0;
+	}
+	
 	public String getSpectralFileName() {
 		return spectralFileName;
 	}

@@ -75,7 +75,7 @@ public class LacspecInputFileWriter {
             model.setBgCorrection(0);
             model.setAspectCorrection(0);
             model.setDeadTimeCorrection(1);
-            model.setCounterToEnergy(1);
+            model.setChannelToEnergy(1);
             model.setDataUnit(1);
             model.setAce(1);
             model.setCounter1(3);
