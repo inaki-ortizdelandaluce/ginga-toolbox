@@ -1,4 +1,4 @@
-package org.ginga.toolbox.gti;
+package org.ginga.toolbox.target;
 
 public class TargetFk4Coordinates {
 

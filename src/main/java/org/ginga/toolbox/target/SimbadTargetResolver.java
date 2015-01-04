@@ -1,4 +1,4 @@
-package org.ginga.toolbox.gti;
+package org.ginga.toolbox.target;
 
 import java.io.IOException;
 import java.io.InputStream;
