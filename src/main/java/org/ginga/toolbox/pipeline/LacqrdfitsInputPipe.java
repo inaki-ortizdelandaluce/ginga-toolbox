@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.gti.GtiFileWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
@@ -37,19 +38,13 @@ public class LacqrdfitsInputPipe extends
 			LacdumpQuery query = this.starts.next();
 
 			// set working directory
-			GingaToolboxEnv env = GingaToolboxEnv
-					.getInstance();
-			File workingDir = new File(env.getWorkingDir());
+			File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
 			if (!workingDir.exists()) {
 				workingDir.mkdirs();
 			}
 			log.info("Working directory " + workingDir.getAbsolutePath());
 
-			String target = query.getTargetName();
-			// set output file name
-			// File gtiFile = new File(workingDir,
-			// FileUtil.nextFileName(workingDir, target
-			// + "_REGION", "DATA"));
+			// build empty GTI file
 			File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(), 
 					query.getMode().toString(), "DATA"));
 
@@ -62,28 +57,21 @@ public class LacqrdfitsInputPipe extends
 			if (sfList.size() > 0) {
 				// save matching results into a GTI file
 				GtiFileWriter gtiWriter = new GtiFileWriter();
-				gtiWriter.writeToFile(target, sfList, false, gtiFile);
+				gtiWriter.writeToFile(query.getTargetName(), sfList, false, gtiFile);
 				log.debug("GTI file " + gtiFile.getPath()
 						+ " written successfully");
 
 				// emit lacqrdfits input model
 				LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
+				DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
 				inputModel.setLacMode(query.getMode());
 				inputModel.setStartTime(query.getStartTime());
-				inputModel.setMinElevation(query.getMinElevation());
-				inputModel.setMaxElevation(env.getDataReductionEnv().getElevationMax());
-				// inputModel.setPsFileName(FileUtil
-				// .nextFileName(workingDir, target + "_lacqrd", "ps"));
+				inputModel.setMinElevation(env.getElevationMin());
+				inputModel.setMaxElevation(env.getElevationMax());
 				inputModel.setPsFileName(FileUtil.nextFileName("lacqrd",
 						query.getStartTime(), query.getMode()
 								.toString(), "ps"));
 				inputModel.setRegionFileName(gtiFile.getName());
-				// inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir,
-				// target
-				// + "_SPEC_lacqrd", "FILE"));
-				// inputModel.setTimingFileName(FileUtil.nextFileName(workingDir,
-				// target + "_TIMING"
-				// , "fits"));
 				inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
 						query.getStartTime(), query.getMode()
 								.toString(), "FILE"));
