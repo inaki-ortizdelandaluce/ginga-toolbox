@@ -35,7 +35,6 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
         double minElevation = env.getElevationMin();
         double minCutOffRigidity = env.getCutOffRigidityMin();
         
-        
         // find observation list by target
         ObservationDao obsDao = new ObservationDaoImpl();
         List<ObservationEntity> obsList = null;
@@ -50,7 +49,7 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
         LacdumpDao lacdumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = DateUtil.DATE_FORMAT_DATABASE;
         for (ObservationEntity obsEntity : obsList) {
-            log.info("Scanning observation " + obsEntity.getSequenceNumber() + "...");
+            log.debug("Scanning observation " + obsEntity.getSequenceNumber() + "...");
             // find available LAC modes
             String startTime = dateFmt.format(obsEntity.getStartTime());
             String endTime = dateFmt.format(obsEntity.getEndTime());
@@ -75,7 +74,7 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
                 if (sfList.size() > 0) {
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
-                    log.info("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
+                    log.debug("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
                     singleModeObs = new SingleModeTargetObservation();
                     singleModeObs.setObsId(obsEntity.getId());
                     singleModeObs.setTarget(target);
