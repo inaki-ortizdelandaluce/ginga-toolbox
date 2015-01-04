@@ -54,9 +54,11 @@ public class TargetObservationListPrinterCmd {
 			}
 			// write target list 
 			TargetObservationListPrinterCmd cmd = new TargetObservationListPrinterCmd(writer);
-			if(commandLine.hasOption("a")) {
+			if(commandLine.hasOption("o")) {
+				cmd.printObservations(target);
+			} else if (commandLine.hasOption("a")) {
 				cmd.printAllModes(target);
-			} else {
+			} else  {
 				cmd.printSpectralModes(target);
 			}
 		} catch (ParseException e) {
@@ -93,8 +95,9 @@ public class TargetObservationListPrinterCmd {
     	
     	OptionGroup group2 = new OptionGroup();
     	group2.setRequired(true);
-    	group2.addOption(new Option("a", "all-modes", false, "include all LAC modes"));
-    	group2.addOption(new Option("m", "spectral-modes-only", false, "include MPC1 and MPC2 LAC modes only"));
+    	group2.addOption(new Option("o", "observations-only", false, "list observations only"));
+    	group2.addOption(new Option("a", "all-modes", false, "list all LAC modes"));
+    	group2.addOption(new Option("m", "spectral-modes-only", false, "list MPC1 and MPC2 LAC modes only"));
     	
     	OptionGroup group3 = new OptionGroup();
     	group3.setRequired(true);
@@ -111,7 +114,7 @@ public class TargetObservationListPrinterCmd {
 	private static void printHelp() {
 		HelpFormatter helpFormatter = new HelpFormatter();
 		helpFormatter.setOptionComparator(new Comparator<Option>() {
-			private static final String OPTS_ORDER = "tamcfis"; // short option names
+			private static final String OPTS_ORDER = "toamcfis"; // short option names
 			
 		    @Override
 			public int compare(Option o1, Option o2) {
@@ -182,4 +185,21 @@ public class TargetObservationListPrinterCmd {
         this.writer.flush();
         this.writer.close();
     }
+    
+    public void printObservations(String target) {
+        TargetObservationListPipe pipe = new TargetObservationListPipe();
+        pipe.setStarts(Arrays.asList(target));
+        List<ObservationEntity> obsList = pipe.next();
+
+        for (ObservationEntity obsEntity : obsList) {
+        	this.writer.println(" " + String.format("%18s",  
+        			obsEntity.getId() + " " 
+        			+ obsEntity.getSequenceNumber() + " "
+        			+ String.format("%20s", obsEntity.getStartTime()) + " "
+        			+ String.format("%20s", obsEntity.getEndTime())));
+        }
+        this.writer.flush();
+        this.writer.close();
+    }
+    
 }
