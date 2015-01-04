@@ -1,5 +1,7 @@
 package org.ginga.toolbox.lacdump;
 
+import java.util.List;
+
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -20,6 +22,8 @@ public class LacdumpQuery {
     private BitRate bitRate;
     
     private SkyAnnulus skyAnnulus;
+    
+    private List<String> lacdumpFiles;
     
     public class SkyAnnulus {
     	private double raB1950Deg;
@@ -181,5 +185,19 @@ public class LacdumpQuery {
 		this.skyAnnulus.setDecB1950Deg(decDeg);
 		this.skyAnnulus.setInnerRadiiDeg(innerRadiiDeg);
 		this.skyAnnulus.setOuterRadiiDeg(outerRadiiDeg);
+	}
+
+	/**
+	 * @return the lacdumpFiles
+	 */
+	public List<String> getLacdumpFiles() {
+		return lacdumpFiles;
+	}
+
+	/**
+	 * @param lacdumpFiles the lacdumpFiles to set
+	 */
+	public void setLacdumpFiles(List<String> lacdumpFiles) {
+		this.lacdumpFiles = lacdumpFiles;
 	}
 }
