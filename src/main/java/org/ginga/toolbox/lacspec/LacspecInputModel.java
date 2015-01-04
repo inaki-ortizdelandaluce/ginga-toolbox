@@ -33,10 +33,11 @@ public class LacspecInputModel {
 	private int counter6;
 	private int counter7;
 	private int counter8;
-	private String lacMode;
+	private LacMode lacMode;
 	private int mixedMode;
 	private String spectralFileName;
 	private String regionFileName;
+	private String startTime;
 	
 	public String getPsFileName() {
 		return psFileName;
@@ -272,24 +273,11 @@ public class LacspecInputModel {
 			this.counter8 = 3;
 		}
 	}
-	public String getLacMode() {
+	public LacMode getLacMode() {
 		return this.lacMode;
 	}
 	public void setLacMode(LacMode mode) {
-		switch (mode) {
-		case MPC1:
-		case MPC2:
-		case MPC3:
-			this.lacMode=mode.toString();
-			break;
-		case PCHK:
-			this.lacMode="PC";
-		case INIT:
-		default:
-			this.lacMode="INIT";
-			break;
-		}
-		this.lacMode = mode.toString();
+		this.lacMode = mode;
 	}
 	public int getMixedMode() {
 		return mixedMode;
@@ -342,6 +330,12 @@ public class LacspecInputModel {
 	}
 	public void setBgSubFileNumber(int bgSubFileNumber) {
 		this.bgSubFileNumber = bgSubFileNumber;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
 }
