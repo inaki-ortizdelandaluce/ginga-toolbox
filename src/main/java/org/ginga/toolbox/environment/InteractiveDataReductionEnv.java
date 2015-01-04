@@ -35,6 +35,8 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	private Integer lacCounter7;
 	private Integer lacCounter8;
 	private Boolean isLacMixedMode;
+	private Double skyAnnulusInnerRadii;
+	private Double skyAnnulusOuterRadii;
 	
 	protected InteractiveDataReductionEnv() {
 		this.scanner = new Scanner(System.in);
@@ -477,10 +479,46 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	}
 
 	/**
+	 * @return the skyAnnulusInnerRadii
+	 */
+	@Override
+	public Double getSkyAnnulusInnerRadii() {
+		if(this.skyAnnulusInnerRadii == null) {
+			this.skyAnnulusInnerRadii = readDoubleFromInput("Enter Sky annulus inner radii in degrees:");
+		}
+		return this.skyAnnulusInnerRadii;	
+	}
+
+	/**
+	 * @param skyAnnulusInnerRadii the skyAnnulusInnerRadii to set
+	 */
+	public void setSkyAnnulusInnerRadii(Double skyAnnulusInnerRadii) {
+		this.skyAnnulusInnerRadii = skyAnnulusInnerRadii;
+	}
+
+	/**
+	 * @return the skyAnnulusOuterRadii
+	 */
+	@Override
+	public Double getSkyAnnulusOuterRadii() {
+		if(this.skyAnnulusOuterRadii == null) {
+			this.skyAnnulusOuterRadii = readDoubleFromInput("Enter Sky annulus outer radii in degrees:");
+		}
+		return this.skyAnnulusOuterRadii;	
+	}
+
+	/**
+	 * @param skyAnnulusOuterRadii the skyAnnulusOuterRadii to set
+	 */
+	public void setSkyAnnulusOuterRadii(Double skyAnnulusOuterRadii) {
+		this.skyAnnulusOuterRadii = skyAnnulusOuterRadii;
+	}
+
+	/**
 	 * @param isLacMixedMode the isLacMixedMode to set
 	 */
 	public void setLacMixedMode(Boolean isLacMixedMode) {
 		this.isLacMixedMode = isLacMixedMode;
 	}
-	
+
 }

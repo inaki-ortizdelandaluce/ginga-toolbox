@@ -232,4 +232,24 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
             return Integer.valueOf("1");
         }
 	}
+
+	@Override
+	public Double getSkyAnnulusInnerRadii() {
+		try {
+            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.innerRadiiDeg"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.sky.annulus.innerRadiiDeg, using default value", e);
+            return Double.valueOf("2.5");
+        }
+	}
+
+	@Override
+	public Double getSkyAnnulusOuterRadii() {
+		try {
+            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.outerRadiiDeg"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.sky.annulus.outerRadiiDeg, using default value", e);
+            return Double.valueOf("3.5");
+        }
+	}
 }

@@ -44,5 +44,10 @@ public interface DataReductionEnv {
 	
 	public Boolean isLacMixedMode();
 	
-	public Integer getBgSubFileNumber();	
+	public Integer getBgSubFileNumber();
+	
+	public Double getSkyAnnulusInnerRadii();
+	
+	public Double getSkyAnnulusOuterRadii();
+	
 }
