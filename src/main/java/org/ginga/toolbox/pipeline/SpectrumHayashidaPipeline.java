@@ -23,7 +23,7 @@ public class SpectrumHayashidaPipeline extends Pipeline<SingleModeTargetObservat
 	public SpectrumHayashidaPipeline() {
 		 // initialize all pipes needed
 	    this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-	            new SpectrumModeFilterPipe());
+	            new LacModeFilterPipe());
 	    this.queryBuilder = new LacdumpQueryPipe();
 	    this.lacqrdfitsInputBuilder = new LacqrdfitsInputPipe();
 	    this.lacqrdfits = new LacqrdfitsPipe();
