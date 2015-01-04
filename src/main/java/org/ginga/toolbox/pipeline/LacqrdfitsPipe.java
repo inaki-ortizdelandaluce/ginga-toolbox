@@ -41,10 +41,9 @@ public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File>
 				// FileUtil.nextFileName(workingDir, "lacqrd",
 				// "input"));
 				File inputFile = new File(workingDir, FileUtil.nextFileName(
-						"lacqrd", inputModel.getStartTime(), inputModel
-								.getLacMode().toString(), "input"));
-				LacqrdfitsInputFileWriter lacQrdInputFileWriter = new LacqrdfitsInputFileWriter(
-						inputModel);
+						"lacqrd", inputModel.getStartTime(), inputModel.getLacMode(), "input"));
+				LacqrdfitsInputFileWriter lacQrdInputFileWriter = 
+						new LacqrdfitsInputFileWriter(inputModel);
 				lacQrdInputFileWriter.writeToFile(inputFile);
 				log.info("Input file " + inputFile.getPath()
 						+ " created successfully");
