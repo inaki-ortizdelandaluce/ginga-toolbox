@@ -221,7 +221,11 @@ public class SpectrumExtractorCmd {
 			extractSpectrumHayashida(obs);
 			break;
 		case SIMPLE:
+			extractSpectrumSimple(obs);
+			break;
 		case SUD_SORT:
+			extractSpectrumSudSort(obs);
+			break;
 		default:
 			log.error(method + " background subtraction method not supported");
 			System.exit(1);
@@ -235,6 +239,14 @@ public class SpectrumExtractorCmd {
         if (file != null) {
         	log.info("Spectrum file " + file.getName() + " created successfully");
         }
+    }
+
+    public static void extractSpectrumSimple(SingleModeTargetObservation obs) {
+    	
+    }
+
+    public static void extractSpectrumSudSort(SingleModeTargetObservation obs) {
+    	
     }
 
 }
