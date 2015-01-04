@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.util.Constants.LacMode;
 
 public class FileUtil {
 
@@ -21,14 +22,14 @@ public class FileUtil {
         return file.getName().split("\\.(?=[^\\.]+$)");
     }
 
-    public static String nextFileName(String prefix, String startTime, String mode, String extension) {
+    public static String nextFileName(String prefix, String startTime, LacMode mode, String extension) {
     	String fileName = prefix;
     	try {
 			fileName += "_" + DateUtil.convertDatabaseToFileFormat(startTime);
 		} catch (ParseException e) {
 			fileName += "_" + startTime;
 		}
-    	fileName += "_" + mode;
+    	fileName += "_" + mode.toString();
     	fileName += "." + extension;
     	return fileName;
     }

@@ -46,7 +46,7 @@ public class LacqrdfitsInputPipe extends
 
 			// build empty GTI file
 			File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(), 
-					query.getMode().toString(), "DATA"));
+					query.getMode(), "DATA"));
 
 			// query entities matching the criteria
 			LacdumpDao dao = new LacdumpDaoImpl();
@@ -69,15 +69,12 @@ public class LacqrdfitsInputPipe extends
 				inputModel.setMinElevation(env.getElevationMin());
 				inputModel.setMaxElevation(env.getElevationMax());
 				inputModel.setPsFileName(FileUtil.nextFileName("lacqrd",
-						query.getStartTime(), query.getMode()
-								.toString(), "ps"));
+						query.getStartTime(), query.getMode(), "ps"));
 				inputModel.setRegionFileName(gtiFile.getName());
 				inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
-						query.getStartTime(), query.getMode()
-								.toString(), "FILE"));
+						query.getStartTime(), query.getMode(), "FILE"));
 				inputModel.setTimingFileName(FileUtil.nextFileName("TIMING",
-						query.getStartTime(), query.getMode()
-								.toString(), "fits"));
+						query.getStartTime(), query.getMode(), "fits"));
 
 				return inputModel;
 			}
