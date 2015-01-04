@@ -14,5 +14,7 @@ public interface ObservationDao {
     public Set<String> findAllTargets() throws ObservationDaoException;
     
     public void update(ObservationEntity observation) throws ObservationDaoException;
+    
+    public ObservationEntity findById(long id) throws ObservationDaoException;
 
 }

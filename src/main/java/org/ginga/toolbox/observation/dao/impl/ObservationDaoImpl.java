@@ -100,4 +100,19 @@ public class ObservationDaoImpl implements ObservationDao {
         return targetList;
 	}
 
+	@Override
+    public ObservationEntity findById(long id) throws ObservationDaoException {
+        ObservationEntity entity = null;
+        try {
+            HibernateUtil.beginTransaction();
+            Session hibernateSession = HibernateUtil.getSession();
+            entity = (ObservationEntity) hibernateSession.get(ObservationEntity.class, id);
+            HibernateUtil.commitTransaction();
+        } catch (Exception e) {
+            throw new ObservationDaoException(e);
+        } finally {
+            HibernateUtil.closeSession();
+        }
+        return entity;
+    }
 }
