@@ -34,8 +34,10 @@ public class HibernateUtil {
 
             // dialect properties:
             // MySQLInnoDBDialect/MySQLMyISAMDialect/MySQL5Dialect/MySQL5InnoDBDialect
+            // configuration.setProperty("hibernate.dialect",
+            //        "org.hibernate.dialect.MySQL5InnoDBDialect");
             configuration.setProperty("hibernate.dialect",
-                    "org.hibernate.dialect.MySQL5InnoDBDialect");
+                    "org.ginga.toolbox.util.MySQL5SphereDialect");
 
             // connection pooling
             // https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool
