@@ -14,17 +14,17 @@ public interface DataReductionEnv {
 	
 	public BitRate getBitRate();
 	
-	public Integer getTransmissionMin();
+	public Double getTransmissionMin();
 	
-	public Boolean isAcePointingMode();
+	public Integer getAttitudeMode();
 	
-	public Boolean isAspectCorrection();
+	public Boolean getAspectCorrection();
 	
-	public Boolean isDeadTimeCorrection();
+	public Boolean getDeadTimeCorrection();
 	
-	public Boolean isChannelToEnergyCorrection();
+	public Boolean getChannelToEnergyConversion();
 	
-	public Boolean isDataUnitCorrection();
+	public Integer getDataUnit();
 	
 	public Integer getLacCounter1();
 	

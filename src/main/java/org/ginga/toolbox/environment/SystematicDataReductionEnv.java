@@ -74,98 +74,162 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
     }
 
 	@Override
-	public Integer getTransmissionMin() {
-		// TODO Auto-generated method stub
-		return null;
+	public Double getTransmissionMin() {
+        try {
+            return Double.valueOf(this.properties.getProperty("systematic.TRN.min"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.TRN.min, using default value", e);
+            return Double.valueOf("0.0");
+        }
 	}
 
 	@Override
-	public Boolean isAcePointingMode() {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer getAttitudeMode() {
+        try {
+            return Integer.valueOf(this.properties.getProperty("systematic.ACE"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.ACE, using default value", e);
+            return Integer.valueOf("1");
+        }
 	}
 
 	@Override
-	public Boolean isAspectCorrection() {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean getAspectCorrection() {
+		try {
+            return Boolean.valueOf(this.properties.getProperty("systematic.COR.aspectCorrection"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.COR.aspectCorrection, using default value", e);
+            return Boolean.valueOf("false");
+        }
 	}
 
 	@Override
-	public Boolean isDeadTimeCorrection() {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean getDeadTimeCorrection() {
+		try {
+            return Boolean.valueOf(this.properties.getProperty("systematic.COR.deadTimeCorrection"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.COR.deadTimeCorrection, using default value", e);
+            return Boolean.valueOf("true");
+        }
 	}
 
 	@Override
-	public Boolean isChannelToEnergyCorrection() {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean getChannelToEnergyConversion() {
+		try {
+            return Boolean.valueOf(this.properties.getProperty("systematic.COR.channelToEnergy"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.COR.channelToEnergy, using default value", e);
+            return Boolean.valueOf("true");
+        }
 	}
 
 	@Override
-	public Boolean isDataUnitCorrection() {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer getDataUnit() {
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.COR.dataUnit"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.COR.dataUnit, using default value", e);
+            return Integer.valueOf("1");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter1() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter1"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter1, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter2() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter2"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter2, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter3() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter3"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter3, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter4() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter4"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter4, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter5() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter5"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter5, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter6() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter6"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter6, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter7() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter7"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter7, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Integer getLacCounter8() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter8"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter8, using default value", e);
+            return Integer.valueOf("3");
+        }
 	}
 
 	@Override
 	public Boolean isLacMixedMode() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Boolean.valueOf(this.properties.getProperty("systematic.LAC.mixedMode"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.mixedMode, using default value", e);
+            return Boolean.valueOf("true");
+        }
 	}
 
 	@Override
 	public Integer getBgSubFileNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+            return Integer.valueOf(this.properties.getProperty("systematic.BGD.bgSubFileNumber"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.LAC.counter8, using default value", e);
+            return Integer.valueOf("1");
+        }
 	}
 }

@@ -19,12 +19,12 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	private Double cutOffRigidityMin;
 	private Double cutOffRigidityMax;
 	private BitRate bitRate;
-	private Integer transmissionMin;
-	private Boolean isAcePointingMode;
-	private Boolean isAspectCorrection;
-	private Boolean isDeadTimeCorrection;
-	private Boolean isChannelToEnergyCorrection;
-	private Boolean isDataUnitCorrection;
+	private Double transmissionMin;
+	private Integer attitudeMode;
+	private Boolean aspectCorrection;
+	private Boolean deadTimeCorrection;
+	private Boolean channelToEnergyConversion;
+	private Integer dataUnit;
 	private Integer bgSubFileNumber;
 	private Integer lacCounter1;
 	private Integer lacCounter2;
@@ -79,12 +79,48 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 		return d;
 	}
 	
+	private Integer readIntegerFromInput(String message) {
+		Integer i = null;
+		boolean catcher = false;
+        do {
+            try {
+                System.out.print(message);
+                i = scanner.nextInt();
+                catcher = true;
+            } catch (Exception e) {
+            	System.out.println("Value is not a number, please try again");
+            } finally {
+            	scanner.nextLine();
+            }
+        }
+        while (!catcher);
+		return i;
+	}
+	
+	private Boolean readBooleanFromInput(String message) {
+		Boolean b = null;
+		boolean catcher = false;
+        do {
+            try {
+                System.out.print(message);
+                b = scanner.nextBoolean();
+                catcher = true;
+            } catch (Exception e) {
+            	System.out.println("Value is not a number, please try again");
+            } finally {
+            	scanner.nextLine();
+            }
+        }
+        while (!catcher);
+		return b;
+	}
+
 	@Override
 	public Double getElevationMin() {
 		if(this.elevationMin == null) {
-			this.elevationMin = readDoubleFromInput("Enter a minimum elevation angle in degrees:");
+			this.elevationMin = readDoubleFromInput("Enter a minimum Pointing Elevation Angle in degrees:");
 		}
-		return elevationMin;
+		return this.elevationMin;
 	}
 	/**
 	 * @param elevationMin the elevationMin to set
@@ -98,9 +134,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	@Override
 	public Double getElevationMax() {
 		if(this.elevationMax == null) {
-			this.elevationMax = readDoubleFromInput("Enter a maximum elevation angle in degrees:");
+			this.elevationMax = readDoubleFromInput("Enter a maximum Pointing Elevation Angle in degrees:");
 		}
-		return elevationMax;
+		return this.elevationMax;
 	}
 	/**
 	 * @param elevationMax the elevationMax to set
@@ -114,9 +150,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	@Override
 	public Double getCutOffRigidityMin() {
 		if(this.cutOffRigidityMin == null) {
-			this.cutOffRigidityMin = readDoubleFromInput("Enter a minimum cutt-off rigidity value in GeV/c:");
+			this.cutOffRigidityMin = readDoubleFromInput("Enter a minimum Cutt-off Rigidity value in GeV/c:");
 		}
-		return cutOffRigidityMin;
+		return this.cutOffRigidityMin;
 	}
 	/**
 	 * @param cutOffRigidityMin the cutOffRigidityMin to set
@@ -130,9 +166,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	@Override
 	public Double getCutOffRigidityMax() {
 		if(this.cutOffRigidityMax == null) {
-			this.cutOffRigidityMax = readDoubleFromInput("Enter a maximum cutt-off rigidity value in GeV/c:");
+			this.cutOffRigidityMax = readDoubleFromInput("Enter a maximum Cutt-off Rigidity value in GeV/c:");
 		}
-		return cutOffRigidityMax;
+		return this.cutOffRigidityMax;
 	}
 	/**
 	 * @param cutOffRigidityMax the cutOffRigidityMax to set
@@ -147,9 +183,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	public BitRate getBitRate() {
 		if(this.bitRate == null) {
 			this.bitRate = BitRate.valueOf(
-					readEnumFromInput("Enter a bit rate ('ANY', 'H', 'M' and 'L'):", Constants.getBitRates()));
+					readEnumFromInput("Enter a Bit Rate ('ANY', 'H', 'M' and 'L'):", Constants.getBitRates()));
 		}
-		return bitRate;
+		return this.bitRate;
 	}
 	
 	/**
@@ -163,90 +199,108 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 * @return the transmissionMin
 	 */
 	@Override
-	public Integer getTransmissionMin() {
-		return transmissionMin;
+	public Double getTransmissionMin() {
+		if(this.transmissionMin == null) {
+			this.transmissionMin = readDoubleFromInput("Enter a minimum Transmission value for the target source:");
+		}
+		return this.transmissionMin;
 	}
 
 	/**
 	 * @param transmissionMin the transmissionMin to set
 	 */
-	public void setTransmissionMin(Integer transmissionMin) {
+	public void setTransmissionMin(Double transmissionMin) {
 		this.transmissionMin = transmissionMin;
 	}
 
 	/**
-	 * @return the isAcePointingMode
+	 * @return the attitudeMode
 	 */
 	@Override
-	public Boolean isAcePointingMode() {
-		return isAcePointingMode;
+	public Integer getAttitudeMode() {
+		if(this.attitudeMode == null) {
+			this.attitudeMode = readIntegerFromInput("Enter an Attitude Mode (1=Pointing Mode, 0=Any Mode):");
+		}
+		return this.attitudeMode;
 	}
 
 	/**
-	 * @param isAcePointingMode the isAcePointingMode to set
+	 * @param attitudeMode the attitudeMode to set
 	 */
-	public void setAcePointingMode(Boolean isAcePointingMode) {
-		this.isAcePointingMode = isAcePointingMode;
+	public void setAtitudeMode(Integer attitudeMode) {
+		this.attitudeMode = attitudeMode;
 	}
 
 	/**
-	 * @return the isAspectCorrection
-	 */
-	@Override
-	public Boolean isAspectCorrection() {
-		return isAspectCorrection;
-	}
-
-	/**
-	 * @param isAspectCorrection the isAspectCorrection to set
-	 */
-	public void setAspectCorrection(Boolean isAspectCorrection) {
-		this.isAspectCorrection = isAspectCorrection;
-	}
-
-	/**
-	 * @return the isDeadTimeCorrection
+	 * @return the aspectCorrection
 	 */
 	@Override
-	public Boolean isDeadTimeCorrection() {
-		return isDeadTimeCorrection;
+	public Boolean getAspectCorrection() {
+		if(this.aspectCorrection == null) {
+			this.aspectCorrection = readBooleanFromInput("Apply Aspect Correction (TRUE, FALSE):");
+		}
+		return this.aspectCorrection;
 	}
 
 	/**
-	 * @param isDeadTimeCorrection the isDeadTimeCorrection to set
+	 * @param aspectCorrection the aspectCorrection to set
 	 */
-	public void setDeadTimeCorrection(Boolean isDeadTimeCorrection) {
-		this.isDeadTimeCorrection = isDeadTimeCorrection;
+	public void setAspectCorrection(Boolean aspectCorrection) {
+		this.aspectCorrection = aspectCorrection;
 	}
 
 	/**
-	 * @return the isChannelToEnergyCorrection
-	 */
-	@Override
-	public Boolean isChannelToEnergyCorrection() {
-		return isChannelToEnergyCorrection;
-	}
-
-	/**
-	 * @param isChannelToEnergyCorrection the isChannelToEnergyCorrection to set
-	 */
-	public void setChannelToEnergyCorrection(Boolean isChannelToEnergyCorrection) {
-		this.isChannelToEnergyCorrection = isChannelToEnergyCorrection;
-	}
-
-	/**
-	 * @return the isDataUnitCorrection
+	 * @return the deadTimeCorrection
 	 */
 	@Override
-	public Boolean isDataUnitCorrection() {
-		return isDataUnitCorrection;
+	public Boolean getDeadTimeCorrection() {
+		if(this.deadTimeCorrection == null) {
+			this.deadTimeCorrection = readBooleanFromInput("Apply Deadtime Correction (true, false):");
+		}
+		return this.deadTimeCorrection;
 	}
 
 	/**
-	 * @param isDataUnitCorrection the isDataUnitCorrection to set
+	 * @param deadTimeCorrection the deadTimeCorrection to set
 	 */
-	public void setDataUnitCorrection(Boolean isDataUnitCorrection) {
-		this.isDataUnitCorrection = isDataUnitCorrection;
+	public void setDeadTimeCorrection(Boolean deadTimeCorrection) {
+		this.deadTimeCorrection = deadTimeCorrection;
+	}
+
+	/**
+	 * @return the channelToEnergyConversion
+	 */
+	@Override
+	public Boolean getChannelToEnergyConversion() {
+		if(this.channelToEnergyConversion == null) {
+			this.channelToEnergyConversion = readBooleanFromInput("Apply Channel to Energy conversion (true, false):");
+		}
+		return this.channelToEnergyConversion;	
+	}
+
+	/**
+	 * @param channelToEnergyConversion the channelToEnergyConversion to set
+	 */
+	public void setChannelToEnergyConversion(Boolean channelToEnergyConversion) {
+		this.channelToEnergyConversion = channelToEnergyConversion;
+	}
+
+	/**
+	 * @return the dataUnitConversion
+	 */
+	@Override
+	public Integer getDataUnit() {
+		if(this.dataUnit == null) {
+			this.dataUnit = readIntegerFromInput("Enter Data Units (0=counts, 1=counts/sec, 2=counts/sec/cm2):");
+		}
+		return this.dataUnit;	
+	}
+
+	/**
+	 * @param dataUnitConversion the dataUnitConversion to set
+	 */
+	public void setDataUnit(Integer dataUnit) {
+		this.dataUnit = dataUnit;
 	}
 
 	/**
@@ -254,7 +308,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getBgSubFileNumber() {
-		return bgSubFileNumber;
+		if(this.bgSubFileNumber == null) {
+			this.bgSubFileNumber = readIntegerFromInput("Enter Background Sub-file Number:");
+		}
+		return this.bgSubFileNumber;	
 	}
 
 	/**
@@ -269,7 +326,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter1() {
-		return lacCounter1;
+		if(this.lacCounter1 == null) {
+			this.lacCounter1 = readIntegerFromInput("Enter LAC Counter 1 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter1;	
 	}
 
 	/**
@@ -284,7 +344,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter2() {
-		return lacCounter2;
+		if(this.lacCounter2 == null) {
+			this.lacCounter2 = readIntegerFromInput("Enter LAC Counter 2 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter2;	
 	}
 
 	/**
@@ -299,7 +362,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter3() {
-		return lacCounter3;
+		if(this.lacCounter3 == null) {
+			this.lacCounter3 = readIntegerFromInput("Enter LAC Counter 3 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter3;	
 	}
 
 	/**
@@ -314,7 +380,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter4() {
-		return lacCounter4;
+		if(this.lacCounter4 == null) {
+			this.lacCounter4 = readIntegerFromInput("Enter LAC Counter 4 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter4;	
 	}
 
 	/**
@@ -329,7 +398,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter5() {
-		return lacCounter5;
+		if(this.lacCounter5 == null) {
+			this.lacCounter5 = readIntegerFromInput("Enter LAC Counter 5 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter5;	
 	}
 
 	/**
@@ -344,7 +416,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter6() {
-		return lacCounter6;
+		if(this.lacCounter6 == null) {
+			this.lacCounter6 = readIntegerFromInput("Enter LAC Counter 6 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter6;	
 	}
 
 	/**
@@ -359,7 +434,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter7() {
-		return lacCounter7;
+		if(this.lacCounter7 == null) {
+			this.lacCounter7 = readIntegerFromInput("Enter LAC Counter 7 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter7;	
 	}
 
 	/**
@@ -374,7 +452,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Integer getLacCounter8() {
-		return lacCounter8;
+		if(this.lacCounter8 == null) {
+			this.lacCounter8 = readIntegerFromInput("Enter LAC Counter 8 Mode  (1=middle-layer, 2=top-layer, 3=both):");
+		}
+		return this.lacCounter8;	
 	}
 
 	/**
@@ -389,7 +470,10 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
 	 */
 	@Override
 	public Boolean isLacMixedMode() {
-		return isLacMixedMode;
+		if(this.isLacMixedMode == null) {
+			this.isLacMixedMode = readBooleanFromInput("Combine MPC-1 and MPC-2 mode data (true, false):");
+		}
+		return this.isLacMixedMode;	
 	}
 
 	/**
