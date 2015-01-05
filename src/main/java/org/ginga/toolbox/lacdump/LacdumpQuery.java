@@ -18,45 +18,55 @@ public class LacdumpQuery {
     private Double minCutOffRigidity;
 
     private Double minElevation;
-    
+
     private BitRate bitRate;
-    
+
     private SkyAnnulus skyAnnulus;
-    
+
     private List<String> lacdumpFiles;
-    
+
+    private boolean isBackground = false;
+
     public class SkyAnnulus {
-    	private double targetRaDeg;
-    	private double targetDecDeg;
-    	private double innerRadiiDeg;
-    	private double outerRadiiDeg;
-    	
-		public double getTargetRaDeg() {
-			return targetRaDeg;
-		}
-		public void setTargetRaDeg(double targetRaDeg) {
-			this.targetRaDeg = targetRaDeg;
-		}
-		public double getTargetDecDeg() {
-			return targetDecDeg;
-		}
-		public void setTargetDecDeg(double targetDecDeg) {
-			this.targetDecDeg = targetDecDeg;
-		}
-		public double getInnerRadiiDeg() {
-			return this.innerRadiiDeg;
-		}
-		public void setInnerRadiiDeg(double radiiDeg) {
-			this.innerRadiiDeg = radiiDeg;
-		}
-		public double getOuterRadiiDeg() {
-			return this.outerRadiiDeg;
-		}
-		public void setOuterRadiiDeg(double radiiDeg) {
-			this.outerRadiiDeg = radiiDeg;
-		}
-    } 
-    
+
+        private double targetRaDeg;
+        private double targetDecDeg;
+        private double innerRadiiDeg;
+        private double outerRadiiDeg;
+
+        public double getTargetRaDeg() {
+            return this.targetRaDeg;
+        }
+
+        public void setTargetRaDeg(double targetRaDeg) {
+            this.targetRaDeg = targetRaDeg;
+        }
+
+        public double getTargetDecDeg() {
+            return this.targetDecDeg;
+        }
+
+        public void setTargetDecDeg(double targetDecDeg) {
+            this.targetDecDeg = targetDecDeg;
+        }
+
+        public double getInnerRadiiDeg() {
+            return this.innerRadiiDeg;
+        }
+
+        public void setInnerRadiiDeg(double radiiDeg) {
+            this.innerRadiiDeg = radiiDeg;
+        }
+
+        public double getOuterRadiiDeg() {
+            return this.outerRadiiDeg;
+        }
+
+        public void setOuterRadiiDeg(double radiiDeg) {
+            this.outerRadiiDeg = radiiDeg;
+        }
+    }
+
     /**
      * @return the startTime
      */
@@ -127,7 +137,7 @@ public class LacdumpQuery {
         this.minCutOffRigidity = minCutOffRigidity;
     }
 
-	/**
+    /**
      * @return the minElevation
      */
     public Double getMinElevation() {
@@ -141,7 +151,7 @@ public class LacdumpQuery {
         this.minElevation = minElevation;
     }
 
- 	/**
+    /**
      * @return the bitRate
      */
     public BitRate getBitRate() {
@@ -155,49 +165,65 @@ public class LacdumpQuery {
         this.bitRate = bitRate;
     }
 
-	/**
-	 * @return the skyAnnulus
-	 */
-	public SkyAnnulus getSkyAnnulus() {
-		return skyAnnulus;
-	}
+    /**
+     * @return the skyAnnulus
+     */
+    public SkyAnnulus getSkyAnnulus() {
+        return this.skyAnnulus;
+    }
 
-	/**
-	 * @param skyAnnulus the skyAnnulus to set
-	 */
-	public void setSkyAnnulus(SkyAnnulus skyAnnulus) {
-		this.skyAnnulus = skyAnnulus;
-	}
+    /**
+     * @param skyAnnulus the skyAnnulus to set
+     */
+    public void setSkyAnnulus(SkyAnnulus skyAnnulus) {
+        this.skyAnnulus = skyAnnulus;
+    }
 
-	/**
-	 * 
-	 * @param raDeg right ascension of annulus centre in degrees (equinox 1950)
-	 * @param degDeg declination of annulus centre in degrees (equinox 1950)
-	 * @param innerRadiiDeg inner annulus radii in degrees
-	 * @param outerRadiiDeg outer annulus radii in degrees 
-	 */
-	public void setSkyAnnulus(double raDeg, double decDeg, double innerRadiiDeg, double outerRadiiDeg) {
-		if(innerRadiiDeg > outerRadiiDeg) {
-			throw new IllegalArgumentException("Inner radii is greater than outer radii in sky annulus");
-		}
-		this.skyAnnulus = new SkyAnnulus();
-		this.skyAnnulus.setTargetRaDeg(raDeg);
-		this.skyAnnulus.setTargetDecDeg(decDeg);
-		this.skyAnnulus.setInnerRadiiDeg(innerRadiiDeg);
-		this.skyAnnulus.setOuterRadiiDeg(outerRadiiDeg);
-	}
+    /**
+     * 
+     * @param raDeg right ascension of annulus centre in degrees (equinox 1950)
+     * @param degDeg declination of annulus centre in degrees (equinox 1950)
+     * @param innerRadiiDeg inner annulus radii in degrees
+     * @param outerRadiiDeg outer annulus radii in degrees
+     */
+    public void setSkyAnnulus(double raDeg, double decDeg, double innerRadiiDeg,
+            double outerRadiiDeg) {
+        if (innerRadiiDeg > outerRadiiDeg) {
+            throw new IllegalArgumentException(
+                    "Inner radii is greater than outer radii in sky annulus");
+        }
+        this.skyAnnulus = new SkyAnnulus();
+        this.skyAnnulus.setTargetRaDeg(raDeg);
+        this.skyAnnulus.setTargetDecDeg(decDeg);
+        this.skyAnnulus.setInnerRadiiDeg(innerRadiiDeg);
+        this.skyAnnulus.setOuterRadiiDeg(outerRadiiDeg);
+    }
 
-	/**
-	 * @return the lacdumpFiles
-	 */
-	public List<String> getLacdumpFiles() {
-		return lacdumpFiles;
-	}
+    /**
+     * @return the lacdumpFiles
+     */
+    public List<String> getLacdumpFiles() {
+        return this.lacdumpFiles;
+    }
 
-	/**
-	 * @param lacdumpFiles the lacdumpFiles to set
-	 */
-	public void setLacdumpFiles(List<String> lacdumpFiles) {
-		this.lacdumpFiles = lacdumpFiles;
-	}
+    /**
+     * @param lacdumpFiles the lacdumpFiles to set
+     */
+    public void setLacdumpFiles(List<String> lacdumpFiles) {
+        this.lacdumpFiles = lacdumpFiles;
+    }
+
+    /**
+     * @return the isBackground
+     */
+    public boolean isBackground() {
+        return this.isBackground;
+    }
+
+    /**
+     * @param isBackground the isBackground to set
+     */
+    public void setBackground(boolean isBackground) {
+        this.isBackground = isBackground;
+    }
 }

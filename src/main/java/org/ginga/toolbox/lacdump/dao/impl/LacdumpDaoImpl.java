@@ -8,20 +8,19 @@ import org.ginga.toolbox.lacdump.LacdumpQuery.SkyAnnulus;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
-import org.ginga.toolbox.util.HibernateUtil;
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacMode;
+import org.ginga.toolbox.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 public class LacdumpDaoImpl implements LacdumpDao {
 
     private static final Logger log = Logger.getLogger(LacdumpDaoImpl.class);
-    
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#save(org.ginga.toolbox.lacdump. LACDumpEntity)
      */
     @Override
@@ -40,7 +39,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -61,7 +60,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -84,7 +83,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -92,7 +91,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-                    throws LacdumpDaoException {
+            throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
@@ -152,16 +151,16 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
-     * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump .LacDumpQuery)
+     * 
+     * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump
+     * .LacDumpQuery)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<LacdumpSfEntity> findSfList(LacdumpQuery query)
-            throws LacdumpDaoException {
+    public List<LacdumpSfEntity> findSfList(LacdumpQuery query) throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         String startTime = null;
-        String endTime = null; 
+        String endTime = null;
         String target = null;
         Double minRigidity = null;
         Double minElevation = null;
@@ -179,10 +178,10 @@ public class LacdumpDaoImpl implements LacdumpDao {
             if ((mode = query.getMode()) != null) {
                 hql += " MODE =:mode and";
             }
-            if ((target = query.getTargetName()) != null) {
+            if ((target = query.getTargetName()) != null && !query.isBackground()) {
                 hql += " TARGET like :target and";
             } else {
-            	hql += " TARGET is NULL and";
+                hql += " TARGET is NULL and";
             }
             if ((startTime = query.getStartTime()) != null) {
                 hql += " DATE >=:start and";
@@ -203,14 +202,14 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 > :innerRadii and";
                 hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 < :outerRadii and";
             }
-            
+
             // remove last and
             hql = hql.substring(0, hql.lastIndexOf("and"));
 
             hql += " ORDER BY ID";
 
             log.info("LACDUMP Query: " + hql);
-            
+
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
             Query hquery = hibernateSession.createQuery(hql);
@@ -220,7 +219,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
             if (mode != null) {
                 hquery.setString("mode", mode.toString());
             }
-            if (target != null) {
+            if (target != null && !query.isBackground()) {
                 hquery.setString("target", "%" + target + "%");
             }
             if (startTime != null) {
@@ -239,10 +238,10 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hquery.setParameterList("files", lacdumpFiles);
             }
             if (skyAnnulus != null) {
-            	hquery.setDouble("targetRa", skyAnnulus.getTargetRaDeg());
-            	hquery.setDouble("targetDec", skyAnnulus.getTargetDecDeg());
-            	hquery.setDouble("innerRadii", skyAnnulus.getInnerRadiiDeg());
-            	hquery.setDouble("outerRadii", skyAnnulus.getOuterRadiiDeg());
+                hquery.setDouble("targetRa", skyAnnulus.getTargetRaDeg());
+                hquery.setDouble("targetDec", skyAnnulus.getTargetDecDeg());
+                hquery.setDouble("innerRadii", skyAnnulus.getInnerRadiiDeg());
+                hquery.setDouble("outerRadii", skyAnnulus.getOuterRadiiDeg());
             }
 
             sfList = hquery.list();
