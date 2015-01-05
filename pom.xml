@@ -130,7 +130,13 @@
                 <platform>unix</platform>
               </platforms>
             </program>
-            
+            <program>
+              <mainClass>org.ginga.toolbox.command.DatabaseSchemaGeneratorCmd</mainClass>
+              <id>generate_db_schema</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
           </programs>
         </configuration>
       </plugin>
