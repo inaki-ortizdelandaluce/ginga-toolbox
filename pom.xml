@@ -144,7 +144,20 @@
                 <platform>unix</platform>
               </platforms>
             </program>
-                      
+            <program>
+              <mainClass>org.ginga.toolbox.command.LacdumpDatabaseIngestorCmd</mainClass>
+              <id>ingest_lacdump_db</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>org.ginga.toolbox.command.BackgroundDatabaseIngestorCmd</mainClass>
+              <id>ingest_background_db</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
           </programs>
         </configuration>
       </plugin>
