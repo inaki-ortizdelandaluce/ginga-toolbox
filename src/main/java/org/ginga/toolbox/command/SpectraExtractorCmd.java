@@ -33,7 +33,8 @@ public class SpectraExtractorCmd {
         case SIMPLE:
         case SUD_SORT:
         default:
-            log.error(method + " background subtraction method not supported");
+            log.error(method
+                    + " background subtraction method not yet supported for bulk processing");
             System.exit(1);
         }
     }
@@ -94,7 +95,7 @@ public class SpectraExtractorCmd {
                 .isRequired(true).withDescription("Target Name").hasArg().create("t");
         Option methodOption = OptionBuilder
                 .withArgName("method")
-                .withLongOpt("background-method")
+                .withLongOpt("background-subtraction")
                 .isRequired(true)
                 .withDescription(
                         "Background subtraction method. Possible values: "
