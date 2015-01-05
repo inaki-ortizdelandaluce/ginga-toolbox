@@ -155,7 +155,8 @@ public class SimbadTargetResolver {
             if (coordinates.length > 2) {
                 arcsec = Double.parseDouble(coordinates[2]);
             }
-            return (deg + (arcmin / 60.0) + (arcsec / 3600.0));
+            
+            return Math.signum(deg)*(Math.abs(deg) + (arcmin / 60.0) + (arcsec / 3600.0));
         } else {
             return 0;
         }
