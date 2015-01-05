@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
+import org.ginga.toolbox.lacdump.LacdumpQuery.SkyAnnulus;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
@@ -159,12 +160,18 @@ public class LacdumpDaoImpl implements LacdumpDao {
     public List<LacdumpSfEntity> findSfList(LacdumpQuery query)
             throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
+        String startTime = null;
+        String endTime = null; 
+        String target = null;
+        Double minRigidity = null;
+        Double minElevation = null;
+        LacMode mode = null;
+        BitRate bitRate = null;
+        List<String> lacdumpFiles = null;
+        SkyAnnulus skyAnnulus = null;
+
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName() + " WHERE";
-            String startTime = null, endTime = null, target = null;
-            Double minRigidity = null, minElevation = null;
-            LacMode mode = null;
-            BitRate bitRate = null;
 
             if ((bitRate = query.getBitRate()) != null && !bitRate.equals(BitRate.ANY)) {
                 hql += " BR =:br and";
@@ -174,6 +181,8 @@ public class LacdumpDaoImpl implements LacdumpDao {
             }
             if ((target = query.getTargetName()) != null) {
                 hql += " TARGET like :target and";
+            } else {
+            	hql += " TARGET is NULL and";
             }
             if ((startTime = query.getStartTime()) != null) {
                 hql += " DATE >=:start and";
@@ -187,12 +196,21 @@ public class LacdumpDaoImpl implements LacdumpDao {
             if ((minRigidity = query.getMinCutOffRigidity()) != null) {
                 hql += "  RIG >= :rig and";
             }
+            if ((lacdumpFiles = query.getLacdumpFiles()) != null && lacdumpFiles.size() > 0) {
+                hql += "  LACDUMP_FILE IN :files and";
+            }
+            if ((skyAnnulus = query.getSkyAnnulus()) != null) {
+                hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 > :innerRadii and";
+                hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 < :outerRadii and";
+            }
+            
             // remove last and
             hql = hql.substring(0, hql.lastIndexOf("and"));
 
             hql += " ORDER BY ID";
 
-            log.debug("LACDUMP Query: " + hql);
+            log.info("LACDUMP Query: " + hql);
+            
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
             Query hquery = hibernateSession.createQuery(hql);
@@ -216,6 +234,15 @@ public class LacdumpDaoImpl implements LacdumpDao {
             }
             if (minRigidity != null) {
                 hquery.setDouble("rig", minRigidity);
+            }
+            if (lacdumpFiles != null && lacdumpFiles.size() > 0) {
+                hquery.setParameterList("files", lacdumpFiles);
+            }
+            if (skyAnnulus != null) {
+            	hquery.setDouble("targetRa", skyAnnulus.getTargetRaDeg());
+            	hquery.setDouble("targetDec", skyAnnulus.getTargetDecDeg());
+            	hquery.setDouble("innerRadii", skyAnnulus.getInnerRadiiDeg());
+            	hquery.setDouble("outerRadii", skyAnnulus.getOuterRadiiDeg());
             }
 
             sfList = hquery.list();
