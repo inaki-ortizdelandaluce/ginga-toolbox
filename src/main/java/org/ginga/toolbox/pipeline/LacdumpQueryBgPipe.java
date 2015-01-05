@@ -23,58 +23,59 @@ import org.ginga.toolbox.target.TargetNotResolvedException;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacdumpQueryBgPipe extends
-        AbstractPipe<SingleModeTargetObservation, LacdumpQuery> implements
-        TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
+public class LacdumpQueryBgPipe extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
+        implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
 
-	private final static Logger log = Logger.getLogger(LacdumpQueryBgPipe.class);
-	
+    private final static Logger log = Logger.getLogger(LacdumpQueryBgPipe.class);
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.tinkerpop.pipes.AbstractPipe#processNextStart()
      */
     @Override
     protected LacdumpQuery processNextStart() throws NoSuchElementException {
-    	LacdumpQuery query = new LacdumpQuery();
-    	DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+        LacdumpQuery query = new LacdumpQuery();
+        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
         SingleModeTargetObservation targetObservation = this.starts.next();
-    	
-    	try {
-    		// get suggested background for this target observation
-    		Set<ObservationBgEntity> bgSet = null;
-    		ObservationDao dao = new ObservationDaoImpl();
-        	ObservationEntity observation = dao.findById(targetObservation.getObsId());
-        	bgSet = observation.getObsBgSet();
-        	
-        	// set LACDUMP files for suggested background
-        	List<String> lacdumpFileList = new ArrayList<>();
-        	if(bgSet != null) {
-        		Iterator<ObservationBgEntity> it = bgSet.iterator();
-        		while (it.hasNext()) {
-        			lacdumpFileList.add(it.next().getLacdumpFile());
-        		}
-			}
-        	query.setLacdumpFiles(lacdumpFileList);
-            
-        	// set sky region for suggested background 
-        	String target = targetObservation.getTarget();
-        	TargetCoordinates coords = new SimbadTargetResolver().resolve(target);
-        	query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(), 
-        			env.getSkyAnnulusInnerRadii(), 
-        			env.getSkyAnnulusOuterRadii());
-            
-            // set rigidity and elevation
-        	query.setMinCutOffRigidity(env.getCutOffRigidityMin());
+
+        try {
+            // set target and flag as background
+            query.setTargetName(targetObservation.getTarget());
+            query.setBackground(true);
+
+            // get suggested background for this target observation
+            Set<ObservationBgEntity> bgSet = null;
+            ObservationDao dao = new ObservationDaoImpl();
+            ObservationEntity observation = dao.findById(targetObservation.getObsId());
+            bgSet = observation.getObsBgSet();
+            // set LACDUMP files for suggested background
+            List<String> lacdumpFileList = new ArrayList<>();
+            if (bgSet != null) {
+                Iterator<ObservationBgEntity> it = bgSet.iterator();
+                while (it.hasNext()) {
+                    lacdumpFileList.add(it.next().getLacdumpFile());
+                }
+            }
+            query.setLacdumpFiles(lacdumpFileList);
+
+            // set sky region for suggested background
+            String target = targetObservation.getTarget();
+            TargetCoordinates coords = new SimbadTargetResolver().resolve(target);
+            query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(),
+                    env.getSkyAnnulusInnerRadii(), env.getSkyAnnulusOuterRadii());
+
+            // rigidity and elevation
+            query.setMinCutOffRigidity(env.getCutOffRigidityMin());
             query.setMinElevation(env.getElevationMin());
-            
-		} catch (ObservationDaoException e) {
-			log.error("Error generating LACDUMP query for background region file", e);
-			return null;
-		} catch (TargetNotResolvedException e) {
-			log.error("Error resolving target name to define background sky annulus", e);
-			return null;
-		}
+
+        } catch (ObservationDaoException e) {
+            log.error("Error generating LACDUMP query for background region file", e);
+            return null;
+        } catch (TargetNotResolvedException e) {
+            log.error("Error resolving target name to define background sky annulus", e);
+            return null;
+        }
         return query;
     }
 
