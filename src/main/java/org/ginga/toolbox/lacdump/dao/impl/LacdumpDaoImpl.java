@@ -208,7 +208,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
             hql += " ORDER BY ID";
 
-            log.info("LACDUMP Query: " + hql);
+            log.debug("LACDUMP Query: " + hql);
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
