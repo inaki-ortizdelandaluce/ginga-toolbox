@@ -26,22 +26,22 @@ public class LacdumpQuery {
     private List<String> lacdumpFiles;
     
     public class SkyAnnulus {
-    	private double raB1950Deg;
-    	private double decB1950Deg;
+    	private double targetRaDeg;
+    	private double targetDecDeg;
     	private double innerRadiiDeg;
     	private double outerRadiiDeg;
     	
-		public double getRaB1950Deg() {
-			return raB1950Deg;
+		public double getTargetRaDeg() {
+			return targetRaDeg;
 		}
-		public void setRaB1950Deg(double raB1950Deg) {
-			this.raB1950Deg = raB1950Deg;
+		public void setTargetRaDeg(double targetRaDeg) {
+			this.targetRaDeg = targetRaDeg;
 		}
-		public double getDecB1950Deg() {
-			return decB1950Deg;
+		public double getTargetDecDeg() {
+			return targetDecDeg;
 		}
-		public void setDecB1950Deg(double decB1950Deg) {
-			this.decB1950Deg = decB1950Deg;
+		public void setTargetDecDeg(double targetDecDeg) {
+			this.targetDecDeg = targetDecDeg;
 		}
 		public double getInnerRadiiDeg() {
 			return this.innerRadiiDeg;
@@ -181,8 +181,8 @@ public class LacdumpQuery {
 			throw new IllegalArgumentException("Inner radii is greater than outer radii in sky annulus");
 		}
 		this.skyAnnulus = new SkyAnnulus();
-		this.skyAnnulus.setRaB1950Deg(raDeg);
-		this.skyAnnulus.setDecB1950Deg(decDeg);
+		this.skyAnnulus.setTargetRaDeg(raDeg);
+		this.skyAnnulus.setTargetDecDeg(decDeg);
 		this.skyAnnulus.setInnerRadiiDeg(innerRadiiDeg);
 		this.skyAnnulus.setOuterRadiiDeg(outerRadiiDeg);
 	}
