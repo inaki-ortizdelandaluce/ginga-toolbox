@@ -33,7 +33,7 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
                 if (!workingDir.exists()) {
                     workingDir.mkdirs();
                 }
-                log.info("Working directory " + workingDir.getAbsolutePath());
+                log.debug("Working directory " + workingDir.getAbsolutePath());
 
                 // create input file
                 File inputFile = null;

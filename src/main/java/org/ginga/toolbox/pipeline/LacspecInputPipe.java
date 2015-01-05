@@ -49,7 +49,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
             if (!workingDir.exists()) {
                 workingDir.mkdirs();
             }
-            log.info("Working directory " + workingDir.getAbsolutePath());
+            log.debug("Working directory " + workingDir.getAbsolutePath());
 
             // build empty GTI file
             File gtiFile = null;
@@ -68,7 +68,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
-            log.info("Query executed successfully. " + sfList.size() + " result(s) found");
+            log.info("LACDUMP query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
