@@ -3,6 +3,7 @@ package org.ginga.toolbox;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,9 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
 import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
+import org.ginga.toolbox.target.SimbadTargetResolver;
+import org.ginga.toolbox.target.TargetCoordinates;
+import org.ginga.toolbox.target.TargetNotResolvedException;
 import org.ginga.toolbox.util.DateUtil;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
@@ -39,6 +43,33 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) throws IOException {
+    	String target = "VELA X-1"; // "GS1124-68"; // "GS2000+25"; 
+        
+    	TargetCoordinates coords;
+		try {
+			coords = new SimbadTargetResolver().resolve(target);
+			DecimalFormat formatter = new DecimalFormat("#.####");
+			log.info("RA " + formatter.format(coords.getRaDeg()));
+	    	log.info("DEC " + formatter.format(coords.getDecDeg()));
+	    	
+	    	LacdumpQuery query = new LacdumpQuery();
+	    	query.setLacdumpFiles(Arrays.asList("J880226","J880224","J880225","J880222","J880220"));
+	    	query.setMinCutOffRigidity(10.0);
+	    	query.setMinElevation(5.0);
+	    	query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(), 2.5, 3.5);
+	    	
+	    	LacdumpDao dao = new LacdumpDaoImpl();
+	    	List<LacdumpSfEntity> sfList = dao.findSfList(query);
+	    	log.info(sfList.size() + " entries found");
+	    	
+		} catch (TargetNotResolvedException e) {
+			log.error("Could not resolve target " + target, e);
+		} catch (LacdumpDaoException e) {
+			log.error("Error querying LACDUMP database table " + target, e);
+		}
+    }
+
+    public static void printTargetObservations() throws IOException {
     	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
         
     	// extract all spectra
@@ -53,7 +84,7 @@ public class Test {
         TargetObservationListPrinterCmd printer = new TargetObservationListPrinterCmd(writer);
         printer.printSpectralModes(target);
     }
-
+    
     public static void scanObservations(String[] args) {
         Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationListPipe();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
