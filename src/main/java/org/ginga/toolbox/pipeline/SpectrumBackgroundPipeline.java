@@ -47,8 +47,8 @@ public class SpectrumBackgroundPipeline {
                 this.lacdumpQueryBuilder, this.lacspecInputBuilder, this.lacspec);
     }
 
-    public void run(List<SingleModeTargetObservation> modeList) {
-        this.pipeline.setStarts(modeList);
+    public void run(List<SingleModeTargetObservation> obsList) {
+        this.pipeline.setStarts(obsList);
     }
 
     public boolean hasNext() {

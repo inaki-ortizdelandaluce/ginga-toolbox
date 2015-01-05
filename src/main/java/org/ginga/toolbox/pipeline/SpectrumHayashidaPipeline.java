@@ -32,8 +32,8 @@ public class SpectrumHayashidaPipeline {
                 this.queryBuilder, this.lacqrdfitsInputBuilder, this.lacqrdfits, this.lac2xspec);
     }
 
-    public void run(List<SingleModeTargetObservation> modeList) {
-        this.pipeline.setStarts(modeList);
+    public void run(List<SingleModeTargetObservation> obsList) {
+        this.pipeline.setStarts(obsList);
     }
 
     public boolean hasNext() {

@@ -126,6 +126,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_MONI_BGD", "SPEC"));
                 } else {
+                    inputModel.setStartTime(query.getStartTime());
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
                             query.getStartTime(), query.getMode(), "FILE"));
                     inputModel.setMonitorFileName(FileUtil.nextFileName("MONI",

@@ -15,8 +15,9 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
-import org.ginga.toolbox.pipeline.SpectrumBackgroundPipeline;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
+import org.ginga.toolbox.pipeline.SpectrumSimplePipeline;
+import org.ginga.toolbox.pipeline.SpectrumSudSortPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.DateUtil;
@@ -234,16 +235,19 @@ public class SpectrumExtractorCmd {
     }
 
     public static void extractSpectrumSimple(SingleModeTargetObservation obs) {
-        SpectrumBackgroundPipeline pipeline = new SpectrumBackgroundPipeline();
-        pipeline.run(Arrays.asList(obs));
-        File specFile = pipeline.next();
+        SpectrumSimplePipeline pipeline = new SpectrumSimplePipeline();
+        File specFile = pipeline.run(obs);
         if (specFile != null) {
             log.info("Spectrum file " + specFile.getName() + " created successfully");
         }
     }
 
     public static void extractSpectrumSudSort(SingleModeTargetObservation obs) {
-
+        SpectrumSudSortPipeline pipeline = new SpectrumSudSortPipeline();
+        File specFile = pipeline.run(obs);
+        if (specFile != null) {
+            log.info("Spectrum file " + specFile.getName() + " created successfully");
+        }
     }
 
 }
