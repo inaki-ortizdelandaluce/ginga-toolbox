@@ -11,7 +11,7 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.target.SimbadTargetResolver;
-import org.ginga.toolbox.target.TargetFk4Coordinates;
+import org.ginga.toolbox.target.TargetCoordinates;
 import org.ginga.toolbox.target.TargetNotResolvedException;
 
 public class GtiFileWriter {
@@ -46,7 +46,7 @@ public class GtiFileWriter {
             if (!isBackground) {
                 try {
                     SimbadTargetResolver resolver = new SimbadTargetResolver();
-                    TargetFk4Coordinates coords = resolver.resolve(target);
+                    TargetCoordinates coords = resolver.resolve(target);
 
                     DecimalFormat df = new DecimalFormat("#.0000");
                     writer.write("'TGT' " + df.format(coords.getRaDeg()) + " "

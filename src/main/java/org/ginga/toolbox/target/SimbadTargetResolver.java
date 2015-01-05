@@ -28,7 +28,7 @@ public class SimbadTargetResolver {
 
     public static void main(String[] args) {
         try {
-            TargetFk4Coordinates coords = new SimbadTargetResolver().resolve("GS2000+25");
+            TargetCoordinates coords = new SimbadTargetResolver().resolve("GS2000+25");
             log.info("RA B1950 " + coords.getRaDeg() + "deg");
             log.info("DEC B1950 " + coords.getDecDeg() + "deg");
         } catch (Exception e) {
@@ -44,8 +44,8 @@ public class SimbadTargetResolver {
         this.serviceUrl = url;
     }
 
-    public TargetFk4Coordinates resolve(String target) throws TargetNotResolvedException {
-        TargetFk4Coordinates coords = null;
+    public TargetCoordinates resolve(String target) throws TargetNotResolvedException {
+        TargetCoordinates coords = null;
         try {
             coords = parseResponse(callService(target));
             coords.setTargetName(target);
@@ -82,8 +82,8 @@ public class SimbadTargetResolver {
         return responseBody.toString();
     }
 
-    private TargetFk4Coordinates parseResponse(String response) throws IllegalArgumentException {
-        TargetFk4Coordinates coords = new TargetFk4Coordinates();
+    private TargetCoordinates parseResponse(String response) throws IllegalArgumentException {
+        TargetCoordinates coords = new TargetCoordinates();
         // split response in lines
         String lines[] = response.split("\\r?\\n");
         log.debug(lines.length + " lines(s) found");
