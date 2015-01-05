@@ -137,6 +137,14 @@
                 <platform>unix</platform>
               </platforms>
             </program>
+            <program>
+              <mainClass>org.ginga.toolbox.command.TargetNameResolverCmd</mainClass>
+              <id>resolve_target_name</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+                      
           </programs>
         </configuration>
       </plugin>
