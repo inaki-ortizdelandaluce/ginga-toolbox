@@ -16,6 +16,7 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
+import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
@@ -84,25 +85,31 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setBgMethod(getBgSubtractionMethod());
                     inputModel.setBgFileName(getBgFileName());
                     inputModel.setBgSubFileNumber(env.getBgSubFileNumber());
-                }
-                inputModel.setLacMode(query.getMode());
-                inputModel.setBitRate(env.getBitRate());
-                if (isBackground()) {
-                    String prefix = query.getTargetName().replace(" ", "") + "_lacspec_bgd";
-                    inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix, "ps"));
-                } else {
+                    inputModel.setLacMode(query.getMode());
                     inputModel.setPsFileName(FileUtil.nextFileName("lacspec", query.getStartTime(),
                             query.getMode(), "ps"));
+                    inputModel.setBgCorrection(1);
+                    inputModel.setStartTime(query.getStartTime());
+                    inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
+                            query.getStartTime(), query.getMode(), "FILE"));
+                    inputModel.setMonitorFileName(FileUtil.nextFileName("MONI",
+                            query.getStartTime(), query.getMode(), "SPEC"));
+                } else {
+                    inputModel.setLacMode(LacMode.INIT);
+                    String prefix = query.getTargetName().replace(" ", "");
+                    inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix
+                            + "_lacspec_bgd", "ps"));
+                    inputModel.setBgCorrection(0);
+                    inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, prefix
+                            + "_SPEC_BGD", "FILE"));
+                    inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
+                            + "_MONI_BGD", "SPEC"));
                 }
+                inputModel.setBitRate(env.getBitRate());
                 inputModel.setMinElevation(env.getElevationMin());
                 inputModel.setMaxElevation(env.getElevationMax());
                 inputModel.setMinRigidity(env.getCutOffRigidityMin());
                 inputModel.setMaxRigidity(env.getCutOffRigidityMax());
-                if (isBackground()) {
-                    inputModel.setBgCorrection(0);
-                } else {
-                    inputModel.setBgCorrection(1);
-                }
                 inputModel.setAspectCorrection(env.getAspectCorrection());
                 inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
                 inputModel.setChannelToEnergy(env.getChannelToEnergyConversion());
@@ -119,19 +126,6 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                 inputModel.setMixedMode(env.isLacMixedMode());
                 inputModel.setRegionFileName(gtiFile.getName());
                 inputModel.setMonitorFileName("MONI.SPEC");
-                if (isBackground()) {
-                    String prefix = query.getTargetName().replace(" ", "");
-                    inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, prefix
-                            + "_SPEC_BGD", "FILE"));
-                    inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
-                            + "_MONI_BGD", "SPEC"));
-                } else {
-                    inputModel.setStartTime(query.getStartTime());
-                    inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
-                            query.getStartTime(), query.getMode(), "FILE"));
-                    inputModel.setMonitorFileName(FileUtil.nextFileName("MONI",
-                            query.getStartTime(), query.getMode(), "SPEC"));
-                }
                 return inputModel;
             }
         } catch (IOException | LacdumpDaoException e) {
