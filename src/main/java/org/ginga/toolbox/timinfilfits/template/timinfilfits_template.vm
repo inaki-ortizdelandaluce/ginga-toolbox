@@ -1,5 +1,4 @@
-$template.psFileName/vps
-'MONI'  '$template.monitorFileName' / 
+/NULL
 'RIG'  $template.minRigidity $template.maxRigidity/ MIN/MAX CUT-OFF RIGIDITY                               
 'TMP'  -30.0   60.0   20.0/ MIN/MAX AVE TEMP, MAX TEMP GRADIENT         
 'TRN'    $template.minTransmission            / MINIMUM TRANSMISSION OF THE TARGET SOURCE       
@@ -7,14 +6,40 @@ $template.psFileName/vps
 'ACE'   $template.ace                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
 'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
 'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
-#if( $template.hasBackground )               
-'COR'   1  $template.aspectCorrection  $template.deadTimeCorrection $template.counterToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
+'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.counterToEnergy $template.dataUnit  1 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CALSEL
 'BGD'   $template.bgMethod, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
-#else
-'COR'   0  $template.aspectCorrection  $template.deadTimeCorrection $template.counterToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
-#end
-'LAC'   $template.counter1 $template.counter2 $template.counter3 $template.counter4 $template.counter5 $template.counter6 $template.counter7 $template.counter8  '$template.lacMode'  $template.mixedMode /                                   
-'PLT' 1 , 1  0  1.0  50.0, 1 1 1.0E+1 1.0E-1 /
-'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
+#if ( $template.phsel1 )
+'PHSEL' '$template.phsel1'
+#end         
+#if ( $template.phsel2 )
+'PHSEL' '$template.phsel2'
+#end         
+#if ( $template.phsel3 )
+'PHSEL' '$template.phsel3'
+#end         
+#if ( $template.phsel4 )
+'PHSEL' '$template.phsel4'
+#end         
+#if ( $template.phsel5 )
+'PHSEL' '$template.phsel5'
+#end         
+#if ( $template.phsel6 )
+'PHSEL' '$template.phsel6'
+#end         
+#if ( $template.phsel7 )
+'PHSEL' '$template.phsel7'
+#end         
+#if ( $template.phsel8 )
+'PHSEL' '$template.phsel8'
+#end         
+#if ( $template.phsel9 )
+'PHSEL' '$template.phsel9'
+#end         
+#if ( $template.phsel10 )
+'PHSEL' '$template.phsel10'
+#end         
 'OUT'   '$template.spectralFileName' /                                   
+'LAC'   $template.counter1 $template.counter2 $template.counter3 $template.counter4 $template.counter5 $template.counter6 $template.counter7 $template.counter8  '$template.lacMode'  $template.mixedMode /                                   
+'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
+'1BIN'  $template.timeResolution  /   SEC/BIN
 'FILE'  '$template.regionFileName' /
