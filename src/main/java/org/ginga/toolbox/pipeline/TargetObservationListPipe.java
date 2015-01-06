@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
@@ -30,11 +30,11 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
     @Override
     protected List<ObservationEntity> processNextStart() throws NoSuchElementException {
         String target = this.starts.next();
-        // read environment 
-        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
-        double minElevation = env.getElevationMin();
-        double minCutOffRigidity = env.getCutOffRigidityMin();
-        
+        // read environment
+        InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+        double minElevation = input.getElevationMin();
+        double minCutOffRigidity = input.getCutOffRigidityMin();
+
         // find observation list by target
         ObservationDao obsDao = new ObservationDaoImpl();
         List<ObservationEntity> obsList = null;
@@ -55,8 +55,8 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
             String endTime = dateFmt.format(obsEntity.getEndTime());
             List<String> modes = new ArrayList<String>();
             try {
-                modes = lacdumpDao.findModes(target, startTime, endTime,
-                        minElevation, minCutOffRigidity);
+                modes = lacdumpDao.findModes(target, startTime, endTime, minElevation,
+                        minCutOffRigidity);
             } catch (LacdumpDaoException e) {
                 log.error("Modes for target " + target + " could not be found", e);
             }
@@ -66,8 +66,8 @@ public class TargetObservationListPipe extends AbstractPipe<String, List<Observa
             SingleModeTargetObservation singleModeObs = null;
             for (String mode : modes) {
                 try {
-                    sfList = lacdumpDao.findSfList(mode, target, startTime, endTime,
-                            minElevation, minCutOffRigidity);
+                    sfList = lacdumpDao.findSfList(mode, target, startTime, endTime, minElevation,
+                            minCutOffRigidity);
                 } catch (LacdumpDaoException e) {
                     log.error("Modes for target " + target + " could not be found", e);
                 }

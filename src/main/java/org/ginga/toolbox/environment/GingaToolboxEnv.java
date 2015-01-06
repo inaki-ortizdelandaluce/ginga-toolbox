@@ -17,8 +17,8 @@ public class GingaToolboxEnv {
     private static GingaToolboxEnv instance;
 
     private Properties properties;
-    private DataReductionEnv dataReductionEnv;
-    
+    private InputParameters inputParameters;
+
     public static GingaToolboxEnv getInstance() {
         if (instance == null) {
             instance = new GingaToolboxEnv();
@@ -61,10 +61,10 @@ public class GingaToolboxEnv {
         } else {
             log.warn("Property file 'gingatoolbox.properties' not found in classpath");
         }
-        // set default data reduction environment
-        setDataReductionEnvironment(DataReductionMode.SYSTEMATIC);
+        // set default input mode
+        setInputParametersMode(InputMode.SYSTEMATIC);
     }
-    
+
     public String getGingaToolsHome() {
         try {
             return this.properties.getProperty("GINGA_HOME", "$HOME/ginga/ginga_tools/v1.02");
@@ -109,7 +109,7 @@ public class GingaToolboxEnv {
             return "$GINGA_HOME/bin/linux";
         }
     }
-    
+
     public String getGingaToolsPfiles() {
         try {
             return this.properties.getProperty("PFILES", "$HOME/pfiles");
@@ -128,7 +128,7 @@ public class GingaToolboxEnv {
             return "$HOME/ginga/ginga_ledas/bin/grfont.dat";
         }
     }
-    
+
     public String getDatabaseDriverClassName() {
         try {
             return this.properties.getProperty("jdbc.driverClassName", "com.mysql.jdbc.Driver");
@@ -165,24 +165,26 @@ public class GingaToolboxEnv {
         }
     }
 
-    public enum DataReductionMode { DEFAULT, SYSTEMATIC, INTERACTIVE }
-    
-    public void setDataReductionEnvironment(DataReductionMode mode) {
-    	switch(mode) {
-    	case SYSTEMATIC:
-    	case DEFAULT:
-    		log.info("Selecting systematic data reduction");
-    		this.dataReductionEnv = SystematicDataReductionEnv.getInstance(this.properties);
-    		break;
-    	case INTERACTIVE:
-    		log.info("Selecting interactive data reduction");
-    		this.dataReductionEnv = new InteractiveDataReductionEnv();
-    		break;
-    	}
+    public enum InputMode {
+        DEFAULT, SYSTEMATIC, INTERACTIVE
     }
-    
-    public DataReductionEnv getDataReductionEnv() {
-    	return this.dataReductionEnv;
+
+    public void setInputParametersMode(InputMode mode) {
+        switch (mode) {
+        case SYSTEMATIC:
+        case DEFAULT:
+            log.info("Selecting systematic data reduction");
+            this.inputParameters = SystematicInputParameters.getInstance(this.properties);
+            break;
+        case INTERACTIVE:
+            log.info("Selecting interactive data reduction");
+            this.inputParameters = new InteractiveInputParameters();
+            break;
+        }
+    }
+
+    public InputParameters getInputParameters() {
+        return this.inputParameters;
     }
 
     public Map<String, String> getEnv() {

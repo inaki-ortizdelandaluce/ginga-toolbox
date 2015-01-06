@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GtiFileWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -71,11 +71,11 @@ public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, Lac
 
                 // emit lacqrdfits input model
                 LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
-                DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
                 inputModel.setLacMode(query.getMode());
                 inputModel.setStartTime(query.getStartTime());
-                inputModel.setMinElevation(env.getElevationMin());
-                inputModel.setMaxElevation(env.getElevationMax());
+                inputModel.setMinElevation(input.getElevationMin());
+                inputModel.setMaxElevation(input.getElevationMax());
                 inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
                         query.getMode(), "ps"));
                 inputModel.setRegionFileName(gtiFile.getName());
@@ -86,17 +86,17 @@ public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, Lac
 
                 inputModel.setBgCorrection(1);
                 inputModel.setAspectCorrection(1);
-                inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
-                inputModel.setDelayTimeCorrection(env.getDelayTimeCorrection());
-                inputModel.setCounter1(env.getLacCounter1());
-                inputModel.setCounter2(env.getLacCounter2());
-                inputModel.setCounter3(env.getLacCounter3());
-                inputModel.setCounter4(env.getLacCounter4());
-                inputModel.setCounter5(env.getLacCounter5());
-                inputModel.setCounter6(env.getLacCounter6());
-                inputModel.setCounter7(env.getLacCounter7());
-                inputModel.setCounter8(env.getLacCounter8());
-                inputModel.setMixedMode(env.isLacMixedMode());
+                inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
+                inputModel.setDelayTimeCorrection(input.getDelayTimeCorrection());
+                inputModel.setCounter1(input.getLacCounter1());
+                inputModel.setCounter2(input.getLacCounter2());
+                inputModel.setCounter3(input.getLacCounter3());
+                inputModel.setCounter4(input.getLacCounter4());
+                inputModel.setCounter5(input.getLacCounter5());
+                inputModel.setCounter6(input.getLacCounter6());
+                inputModel.setCounter7(input.getLacCounter7());
+                inputModel.setCounter8(input.getLacCounter8());
+                inputModel.setMixedMode(input.isLacMixedMode());
                 inputModel.setTimingBinWidth(getTimingBinWidth());
 
                 return inputModel;

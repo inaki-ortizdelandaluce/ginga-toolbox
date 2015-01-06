@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GtiFileWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -88,12 +88,12 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
 
                 // emit lacspec input model
                 LacspecInputModel inputModel = new LacspecInputModel();
-                DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
                 inputModel.setHasBackground(!isBackground());
                 if (!isBackground()) { // on-source with background correction
                     inputModel.setBgMethod(getBgSubtractionMethod());
                     inputModel.setBgFileName(getBgFileName());
-                    inputModel.setBgSubFileNumber(env.getBgSubFileNumber());
+                    inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
                     inputModel.setStartTime(query.getStartTime());
                     inputModel.setPsFileName(FileUtil.nextFileName("lacspec", query.getStartTime(),
                             query.getMode(), "ps"));
@@ -110,27 +110,27 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_MONI_BGD", "SPEC"));
                 }
-                inputModel.setBitRate(env.getBitRate());
+                inputModel.setBitRate(input.getBitRate());
                 inputModel.setLacMode(query.getMode());
-                inputModel.setMinElevation(env.getElevationMin());
-                inputModel.setMaxElevation(env.getElevationMax());
-                inputModel.setMinRigidity(env.getCutOffRigidityMin());
-                inputModel.setMaxRigidity(env.getCutOffRigidityMax());
+                inputModel.setMinElevation(input.getElevationMin());
+                inputModel.setMaxElevation(input.getElevationMax());
+                inputModel.setMinRigidity(input.getCutOffRigidityMin());
+                inputModel.setMaxRigidity(input.getCutOffRigidityMax());
                 inputModel.setBgCorrection(getBackgroundCorrection());
                 inputModel.setAspectCorrection(getAspectCorrection());
-                inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
-                inputModel.setChannelToEnergy(env.getChannelToEnergyConversion());
+                inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
+                inputModel.setChannelToEnergy(input.getChannelToEnergyConversion());
                 inputModel.setDataUnit(getDataUnit());
-                inputModel.setAce(env.getAttitudeMode());
-                inputModel.setCounter1(env.getLacCounter1());
-                inputModel.setCounter2(env.getLacCounter2());
-                inputModel.setCounter3(env.getLacCounter3());
-                inputModel.setCounter4(env.getLacCounter4());
-                inputModel.setCounter5(env.getLacCounter5());
-                inputModel.setCounter6(env.getLacCounter6());
-                inputModel.setCounter7(env.getLacCounter7());
-                inputModel.setCounter8(env.getLacCounter8());
-                inputModel.setMixedMode(env.isLacMixedMode());
+                inputModel.setAce(input.getAttitudeMode());
+                inputModel.setCounter1(input.getLacCounter1());
+                inputModel.setCounter2(input.getLacCounter2());
+                inputModel.setCounter3(input.getLacCounter3());
+                inputModel.setCounter4(input.getLacCounter4());
+                inputModel.setCounter5(input.getLacCounter5());
+                inputModel.setCounter6(input.getLacCounter6());
+                inputModel.setCounter7(input.getLacCounter7());
+                inputModel.setCounter8(input.getLacCounter8());
+                inputModel.setMixedMode(input.isLacMixedMode());
                 inputModel.setRegionFileName(gtiFile.getName());
                 return inputModel;
             }

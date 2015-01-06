@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
+import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
@@ -37,7 +37,7 @@ public class LacdumpQueryBgPipe extends AbstractPipe<SingleModeTargetObservation
     @Override
     protected LacdumpQuery processNextStart() throws NoSuchElementException {
         LacdumpQuery query = new LacdumpQuery();
-        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+        InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
         SingleModeTargetObservation targetObservation = this.starts.next();
 
         try {
@@ -65,11 +65,11 @@ public class LacdumpQueryBgPipe extends AbstractPipe<SingleModeTargetObservation
             String target = targetObservation.getTarget();
             TargetCoordinates coords = new SimbadTargetResolver().resolve(target);
             query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(),
-                    env.getSkyAnnulusInnerRadii(), env.getSkyAnnulusOuterRadii());
+                    input.getSkyAnnulusInnerRadii(), input.getSkyAnnulusOuterRadii());
 
             // rigidity and elevation
-            query.setMinCutOffRigidity(env.getCutOffRigidityMin());
-            query.setMinElevation(env.getElevationMin());
+            query.setMinCutOffRigidity(input.getCutOffRigidityMin());
+            query.setMinElevation(input.getElevationMin());
 
         } catch (ObservationDaoException e) {
             log.error("Error generating LACDUMP query for background region file", e);

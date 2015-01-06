@@ -20,7 +20,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
+import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TargetObservationListPipe;
@@ -144,8 +144,7 @@ public class TargetObservationListPrinterCmd {
                 writer = new PrintWriter(System.out);
             }
             if (commandLine.hasOption("i")) { // set interactive mode
-                GingaToolboxEnv.getInstance().setDataReductionEnvironment(
-                        DataReductionMode.INTERACTIVE);
+                GingaToolboxEnv.getInstance().setInputParametersMode(InputMode.INTERACTIVE);
             }
             // write target list
             TargetObservationListPrinterCmd cmd = new TargetObservationListPrinterCmd(writer);

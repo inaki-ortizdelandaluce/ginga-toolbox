@@ -14,7 +14,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
+import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TimingBackgroundPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
@@ -113,8 +113,7 @@ public class TimingExtractorCmd {
             endTime = endTime.replace("T", " ");
             scanner.close();
             if (commandLine.hasOption("i")) { // set interactive mode
-                GingaToolboxEnv.getInstance().setDataReductionEnvironment(
-                        DataReductionMode.INTERACTIVE);
+                GingaToolboxEnv.getInstance().setInputParametersMode(InputMode.INTERACTIVE);
             }
             // build single mode target observation instance from arguments
             SingleModeTargetObservation obs = new SingleModeTargetObservation();
