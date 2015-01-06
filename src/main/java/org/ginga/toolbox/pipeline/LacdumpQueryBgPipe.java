@@ -19,6 +19,7 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.target.SimbadTargetResolver;
 import org.ginga.toolbox.target.TargetCoordinates;
 import org.ginga.toolbox.target.TargetNotResolvedException;
+import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
@@ -43,6 +44,7 @@ public class LacdumpQueryBgPipe extends AbstractPipe<SingleModeTargetObservation
             // set target and flag as background
             query.setTargetName(targetObservation.getTarget());
             query.setBackground(true);
+            query.setMode(LacMode.MPC1); // MPC1 for accurate background subtraction
 
             // get suggested background for this target observation
             Set<ObservationBgEntity> bgSet = null;

@@ -16,7 +16,6 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
-import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
@@ -96,7 +95,6 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setBgFileName(getBgFileName());
                     inputModel.setBgSubFileNumber(env.getBgSubFileNumber());
                     inputModel.setStartTime(query.getStartTime());
-                    inputModel.setLacMode(query.getMode());
                     inputModel.setPsFileName(FileUtil.nextFileName("lacspec", query.getStartTime(),
                             query.getMode(), "ps"));
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
@@ -104,7 +102,6 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setMonitorFileName(FileUtil.nextFileName("MONI",
                             query.getStartTime(), query.getMode(), "SPEC"));
                 } else {
-                    inputModel.setLacMode(LacMode.INIT);
                     String prefix = query.getTargetName().replace(" ", "");
                     inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_lacspec_bgd", "ps"));
@@ -114,6 +111,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                             + "_MONI_BGD", "SPEC"));
                 }
                 inputModel.setBitRate(env.getBitRate());
+                inputModel.setLacMode(query.getMode());
                 inputModel.setMinElevation(env.getElevationMin());
                 inputModel.setMaxElevation(env.getElevationMax());
                 inputModel.setMinRigidity(env.getCutOffRigidityMin());
