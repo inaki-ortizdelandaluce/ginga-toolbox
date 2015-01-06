@@ -11,6 +11,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
@@ -126,6 +127,9 @@ public class SpectrumExtractorCmd {
             obs.setEndTime(endTime);
             // extract spectrum
             extractSpectrum(obs, method);
+        } catch (ParseException e) {
+            log.error(e.getMessage());
+            printHelp();
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

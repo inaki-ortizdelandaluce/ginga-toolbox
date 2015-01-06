@@ -85,6 +85,8 @@ public class SpectraExtractorCmd {
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
