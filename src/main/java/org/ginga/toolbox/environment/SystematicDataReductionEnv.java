@@ -5,25 +5,25 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.util.Constants.BitRate;
 
-public class SystematicDataReductionEnv  implements DataReductionEnv {
+public class SystematicDataReductionEnv implements DataReductionEnv {
 
-	private static final Logger log = Logger.getLogger(SystematicDataReductionEnv.class);
+    private static final Logger log = Logger.getLogger(SystematicDataReductionEnv.class);
 
-	private static SystematicDataReductionEnv instance;
-	private Properties properties;
-	
-	private SystematicDataReductionEnv(Properties properties) {
-		this.properties = properties;
-	}
-	
-	protected static SystematicDataReductionEnv getInstance(Properties properties) {
-		if(instance == null) {
-			instance = new SystematicDataReductionEnv(properties);
-		}
-		return instance;
-	}
-	
-	@Override
+    private static SystematicDataReductionEnv instance;
+    private Properties properties;
+
+    private SystematicDataReductionEnv(Properties properties) {
+        this.properties = properties;
+    }
+
+    protected static SystematicDataReductionEnv getInstance(Properties properties) {
+        if (instance == null) {
+            instance = new SystematicDataReductionEnv(properties);
+        }
+        return instance;
+    }
+
+    @Override
     public Double getElevationMin() {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.ELV.min"));
@@ -33,7 +33,7 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         }
     }
 
-	@Override
+    @Override
     public Double getElevationMax() {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.ELV.max"));
@@ -43,7 +43,7 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         }
     }
 
-	@Override
+    @Override
     public Double getCutOffRigidityMin() {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.RIG.min", "10.0"));
@@ -53,7 +53,7 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         }
     }
 
-	@Override
+    @Override
     public Double getCutOffRigidityMax() {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.RIG.max"));
@@ -62,8 +62,8 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
             return Double.valueOf("20.0");
         }
     }
-    
-	@Override
+
+    @Override
     public BitRate getBitRate() {
         try {
             return BitRate.valueOf(this.properties.getProperty("systematic.BR", "ANY"));
@@ -73,183 +73,207 @@ public class SystematicDataReductionEnv  implements DataReductionEnv {
         }
     }
 
-	@Override
-	public Double getTransmissionMin() {
+    @Override
+    public Double getTransmissionMin() {
         try {
             return Double.valueOf(this.properties.getProperty("systematic.TRN.min"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.TRN.min, using default value", e);
             return Double.valueOf("0.0");
         }
-	}
+    }
 
-	@Override
-	public Integer getAttitudeMode() {
+    @Override
+    public Integer getAttitudeMode() {
         try {
             return Integer.valueOf(this.properties.getProperty("systematic.ACE"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.ACE, using default value", e);
             return Integer.valueOf("1");
         }
-	}
+    }
 
-	@Override
-	public Boolean getAspectCorrection() {
-		try {
+    @Override
+    public Boolean getAspectCorrection() {
+        try {
             return Boolean.valueOf(this.properties.getProperty("systematic.COR.aspectCorrection"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.aspectCorrection, using default value", e);
             return Boolean.valueOf("false");
         }
-	}
+    }
 
-	@Override
-	public Boolean getDeadTimeCorrection() {
-		try {
-            return Boolean.valueOf(this.properties.getProperty("systematic.COR.deadTimeCorrection"));
+    @Override
+    public Boolean getDeadTimeCorrection() {
+        try {
+            return Boolean
+                    .valueOf(this.properties.getProperty("systematic.COR.deadTimeCorrection"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.deadTimeCorrection, using default value", e);
             return Boolean.valueOf("true");
         }
-	}
+    }
 
-	@Override
-	public Boolean getChannelToEnergyConversion() {
-		try {
+    @Override
+    public Boolean getChannelToEnergyConversion() {
+        try {
             return Boolean.valueOf(this.properties.getProperty("systematic.COR.channelToEnergy"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.channelToEnergy, using default value", e);
             return Boolean.valueOf("true");
         }
-	}
+    }
 
-	@Override
-	public Integer getDataUnit() {
-		try {
+    @Override
+    public Integer getDataUnit() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.COR.dataUnit"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.dataUnit, using default value", e);
             return Integer.valueOf("1");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter1() {
-		try {
+    @Override
+    public Integer getLacCounter1() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter1"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter1, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter2() {
-		try {
+    @Override
+    public Integer getLacCounter2() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter2"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter2, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter3() {
-		try {
+    @Override
+    public Integer getLacCounter3() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter3"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter3, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter4() {
-		try {
+    @Override
+    public Integer getLacCounter4() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter4"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter4, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter5() {
-		try {
+    @Override
+    public Integer getLacCounter5() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter5"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter5, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter6() {
-		try {
+    @Override
+    public Integer getLacCounter6() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter6"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter6, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter7() {
-		try {
+    @Override
+    public Integer getLacCounter7() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter7"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter7, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Integer getLacCounter8() {
-		try {
+    @Override
+    public Integer getLacCounter8() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.LAC.counter8"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter8, using default value", e);
             return Integer.valueOf("3");
         }
-	}
+    }
 
-	@Override
-	public Boolean isLacMixedMode() {
-		try {
+    @Override
+    public Boolean isLacMixedMode() {
+        try {
             return Boolean.valueOf(this.properties.getProperty("systematic.LAC.mixedMode"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.mixedMode, using default value", e);
             return Boolean.valueOf("true");
         }
-	}
+    }
 
-	@Override
-	public Integer getBgSubFileNumber() {
-		try {
+    @Override
+    public Integer getBgSubFileNumber() {
+        try {
             return Integer.valueOf(this.properties.getProperty("systematic.BGD.bgSubFileNumber"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.LAC.counter8, using default value", e);
             return Integer.valueOf("1");
         }
-	}
+    }
 
-	@Override
-	public Double getSkyAnnulusInnerRadii() {
-		try {
-            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.innerRadiiDeg"));
+    @Override
+    public Double getSkyAnnulusInnerRadii() {
+        try {
+            return Double.valueOf(this.properties
+                    .getProperty("systematic.sky.annulus.innerRadiiDeg"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.sky.annulus.innerRadiiDeg, using default value", e);
             return Double.valueOf("2.5");
         }
-	}
+    }
 
-	@Override
-	public Double getSkyAnnulusOuterRadii() {
-		try {
-            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.outerRadiiDeg"));
+    @Override
+    public Double getSkyAnnulusOuterRadii() {
+        try {
+            return Double.valueOf(this.properties
+                    .getProperty("systematic.sky.annulus.outerRadiiDeg"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.sky.annulus.outerRadiiDeg, using default value", e);
             return Double.valueOf("3.5");
         }
-	}
+    }
+
+    @Override
+    public Boolean getDelayTimeCorrection() {
+        try {
+            return Boolean.valueOf(this.properties
+                    .getProperty("systematic.COR.delayTimeCorrection"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.COR.delayTimeCorrection, using default value", e);
+            return Boolean.valueOf("true");
+        }
+    }
+
+    @Override
+    public Integer getTimeSamplingBin() {
+        try {
+            return Integer.valueOf(this.properties.getProperty("systematic.TIM"));
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.TIM, using default value", e);
+            return Integer.valueOf("-4");
+        }
+    }
 }
