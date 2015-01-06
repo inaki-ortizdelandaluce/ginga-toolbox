@@ -132,7 +132,6 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                 inputModel.setCounter8(env.getLacCounter8());
                 inputModel.setMixedMode(env.isLacMixedMode());
                 inputModel.setRegionFileName(gtiFile.getName());
-                inputModel.setMonitorFileName("MONI.SPEC");
                 return inputModel;
             }
         } catch (IOException | LacdumpDaoException e) {
