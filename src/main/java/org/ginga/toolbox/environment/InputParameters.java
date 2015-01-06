@@ -48,4 +48,24 @@ public interface InputParameters {
 
     public Double getSkyAnnulusOuterRadii();
 
+    public String getPhselLine1();
+
+    public String getPhselLine2();
+
+    public String getPhselLine3();
+
+    public String getPhselLine4();
+
+    public String getPhselLine5();
+
+    public String getPhselLine6();
+
+    public String getPhselLine7();
+
+    public String getPhselLine8();
+
+    public String getPhselLine9();
+
+    public String getPhselLine10();
+
 }

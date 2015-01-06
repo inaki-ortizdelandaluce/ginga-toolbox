@@ -36,6 +36,16 @@ public class InteractiveInputParameters implements InputParameters {
     private Boolean isLacMixedMode;
     private Double skyAnnulusInnerRadii;
     private Double skyAnnulusOuterRadii;
+    private String phselLine1;
+    private String phselLine2;
+    private String phselLine3;
+    private String phselLine4;
+    private String phselLine5;
+    private String phselLine6;
+    private String phselLine7;
+    private String phselLine8;
+    private String phselLine9;
+    private String phselLine10;
 
     protected InteractiveInputParameters() {
         this.scanner = new Scanner(System.in);
@@ -110,6 +120,23 @@ public class InteractiveInputParameters implements InputParameters {
             }
         } while (!catcher);
         return b;
+    }
+
+    private String readStringFromInput(String message) {
+        String s = null;
+        boolean catcher = false;
+        do {
+            try {
+                System.out.print(message);
+                s = this.scanner.next();
+                catcher = true;
+            } catch (Exception e) {
+                System.out.println("Please try again");
+            } finally {
+                this.scanner.nextLine();
+            }
+        } while (!catcher);
+        return s;
     }
 
     @Override
@@ -493,6 +520,186 @@ public class InteractiveInputParameters implements InputParameters {
     }
 
     /**
+     * @return the phselLine1
+     */
+    @Override
+    public String getPhselLine1() {
+        if (this.phselLine1 == null) {
+            this.phselLine1 = readStringFromInput("Enter energy channel selection for line 1:");
+        }
+        return this.phselLine1;
+    }
+
+    /**
+     * @param phselLine1 the phselLine1 to set
+     */
+    public void setPhselLine1(String phselLine1) {
+        this.phselLine1 = phselLine1;
+    }
+
+    /**
+     * @return the phselLine2
+     */
+    @Override
+    public String getPhselLine2() {
+        if (this.phselLine2 == null) {
+            this.phselLine2 = readStringFromInput("Enter energy channel selection for line 2:");
+        }
+        return this.phselLine2;
+    }
+
+    /**
+     * @param phselLine2 the phselLine2 to set
+     */
+    public void setPhselLine2(String phselLine2) {
+        this.phselLine2 = phselLine2;
+    }
+
+    /**
+     * @return the phselLine3
+     */
+    @Override
+    public String getPhselLine3() {
+        if (this.phselLine3 == null) {
+            this.phselLine3 = readStringFromInput("Enter energy channel selection for line 3:");
+        }
+        return this.phselLine3;
+    }
+
+    /**
+     * @param phselLine3 the phselLine3 to set
+     */
+    public void setPhselLine3(String phselLine3) {
+        this.phselLine3 = phselLine3;
+    }
+
+    /**
+     * @return the phselLine4
+     */
+    @Override
+    public String getPhselLine4() {
+        if (this.phselLine4 == null) {
+            this.phselLine4 = readStringFromInput("Enter energy channel selection for line 4:");
+        }
+        return this.phselLine4;
+    }
+
+    /**
+     * @param phselLine4 the phselLine4 to set
+     */
+    public void setPhselLine4(String phselLine4) {
+        this.phselLine4 = phselLine4;
+    }
+
+    /**
+     * @return the phselLine5
+     */
+    @Override
+    public String getPhselLine5() {
+        if (this.phselLine5 == null) {
+            this.phselLine5 = readStringFromInput("Enter energy channel selection for line 5:");
+        }
+        return this.phselLine5;
+    }
+
+    /**
+     * @param phselLine5 the phselLine5 to set
+     */
+    public void setPhselLine5(String phselLine5) {
+        this.phselLine5 = phselLine5;
+    }
+
+    /**
+     * @return the phselLine6
+     */
+    @Override
+    public String getPhselLine6() {
+        if (this.phselLine6 == null) {
+            this.phselLine6 = readStringFromInput("Enter energy channel selection for line 6:");
+        }
+        return this.phselLine6;
+    }
+
+    /**
+     * @param phselLine6 the phselLine6 to set
+     */
+    public void setPhselLine6(String phselLine6) {
+        this.phselLine6 = phselLine6;
+    }
+
+    /**
+     * @return the phselLine7
+     */
+    @Override
+    public String getPhselLine7() {
+        if (this.phselLine7 == null) {
+            this.phselLine7 = readStringFromInput("Enter energy channel selection for line 7:");
+        }
+        return this.phselLine7;
+    }
+
+    /**
+     * @param phselLine7 the phselLine7 to set
+     */
+    public void setPhselLine7(String phselLine7) {
+        this.phselLine7 = phselLine7;
+    }
+
+    /**
+     * @return the phselLine8
+     */
+    @Override
+    public String getPhselLine8() {
+        if (this.phselLine8 == null) {
+            this.phselLine8 = readStringFromInput("Enter energy channel selection for line 8:");
+        }
+        return this.phselLine8;
+    }
+
+    /**
+     * @param phselLine8 the phselLine8 to set
+     */
+    public void setPhselLine8(String phselLine8) {
+        this.phselLine8 = phselLine8;
+    }
+
+    /**
+     * @return the phselLine9
+     */
+    @Override
+    public String getPhselLine9() {
+        if (this.phselLine9 == null) {
+            this.phselLine9 = readStringFromInput("Enter energy channel selection for line 9:");
+        }
+        return this.phselLine9;
+    }
+
+    /**
+     * @param phselLine9 the phselLine9 to set
+     */
+    public void setPhselLine9(String phselLine9) {
+        this.phselLine9 = phselLine9;
+    }
+
+    /**
+     * @return the phselLine10
+     */
+    @Override
+    public String getPhselLine10() {
+        if (this.phselLine10 == null) {
+            this.phselLine10 = readStringFromInput("Enter energy channel selection for line 10:");
+        }
+        return this.phselLine10;
+    }
+
+    /**
+     * @param phselLine10 the phselLine10 to set
+     */
+    public void setPhselLine10(String phselLine10) {
+        this.phselLine10 = phselLine10;
+    }
+
+    /**
      * @param delayTimeCorrection the delayTimeCorrection to set
      */
     public void setDelayTimeCorrection(Boolean delayTimeCorrection) {
@@ -505,4 +712,5 @@ public class InteractiveInputParameters implements InputParameters {
     public void setLacMixedMode(Boolean isLacMixedMode) {
         this.isLacMixedMode = isLacMixedMode;
     }
+
 }

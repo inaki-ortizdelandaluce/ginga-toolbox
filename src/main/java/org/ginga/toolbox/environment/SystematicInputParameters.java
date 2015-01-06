@@ -246,4 +246,104 @@ public class SystematicInputParameters implements InputParameters {
             return Boolean.valueOf("true");
         }
     }
+
+    @Override
+    public String getPhselLine1() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line1");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line1, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine2() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line2");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line2, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine3() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line3");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line3, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine4() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line4");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line4, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine5() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line5");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line5, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine6() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line6");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line6, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine7() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line7");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line7, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine8() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line8");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line8, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine9() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line9");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line9, using default empty value", e);
+            return null;
+        }
+    }
+
+    @Override
+    public String getPhselLine10() {
+        try {
+            return this.properties.getProperty("systematic.PHEL.line10");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PHEL.line10, using default empty value", e);
+            return null;
+        }
+    }
 }
