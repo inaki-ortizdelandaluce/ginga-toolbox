@@ -90,7 +90,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                 LacspecInputModel inputModel = new LacspecInputModel();
                 DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
                 inputModel.setHasBackground(!isBackground());
-                if (!isBackground()) {
+                if (!isBackground()) { // on-source with background correction
                     inputModel.setBgMethod(getBgSubtractionMethod());
                     inputModel.setBgFileName(getBgFileName());
                     inputModel.setBgSubFileNumber(env.getBgSubFileNumber());
@@ -101,12 +101,12 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                             query.getStartTime(), query.getMode(), "FILE"));
                     inputModel.setMonitorFileName(FileUtil.nextFileName("MONI",
                             query.getStartTime(), query.getMode(), "SPEC"));
-                } else {
+                } else { // background
                     String prefix = query.getTargetName().replace(" ", "");
                     inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_lacspec_bgd", "ps"));
                     inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, prefix
-                            + "_SPEC_BGD", "FILE"));
+                            + "_BGD", "SPEC"));
                     inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_MONI_BGD", "SPEC"));
                 }
