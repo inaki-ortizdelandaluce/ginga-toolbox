@@ -1,0 +1,20 @@
+$template.psFileName/vps
+'MONI'  '$template.monitorFileName' / 
+'RIG'  $template.minRigidity $template.maxRigidity/ MIN/MAX CUT-OFF RIGIDITY                               
+'TMP'  -30.0   60.0   20.0/ MIN/MAX AVE TEMP, MAX TEMP GRADIENT         
+'TRN'    $template.minTransmission            / MINIMUM TRANSMISSION OF THE TARGET SOURCE       
+'SYNC'  0                / MIMIMUM NUMBER OF BAD FRAMES  
+'ACE'   $template.ace                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
+'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
+'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
+#if( $template.hasBackground )               
+'COR'   1  $template.aspectCorrection  $template.deadTimeCorrection $template.counterToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
+'BGD'   $template.bgMethod, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
+#else
+'COR'   0  $template.aspectCorrection  $template.deadTimeCorrection $template.counterToEnergy $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
+#end
+'LAC'   $template.counter1 $template.counter2 $template.counter3 $template.counter4 $template.counter5 $template.counter6 $template.counter7 $template.counter8  '$template.lacMode'  $template.mixedMode /                                   
+'PLT' 1 , 1  0  1.0  50.0, 1 1 1.0E+1 1.0E-1 /
+'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
+'OUT'   '$template.spectralFileName' /                                   
+'FILE'  '$template.regionFileName' /
