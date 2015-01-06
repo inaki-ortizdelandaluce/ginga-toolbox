@@ -18,23 +18,23 @@ public class Constants {
         MIDDLE, TOP, BOTH
     }
 
-    public enum TimeResolution {
+    public enum TimeSamplingBin {
         ONE, ONE_OVER_TWO, ONE_OVER_FOR
     }
-    
+
     public static String[] getLacModes() {
-    	return getEnumValues(LacMode.class);
+        return getEnumValues(LacMode.class);
     }
-    
+
     public static String[] getBitRates() {
-    	return getEnumValues(BitRate.class);
+        return getEnumValues(BitRate.class);
     }
-    
+
     private static String[] getEnumValues(Class<?> enumClass) {
-    	String[] sArray = new String[enumClass.getEnumConstants().length];
-    	for (int i = 0; i < sArray.length; i++) {
-    		sArray[i] = enumClass.getEnumConstants()[i].toString();
-		}
-    	return sArray;
+        String[] sArray = new String[enumClass.getEnumConstants().length];
+        for (int i = 0; i < sArray.length; i++) {
+            sArray[i] = enumClass.getEnumConstants()[i].toString();
+        }
+        return sArray;
     }
 }

@@ -20,68 +20,77 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsInputPipe extends
-		AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
-		TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
+        TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
 
-	private final static Logger log = Logger
-			.getLogger(LacqrdfitsInputPipe.class);
+    private final static Logger log = Logger.getLogger(LacqrdfitsInputPipe.class);
 
-	/*
-	 * Receives a LacdumpQuery, creates a GTI/Region file and finally
-	 * emits a LacqrdfitsInputModel referencing such file
-	 */
-	@Override
-	protected LacqrdfitsInputModel processNextStart()
-			throws NoSuchElementException {
-		try {
-			LacdumpQuery query = this.starts.next();
+    /*
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a LacqrdfitsInputModel
+     * referencing such file
+     */
+    @Override
+    protected LacqrdfitsInputModel processNextStart() throws NoSuchElementException {
+        try {
+            LacdumpQuery query = this.starts.next();
 
-			// set working directory
-			File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
-			if (!workingDir.exists()) {
-				workingDir.mkdirs();
-			}
-			log.info("Working directory " + workingDir.getAbsolutePath());
+            // set working directory
+            File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
+            if (!workingDir.exists()) {
+                workingDir.mkdirs();
+            }
+            log.info("Working directory " + workingDir.getAbsolutePath());
 
-			// build empty GTI file
-			File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(), 
-					query.getMode(), "DATA"));
+            // build empty GTI file
+            File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION",
+                    query.getStartTime(), query.getMode(), "DATA"));
 
-			// query entities matching the criteria
-			LacdumpDao dao = new LacdumpDaoImpl();
-			List<LacdumpSfEntity> sfList = dao.findSfList(query);
-			log.info("Query executed successfully. " + sfList.size()
-					+ " result(s) found");
+            // query entities matching the criteria
+            LacdumpDao dao = new LacdumpDaoImpl();
+            List<LacdumpSfEntity> sfList = dao.findSfList(query);
+            log.info("Query executed successfully. " + sfList.size() + " result(s) found");
 
-			if (sfList.size() > 0) {
-				// save matching results into a GTI file
-				GtiFileWriter gtiWriter = new GtiFileWriter();
-				gtiWriter.writeToFile(query.getTargetName(), sfList, false, gtiFile);
-				log.debug("GTI file " + gtiFile.getPath()
-						+ " written successfully");
+            if (sfList.size() > 0) {
+                // save matching results into a GTI file
+                GtiFileWriter gtiWriter = new GtiFileWriter();
+                gtiWriter.writeToFile(query.getTargetName(), sfList, false, gtiFile);
+                log.debug("GTI file " + gtiFile.getPath() + " written successfully");
 
-				// emit lacqrdfits input model
-				LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
-				DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
-				inputModel.setLacMode(query.getMode());
-				inputModel.setStartTime(query.getStartTime());
-				inputModel.setMinElevation(env.getElevationMin());
-				inputModel.setMaxElevation(env.getElevationMax());
-				inputModel.setPsFileName(FileUtil.nextFileName("lacqrd",
-						query.getStartTime(), query.getMode(), "ps"));
-				inputModel.setRegionFileName(gtiFile.getName());
-				inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
-						query.getStartTime(), query.getMode(), "FILE"));
-				inputModel.setTimingFileName(FileUtil.nextFileName("TIMING",
-						query.getStartTime(), query.getMode(), "fits"));
+                // emit lacqrdfits input model
+                LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
+                DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+                inputModel.setLacMode(query.getMode());
+                inputModel.setStartTime(query.getStartTime());
+                inputModel.setMinElevation(env.getElevationMin());
+                inputModel.setMaxElevation(env.getElevationMax());
+                inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
+                        query.getMode(), "ps"));
+                inputModel.setRegionFileName(gtiFile.getName());
+                inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC", query.getStartTime(),
+                        query.getMode(), "FILE"));
+                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
+                        query.getMode(), "fits"));
 
-				return inputModel;
-			}
-		} catch (IOException | LacdumpDaoException e) {
-			log.error("Error generating GTI file. Message= " + e.getMessage(),
-					e);
-		}
-		return null;
-	}
+                inputModel.setBgCorrection(1);
+                inputModel.setAspectCorrection(env.getAspectCorrection());
+                inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
+                inputModel.setDelayTimeCorrection(env.getDelayTimeCorrection());
+                inputModel.setCounter1(env.getLacCounter1());
+                inputModel.setCounter2(env.getLacCounter2());
+                inputModel.setCounter3(env.getLacCounter3());
+                inputModel.setCounter4(env.getLacCounter4());
+                inputModel.setCounter5(env.getLacCounter5());
+                inputModel.setCounter6(env.getLacCounter6());
+                inputModel.setCounter7(env.getLacCounter7());
+                inputModel.setCounter8(env.getLacCounter8());
+                inputModel.setMixedMode(env.isLacMixedMode());
+                inputModel.setTimeSamplingBin(env.getTimeSamplingBin());
+
+                return inputModel;
+            }
+        } catch (IOException | LacdumpDaoException e) {
+            log.error("Error generating GTI file. Message= " + e.getMessage(), e);
+        }
+        return null;
+    }
 }
