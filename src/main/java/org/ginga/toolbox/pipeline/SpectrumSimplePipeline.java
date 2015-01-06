@@ -25,7 +25,7 @@ public class SpectrumSimplePipeline {
 
     private File extractSpecWithBg(SingleModeTargetObservation obs, final File bgSpectrumFile) {
         Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new LacModeFilterPipe());
+                new SpectralModeFilterPipe());
         Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryPipe();
         Pipe<LacdumpQuery, LacspecInputModel> lacspecInputBuilder = new LacspecInputPipe() {
 

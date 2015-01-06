@@ -23,7 +23,7 @@ public class SpectrumBackgroundPipeline {
     public SpectrumBackgroundPipeline() {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new LacModeFilterPipe());
+                new SpectralModeFilterPipe());
         this.lacdumpQueryBuilder = new LacdumpQueryBgPipe();
         this.lacspecInputBuilder = new LacspecInputPipe() {
 

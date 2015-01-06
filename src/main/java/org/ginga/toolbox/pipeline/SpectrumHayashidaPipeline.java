@@ -25,7 +25,7 @@ public class SpectrumHayashidaPipeline {
     public SpectrumHayashidaPipeline() {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new LacModeFilterPipe());
+                new SpectralModeFilterPipe());
         this.queryBuilder = new LacdumpQueryPipe();
         this.lacqrdfitsInputBuilder = new LacqrdfitsInputPipe() {
 
