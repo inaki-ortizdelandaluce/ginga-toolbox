@@ -41,6 +41,21 @@ public class SpectrumBackgroundPipeline {
             public String getBgFileName() {
                 return null;
             }
+
+            @Override
+            public boolean getBackgroundCorrection() {
+                return false;
+            }
+
+            @Override
+            public boolean getAspectCorrection() {
+                return false;
+            }
+
+            @Override
+            public int getDataUnit() {
+                return 1; // counts/sec
+            }
         };
         this.lacspec = new LacspecPipe();
         this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,

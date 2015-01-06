@@ -18,17 +18,13 @@ public interface DataReductionEnv {
 
     public Integer getAttitudeMode();
 
-    public Boolean getAspectCorrection();
-
     public Boolean getDeadTimeCorrection();
 
     public Boolean getDelayTimeCorrection();
 
-    public Integer getTimeSamplingBin();
-
     public Boolean getChannelToEnergyConversion();
 
-    public Integer getDataUnit();
+    public Integer getTimeSamplingBin();
 
     public Integer getLacCounter1();
 

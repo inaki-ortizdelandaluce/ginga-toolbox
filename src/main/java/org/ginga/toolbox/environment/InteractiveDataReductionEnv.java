@@ -21,11 +21,9 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
     private BitRate bitRate;
     private Double transmissionMin;
     private Integer attitudeMode;
-    private Boolean aspectCorrection;
     private Boolean deadTimeCorrection;
     private Boolean delayTimeCorrection;
     private Boolean channelToEnergyConversion;
-    private Integer dataUnit;
     private Integer bgSubFileNumber;
     private Integer lacCounter1;
     private Integer lacCounter2;
@@ -240,24 +238,6 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
     }
 
     /**
-     * @return the aspectCorrection
-     */
-    @Override
-    public Boolean getAspectCorrection() {
-        if (this.aspectCorrection == null) {
-            this.aspectCorrection = readBooleanFromInput("Apply Aspect Correction (TRUE, FALSE):");
-        }
-        return this.aspectCorrection;
-    }
-
-    /**
-     * @param aspectCorrection the aspectCorrection to set
-     */
-    public void setAspectCorrection(Boolean aspectCorrection) {
-        this.aspectCorrection = aspectCorrection;
-    }
-
-    /**
      * @return the deadTimeCorrection
      */
     @Override
@@ -291,24 +271,6 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
      */
     public void setChannelToEnergyConversion(Boolean channelToEnergyConversion) {
         this.channelToEnergyConversion = channelToEnergyConversion;
-    }
-
-    /**
-     * @return the dataUnitConversion
-     */
-    @Override
-    public Integer getDataUnit() {
-        if (this.dataUnit == null) {
-            this.dataUnit = readIntegerFromInput("Enter Data Units (0=counts, 1=counts/sec, 2=counts/sec/cm2):");
-        }
-        return this.dataUnit;
-    }
-
-    /**
-     * @param dataUnitConversion the dataUnitConversion to set
-     */
-    public void setDataUnit(Integer dataUnit) {
-        this.dataUnit = dataUnit;
     }
 
     /**

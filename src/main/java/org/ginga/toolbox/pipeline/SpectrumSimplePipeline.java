@@ -43,6 +43,21 @@ public class SpectrumSimplePipeline {
             public String getBgFileName() {
                 return bgSpectrumFile.getName();
             }
+
+            @Override
+            public boolean getBackgroundCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean getAspectCorrection() {
+                return true;
+            }
+
+            @Override
+            public int getDataUnit() {
+                return 1; // counts/sec
+            }
         };
         Pipe<LacspecInputModel, File> lacspec = new LacspecPipe();
         Pipe<File, File> lac2xspec = new Lac2xspecPipe();

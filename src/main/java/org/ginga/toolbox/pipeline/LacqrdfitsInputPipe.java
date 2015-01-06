@@ -72,7 +72,7 @@ public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsIn
                         query.getMode(), "fits"));
 
                 inputModel.setBgCorrection(1);
-                inputModel.setAspectCorrection(env.getAspectCorrection());
+                inputModel.setAspectCorrection(1);
                 inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
                 inputModel.setDelayTimeCorrection(env.getDelayTimeCorrection());
                 inputModel.setCounter1(env.getLacCounter1());

@@ -94,16 +94,6 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     }
 
     @Override
-    public Boolean getAspectCorrection() {
-        try {
-            return Boolean.valueOf(this.properties.getProperty("systematic.COR.aspectCorrection"));
-        } catch (Exception e) {
-            log.warn("Cannot access systematic.COR.aspectCorrection, using default value", e);
-            return Boolean.valueOf("false");
-        }
-    }
-
-    @Override
     public Boolean getDeadTimeCorrection() {
         try {
             return Boolean
@@ -121,16 +111,6 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.channelToEnergy, using default value", e);
             return Boolean.valueOf("true");
-        }
-    }
-
-    @Override
-    public Integer getDataUnit() {
-        try {
-            return Integer.valueOf(this.properties.getProperty("systematic.COR.dataUnit"));
-        } catch (Exception e) {
-            log.warn("Cannot access systematic.COR.dataUnit, using default value", e);
-            return Integer.valueOf("1");
         }
     }
 
