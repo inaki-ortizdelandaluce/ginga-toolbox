@@ -64,7 +64,11 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lacqrdfits' output file
                     log.info("Command executed successfully");
-                    return new File(workingDir, inputModel.getSpectralFileName());
+                    if (inputModel.getHasBackground()) {
+                        return new File(workingDir, inputModel.getSpectralFileName());
+                    } else { // for background the monitor file should be returned instead
+                        return new File(workingDir, inputModel.getMonitorFileName());
+                    }
                 } else {
                     log.error("Error executing command " + cmd);
                 }
