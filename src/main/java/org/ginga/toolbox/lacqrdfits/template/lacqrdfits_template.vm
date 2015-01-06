@@ -26,7 +26,7 @@ $template.psFileName/vps
 'RMK' '  MODELS WERE MADE BASED ON THE DATA UPTO MAY 1990  '            
 'TAB' 'CARD.LACQR.DIRBGTAB' / DATA FOR SUD AND MID 
 'COR'  $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.delayTimeCorrection    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
-'TIM'  $template.timeSamplingBin /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF          
+'TIM'  $template.timingBinWidth /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF          
 'SUD' 1 1 1 1  1 1 1 1 ,2.0  22.0  1.0  ,37.0, 0.0 /                    
 'PIM' 1 1 1 1  1 1 1 1 ,0.5  10.5  0.5 , 0.0 /                          
 'MID' 1 1 1 1  1 1 1 1  2  8 , 0.0  30.0 1.0 , 0.0 /                    

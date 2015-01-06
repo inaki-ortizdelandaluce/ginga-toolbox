@@ -3,6 +3,8 @@ package org.ginga.toolbox.pipeline;
 import java.io.File;
 import java.util.List;
 
+import org.ginga.toolbox.environment.DataReductionEnv;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
@@ -25,7 +27,24 @@ public class SpectrumHayashidaPipeline {
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
                 new LacModeFilterPipe());
         this.queryBuilder = new LacdumpQueryPipe();
-        this.lacqrdfitsInputBuilder = new LacqrdfitsInputPipe();
+        this.lacqrdfitsInputBuilder = new LacqrdfitsInputPipe() {
+
+            @Override
+            public int getTimingBinWidth() {
+                DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+                // return lowest time resolution for each BR, i.e. MPC1 mode, 1SF (8x)
+                switch (env.getBitRate()) {
+                case ANY:
+                case L:
+                default:
+                    return 128; // 8x16s
+                case M:
+                    return 64; // 8x4s
+                case H:
+                    return 4; // 8x500ms
+                }
+            }
+        };
         this.lacqrdfits = new LacqrdfitsPipe();
         this.lac2xspec = new Lac2xspecPipe();
         this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,

@@ -36,7 +36,6 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
     private Boolean isLacMixedMode;
     private Double skyAnnulusInnerRadii;
     private Double skyAnnulusOuterRadii;
-    private Integer timeSamplingBin;
 
     protected InteractiveDataReductionEnv() {
         this.scanner = new Scanner(System.in);
@@ -498,24 +497,6 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
      */
     public void setDelayTimeCorrection(Boolean delayTimeCorrection) {
         this.delayTimeCorrection = delayTimeCorrection;
-    }
-
-    /**
-     * @return the timeSamplingBin
-     */
-    @Override
-    public Integer getTimeSamplingBin() {
-        if (this.timeSamplingBin == null) {
-            this.timeSamplingBin = readIntegerFromInput("Enter Time Sampling Bin (-1=1 SF, -2=1/2 SF, -4=1/4 SF or value in seconds):");
-        }
-        return this.timeSamplingBin;
-    }
-
-    /**
-     * @param timeSamplingBin the timeSamplingBin to set
-     */
-    public void setTimeSamplingBin(Integer timeSamplingBin) {
-        this.timeSamplingBin = timeSamplingBin;
     }
 
     /**

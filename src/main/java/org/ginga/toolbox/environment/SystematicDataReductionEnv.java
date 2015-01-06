@@ -246,14 +246,4 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
             return Boolean.valueOf("true");
         }
     }
-
-    @Override
-    public Integer getTimeSamplingBin() {
-        try {
-            return Integer.valueOf(this.properties.getProperty("systematic.TIM"));
-        } catch (Exception e) {
-            log.warn("Cannot access systematic.TIM, using default value", e);
-            return Integer.valueOf("-4");
-        }
-    }
 }

@@ -2,7 +2,7 @@ package org.ginga.toolbox.lacqrdfits;
 
 import org.ginga.toolbox.util.Constants.LacCounterMode;
 import org.ginga.toolbox.util.Constants.LacMode;
-import org.ginga.toolbox.util.Constants.TimeSamplingBin;
+import org.ginga.toolbox.util.Constants.TimingBinWidth;
 
 public class LacqrdfitsInputModel {
 
@@ -14,7 +14,7 @@ public class LacqrdfitsInputModel {
     private int aspectCorrection;
     private int deadTimeCorrection;
     private int delayTimeCorrection;
-    private int timeSamplingBin;
+    private int timingBinWidth;
     private int counter1;
     private int counter2;
     private int counter3;
@@ -93,21 +93,26 @@ public class LacqrdfitsInputModel {
         this.delayTimeCorrection = delayTimeCorrection;
     }
 
-    public int getTimeSamplingBin() {
-        return this.timeSamplingBin;
+    public int getTimingBinWidth() {
+        return this.timingBinWidth;
     }
 
-    public void setTimeSamplingBin(int timeSamplinBin) {
-        this.timeSamplingBin = timeSamplinBin;
+    public void setTimingBinWidth(int binWidth) {
+        this.timingBinWidth = binWidth;
     }
 
-    public void setTimeSamplingBinSec(TimeSamplingBin timeSamplingBin) {
-        if (timeSamplingBin.equals(TimeSamplingBin.ONE)) {
-            this.timeSamplingBin = -1;
-        } else if (timeSamplingBin.equals(TimeSamplingBin.ONE_OVER_TWO)) {
-            this.timeSamplingBin = -2;
-        } else { // 1/4
-            this.timeSamplingBin = -4;
+    public void setTimingeSamplingBinSec(TimingBinWidth timingBinWidth) {
+        switch (timingBinWidth) {
+        case ONE_SF:
+            this.timingBinWidth = -1;
+            break;
+        case HALF_SF:
+            this.timingBinWidth = -2;
+            break;
+        case QUARTER_SF:
+        default:
+            this.timingBinWidth = -4;
+            break;
         }
     }
 

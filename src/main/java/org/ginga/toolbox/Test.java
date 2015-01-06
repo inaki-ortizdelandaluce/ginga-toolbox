@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.command.TargetObservationListPrinterCmd;
 import org.ginga.toolbox.command.SpectraExtractorCmd;
+import org.ginga.toolbox.command.TargetObservationListPrinterCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -28,9 +28,9 @@ import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.target.SimbadTargetResolver;
 import org.ginga.toolbox.target.TargetCoordinates;
 import org.ginga.toolbox.target.TargetNotResolvedException;
-import org.ginga.toolbox.util.DateUtil;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
+import org.ginga.toolbox.util.DateUtil;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -43,48 +43,49 @@ public class Test {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-    	String target = "VELA X-1"; // "GS1124-68"; // "GS2000+25"; 
-        
-    	TargetCoordinates coords;
-		try {
-			coords = new SimbadTargetResolver().resolve(target);
-			DecimalFormat formatter = new DecimalFormat("#.####");
-			log.info("RA " + formatter.format(coords.getRaDeg()));
-	    	log.info("DEC " + formatter.format(coords.getDecDeg()));
-	    	
-	    	LacdumpQuery query = new LacdumpQuery();
-	    	query.setLacdumpFiles(Arrays.asList("J880226","J880224","J880225","J880222","J880220"));
-	    	query.setMinCutOffRigidity(10.0);
-	    	query.setMinElevation(5.0);
-	    	query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(), 2.5, 3.5);
-	    	
-	    	LacdumpDao dao = new LacdumpDaoImpl();
-	    	List<LacdumpSfEntity> sfList = dao.findSfList(query);
-	    	log.info(sfList.size() + " entries found");
-	    	
-		} catch (TargetNotResolvedException e) {
-			log.error("Could not resolve target " + target, e);
-		} catch (LacdumpDaoException e) {
-			log.error("Error querying LACDUMP database table " + target, e);
-		}
+        String target = "VELA X-1"; // "GS1124-68"; // "GS2000+25";
+
+        TargetCoordinates coords;
+        try {
+            coords = new SimbadTargetResolver().resolve(target);
+            DecimalFormat formatter = new DecimalFormat("#.####");
+            log.info("RA " + formatter.format(coords.getRaDeg()));
+            log.info("DEC " + formatter.format(coords.getDecDeg()));
+
+            LacdumpQuery query = new LacdumpQuery();
+            query.setLacdumpFiles(Arrays.asList("J880226", "J880224", "J880225", "J880222",
+                    "J880220"));
+            query.setMinCutOffRigidity(10.0);
+            query.setMinElevation(5.0);
+            query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(), 2.5, 3.5);
+
+            LacdumpDao dao = new LacdumpDaoImpl();
+            List<LacdumpSfEntity> sfList = dao.findSfList(query);
+            log.info(sfList.size() + " entries found");
+
+        } catch (TargetNotResolvedException e) {
+            log.error("Could not resolve target " + target, e);
+        } catch (LacdumpDaoException e) {
+            log.error("Error querying LACDUMP database table " + target, e);
+        }
     }
 
     public static void printTargetObservations() throws IOException {
-    	String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25"; 
-        
-    	// extract all spectra
-        SpectraExtractorCmd.extractSpectra(target, BgSubtractionMethod.HAYASHIDA); 
+        String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25";
+
+        // extract all spectra
+        SpectraExtractorCmd.extractSpectra(target, BgSubtractionMethod.HAYASHIDA);
         // write observation list
         File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
-        if(!workingDir.exists()) {
-        	workingDir.mkdirs();
+        if (!workingDir.exists()) {
+            workingDir.mkdirs();
         }
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
         TargetObservationListPrinterCmd printer = new TargetObservationListPrinterCmd(writer);
         printer.printSpectralModes(target);
     }
-    
+
     public static void scanObservations(String[] args) {
         Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationListPipe();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
@@ -117,7 +118,13 @@ public class Test {
         constraints.setMinElevation(5.0);
         constraints.setMinCutOffRigidity(10.0);
 
-        LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe();
+        LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe() {
+
+            @Override
+            public int getTimingBinWidth() {
+                return 128;
+            }
+        };
         LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
         Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery, File>(
                 pipe1, pipe2);
@@ -151,7 +158,13 @@ public class Test {
         constraints.setMinElevation(5.0);
         constraints.setMinCutOffRigidity(10.0);
 
-        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe();
+        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe() {
+
+            @Override
+            public int getTimingBinWidth() {
+                return 128;
+            }
+        };
         log.info("Starting GoodTimeIntervalPipeFunction");
         pipe1.setStarts(Arrays.asList(constraints));
         while (pipe1.hasNext()) {

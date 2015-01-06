@@ -20,10 +20,23 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
-        TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsInputModel>
+        implements TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(LacqrdfitsInputPipe.class);
+
+    /**
+     * Returns the time bin width in seconds.
+     * 
+     * <pre>
+     * Example:
+     *   For 1/4 SF 1s,  8s and  32s for HI, MED and LOW bit rates respectively
+     *   For 1/2 SF 2s, 16s and  64s for HI, MED and LOW bit rates respectively
+     *   For 1 SF   4s, 64s and 128s for HI, MED and LOW bit rates respectively
+     * </pre>
+     * @return time bin width in seconds
+     */
+    public abstract int getTimingBinWidth();
 
     /*
      * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a LacqrdfitsInputModel
@@ -84,7 +97,7 @@ public class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsIn
                 inputModel.setCounter7(env.getLacCounter7());
                 inputModel.setCounter8(env.getLacCounter8());
                 inputModel.setMixedMode(env.isLacMixedMode());
-                inputModel.setTimeSamplingBin(env.getTimeSamplingBin());
+                inputModel.setTimingBinWidth(getTimingBinWidth());
 
                 return inputModel;
             }

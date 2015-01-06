@@ -24,8 +24,6 @@ public interface DataReductionEnv {
 
     public Boolean getChannelToEnergyConversion();
 
-    public Integer getTimeSamplingBin();
-
     public Integer getLacCounter1();
 
     public Integer getLacCounter2();

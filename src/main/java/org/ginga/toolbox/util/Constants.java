@@ -18,8 +18,8 @@ public class Constants {
         MIDDLE, TOP, BOTH
     }
 
-    public enum TimeSamplingBin {
-        ONE, ONE_OVER_TWO, ONE_OVER_FOR
+    public enum TimingBinWidth {
+        ONE_SF, HALF_SF, QUARTER_SF
     }
 
     public static String[] getLacModes() {
