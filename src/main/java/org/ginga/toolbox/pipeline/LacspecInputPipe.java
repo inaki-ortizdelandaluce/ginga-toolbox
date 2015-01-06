@@ -89,6 +89,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setPsFileName(FileUtil.nextFileName("lacspec", query.getStartTime(),
                             query.getMode(), "ps"));
                     inputModel.setBgCorrection(1);
+                    inputModel.setAspectCorrection(env.getAspectCorrection());
                     inputModel.setStartTime(query.getStartTime());
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
                             query.getStartTime(), query.getMode(), "FILE"));
@@ -100,6 +101,7 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                     inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_lacspec_bgd", "ps"));
                     inputModel.setBgCorrection(0);
+                    inputModel.setAspectCorrection(0); // no aspect correction for background
                     inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_SPEC_BGD", "FILE"));
                     inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
@@ -110,7 +112,6 @@ public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, Lacspe
                 inputModel.setMaxElevation(env.getElevationMax());
                 inputModel.setMinRigidity(env.getCutOffRigidityMin());
                 inputModel.setMaxRigidity(env.getCutOffRigidityMax());
-                inputModel.setAspectCorrection(env.getAspectCorrection());
                 inputModel.setDeadTimeCorrection(env.getDeadTimeCorrection());
                 inputModel.setChannelToEnergy(env.getChannelToEnergyConversion());
                 inputModel.setDataUnit(env.getDataUnit());
