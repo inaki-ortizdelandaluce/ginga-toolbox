@@ -20,7 +20,7 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
     private static final Logger log = Logger.getLogger(LacspecPipe.class);
 
     /*
-     * Receives a LacspecInputModel, writes it to an input file, executes the lacspec routine and
+     * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine and
      * finally emits the resulting spectrum file
      */
     @Override
