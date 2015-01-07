@@ -16,6 +16,7 @@ import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
+import org.ginga.toolbox.pipeline.TimingMode1SudSortPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
@@ -239,8 +240,11 @@ public class TimingExtractorCmd {
     }
 
     public static void extractTimingSudSort(SingleModeTargetObservation obs) {
-        log.error(BgSubtractionMethod.SUD_SORT
-                + " background subtraction method not yet supported for timing analysis");
+        TimingMode1SudSortPipeline pipeline = new TimingMode1SudSortPipeline();
+        File specFile = pipeline.run(obs);
+        if (specFile != null) {
+            log.info("Spectrum file " + specFile.getName() + " created successfully");
+        }
     }
 
 }

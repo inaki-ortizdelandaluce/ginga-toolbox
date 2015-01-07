@@ -66,7 +66,7 @@ public class BgdspecInputBuilder extends AbstractPipe<LacdumpQuery, BgdspecInput
                 // emit lacspec input model
                 BgdspecInputModel inputModel = new BgdspecInputModel();
                 InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-                inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix + "_bgspec_bgd",
+                inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix + "_bgdspec_bgd",
                         "ps"));
                 inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                         + "_MONI_BGD", "SPEC"));

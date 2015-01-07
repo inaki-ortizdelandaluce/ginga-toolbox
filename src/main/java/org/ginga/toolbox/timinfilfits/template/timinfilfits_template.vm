@@ -8,6 +8,10 @@
 'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
 'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CALSEL
 'BGD'   $template.bgMethod, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
+#if( $template.sudSort )
+'SUD'   1 1 1 1  1 1 1 1    4.6  9.8 0.4 37.0 / SSUD                   
+'BSU'   46 50 54 58 62 66 70 74 78 82 86 90 94 98/
+#end
 #if ( $template.phsel1 )
 'PHSEL' '$template.phsel1'
 #end         

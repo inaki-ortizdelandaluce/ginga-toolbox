@@ -14,61 +14,62 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class TimingBackgroundPipeline {
 
-    private Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter;
-    private Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder;
-    private Pipe<LacdumpQuery, LacspecInputModel> inputBuilder;
-    private Pipe<LacspecInputModel, File> lacspec;
     private Pipeline<SingleModeTargetObservation, File> pipeline;
 
     public TimingBackgroundPipeline() {
         this(false);
     }
 
-    public TimingBackgroundPipeline(final boolean sudSort) {
+    public TimingBackgroundPipeline(final boolean sudsort) {
         // initialize all pipes needed
-        this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
+        Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
                 new TimingMode1Filter());
-        this.queryBuilder = new LacdumpQueryBgBuilder();
-        this.inputBuilder = new LacspecInputBuilder() {
+        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
 
-            @Override
-            public boolean isBackground() {
-                return true;
-            }
+        if (sudsort) {
+            this.pipeline = new Pipeline<SingleModeTargetObservation, File>(modeFilter,
+                    queryBuilder, new BgdspecInputBuilder(), new BgdspecRunner());
+        } else {
+            Pipe<LacdumpQuery, LacspecInputModel> inputBuilder = new LacspecInputBuilder() {
 
-            @Override
-            public BgSubtractionMethod getBgSubtractionMethod() {
-                return null; // N/A
-            }
+                @Override
+                public boolean isBackground() {
+                    return true;
+                }
 
-            @Override
-            public String getBgFileName() {
-                return null; // N/A
-            }
+                @Override
+                public BgSubtractionMethod getBgSubtractionMethod() {
+                    return null; // N/A
+                }
 
-            @Override
-            public boolean backgroundCorrection() {
-                return false;
-            }
+                @Override
+                public String getBgFileName() {
+                    return null; // N/A
+                }
 
-            @Override
-            public boolean aspectCorrection() {
-                return false;
-            }
+                @Override
+                public boolean backgroundCorrection() {
+                    return false;
+                }
 
-            @Override
-            public int getDataUnit() {
-                return 0; // counts
-            }
+                @Override
+                public boolean aspectCorrection() {
+                    return false;
+                }
 
-            @Override
-            public boolean sudSort() {
-                return sudSort;
-            }
-        };
-        this.lacspec = new LacspecRunner();
-        this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,
-                this.queryBuilder, this.inputBuilder, this.lacspec);
+                @Override
+                public int getDataUnit() {
+                    return 0; // counts
+                }
+
+                @Override
+                public boolean sudSort() {
+                    return false;
+                }
+            };
+            this.pipeline = new Pipeline<SingleModeTargetObservation, File>(modeFilter,
+                    queryBuilder, inputBuilder, new LacspecRunner());
+        }
     }
 
     public void run(List<SingleModeTargetObservation> obsList) {

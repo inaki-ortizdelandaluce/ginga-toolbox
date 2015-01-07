@@ -46,6 +46,7 @@ public class TiminfilfitsInputModel {
     private String regionFileName;
     private double timeResolution;
     private String startTime; // carried over for next steps in pipeline
+    private boolean sudsort;
 
     public double getMinRigidity() {
         return this.minRigidity;
@@ -547,6 +548,20 @@ public class TiminfilfitsInputModel {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    /**
+     * @return the sudsort
+     */
+    public boolean getSudsort() {
+        return this.sudsort;
+    }
+
+    /**
+     * @param sudsort the sudsort to set
+     */
+    public void setSudsort(boolean sudsort) {
+        this.sudsort = sudsort;
     }
 
 }

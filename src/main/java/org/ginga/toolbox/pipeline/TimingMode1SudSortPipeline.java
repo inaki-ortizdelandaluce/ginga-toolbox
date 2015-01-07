@@ -12,13 +12,13 @@ import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
 import com.tinkerpop.pipes.util.Pipeline;
 
-public class TimingMode1SimplePipeline {
+public class TimingMode1SudSortPipeline {
 
-    public TimingMode1SimplePipeline() {
+    public TimingMode1SudSortPipeline() {
     }
 
     public File run(SingleModeTargetObservation obs) {
-        TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline();
+        TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline(true);
         bgPipeline.run(Arrays.asList(obs));
         return extractTiming(obs, bgPipeline.next());
     }
@@ -31,7 +31,7 @@ public class TimingMode1SimplePipeline {
 
             @Override
             public BgSubtractionMethod getBgSubtractionMethod() {
-                return BgSubtractionMethod.SIMPLE;
+                return BgSubtractionMethod.SUD_SORT;
             }
 
             @Override
@@ -41,7 +41,7 @@ public class TimingMode1SimplePipeline {
 
             @Override
             public boolean sudSort() {
-                return false;
+                return true;
             }
         };
         Pipe<TiminfilfitsInputModel, File> timinfilfits = new TiminfilfitsRunner();

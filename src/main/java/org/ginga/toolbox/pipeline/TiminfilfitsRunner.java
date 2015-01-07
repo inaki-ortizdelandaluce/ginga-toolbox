@@ -66,7 +66,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
                 }
             }
         } catch (IOException e) {
-            log.error("Error generating spectrum with lacspec", e);
+            log.error("Error generating spectrum with timinfilfits", e);
         }
         return null;
     }

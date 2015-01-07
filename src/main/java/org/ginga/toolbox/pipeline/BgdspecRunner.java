@@ -36,7 +36,7 @@ public class BgdspecRunner extends AbstractPipe<BgdspecInputModel, File> impleme
                 log.debug("Working directory " + workingDir.getAbsolutePath());
 
                 // create input file
-                File inputFile = new File(workingDir, FileUtil.nextFileName(workingDir, "bgspec",
+                File inputFile = new File(workingDir, FileUtil.nextFileName(workingDir, "bgdspec",
                         "input"));
                 BgdspecInputFileWriter inputWriter = new BgdspecInputFileWriter(inputModel);
                 inputWriter.writeToFile(inputFile);

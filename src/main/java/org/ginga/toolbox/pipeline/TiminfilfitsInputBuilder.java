@@ -35,6 +35,8 @@ public abstract class TiminfilfitsInputBuilder extends
 
     public abstract String getBgFileName();
 
+    public abstract boolean sudSort();
+
     /*
      * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a TiminfilfitsInputModel
      * referencing such file
@@ -87,6 +89,7 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setBgMethod(getBgSubtractionMethod());
                 inputModel.setBgFileName(getBgFileName());
                 inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
+                inputModel.setSudsort(sudSort());
                 inputModel.setPhsel1(input.getPhselLine1());
                 inputModel.setPhsel2(input.getPhselLine2());
                 inputModel.setPhsel3(input.getPhselLine3());
