@@ -210,14 +210,13 @@ public class ObservationListPrinterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "toalgfis"; // short option names
+            private static final String OPTS_ORDER = "toalgcfis"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp(ObservationListPrinterCmd.class.getCanonicalName(),
-                getOptions());
+        helpFormatter.printHelp(ObservationListPrinterCmd.class.getCanonicalName(), getOptions());
     }
 }
