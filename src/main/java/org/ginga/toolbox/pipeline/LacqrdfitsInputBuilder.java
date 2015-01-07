@@ -80,20 +80,23 @@ public abstract class LacqrdfitsInputBuilder extends
                 // emit lacqrdfits input model
                 LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
                 InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-                inputModel.setLacMode(query.getMode());
                 inputModel.setStartTime(query.getStartTime());
+                inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
+                        query.getMode(), "ps"));
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
                 if (!isTimingBackground()) {
-                    inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
-                            query.getMode(), "ps"));
+                    inputModel.setTimingFileName(FileUtil.nextFileName("TIMING",
+                            query.getStartTime(), query.getMode(), "fits"));
+                    inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
+                            query.getStartTime(), query.getMode(), "FILE"));
+                } else {
+                    inputModel.setTimingFileName(FileUtil.nextFileName("TIMING_BGD",
+                            query.getStartTime(), query.getMode(), "fits"));
+                    inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC_BGD",
+                            query.getStartTime(), query.getMode(), "FILE"));
                 }
                 inputModel.setRegionFileName(gtiFile.getName());
-                inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC", query.getStartTime(),
-                        query.getMode(), "FILE"));
-                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
-                        query.getMode(), "fits"));
-
                 inputModel.setBgCorrection(backgroundCorrection());
                 inputModel.setAspectCorrection(aspectCorrection());
                 inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
@@ -107,6 +110,7 @@ public abstract class LacqrdfitsInputBuilder extends
                 inputModel.setCounter7(input.getLacCounter7());
                 inputModel.setCounter8(input.getLacCounter8());
                 inputModel.setMixedMode(input.isLacMixedMode());
+                inputModel.setLacMode(query.getMode());
                 inputModel.setTimingBinWidth(getTimingBinWidth());
 
                 return inputModel;

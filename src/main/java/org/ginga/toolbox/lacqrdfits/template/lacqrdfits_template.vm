@@ -1,8 +1,4 @@
-#if ( $template.psFileName )
-$template.psFileName/vps
-#else
-/NULL       /no output graph
-#end
+$template.psFileName/vps  / output graph
 'CALFILE' 'CARD.LACQR.NORMAL8' /
 'TRP'  0.0   0.5  0.05   / PROPORTIONAL TO TRAPPED PARTICLES C/SEC/S    
 'CHK' 'SFL'   1 1 1  / SOLAR CONTAMI  POS,IMPOS,BOTH                    
