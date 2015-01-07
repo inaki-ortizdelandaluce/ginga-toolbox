@@ -346,4 +346,44 @@ public class SystematicInputParameters implements InputParameters {
             return null;
         }
     }
+
+    @Override
+    public String getPcLine1() {
+        try {
+            return this.properties.getProperty("systematic.PC.line1");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PC.line1, using default value", e);
+            return "'PC'        1   0 ,    1   0   / LAC A ,B   ,   PCL, PCH";
+        }
+    }
+
+    @Override
+    public String getPcLine2() {
+        try {
+            return this.properties.getProperty("systematic.PC.line2");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PC.line2, using default value", e);
+            return "'PC'        1   0 ,    0   1   / LAC A ,B   ,   PCL, PCH";
+        }
+    }
+
+    @Override
+    public String getPcLine3() {
+        try {
+            return this.properties.getProperty("systematic.PC.line3");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PC.line3, using default value", e);
+            return "'PC'        0   1 ,    1   0   / LAC A ,B   ,   PCL, PCH";
+        }
+    }
+
+    @Override
+    public String getPcLine4() {
+        try {
+            return this.properties.getProperty("systematic.PC.line1");
+        } catch (Exception e) {
+            log.warn("Cannot access systematic.PC.line1, using default value", e);
+            return "'PC'        0   1 ,    0   1   / LAC A ,B   ,   PCL, PCH";
+        }
+    }
 }

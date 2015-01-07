@@ -68,4 +68,12 @@ public interface InputParameters {
 
     public String getPhselLine10();
 
+    public String getPcLine1();
+
+    public String getPcLine2();
+
+    public String getPcLine3();
+
+    public String getPcLine4();
+
 }

@@ -46,6 +46,10 @@ public class InteractiveInputParameters implements InputParameters {
     private String phselLine8;
     private String phselLine9;
     private String phselLine10;
+    private String pcLine1;
+    private String pcLine2;
+    private String pcLine3;
+    private String pcLine4;
 
     protected InteractiveInputParameters() {
         this.scanner = new Scanner(System.in);
@@ -697,6 +701,78 @@ public class InteractiveInputParameters implements InputParameters {
      */
     public void setPhselLine10(String phselLine10) {
         this.phselLine10 = phselLine10;
+    }
+
+    /**
+     * @return the pcLine1
+     */
+    @Override
+    public String getPcLine1() {
+        if (this.pcLine1 == null) {
+            this.pcLine1 = readStringFromInput("Enter energy channel selection for PC line 1:");
+        }
+        return this.pcLine1;
+    }
+
+    /**
+     * @param pcLine1 the pcLine1 to set
+     */
+    public void setPcLine1(String pcLine1) {
+        this.pcLine1 = pcLine1;
+    }
+
+    /**
+     * @return the pcLine2
+     */
+    @Override
+    public String getPcLine2() {
+        if (this.pcLine2 == null) {
+            this.pcLine2 = readStringFromInput("Enter energy channel selection for PC line 2:");
+        }
+        return this.pcLine2;
+    }
+
+    /**
+     * @param pcLine2 the pcLine2 to set
+     */
+    public void setPcLine2(String pcLine2) {
+        this.pcLine2 = pcLine2;
+    }
+
+    /**
+     * @return the pcLine3
+     */
+    @Override
+    public String getPcLine3() {
+        if (this.pcLine3 == null) {
+            this.pcLine3 = readStringFromInput("Enter energy channel selection for PC line 3:");
+        }
+        return this.pcLine3;
+    }
+
+    /**
+     * @param pcLine3 the pcLine3 to set
+     */
+    public void setPcLine3(String pcLine3) {
+        this.pcLine3 = pcLine3;
+    }
+
+    /**
+     * @return the pcLine4
+     */
+    @Override
+    public String getPcLine4() {
+        if (this.pcLine4 == null) {
+            this.pcLine4 = readStringFromInput("Enter energy channel selection for PC line 4:");
+        }
+        return this.pcLine4;
+    }
+
+    /**
+     * @param pcLine4 the pcLine4 to set
+     */
+    public void setPcLine4(String pcLine4) {
+        this.pcLine4 = pcLine4;
     }
 
     /**
