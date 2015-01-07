@@ -25,11 +25,11 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.pipeline.LacqrdfitsInputBuilder;
 import org.ginga.toolbox.pipeline.LacqrdfitsRunner;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
-import org.ginga.toolbox.target.SimbadTargetResolver;
-import org.ginga.toolbox.target.TargetCoordinates;
-import org.ginga.toolbox.target.TargetNotResolvedException;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
+import org.ginga.toolbox.util.SimbadTargetResolver;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 import org.ginga.toolbox.util.TimeUtil;
 
 import com.tinkerpop.pipes.Pipe;
