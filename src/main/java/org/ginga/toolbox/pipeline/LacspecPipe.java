@@ -20,8 +20,8 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
     private static final Logger log = Logger.getLogger(LacspecPipe.class);
 
     /*
-     * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine and
-     * finally emits the resulting spectrum file
+     * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * and finally emits the resulting spectrum file
      */
     @Override
     protected File processNextStart() throws NoSuchElementException {
@@ -54,12 +54,13 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
                         FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
 
                 // create 'lacspec' command
-                String cmd = env.getGingaToolsBinDir() + "/lacspec";
+                String cmd = env.getGingaToolsBinDir() + File.separator + "lacspec";
 
                 // execute command
                 GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile,
                         outputFile, cmd);
-                log.info("Executing command " + cmd + " ...");
+                log.info("Executing command lacspec < " + inputFile.getName() + " > "
+                        + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lacqrdfits' output file
