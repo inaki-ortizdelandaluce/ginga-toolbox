@@ -62,7 +62,7 @@ public abstract class LacqrdfitsInputBuilder extends
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
-            log.info("LACDUMP query:\n" + query.toString());
+            log.info("LACDUMP query:" + query.toString());
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {

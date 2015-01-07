@@ -1,5 +1,6 @@
 package org.ginga.toolbox.lacdump;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.ginga.toolbox.util.Constants.BitRate;
@@ -231,39 +232,42 @@ public class LacdumpQuery {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         if (this.bitRate != null && !this.bitRate.equals(BitRate.ANY)) {
-            sb.append(" BR = " + this.bitRate.toString() + "\n");
+            sb.append("\n BR = " + this.bitRate.toString());
         }
         if (this.mode != null) {
-            sb.append(" MODE = " + this.mode + "\n");
+            sb.append("\n MODE = " + this.mode);
         }
         if (this.targetName != null && !isBackground()) {
-            sb.append(" TARGET like '%" + this.targetName + "%'" + "\n");
+            sb.append("\n TARGET like '%" + this.targetName + "%'");
         } else {
-            sb.append(" TARGET is NULL" + "\n");
+            sb.append("\n TARGET is NULL");
             ;
         }
         if (this.startTime != null) {
-            sb.append(" DATE >= " + this.startTime + "\n");
+            sb.append("\n DATE >= " + this.startTime);
         }
         if (this.endTime != null) {
-            sb.append(" DATE <= " + this.endTime + "\n");
+            sb.append("\n DATE <= " + this.endTime);
         }
         if (this.minElevation != null) {
-            sb.append("  EELV > " + this.minElevation + "\n");
+            sb.append("\n EELV > " + this.minElevation);
         }
         if (this.minCutOffRigidity != null) {
-            sb.append("  RIG >= " + this.minCutOffRigidity + "\n");
+            sb.append("\n RIG >= " + this.minCutOffRigidity);
         }
         if (this.lacdumpFiles != null && this.lacdumpFiles.size() > 0) {
-            sb.append("  LACDUMP_FILE IN (" + this.lacdumpFiles.toString() + ")" + "\n");
+            sb.append("\n LACDUMP_FILE IN " + this.lacdumpFiles.toString());
         }
         if (this.skyAnnulus != null) {
-            sb.append("Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
-                    + this.skyAnnulus.getTargetDecDeg() + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 > "
-                    + this.skyAnnulus.getInnerRadiiDeg());
-            sb.append("Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
-                    + this.skyAnnulus.getTargetDecDeg() + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 < "
-                    + this.skyAnnulus.getOuterRadiiDeg());
+            DecimalFormat formatter = new DecimalFormat("#.####");
+            sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                    + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                    + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 > "
+                    + formatter.format(this.skyAnnulus.getInnerRadiiDeg()));
+            sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                    + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                    + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 < "
+                    + formatter.format(this.skyAnnulus.getOuterRadiiDeg()));
         }
 
         return sb.toString();
