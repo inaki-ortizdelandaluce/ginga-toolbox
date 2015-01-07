@@ -226,4 +226,46 @@ public class LacdumpQuery {
     public void setBackground(boolean isBackground) {
         this.isBackground = isBackground;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        if (this.bitRate != null && !this.bitRate.equals(BitRate.ANY)) {
+            sb.append(" BR = " + this.bitRate.toString() + "\n");
+        }
+        if (this.mode != null) {
+            sb.append(" MODE = " + this.mode + "\n");
+        }
+        if (this.targetName != null && !isBackground()) {
+            sb.append(" TARGET like '%" + this.targetName + "%'" + "\n");
+        } else {
+            sb.append(" TARGET is NULL" + "\n");
+            ;
+        }
+        if (this.startTime != null) {
+            sb.append(" DATE >= " + this.startTime + "\n");
+        }
+        if (this.endTime != null) {
+            sb.append(" DATE <= " + this.endTime + "\n");
+        }
+        if (this.minElevation != null) {
+            sb.append("  EELV > " + this.minElevation + "\n");
+        }
+        if (this.minCutOffRigidity != null) {
+            sb.append("  RIG >= " + this.minCutOffRigidity + "\n");
+        }
+        if (this.lacdumpFiles != null && this.lacdumpFiles.size() > 0) {
+            sb.append("  LACDUMP_FILE IN (" + this.lacdumpFiles.toString() + ")" + "\n");
+        }
+        if (this.skyAnnulus != null) {
+            sb.append("Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                    + this.skyAnnulus.getTargetDecDeg() + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 > "
+                    + this.skyAnnulus.getInnerRadiiDeg());
+            sb.append("Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                    + this.skyAnnulus.getTargetDecDeg() + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 < "
+                    + this.skyAnnulus.getOuterRadiiDeg());
+        }
+
+        return sb.toString();
+    }
 }
