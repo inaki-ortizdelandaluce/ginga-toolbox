@@ -45,7 +45,7 @@ public class TiminfilfitsInputModel {
     private String spectralFileName;
     private String regionFileName;
     private double timeResolution;
-    private String startTime;
+    private String startTime; // carried over for next steps in pipeline
 
     public double getMinRigidity() {
         return this.minRigidity;
