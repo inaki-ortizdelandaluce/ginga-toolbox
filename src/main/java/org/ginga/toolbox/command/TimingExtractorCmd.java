@@ -1,7 +1,6 @@
 package org.ginga.toolbox.command;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.commons.cli.BasicParser;
@@ -16,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
-import org.ginga.toolbox.pipeline.TimingBackgroundPipeline;
+import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.DateUtil;
@@ -232,9 +231,8 @@ public class TimingExtractorCmd {
     }
 
     public static void extractTimingSimple(SingleModeTargetObservation obs) {
-        TimingBackgroundPipeline pipeline = new TimingBackgroundPipeline();
-        pipeline.run(Arrays.asList(obs));
-        File specFile = pipeline.next();
+        TimingMode1SimplePipeline pipeline = new TimingMode1SimplePipeline();
+        File specFile = pipeline.run(obs);
         if (specFile != null) {
             log.info("Spectrum file " + specFile.getName() + " created successfully");
         }
