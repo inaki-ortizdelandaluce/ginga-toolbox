@@ -16,10 +16,10 @@ import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
-import org.ginga.toolbox.target.SimbadTargetResolver;
-import org.ginga.toolbox.target.TargetCoordinates;
-import org.ginga.toolbox.target.TargetNotResolvedException;
 import org.ginga.toolbox.util.Constants.LacMode;
+import org.ginga.toolbox.util.SimbadTargetResolver;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
