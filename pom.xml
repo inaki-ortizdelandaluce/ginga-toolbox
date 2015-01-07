@@ -103,7 +103,7 @@
               </platforms>
             </program>
             <program>
-              <mainClass>org.ginga.toolbox.command.TargetObservationListPrinterCmd</mainClass>
+              <mainClass>org.ginga.toolbox.command.ObservationListPrinterCmd</mainClass>
               <id>print_observation_list</id>
               <platforms>
                 <platform>unix</platform>
