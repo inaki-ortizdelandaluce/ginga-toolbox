@@ -30,7 +30,7 @@ import org.ginga.toolbox.target.TargetCoordinates;
 import org.ginga.toolbox.target.TargetNotResolvedException;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
-import org.ginga.toolbox.util.DateUtil;
+import org.ginga.toolbox.util.TimeUtil;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.util.Pipeline;
@@ -187,7 +187,7 @@ public class Test {
         }
         // find start/end time for MPC3
         LacdumpDao lacDumpDao = new LacdumpDaoImpl();
-        SimpleDateFormat dateFmt = DateUtil.DATE_FORMAT_DATABASE;
+        SimpleDateFormat dateFmt = TimeUtil.DATE_FORMAT_DATABASE;
         String startTime, endTime;
         for (ObservationEntity obs : obsList) {
             startTime = dateFmt.format(obs.getStartTime());

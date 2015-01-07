@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
-import org.ginga.toolbox.util.DateUtil;
+import org.ginga.toolbox.util.TimeUtil;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class SpectrumExtractorScanner {
@@ -91,7 +91,7 @@ public class SpectrumExtractorScanner {
 		System.out.print("Enter Observation Start Time (" + SpectrumExtractorCmd.DATE_FORMAT_PATTERN + "): ");
 		String startTime = scanner.next();
 		// check value
-		DateUtil.parseInputFormat(startTime);
+		TimeUtil.parseInputFormat(startTime);
 		return startTime;
 	}
 	
@@ -102,7 +102,7 @@ public class SpectrumExtractorScanner {
 		System.out.print("Enter Observation End Time (" + SpectrumExtractorCmd.DATE_FORMAT_PATTERN + "): ");
 		String endTime = scanner.next();
 		// check value
-		DateUtil.parseInputFormat(endTime);
+		TimeUtil.parseInputFormat(endTime);
 		return endTime;
 	}	
 }

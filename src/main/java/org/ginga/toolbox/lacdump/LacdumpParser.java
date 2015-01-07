@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.util.DateUtil;
+import org.ginga.toolbox.util.TimeUtil;
 
 public class LacdumpParser {
 
@@ -139,9 +139,9 @@ public class LacdumpParser {
                     entity.setSequenceNumber(seqno);
 
                     // datetime
-                    date = DateUtil.parseLacdumpFormat(line.substring(this.dateBeginIdx,
+                    date = TimeUtil.parseLacdumpFormat(line.substring(this.dateBeginIdx,
                             this.dateBeginIdx + this.dateLength).trim());
-                    log.debug("DATE " + DateUtil.DATE_FORMAT_LACDUMP.format(date));
+                    log.debug("DATE " + TimeUtil.DATE_FORMAT_LACDUMP.format(date));
                     entity.setDate(date);
 
                     // bitrate

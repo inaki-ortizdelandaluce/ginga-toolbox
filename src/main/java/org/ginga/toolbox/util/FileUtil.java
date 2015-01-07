@@ -25,7 +25,7 @@ public class FileUtil {
     public static String nextFileName(String prefix, String startTime, LacMode mode, String extension) {
     	String fileName = prefix;
     	try {
-			fileName += "_" + DateUtil.convertDatabaseToFileFormat(startTime);
+			fileName += "_" + TimeUtil.convertDatabaseToFileFormat(startTime);
 		} catch (ParseException e) {
 			fileName += "_" + startTime;
 		}

@@ -18,11 +18,11 @@ import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
-import org.ginga.toolbox.util.DateUtil;
+import org.ginga.toolbox.util.TimeUtil;
 
 public class TimingExtractorCmd {
 
-    protected final static String DATE_FORMAT_PATTERN = DateUtil.DATE_FORMAT_INPUT.toPattern();
+    protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
     private final static Logger log = Logger.getLogger(TimingExtractorCmd.class);
 
     public static void main(String[] args) {
@@ -85,7 +85,7 @@ public class TimingExtractorCmd {
             if (commandLine.hasOption("start-time")) {
                 try {
                     startTime = commandLine.getOptionValue("start-time");
-                    DateUtil.parseInputFormat(startTime);
+                    TimeUtil.parseInputFormat(startTime);
                 } catch (java.text.ParseException e) {
                     log.error("Start time format is not valid. " + e.getMessage());
                     printHelp();
@@ -100,7 +100,7 @@ public class TimingExtractorCmd {
             if (commandLine.hasOption("start-time")) {
                 try {
                     endTime = commandLine.getOptionValue("end-time");
-                    DateUtil.parseInputFormat(endTime);
+                    TimeUtil.parseInputFormat(endTime);
                 } catch (java.text.ParseException e) {
                     log.error("End time format is not valid. " + e.getMessage());
                     printHelp();
