@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.command.SpectraExtractorCmd;
 import org.ginga.toolbox.command.ObservationListPrinterCmd;
+import org.ginga.toolbox.command.SpectraExtractorCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -124,6 +124,21 @@ public class Test {
             public int getTimingBinWidth() {
                 return 128;
             }
+
+            @Override
+            public boolean backgroundCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean aspectCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean isTimingBackground() {
+                return false;
+            }
         };
         LacqrdfitsRunner pipe2 = new LacqrdfitsRunner();
         Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery, File>(
@@ -163,6 +178,21 @@ public class Test {
             @Override
             public int getTimingBinWidth() {
                 return 128;
+            }
+
+            @Override
+            public boolean backgroundCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean aspectCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean isTimingBackground() {
+                return false;
             }
         };
         log.info("Starting GoodTimeIntervalPipeFunction");

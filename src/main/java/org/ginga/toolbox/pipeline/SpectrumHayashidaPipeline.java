@@ -44,6 +44,21 @@ public class SpectrumHayashidaPipeline {
                     return 4; // 8x500ms
                 }
             }
+
+            @Override
+            public boolean backgroundCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean aspectCorrection() {
+                return true;
+            }
+
+            @Override
+            public boolean isTimingBackground() {
+                return false;
+            }
         };
         this.lacqrdfits = new LacqrdfitsRunner();
         this.lac2xspec = new Lac2xspecRunner();

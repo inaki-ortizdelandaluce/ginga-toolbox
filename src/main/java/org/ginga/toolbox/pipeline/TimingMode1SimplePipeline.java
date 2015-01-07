@@ -23,7 +23,7 @@ public class TimingMode1SimplePipeline {
         return extractTiming(obs, bgPipeline.next());
     }
 
-    private File extractTiming(SingleModeTargetObservation obs, final File bgSpectrumFile) {
+    private File extractTiming(SingleModeTargetObservation obs, final File bgMonitorFile) {
         Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
                 new TimingMode1Filter());
         Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
@@ -36,7 +36,7 @@ public class TimingMode1SimplePipeline {
 
             @Override
             public String getBgFileName() {
-                return bgSpectrumFile.getName();
+                return bgMonitorFile.getName();
             }
 
             @Override

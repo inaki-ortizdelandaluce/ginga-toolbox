@@ -1,4 +1,8 @@
+#if ( $template.psFileName )
 $template.psFileName/vps
+#else
+/NULL       /no output graph
+#end
 'CALFILE' 'CARD.LACQR.NORMAL8' /
 'TRP'  0.0   0.5  0.05   / PROPORTIONAL TO TRAPPED PARTICLES C/SEC/S    
 'CHK' 'SFL'   1 1 1  / SOLAR CONTAMI  POS,IMPOS,BOTH                    
@@ -48,6 +52,16 @@ $template.psFileName/vps
 'CHT' 'PLP' 4, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
 'TIF' 'ENG' 1,   ' 22.1  35.2 '     / 
 'TIF' 'OUT'  '$template.timingFileName'  'OLD' /
+#if ( $template.psFileName )
 'CALFILE'  'LACQRT1' /
+#elseif( $template.lacMode == "MPC1" || $template.lacMode == "MPC2" )       
+'CALFILE'  'LACQRT48' /
+'RMK' ' Use LACQRT48 for MPC-1 and MPC-2 mode.  '            
+'RMK' ' Use LACQRT12 for MPC-3 mode.  '            
+#elseif ( $template.lacMode == "MPC3")
+'CALFILE'  'LACQRT12' /
+'RMK' ' Use LACQRT48 for MPC-1 and MPC-2 mode.  '            
+'RMK' ' Use LACQRT12 for MPC-3 mode.  '            
+#end
 'FILE'  '$template.regionFileName' /
 'GO' /

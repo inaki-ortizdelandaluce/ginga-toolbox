@@ -39,6 +39,12 @@ public abstract class LacqrdfitsInputBuilder extends
      */
     public abstract int getTimingBinWidth();
 
+    public abstract boolean backgroundCorrection();
+
+    public abstract boolean aspectCorrection();
+
+    public abstract boolean isTimingBackground();
+
     /*
      * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a LacqrdfitsInputModel
      * referencing such file
@@ -78,16 +84,18 @@ public abstract class LacqrdfitsInputBuilder extends
                 inputModel.setStartTime(query.getStartTime());
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
-                inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
-                        query.getMode(), "ps"));
+                if (!isTimingBackground()) {
+                    inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
+                            query.getMode(), "ps"));
+                }
                 inputModel.setRegionFileName(gtiFile.getName());
                 inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC", query.getStartTime(),
                         query.getMode(), "FILE"));
                 inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
                         query.getMode(), "fits"));
 
-                inputModel.setBgCorrection(1);
-                inputModel.setAspectCorrection(1);
+                inputModel.setBgCorrection(backgroundCorrection());
+                inputModel.setAspectCorrection(aspectCorrection());
                 inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
                 inputModel.setDelayTimeCorrection(input.getDelayTimeCorrection());
                 inputModel.setCounter1(input.getLacCounter1());

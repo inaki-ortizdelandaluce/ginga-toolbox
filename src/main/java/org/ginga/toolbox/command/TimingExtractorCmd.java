@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
+import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
 import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
 import org.ginga.toolbox.pipeline.TimingMode1SudSortPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
@@ -227,23 +228,26 @@ public class TimingExtractorCmd {
     }
 
     public static void extractTimingHayashida(SingleModeTargetObservation obs) {
-        log.error(BgSubtractionMethod.HAYASHIDA
-                + " background subtraction method not yet supported for timing analysis");
+        TimingMode1HayashidaPipeline pipeline = new TimingMode1HayashidaPipeline();
+        File timingFile = pipeline.run(obs);
+        if (timingFile != null) {
+            log.info("Timing file " + timingFile.getName() + " created successfully");
+        }
     }
 
     public static void extractTimingSimple(SingleModeTargetObservation obs) {
         TimingMode1SimplePipeline pipeline = new TimingMode1SimplePipeline();
-        File specFile = pipeline.run(obs);
-        if (specFile != null) {
-            log.info("Spectrum file " + specFile.getName() + " created successfully");
+        File timingFile = pipeline.run(obs);
+        if (timingFile != null) {
+            log.info("Timing file " + timingFile.getName() + " created successfully");
         }
     }
 
     public static void extractTimingSudSort(SingleModeTargetObservation obs) {
         TimingMode1SudSortPipeline pipeline = new TimingMode1SudSortPipeline();
-        File specFile = pipeline.run(obs);
-        if (specFile != null) {
-            log.info("Spectrum file " + specFile.getName() + " created successfully");
+        File timingFile = pipeline.run(obs);
+        if (timingFile != null) {
+            log.info("Timing file " + timingFile.getName() + " created successfully");
         }
     }
 
