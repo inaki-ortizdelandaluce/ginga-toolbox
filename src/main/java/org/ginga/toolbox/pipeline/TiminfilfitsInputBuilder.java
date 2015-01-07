@@ -17,6 +17,7 @@ import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.FileUtil;
+import org.ginga.toolbox.util.TimeUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
@@ -108,7 +109,8 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setCounter7(input.getLacCounter7());
                 inputModel.setCounter8(input.getLacCounter8());
                 inputModel.setMixedMode(input.isLacMixedMode());
-                inputModel.setTimeResolution(0.078); // TODO
+                inputModel.setTimeResolution(TimeUtil.getTimeResolution(input.getBitRate(),
+                        query.getMode()));
                 inputModel.setRegionFileName(gtiFile.getName());
                 return inputModel;
             }
