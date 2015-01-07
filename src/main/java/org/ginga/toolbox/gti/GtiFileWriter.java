@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
-import org.ginga.toolbox.target.SimbadTargetResolver;
-import org.ginga.toolbox.target.TargetCoordinates;
-import org.ginga.toolbox.target.TargetNotResolvedException;
+import org.ginga.toolbox.util.SimbadTargetResolver;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 
 public class GtiFileWriter {
 

@@ -11,9 +11,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.target.SimbadTargetResolver;
-import org.ginga.toolbox.target.TargetCoordinates;
-import org.ginga.toolbox.target.TargetNotResolvedException;
+import org.ginga.toolbox.util.SimbadTargetResolver;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
+import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 
 public class TargetNameResolverCmd {
 
