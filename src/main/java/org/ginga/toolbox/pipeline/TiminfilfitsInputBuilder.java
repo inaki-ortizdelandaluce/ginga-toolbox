@@ -38,7 +38,7 @@ public abstract class TiminfilfitsInputBuilder extends
     public abstract boolean sudSort();
 
     /*
-     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a TiminfilfitsInputModel
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2ilfitsInputModel
      * referencing such file
      */
     @Override
@@ -69,7 +69,7 @@ public abstract class TiminfilfitsInputBuilder extends
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
                 GtiFileWriter gtiWriter = new GtiFileWriter();
-                gtiWriter.writeToFile(query.getTargetName(), sfList, true, gtiFile);
+                gtiWriter.writeToFile(query.getTargetName(), sfList, false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
 
                 // emit timinfilfits input model

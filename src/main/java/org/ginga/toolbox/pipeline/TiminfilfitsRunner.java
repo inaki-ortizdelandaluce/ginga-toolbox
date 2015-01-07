@@ -20,7 +20,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
     private static final Logger log = Logger.getLogger(TiminfilfitsRunner.class);
 
     /*
-     * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * Receives a Tim2ilfitsInputModel, writes it to an input file, executes the lacspec routine
      * and finally emits the resulting spectrum file
      */
     @Override

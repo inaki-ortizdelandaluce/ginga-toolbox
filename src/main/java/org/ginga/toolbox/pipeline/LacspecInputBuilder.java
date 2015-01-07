@@ -48,7 +48,7 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
     public abstract int getDataUnit();
 
     /*
-     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a TiminfilfitsInputModel
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2ilfitsInputModel
      * referencing such file
      */
     @Override
@@ -86,7 +86,7 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
                 GtiFileWriter gtiWriter = new GtiFileWriter();
-                gtiWriter.writeToFile(query.getTargetName(), sfList, true, gtiFile);
+                gtiWriter.writeToFile(query.getTargetName(), sfList, isBackground(), gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
 
                 // emit lacspec input model

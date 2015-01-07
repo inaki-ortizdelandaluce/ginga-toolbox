@@ -20,7 +20,7 @@ public class BgdspecRunner extends AbstractPipe<BgdspecInputModel, File> impleme
     private static final Logger log = Logger.getLogger(BgdspecRunner.class);
 
     /*
-     * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * Receives a Tim2ilfitsInputModel, writes it to an input file, executes the lacspec routine
      * and finally emits the resulting spectrum file
      */
     @Override
