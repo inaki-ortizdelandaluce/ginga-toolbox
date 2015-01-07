@@ -1,0 +1,19 @@
+/NULL
+'RIG'  $template.minRigidity $template.maxRigidity/ MIN/MAX CUT-OFF RIGIDITY                               
+'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
+'TMP'  -30.0   60.0   20.0/ MIN/MAX AVE TEMP, MAX TEMP GRADIENT         
+'TRN'    $template.minTransmission            / MINIMUM TRANSMISSION OF THE TARGET SOURCE       
+'SYNC'  0                / MIMIMUM NUMBER OF BAD FRAMES  
+'ACE'   $template.ace                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
+'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
+'PLT' 0 / 
+$template.targetLine
+'OUT'   '$template.timingFileName' /                                   
+'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0  1/ BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CALSEL,MODE
+$template.pcLine1
+$template.pcLine2
+$template.pcLine3
+$template.pcLine4
+$template.dataLines
+'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
+'1BIN'  $template.timeResolution  /   SEC/BIN
