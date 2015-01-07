@@ -19,6 +19,16 @@ public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> i
 
     private static final Logger log = Logger.getLogger(LacqrdfitsRunner.class);
 
+    private boolean timingBg;
+
+    public LacqrdfitsRunner() {
+        this(false);
+    }
+
+    public LacqrdfitsRunner(boolean timingBg) {
+        this.timingBg = timingBg;
+    }
+
     /*
      * Receives a LacqrdfitsInputModel, writes it to an input file, executes the lacqrdfits routine
      * and finally emits the resulting spectrum file
@@ -62,7 +72,11 @@ public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> i
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lacqrdfits' output file
                     log.info("Command executed successfully");
-                    return new File(workingDir, inputModel.getSpectralFileName());
+                    if (this.timingBg) {
+                        return new File(workingDir, inputModel.getTimingFileName());
+                    } else {
+                        return new File(workingDir, inputModel.getSpectralFileName());
+                    }
                 } else {
                     log.error("Error executing command " + cmd);
                 }
