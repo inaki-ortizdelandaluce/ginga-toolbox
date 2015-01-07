@@ -71,14 +71,9 @@ public abstract class TiminfilfitsInputBuilder extends
                 // emit timinfilfits input model
                 TiminfilfitsInputModel inputModel = new TiminfilfitsInputModel();
                 InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-                inputModel.setBgMethod(getBgSubtractionMethod());
-                inputModel.setBgFileName(getBgFileName());
-                inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
                 inputModel.setStartTime(query.getStartTime());
-                inputModel.setSpectralFileName(FileUtil.nextFileName("TIMING",
-                        query.getStartTime(), query.getMode(), "fits"));
                 inputModel.setBitRate(input.getBitRate());
-                inputModel.setLacMode(query.getMode());
+                inputModel.setAce(input.getAttitudeMode());
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
                 inputModel.setMinRigidity(input.getCutOffRigidityMin());
@@ -88,7 +83,22 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
                 inputModel.setChannelToEnergy(input.getChannelToEnergyConversion());
                 inputModel.setDataUnit(0); // counts
-                inputModel.setAce(input.getAttitudeMode());
+                inputModel.setBgMethod(getBgSubtractionMethod());
+                inputModel.setBgFileName(getBgFileName());
+                inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
+                inputModel.setPhsel1(input.getPhselLine1());
+                inputModel.setPhsel2(input.getPhselLine2());
+                inputModel.setPhsel3(input.getPhselLine3());
+                inputModel.setPhsel4(input.getPhselLine4());
+                inputModel.setPhsel5(input.getPhselLine5());
+                inputModel.setPhsel6(input.getPhselLine6());
+                inputModel.setPhsel7(input.getPhselLine7());
+                inputModel.setPhsel8(input.getPhselLine8());
+                inputModel.setPhsel9(input.getPhselLine9());
+                inputModel.setPhsel10(input.getPhselLine10());
+                inputModel.setSpectralFileName(FileUtil.nextFileName("TIMING",
+                        query.getStartTime(), query.getMode(), "fits"));
+                inputModel.setLacMode(query.getMode());
                 inputModel.setCounter1(input.getLacCounter1());
                 inputModel.setCounter2(input.getLacCounter2());
                 inputModel.setCounter3(input.getLacCounter3());
@@ -98,8 +108,8 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setCounter7(input.getLacCounter7());
                 inputModel.setCounter8(input.getLacCounter8());
                 inputModel.setMixedMode(input.isLacMixedMode());
+                inputModel.setTimeResolution(0.078); // TODO
                 inputModel.setRegionFileName(gtiFile.getName());
-                // TODO PHSEL 1BIN
                 return inputModel;
             }
         } catch (IOException | LacdumpDaoException e) {
