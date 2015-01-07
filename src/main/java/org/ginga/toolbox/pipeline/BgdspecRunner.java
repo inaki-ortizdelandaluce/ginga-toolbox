@@ -20,7 +20,7 @@ public class BgdspecRunner extends AbstractPipe<BgdspecInputModel, File> impleme
     private static final Logger log = Logger.getLogger(BgdspecRunner.class);
 
     /*
-     * Receives a Tim2ilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * Receives a Tim2filfitsInputModel, writes it to an input file, executes the lacspec routine
      * and finally emits the resulting spectrum file
      */
     @Override
@@ -56,7 +56,7 @@ public class BgdspecRunner extends AbstractPipe<BgdspecInputModel, File> impleme
                         + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
-                if (exitValue == 0) { // return 'lacqrdfits' output file
+                if (exitValue == 0) { // return 'bgdspec' output file
                     log.info("Command executed successfully");
                     return new File(workingDir, inputModel.getMonitorFileName());
                 } else {
