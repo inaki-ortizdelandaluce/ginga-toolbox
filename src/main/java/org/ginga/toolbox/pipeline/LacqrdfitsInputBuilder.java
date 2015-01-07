@@ -20,8 +20,9 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public abstract class LacqrdfitsInputBuilder extends AbstractPipe<LacdumpQuery, LacqrdfitsInputModel>
-        implements TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+public abstract class LacqrdfitsInputBuilder extends
+        AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
+        TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(LacqrdfitsInputBuilder.class);
 
@@ -61,6 +62,7 @@ public abstract class LacqrdfitsInputBuilder extends AbstractPipe<LacdumpQuery, 
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
+            log.info("LACDUMP query:\n" + query.toString());
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {

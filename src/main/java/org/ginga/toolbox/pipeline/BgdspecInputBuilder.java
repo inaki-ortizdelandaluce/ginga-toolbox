@@ -55,6 +55,7 @@ public class BgdspecInputBuilder extends AbstractPipe<LacdumpQuery, BgdspecInput
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
+            log.info("LACDUMP query:\n" + query.toString());
             log.info("LACDUMP query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {
