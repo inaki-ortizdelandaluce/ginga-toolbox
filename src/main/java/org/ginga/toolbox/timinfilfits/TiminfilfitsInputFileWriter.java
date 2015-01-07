@@ -27,7 +27,7 @@ public class TiminfilfitsInputFileWriter {
                 ClasspathResourceLoader.class.getName());
         Velocity.init();
         this.template = Velocity
-                .getTemplate("org/ginga/toolbox/timinfilfits/template/timingfilfits_template.vm");
+                .getTemplate("org/ginga/toolbox/timinfilfits/template/timinfilfits_template.vm");
 
     }
 
