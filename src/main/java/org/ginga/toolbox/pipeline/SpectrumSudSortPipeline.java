@@ -25,9 +25,9 @@ public class SpectrumSudSortPipeline {
 
     private File extractSpecWithBg(SingleModeTargetObservation obs, final File bgSpectrumFile) {
         Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new SpectrumModeFilterPipe());
-        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryPipe();
-        Pipe<LacdumpQuery, LacspecInputModel> lacspecInputBuilder = new LacspecInputPipe() {
+                new SpectrumModeFilter());
+        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+        Pipe<LacdumpQuery, LacspecInputModel> lacspecInputBuilder = new LacspecInputBuilder() {
 
             @Override
             public boolean isBackground() {
@@ -59,8 +59,8 @@ public class SpectrumSudSortPipeline {
                 return 1; // counts/sec
             }
         };
-        Pipe<LacspecInputModel, File> lacspec = new LacspecPipe();
-        Pipe<File, File> lac2xspec = new Lac2xspecPipe();
+        Pipe<LacspecInputModel, File> lacspec = new LacspecRunner();
+        Pipe<File, File> lac2xspec = new Lac2xspecRunner();
 
         Pipeline<SingleModeTargetObservation, File> specExtractor = new Pipeline<SingleModeTargetObservation, File>(
                 modeFilter, queryBuilder, lacspecInputBuilder, lacspec, lac2xspec);

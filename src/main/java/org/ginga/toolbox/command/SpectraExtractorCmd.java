@@ -15,11 +15,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
+import org.ginga.toolbox.pipeline.ObservationListBuilder;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
-import org.ginga.toolbox.pipeline.TargetObservationListPipe;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
-
-import com.tinkerpop.pipes.Pipe;
 
 public class SpectraExtractorCmd {
 
@@ -41,9 +39,10 @@ public class SpectraExtractorCmd {
 
     public static void extractSpectraHayashida(String target) {
         // find all observations for input target
-        Pipe<String, List<ObservationEntity>> obsListPipe = new TargetObservationListPipe();
-        obsListPipe.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = obsListPipe.next();
+        ObservationListBuilder obsListBuilder = new ObservationListBuilder();
+        obsListBuilder.setStarts(Arrays.asList(target));
+        List<ObservationEntity> obsList = obsListBuilder.next();
+
         // find available modes for each observations and extract spectra
         List<SingleModeTargetObservation> singleModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {

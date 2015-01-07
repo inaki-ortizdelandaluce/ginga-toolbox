@@ -21,12 +21,12 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public abstract class LacspecInputPipe extends AbstractPipe<LacdumpQuery, LacspecInputModel>
+public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, LacspecInputModel>
         implements TransformPipe<LacdumpQuery, LacspecInputModel> {
 
-    private final static Logger log = Logger.getLogger(LacspecInputPipe.class);
+    private final static Logger log = Logger.getLogger(LacspecInputBuilder.class);
 
-    public LacspecInputPipe() {
+    public LacspecInputBuilder() {
     }
 
     public abstract boolean isBackground();

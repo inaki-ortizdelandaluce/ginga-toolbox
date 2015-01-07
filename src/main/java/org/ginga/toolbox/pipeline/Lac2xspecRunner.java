@@ -15,9 +15,9 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class Lac2xspecPipe extends AbstractPipe<File, File> implements TransformPipe<File, File> {
+public class Lac2xspecRunner extends AbstractPipe<File, File> implements TransformPipe<File, File> {
 
-    private static final Logger log = Logger.getLogger(Lac2xspecPipe.class);
+    private static final Logger log = Logger.getLogger(Lac2xspecRunner.class);
 
     /*
      * Receives a ASCII spectrum file and emits the converted PHA file for further processing with

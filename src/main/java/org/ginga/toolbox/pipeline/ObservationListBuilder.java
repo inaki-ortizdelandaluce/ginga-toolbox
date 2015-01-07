@@ -22,10 +22,10 @@ import org.ginga.toolbox.util.DateUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class TargetObservationListPipe extends AbstractPipe<String, List<ObservationEntity>>
+public class ObservationListBuilder extends AbstractPipe<String, List<ObservationEntity>>
         implements TransformPipe<String, List<ObservationEntity>> {
 
-    private static Logger log = Logger.getLogger(TargetObservationListPipe.class);
+    private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
     @Override
     protected List<ObservationEntity> processNextStart() throws NoSuchElementException {

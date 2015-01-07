@@ -9,10 +9,10 @@ import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.PipeFunction;
 
-public class TimingMode2FilterPipe implements PipeFunction<SingleModeTargetObservation, Boolean> {
+public class TimingMode1Filter implements PipeFunction<SingleModeTargetObservation, Boolean> {
 
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(TimingMode2FilterPipe.class);
+    private static final Logger log = Logger.getLogger(TimingMode1Filter.class);
 
     /*
      * (non-Javadoc)
@@ -24,7 +24,7 @@ public class TimingMode2FilterPipe implements PipeFunction<SingleModeTargetObser
         LacMode mode = observation.getLacMode();
         if (mode == null)
             return Boolean.FALSE;
-        if (mode.equals(LacMode.PCHK)) {
+        if (mode.equals(LacMode.MPC3)) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;

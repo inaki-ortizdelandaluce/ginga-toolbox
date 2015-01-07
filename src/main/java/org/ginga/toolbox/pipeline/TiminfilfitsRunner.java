@@ -6,18 +6,18 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.lacspec.LacspecInputFileWriter;
-import org.ginga.toolbox.lacspec.LacspecInputModel;
 import org.ginga.toolbox.runtime.GingaToolsRuntime;
+import org.ginga.toolbox.timinfilfits.TiminfilfitsInputFileWriter;
+import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implements
-        TransformPipe<LacspecInputModel, File> {
+public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, File> implements
+        TransformPipe<TiminfilfitsInputModel, File> {
 
-    private static final Logger log = Logger.getLogger(LacspecPipe.class);
+    private static final Logger log = Logger.getLogger(TiminfilfitsRunner.class);
 
     /*
      * Receives a TiminfilfitsInputModel, writes it to an input file, executes the lacspec routine
@@ -26,7 +26,7 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
     @Override
     protected File processNextStart() throws NoSuchElementException {
         try {
-            LacspecInputModel inputModel = this.starts.next();
+            TiminfilfitsInputModel inputModel = this.starts.next();
             if (inputModel != null) {
                 GingaToolboxEnv env = GingaToolboxEnv.getInstance();
                 File workingDir = new File(env.getWorkingDir());
@@ -36,17 +36,12 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
                 log.debug("Working directory " + workingDir.getAbsolutePath());
 
                 // create input file
-                File inputFile = null;
-                if (inputModel.getHasBackground()) {
-                    inputFile = new File(workingDir, FileUtil.nextFileName("lacspec",
-                            inputModel.getStartTime(), inputModel.getLacMode(), "input"));
-                } else {
-                    inputFile = new File(workingDir, FileUtil.nextFileName(workingDir,
-                            "lacspec_bgd", "input"));
-                }
-                LacspecInputFileWriter lacspecInputFileWriter = new LacspecInputFileWriter(
+                File inputFile = new File(workingDir, FileUtil.nextFileName("timinfilfits",
+                        inputModel.getStartTime(), inputModel.getLacMode(), "input"));
+
+                TiminfilfitsInputFileWriter inputFileWriter = new TiminfilfitsInputFileWriter(
                         inputModel);
-                lacspecInputFileWriter.writeToFile(inputFile);
+                inputFileWriter.writeToFile(inputFile);
                 log.info("Input file " + inputFile.getPath() + " created successfully");
 
                 // create output file
@@ -54,22 +49,18 @@ public class LacspecPipe extends AbstractPipe<LacspecInputModel, File> implement
                         FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
 
                 // create 'lacspec' command
-                String cmd = env.getGingaToolsBinDir() + File.separator + "lacspec";
+                String cmd = env.getGingaToolsBinDir() + File.separator + "timinfilfits";
 
                 // execute command
                 GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile,
                         outputFile, cmd);
-                log.info("Executing command lacspec < " + inputFile.getName() + " > "
+                log.info("Executing command timingfilfits < " + inputFile.getName() + " > "
                         + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
-                if (exitValue == 0) { // return 'lacqrdfits' output file
+                if (exitValue == 0) { // return 'timinfilfits' output file
                     log.info("Command executed successfully");
-                    if (inputModel.getHasBackground()) {
-                        return new File(workingDir, inputModel.getSpectralFileName());
-                    } else { // for background the monitor file should be returned instead
-                        return new File(workingDir, inputModel.getMonitorFileName());
-                    }
+                    return new File(workingDir, inputModel.getSpectralFileName());
                 } else {
                     log.error("Error executing command " + cmd);
                 }

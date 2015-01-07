@@ -23,9 +23,9 @@ public class SpectrumBackgroundPipeline {
     public SpectrumBackgroundPipeline() {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new SpectrumModeFilterPipe());
-        this.lacdumpQueryBuilder = new LacdumpQueryBgPipe();
-        this.lacspecInputBuilder = new LacspecInputPipe() {
+                new SpectrumModeFilter());
+        this.lacdumpQueryBuilder = new LacdumpQueryBgBuilder();
+        this.lacspecInputBuilder = new LacspecInputBuilder() {
 
             @Override
             public boolean isBackground() {
@@ -57,7 +57,7 @@ public class SpectrumBackgroundPipeline {
                 return 1; // counts/sec
             }
         };
-        this.lacspec = new LacspecPipe();
+        this.lacspec = new LacspecRunner();
         this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,
                 this.lacdumpQueryBuilder, this.lacspecInputBuilder, this.lacspec);
     }

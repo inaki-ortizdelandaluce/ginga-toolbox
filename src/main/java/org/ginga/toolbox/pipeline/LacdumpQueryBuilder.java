@@ -13,7 +13,7 @@ import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacdumpQueryPipe extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
+public class LacdumpQueryBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
         implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
 
     /*

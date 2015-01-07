@@ -25,9 +25,9 @@ public class SpectrumHayashidaPipeline {
     public SpectrumHayashidaPipeline() {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new SpectrumModeFilterPipe());
-        this.queryBuilder = new LacdumpQueryPipe();
-        this.lacqrdfitsInputBuilder = new LacqrdfitsInputPipe() {
+                new SpectrumModeFilter());
+        this.queryBuilder = new LacdumpQueryBuilder();
+        this.lacqrdfitsInputBuilder = new LacqrdfitsInputBuilder() {
 
             @Override
             public int getTimingBinWidth() {
@@ -45,8 +45,8 @@ public class SpectrumHayashidaPipeline {
                 }
             }
         };
-        this.lacqrdfits = new LacqrdfitsPipe();
-        this.lac2xspec = new Lac2xspecPipe();
+        this.lacqrdfits = new LacqrdfitsRunner();
+        this.lac2xspec = new Lac2xspecRunner();
         this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,
                 this.queryBuilder, this.lacqrdfitsInputBuilder, this.lacqrdfits, this.lac2xspec);
     }

@@ -23,9 +23,9 @@ public class TimingBackgroundPipeline {
     public TimingBackgroundPipeline() {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
-                new TimingMode1FilterPipe());
-        this.queryBuilder = new LacdumpQueryBgPipe();
-        this.inputBuilder = new LacspecInputPipe() {
+                new TimingMode1Filter());
+        this.queryBuilder = new LacdumpQueryBgBuilder();
+        this.inputBuilder = new LacspecInputBuilder() {
 
             @Override
             public boolean isBackground() {
@@ -57,7 +57,7 @@ public class TimingBackgroundPipeline {
                 return 0; // counts
             }
         };
-        this.lacspec = new LacspecPipe();
+        this.lacspec = new LacspecRunner();
         this.pipeline = new Pipeline<SingleModeTargetObservation, File>(this.modeFilter,
                 this.queryBuilder, this.inputBuilder, this.lacspec);
     }

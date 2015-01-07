@@ -14,10 +14,10 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsPipe extends AbstractPipe<LacqrdfitsInputModel, File> implements
+public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> implements
         TransformPipe<LacqrdfitsInputModel, File> {
 
-    private static final Logger log = Logger.getLogger(LacqrdfitsPipe.class);
+    private static final Logger log = Logger.getLogger(LacqrdfitsRunner.class);
 
     /*
      * Receives a LacqrdfitsInputModel, writes it to an input file, executes the lacqrdfits routine

@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.command.SpectraExtractorCmd;
-import org.ginga.toolbox.command.TargetObservationListPrinterCmd;
+import org.ginga.toolbox.command.ObservationListPrinterCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -22,9 +22,9 @@ import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
-import org.ginga.toolbox.pipeline.LacqrdfitsInputPipe;
-import org.ginga.toolbox.pipeline.LacqrdfitsPipe;
-import org.ginga.toolbox.pipeline.TargetObservationListPipe;
+import org.ginga.toolbox.pipeline.LacqrdfitsInputBuilder;
+import org.ginga.toolbox.pipeline.LacqrdfitsRunner;
+import org.ginga.toolbox.pipeline.ObservationListBuilder;
 import org.ginga.toolbox.target.SimbadTargetResolver;
 import org.ginga.toolbox.target.TargetCoordinates;
 import org.ginga.toolbox.target.TargetNotResolvedException;
@@ -82,12 +82,12 @@ public class Test {
         }
         File file = new File(workingDir, "observation.list");
         FileWriter writer = new FileWriter(file);
-        TargetObservationListPrinterCmd printer = new TargetObservationListPrinterCmd(writer);
+        ObservationListPrinterCmd printer = new ObservationListPrinterCmd(writer);
         printer.printSpectralModes(target);
     }
 
     public static void scanObservations(String[] args) {
-        Pipe<String, List<ObservationEntity>> obsPipe = new TargetObservationListPipe();
+        Pipe<String, List<ObservationEntity>> obsPipe = new ObservationListBuilder();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
         if (obsPipe.hasNext()) {
             List<ObservationEntity> obsSummary = obsPipe.next();
@@ -118,14 +118,14 @@ public class Test {
         constraints.setMinElevation(5.0);
         constraints.setMinCutOffRigidity(10.0);
 
-        LacqrdfitsInputPipe pipe1 = new LacqrdfitsInputPipe() {
+        LacqrdfitsInputBuilder pipe1 = new LacqrdfitsInputBuilder() {
 
             @Override
             public int getTimingBinWidth() {
                 return 128;
             }
         };
-        LacqrdfitsPipe pipe2 = new LacqrdfitsPipe();
+        LacqrdfitsRunner pipe2 = new LacqrdfitsRunner();
         Pipeline<LacdumpQuery, File> specHayashidaPipeline = new Pipeline<LacdumpQuery, File>(
                 pipe1, pipe2);
         specHayashidaPipeline.setStarts(Arrays.asList(constraints));
@@ -142,7 +142,7 @@ public class Test {
         model.setSpectralFileName("GS2000+25_SPEC_lacqrd.FILE");
         model.setTimingFileName("GS2000+25_TIMING.fits");
 
-        Pipe<LacqrdfitsInputModel, File> pipe2 = new LacqrdfitsPipe();
+        Pipe<LacqrdfitsInputModel, File> pipe2 = new LacqrdfitsRunner();
         log.info("Starting SpectrumHayashidaPipeFunction");
         pipe2.setStarts(Arrays.asList(model));
         while (pipe2.hasNext()) {
@@ -158,7 +158,7 @@ public class Test {
         constraints.setMinElevation(5.0);
         constraints.setMinCutOffRigidity(10.0);
 
-        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputPipe() {
+        Pipe<LacdumpQuery, LacqrdfitsInputModel> pipe1 = new LacqrdfitsInputBuilder() {
 
             @Override
             public int getTimingBinWidth() {

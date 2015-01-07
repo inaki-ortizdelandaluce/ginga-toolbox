@@ -14,36 +14,32 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
-import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
+import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, LacqrdfitsInputModel>
-        implements TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+public abstract class TiminfilfitsInputBuilder extends
+        AbstractPipe<LacdumpQuery, TiminfilfitsInputModel> implements
+        TransformPipe<LacdumpQuery, TiminfilfitsInputModel> {
 
-    private final static Logger log = Logger.getLogger(LacqrdfitsInputPipe.class);
+    private final static Logger log = Logger.getLogger(TiminfilfitsInputBuilder.class);
 
-    /**
-     * Returns the time bin width in seconds.
-     * 
-     * <pre>
-     * Example:
-     *   For 1/4 SF 1s,  8s and  32s for HI, MED and LOW bit rates respectively
-     *   For 1/2 SF 2s, 16s and  64s for HI, MED and LOW bit rates respectively
-     *   For 1 SF   4s, 64s and 128s for HI, MED and LOW bit rates respectively
-     * </pre>
-     * @return time bin width in seconds
-     */
-    public abstract int getTimingBinWidth();
+    public TiminfilfitsInputBuilder() {
+    }
+
+    public abstract BgSubtractionMethod getBgSubtractionMethod();
+
+    public abstract String getBgFileName();
 
     /*
-     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a LacqrdfitsInputModel
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a TiminfilfitsInputModel
      * referencing such file
      */
     @Override
-    protected LacqrdfitsInputModel processNextStart() throws NoSuchElementException {
+    protected TiminfilfitsInputModel processNextStart() throws NoSuchElementException {
         try {
             LacdumpQuery query = this.starts.next();
 
@@ -52,42 +48,47 @@ public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, Lac
             if (!workingDir.exists()) {
                 workingDir.mkdirs();
             }
-            log.info("Working directory " + workingDir.getAbsolutePath());
+            log.debug("Working directory " + workingDir.getAbsolutePath());
 
             // build empty GTI file
-            File gtiFile = new File(workingDir, FileUtil.nextFileName("REGION",
-                    query.getStartTime(), query.getMode(), "DATA"));
+            File gtiFile = null;
+            log.debug("Generating GTI file for on-source data");
+            gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(),
+                    query.getMode(), "DATA"));
+            log.debug("GTI file " + gtiFile.getPath());
 
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
-            log.info("Query executed successfully. " + sfList.size() + " result(s) found");
+            log.info("LACDUMP query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
                 GtiFileWriter gtiWriter = new GtiFileWriter();
-                gtiWriter.writeToFile(query.getTargetName(), sfList, false, gtiFile);
-                log.debug("GTI file " + gtiFile.getPath() + " written successfully");
+                gtiWriter.writeToFile(query.getTargetName(), sfList, true, gtiFile);
+                log.info("GTI file " + gtiFile.getPath() + " written successfully");
 
-                // emit lacqrdfits input model
-                LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
+                // emit timinfilfits input model
+                TiminfilfitsInputModel inputModel = new TiminfilfitsInputModel();
                 InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-                inputModel.setLacMode(query.getMode());
+                inputModel.setBgMethod(getBgSubtractionMethod());
+                inputModel.setBgFileName(getBgFileName());
+                inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
                 inputModel.setStartTime(query.getStartTime());
+                inputModel.setSpectralFileName(FileUtil.nextFileName("TIMING",
+                        query.getStartTime(), query.getMode(), "fits"));
+                inputModel.setBitRate(input.getBitRate());
+                inputModel.setLacMode(query.getMode());
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
-                inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
-                        query.getMode(), "ps"));
-                inputModel.setRegionFileName(gtiFile.getName());
-                inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC", query.getStartTime(),
-                        query.getMode(), "FILE"));
-                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
-                        query.getMode(), "fits"));
-
-                inputModel.setBgCorrection(1);
-                inputModel.setAspectCorrection(1);
+                inputModel.setMinRigidity(input.getCutOffRigidityMin());
+                inputModel.setMaxRigidity(input.getCutOffRigidityMax());
+                inputModel.setBgCorrection(true);
+                inputModel.setAspectCorrection(true);
                 inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
-                inputModel.setDelayTimeCorrection(input.getDelayTimeCorrection());
+                inputModel.setChannelToEnergy(input.getChannelToEnergyConversion());
+                inputModel.setDataUnit(0); // counts
+                inputModel.setAce(input.getAttitudeMode());
                 inputModel.setCounter1(input.getLacCounter1());
                 inputModel.setCounter2(input.getLacCounter2());
                 inputModel.setCounter3(input.getLacCounter3());
@@ -97,8 +98,8 @@ public abstract class LacqrdfitsInputPipe extends AbstractPipe<LacdumpQuery, Lac
                 inputModel.setCounter7(input.getLacCounter7());
                 inputModel.setCounter8(input.getLacCounter8());
                 inputModel.setMixedMode(input.isLacMixedMode());
-                inputModel.setTimingBinWidth(getTimingBinWidth());
-
+                inputModel.setRegionFileName(gtiFile.getName());
+                // TODO PHSEL 1BIN
                 return inputModel;
             }
         } catch (IOException | LacdumpDaoException e) {

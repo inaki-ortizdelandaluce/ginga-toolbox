@@ -23,26 +23,26 @@ import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
-import org.ginga.toolbox.pipeline.TargetObservationListPipe;
+import org.ginga.toolbox.pipeline.ObservationListBuilder;
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class TargetObservationListPrinterCmd {
+public class ObservationListPrinterCmd {
 
     private PrintWriter writer;
     public static final Logger log = Logger.getLogger(TargetListPrinterCmd.class);
 
-    public TargetObservationListPrinterCmd(Writer writer) {
+    public ObservationListPrinterCmd(Writer writer) {
         this.writer = new PrintWriter(writer);
     }
 
-    public TargetObservationListPrinterCmd(PrintStream stream) {
+    public ObservationListPrinterCmd(PrintStream stream) {
         this.writer = new PrintWriter(stream);
     }
 
     public void printAllModes(String target) {
-        TargetObservationListPipe pipe = new TargetObservationListPipe();
-        pipe.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = pipe.next();
+        ObservationListBuilder obsListBuilder = new ObservationListBuilder();
+        obsListBuilder.setStarts(Arrays.asList(target));
+        List<ObservationEntity> obsList = obsListBuilder.next();
 
         List<SingleModeTargetObservation> singleModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
@@ -74,7 +74,7 @@ public class TargetObservationListPrinterCmd {
     }
 
     public void printModes(String target, LacMode[] modes) {
-        TargetObservationListPipe pipe = new TargetObservationListPipe();
+        ObservationListBuilder pipe = new ObservationListBuilder();
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
@@ -110,7 +110,7 @@ public class TargetObservationListPrinterCmd {
     }
 
     public void printObservations(String target) {
-        TargetObservationListPipe pipe = new TargetObservationListPipe();
+        ObservationListBuilder pipe = new ObservationListBuilder();
         pipe.setStarts(Arrays.asList(target));
         List<ObservationEntity> obsList = pipe.next();
 
@@ -147,7 +147,7 @@ public class TargetObservationListPrinterCmd {
                 GingaToolboxEnv.getInstance().setInputParametersMode(InputMode.INTERACTIVE);
             }
             // write target list
-            TargetObservationListPrinterCmd cmd = new TargetObservationListPrinterCmd(writer);
+            ObservationListPrinterCmd cmd = new ObservationListPrinterCmd(writer);
             if (commandLine.hasOption("o")) {
                 cmd.printObservations(target);
             } else if (commandLine.hasOption("a")) {
@@ -217,7 +217,7 @@ public class TargetObservationListPrinterCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp(TargetObservationListPrinterCmd.class.getCanonicalName(),
+        helpFormatter.printHelp(ObservationListPrinterCmd.class.getCanonicalName(),
                 getOptions());
     }
 }

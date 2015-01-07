@@ -9,10 +9,10 @@ import org.ginga.toolbox.util.Constants.LacMode;
 
 import com.tinkerpop.pipes.PipeFunction;
 
-public class SpectrumModeFilterPipe implements PipeFunction<SingleModeTargetObservation, Boolean> {
+public class SpectrumModeFilter implements PipeFunction<SingleModeTargetObservation, Boolean> {
 
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(SpectrumModeFilterPipe.class);
+    private static final Logger log = Logger.getLogger(SpectrumModeFilter.class);
 
     /*
      * (non-Javadoc)

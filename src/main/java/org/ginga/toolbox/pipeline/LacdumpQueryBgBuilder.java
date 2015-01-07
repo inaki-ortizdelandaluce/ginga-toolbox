@@ -24,10 +24,10 @@ import org.ginga.toolbox.util.Constants.LacMode;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacdumpQueryBgPipe extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
+public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
         implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
 
-    private final static Logger log = Logger.getLogger(LacdumpQueryBgPipe.class);
+    private final static Logger log = Logger.getLogger(LacdumpQueryBgBuilder.class);
 
     /*
      * (non-Javadoc)
