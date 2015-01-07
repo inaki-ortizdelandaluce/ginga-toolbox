@@ -42,7 +42,7 @@ public class TiminfilfitsInputModel {
     private int counter8;
     private LacMode lacMode;
     private int mixedMode;
-    private String spectralFileName;
+    private String timingFileName;
     private String regionFileName;
     private double timeResolution;
     private String startTime; // carried over for next steps in pipeline
@@ -342,12 +342,12 @@ public class TiminfilfitsInputModel {
         this.mixedMode = (enabled) ? 1 : 0;
     }
 
-    public String getSpectralFileName() {
-        return this.spectralFileName;
+    public String getTimingFileName() {
+        return this.timingFileName;
     }
 
-    public void setSpectralFileName(String spectralFileName) {
-        this.spectralFileName = spectralFileName;
+    public void setTimingFileName(String timingFileName) {
+        this.timingFileName = timingFileName;
     }
 
     public String getRegionFileName() {

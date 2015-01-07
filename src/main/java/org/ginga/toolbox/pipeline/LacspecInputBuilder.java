@@ -48,7 +48,7 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
     public abstract int getDataUnit();
 
     /*
-     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2ilfitsInputModel
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2filfitsInputModel
      * referencing such file
      */
     @Override

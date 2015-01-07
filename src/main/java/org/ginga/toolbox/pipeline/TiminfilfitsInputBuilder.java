@@ -38,7 +38,7 @@ public abstract class TiminfilfitsInputBuilder extends
     public abstract boolean sudSort();
 
     /*
-     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2ilfitsInputModel
+     * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2filfitsInputModel
      * referencing such file
      */
     @Override
@@ -101,8 +101,8 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setPhsel8(input.getPhselLine8());
                 inputModel.setPhsel9(input.getPhselLine9());
                 inputModel.setPhsel10(input.getPhselLine10());
-                inputModel.setSpectralFileName(FileUtil.nextFileName("TIMING",
-                        query.getStartTime(), query.getMode(), "fits"));
+                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
+                        query.getMode(), "fits"));
                 inputModel.setLacMode(query.getMode());
                 inputModel.setCounter1(input.getLacCounter1());
                 inputModel.setCounter2(input.getLacCounter2());

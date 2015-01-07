@@ -42,7 +42,7 @@
 #if ( $template.phsel10 )
 'PHSEL' '$template.phsel10'
 #end         
-'OUT'   '$template.spectralFileName' /                                   
+'OUT'   '$template.timingFileName' /                                   
 'LAC'   $template.counter1 $template.counter2 $template.counter3 $template.counter4 $template.counter5 $template.counter6 $template.counter7 $template.counter8  '$template.lacMode'  $template.mixedMode /                                   
 'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
 '1BIN'  $template.timeResolution  /   SEC/BIN

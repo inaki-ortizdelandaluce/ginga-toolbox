@@ -20,7 +20,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
     private static final Logger log = Logger.getLogger(TiminfilfitsRunner.class);
 
     /*
-     * Receives a Tim2ilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * Receives a Tim2filfitsInputModel, writes it to an input file, executes the lacspec routine
      * and finally emits the resulting spectrum file
      */
     @Override
@@ -60,7 +60,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'timinfilfits' output file
                     log.info("Command executed successfully");
-                    return new File(workingDir, inputModel.getSpectralFileName());
+                    return new File(workingDir, inputModel.getTimingFileName());
                 } else {
                     log.error("Error executing command " + cmd);
                 }

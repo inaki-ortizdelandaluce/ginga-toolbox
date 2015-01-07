@@ -20,7 +20,7 @@ public class LacspecRunner extends AbstractPipe<LacspecInputModel, File> impleme
     private static final Logger log = Logger.getLogger(LacspecRunner.class);
 
     /*
-     * Receives a Tim2ilfitsInputModel, writes it to an input file, executes the lacspec routine
+     * Receives a Tim2filfitsInputModel, writes it to an input file, executes the lacspec routine
      * and finally emits the resulting spectrum file
      */
     @Override
