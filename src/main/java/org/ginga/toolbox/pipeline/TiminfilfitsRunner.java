@@ -48,7 +48,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
                 File outputFile = new File(workingDir,
                         FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
 
-                // create 'lacspec' command
+                // create 'timinfilfits' command
                 String cmd = env.getGingaToolsBinDir() + File.separator + "timinfilfits";
 
                 // execute command
