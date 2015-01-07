@@ -18,7 +18,7 @@ public class SpectrumSudSortPipeline {
     }
 
     public File run(SingleModeTargetObservation obs) {
-        SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline();
+        SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline(true);
         bgPipeline.run(Arrays.asList(obs));
         return extractSpecWithBg(obs, bgPipeline.next());
     }
@@ -45,18 +45,23 @@ public class SpectrumSudSortPipeline {
             }
 
             @Override
-            public boolean getBackgroundCorrection() {
+            public boolean backgroundCorrection() {
                 return true;
             }
 
             @Override
-            public boolean getAspectCorrection() {
+            public boolean aspectCorrection() {
                 return true;
             }
 
             @Override
             public int getDataUnit() {
                 return 1; // counts/sec
+            }
+
+            @Override
+            public boolean sudSort() {
+                return true;
             }
         };
         Pipe<LacspecInputModel, File> lacspec = new LacspecRunner();

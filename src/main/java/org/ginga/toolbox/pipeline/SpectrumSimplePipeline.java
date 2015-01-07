@@ -45,18 +45,23 @@ public class SpectrumSimplePipeline {
             }
 
             @Override
-            public boolean getBackgroundCorrection() {
+            public boolean backgroundCorrection() {
                 return true;
             }
 
             @Override
-            public boolean getAspectCorrection() {
+            public boolean aspectCorrection() {
                 return true;
             }
 
             @Override
             public int getDataUnit() {
                 return 1; // counts/sec
+            }
+
+            @Override
+            public boolean sudSort() {
+                return false;
             }
         };
         Pipe<LacspecInputModel, File> lacspec = new LacspecRunner();

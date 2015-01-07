@@ -7,16 +7,9 @@ $template.psFileName/vps
 'ACE'   $template.ace                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
 'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
 'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
-#if( $template.hasBackground )               
-'COR'   1  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
-'BGD'   $template.bgMethod, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
-#else
-'COR'   0  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
-#end
-#if( $template.sudSort )
+'COR'   0  0  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0 / BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CAL
 'SUD'   1 1 1 1  1 1 1 1    4.6  9.8 0.4 37.0 / SSUD                   
 'BSU'   46 50 54 58 62 66 70 74 78 82 86 90 94 98/
-#end
 'LAC'   $template.counter1 $template.counter2 $template.counter3 $template.counter4 $template.counter5 $template.counter6 $template.counter7 $template.counter8  '$template.lacMode'  $template.mixedMode /                                   
 'PLT' 1 , 1  0  1.0  50.0, 1 1 1.0E+1 1.0E-1 /
 'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'

@@ -1,11 +1,10 @@
-package org.ginga.toolbox.lacspec;
+package org.ginga.toolbox.bgdspec;
 
-import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacCounterMode;
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class LacspecInputModel {
+public class BgdspecInputModel {
 
     private String psFileName;
     private String monitorFileName;
@@ -16,14 +15,9 @@ public class LacspecInputModel {
     private int ace;
     private double minElevation;
     private double maxElevation;
-    private int bgCorrection;
-    private int aspectCorrection;
     private int deadTimeCorrection;
     private int channelToEnergy;
     private int dataUnit;
-    private int bgMethod;
-    private String bgFileName;
-    private int bgSubFileNumber;
     private int counter1;
     private int counter2;
     private int counter3;
@@ -36,9 +30,6 @@ public class LacspecInputModel {
     private int mixedMode;
     private String spectralFileName;
     private String regionFileName;
-    private String startTime;
-    private boolean hasBackground;
-    private boolean sudSort;
 
     public String getPsFileName() {
         return this.psFileName;
@@ -124,30 +115,6 @@ public class LacspecInputModel {
 
     public void setMaxElevation(double maxElevation) {
         this.maxElevation = maxElevation;
-    }
-
-    public int getBgCorrection() {
-        return this.bgCorrection;
-    }
-
-    public void setBgCorrection(int bgCorrection) {
-        this.bgCorrection = bgCorrection;
-    }
-
-    public void setBgCorrection(boolean enable) {
-        this.bgCorrection = (enable) ? 1 : 0;
-    }
-
-    public int getAspectCorrection() {
-        return this.aspectCorrection;
-    }
-
-    public void setAspectCorrection(int aspectCorrection) {
-        this.aspectCorrection = aspectCorrection;
-    }
-
-    public void setAspectCorrection(boolean enable) {
-        this.aspectCorrection = (enable) ? 1 : 0;
     }
 
     public int getDeadTimeCorrection() {
@@ -364,65 +331,5 @@ public class LacspecInputModel {
 
     public void setRegionFileName(String regionFileName) {
         this.regionFileName = regionFileName;
-    }
-
-    public boolean getHasBackground() {
-        return this.hasBackground;
-    }
-
-    public void setHasBackground(boolean hasBackground) {
-        this.hasBackground = hasBackground;
-    }
-
-    public int getBgMethod() {
-        return this.bgMethod;
-    }
-
-    public void setBgMethod(BgSubtractionMethod method) {
-        if (method.equals(BgSubtractionMethod.SIMPLE)) {
-            this.bgMethod = 1;
-        } else if (method.equals(BgSubtractionMethod.SUD_SORT)) {
-            this.bgMethod = 2;
-        } else { // HAYASHIDA
-            this.bgMethod = 3;
-        }
-    }
-
-    public String getBgFileName() {
-        return this.bgFileName;
-    }
-
-    public void setBgFileName(String bgFileName) {
-        this.bgFileName = bgFileName;
-    }
-
-    public int getBgSubFileNumber() {
-        return this.bgSubFileNumber;
-    }
-
-    public void setBgSubFileNumber(int bgSubFileNumber) {
-        this.bgSubFileNumber = bgSubFileNumber;
-    }
-
-    public String getStartTime() {
-        return this.startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * @return the getSudSort
-     */
-    public boolean getSudSort() {
-        return this.sudSort;
-    }
-
-    /**
-     * @param sudSort the sudSort to set
-     */
-    public void setSudSort(boolean sudSort) {
-        this.sudSort = sudSort;
     }
 }

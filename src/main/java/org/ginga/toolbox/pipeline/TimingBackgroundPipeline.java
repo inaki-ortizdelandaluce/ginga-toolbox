@@ -21,6 +21,10 @@ public class TimingBackgroundPipeline {
     private Pipeline<SingleModeTargetObservation, File> pipeline;
 
     public TimingBackgroundPipeline() {
+        this(false);
+    }
+
+    public TimingBackgroundPipeline(final boolean sudSort) {
         // initialize all pipes needed
         this.modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
                 new TimingMode1Filter());
@@ -43,18 +47,23 @@ public class TimingBackgroundPipeline {
             }
 
             @Override
-            public boolean getBackgroundCorrection() {
+            public boolean backgroundCorrection() {
                 return false;
             }
 
             @Override
-            public boolean getAspectCorrection() {
+            public boolean aspectCorrection() {
                 return false;
             }
 
             @Override
             public int getDataUnit() {
                 return 0; // counts
+            }
+
+            @Override
+            public boolean sudSort() {
+                return sudSort;
             }
         };
         this.lacspec = new LacspecRunner();
