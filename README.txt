@@ -32,5 +32,5 @@ Query OK, 7318 rows affected, 53364 warnings (0.10 sec)
 
 3.5. Create database indexes
 
-LACDUMP indexes: idx_LACDUMP_DATE and idx_LACDUMP_TARGET
+LACDUMP indexes: idx_LACDUMP_DATE and idx_LACDUMP_TARGET (BTREE, Non-unique)
 

@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LACDUMP_NEW")
+@Table(name = "LACDUMP")
 public class LacdumpSfEntity {
 
     @Id
@@ -33,7 +33,7 @@ public class LacdumpSfEntity {
     @Column(name = "BR", columnDefinition = "enum('H', 'M', 'L')")
     private String bitRate;
 
-    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PC', 'PCHK', 'MCHK', 'ASMP', 'ASMT', 'NSCL')")
+    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'PC', 'ACS', 'PCHK', 'MCHK', 'ASMP', 'ASMT', 'NSCL', 'LNCH')")
     private String mode;
 
     @Column(name = "GMU", length = 3)
