@@ -22,15 +22,15 @@ import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
-public class TimingExtractorCmd {
+public class TimingMode1ExtractorCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    private final static Logger log = Logger.getLogger(TimingExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(TimingMode1ExtractorCmd.class);
 
     public static void main(String[] args) {
         try {
             CommandLine commandLine = new BasicParser().parse(getOptions(), args);
-            SpectrumExtractorScanner scanner = new SpectrumExtractorScanner();
+            InputScanner scanner = new InputScanner();
             // read command line argument values
             // TARGET
             String target = null;
@@ -207,7 +207,7 @@ public class TimingExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(TimingExtractorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp(TimingMode1ExtractorCmd.class.getCanonicalName(), getOptions());
     }
 
     public static void extractTiming(SingleModeTargetObservation obs, BgSubtractionMethod method) {

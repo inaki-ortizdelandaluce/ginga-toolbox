@@ -21,8 +21,7 @@ public class Tim2filfitsInputModel {
     private String pcLine3;
     private String pcLine4;
     private String timingFileName;
-    private String targetLine;
-    private String dataLines;
+    private String gtiLines;
 
     /**
      * @return the pcLine1
@@ -250,30 +249,16 @@ public class Tim2filfitsInputModel {
     }
 
     /**
-     * @return the targetLine
+     * @return the gtiLines
      */
-    public String getTargetLine() {
-        return targetLine;
+    public String getGtiLines() {
+        return gtiLines;
     }
 
     /**
-     * @param targetLine the targetLine to set
+     * @param gtiLines the gtiLines to set
      */
-    public void setTargetLine(String targetLine) {
-        this.targetLine = targetLine;
-    }
-
-    /**
-     * @return the dataLines
-     */
-    public String getDataLines() {
-        return dataLines;
-    }
-
-    /**
-     * @param dataLines the dataLines to set
-     */
-    public void setDataLines(String dataLines) {
-        this.dataLines = dataLines;
+    public void setGtiLines(String gtiLines) {
+        this.gtiLines = gtiLines;
     }
 }

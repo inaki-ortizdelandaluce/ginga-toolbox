@@ -3,6 +3,8 @@ package org.ginga.toolbox.gti;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -14,9 +16,9 @@ import org.ginga.toolbox.util.SimbadTargetResolver;
 import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
 import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 
-public class GtiFileWriter {
+public class GtiWriter {
 
-    private final static Logger log = Logger.getLogger(GtiFileWriter.class);
+    private final static Logger log = Logger.getLogger(GtiWriter.class);
 
     public static void main(String[] args) {
         String target = "GS2000+25";
@@ -30,17 +32,28 @@ public class GtiFileWriter {
                     "1988-05-02 03:09:27", 5.0, 10.0);
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
             // save matching results into a GTI file
-            GtiFileWriter gtiWriter = new GtiFileWriter();
-            gtiWriter.writeToFile(target, sfList, false, f);
+            GtiWriter gtiWriter = new GtiWriter();
+            gtiWriter.writeToFile(target, sfList, false, true, f);
             log.debug("GTI file " + f.getPath() + " written successfully");
         } catch (Exception e) {
             log.error("Error generating GTI file " + f.getPath(), e);
         }
     }
 
+    public String writeToString(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
+            boolean dataBlocks) throws IOException {
+        StringWriter writer = new StringWriter();
+        write(target, sfList, isBackground, dataBlocks, writer);
+        return writer.toString();
+    }
+
     public void writeToFile(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
-            File file) throws IOException {
-        FileWriter writer = new FileWriter(file);
+            boolean dataBlocks, File file) throws IOException {
+        write(target, sfList, isBackground, dataBlocks, new FileWriter(file));
+    }
+
+    public void write(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
+            boolean dataBlocks, Writer writer) throws IOException {
         try {
             // add TGT line with target resolved into B1950 coordinates
             if (!isBackground) {
@@ -59,8 +72,10 @@ public class GtiFileWriter {
                     log.debug(e.getMessage());
                 }
             }
-            // add DATA line
-            writer.write("'DATA' \n");
+
+            if (!dataBlocks) { // add DATA line
+                writer.write("'DATA' \n");
+            }
 
             // add Super Frame and Sequence Numbers
             String lastSuperFrame = null;
@@ -69,6 +84,12 @@ public class GtiFileWriter {
                 if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
                     if (lastSuperFrame != null) {
                         writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
+                        if (dataBlocks) { // close DATA
+                            writer.write("'END'\n");
+                        }
+                    }
+                    if (dataBlocks) { // add DATA line
+                        writer.write("'DATA' \n");
                     }
                     writer.write("'PASS' '" + sf.getSuperFrame() + "' / \n");
                     writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
@@ -81,9 +102,13 @@ public class GtiFileWriter {
             }
             if (lastSeqNo > 0) {
                 writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
+                if (dataBlocks) { // close DATA
+                    writer.write("'END'\n");
+                }
             }
-            // close DATA
-            writer.write("'END'\n");
+            if (!dataBlocks) { // close DATA
+                writer.write("'END'\n");
+            }
             writer.flush();
         } catch (IOException e) {
             throw new IOException(e);

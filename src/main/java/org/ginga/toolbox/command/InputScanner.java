@@ -8,11 +8,11 @@ import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.TimeUtil;
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class SpectrumExtractorScanner {
+public class InputScanner {
 
 	private Scanner scanner;
 	
-	public SpectrumExtractorScanner() {
+	public InputScanner() {
 		
 	}
 	

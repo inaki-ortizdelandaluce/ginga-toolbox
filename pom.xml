@@ -124,8 +124,15 @@
               </platforms>
             </program>
             <program>
-              <mainClass>org.ginga.toolbox.command.TimingExtractorCmd</mainClass>
-              <id>extract_timing</id>
+              <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass>
+              <id>extract_timing_mode_1</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
+            <program>
+              <mainClass>org.ginga.toolbox.command.TimingMode2ExtractorCmd</mainClass>
+              <id>extract_timing_mode_2</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>

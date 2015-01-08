@@ -25,6 +25,7 @@ public class TimingMode2Filter implements PipeFunction<SingleModeTargetObservati
         if (mode == null)
             return Boolean.FALSE;
         if (mode.equals(LacMode.PCHK)) {
+            // && !observation.getStartTime().equals(observation.getEndTime())) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;

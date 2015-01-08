@@ -7,13 +7,12 @@
 'ACE'   $template.ace                / 1=ONLY FOR POINTING MODE,  0=FOR ANY MODE
 'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
 'PLT' 0 / 
-$template.targetLine
 'OUT'   '$template.timingFileName' /                                   
 'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0  1/ BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CALSEL,MODE
 $template.pcLine1
 $template.pcLine2
 $template.pcLine3
 $template.pcLine4
-$template.dataLines
 'BIT'  '$template.bitRate'/ BIT RATE SELECTION   'ANY' 'HI' 'MED' 'LOW'
 '1BIN'  $template.timeResolution  /   SEC/BIN
+$template.gtiLines
