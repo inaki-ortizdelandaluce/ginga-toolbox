@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -55,21 +56,43 @@ public class GtiWriter {
     public void write(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
             boolean dataBlocks, Writer writer) throws IOException {
         try {
+            DecimalFormat df = new DecimalFormat("#.0000");
             // add TGT line with target resolved into B1950 coordinates
             if (!isBackground) {
+                String targetLine = null;
                 try {
                     SimbadTargetResolver resolver = new SimbadTargetResolver();
                     TargetCoordinates coords = resolver.resolve(target);
-
-                    DecimalFormat df = new DecimalFormat("#.0000");
-                    writer.write("'TGT' " + df.format(coords.getRaDeg()) + " "
+                    targetLine = "'TGT' " + df.format(coords.getRaDeg()) + " "
                             + df.format(coords.getDecDeg()) + "  '" + coords.getTargetName()
-                            + "'\n");
+                            + "'\n";
                 } catch (TargetNotResolvedException e) {
                     log.warn("Could not resolve target. Message= " + e.getMessage());
-                    log.warn("Do not forget to add the TGT keyword followed by the coordinates "
-                            + "of the source (in B1950 and degrees)");
-                    log.debug(e.getMessage());
+                    Scanner scanner = new Scanner(System.in);
+                    targetLine = "'TGT' ";
+                    boolean catcher = false;
+                    do {
+                        try {
+                            System.out.println("Enter coordinates for " + target
+                                    + " (epoch=B1950, unit=degrees)");
+
+                            System.out.println("[e.g. 300.1786, 25.0954]:");
+                            String[] coordinates = scanner.next().split(",");
+                            targetLine += Double.valueOf(coordinates[0]).toString() + " ";
+                            targetLine += Double.valueOf(coordinates[1]).toString() + "  ";
+                            targetLine += "'" + target + "'\n";
+                            catcher = true;
+                        } catch (Exception e2) {
+                            System.out
+                                    .println("Coordinates input format is not correct, please try again");
+                            System.out.println("[e.g. 300.1786, 25.0954]");
+                        } finally {
+                            scanner.nextLine();
+                        }
+                    } while (!catcher);
+                    scanner.close();
+                } finally {
+                    writer.write(targetLine);
                 }
             }
 
