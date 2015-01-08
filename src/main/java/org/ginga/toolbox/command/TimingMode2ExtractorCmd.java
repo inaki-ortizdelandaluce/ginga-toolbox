@@ -89,7 +89,7 @@ public class TimingMode2ExtractorCmd {
             SingleModeTargetObservation obs = new SingleModeTargetObservation();
             obs.setObsId(obsId);
             obs.setTarget(target);
-            obs.setMode(LacMode.PCHK.toString());
+            obs.setMode(LacMode.PC.toString());
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
             // extract spectrum

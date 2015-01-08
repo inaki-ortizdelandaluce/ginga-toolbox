@@ -38,7 +38,7 @@ public class Tim2filfitsRunner extends AbstractPipe<Tim2filfitsInputModel, File>
 
                 // create input file
                 File inputFile = new File(workingDir, FileUtil.nextFileName("tim2filfits",
-                        inputModel.getStartTime(), LacMode.PCHK, "input"));
+                        inputModel.getStartTime(), LacMode.PC, "input"));
 
                 Tim2filfitsInputFileWriter inputFileWriter = new Tim2filfitsInputFileWriter(
                         inputModel);

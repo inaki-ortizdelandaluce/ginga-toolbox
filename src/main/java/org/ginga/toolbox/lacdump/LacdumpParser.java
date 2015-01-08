@@ -11,6 +11,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.util.Constants.BitRate;
+import org.ginga.toolbox.util.Constants.GingaAttitude;
+import org.ginga.toolbox.util.Constants.LacDirection;
+import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
 public class LacdumpParser {
@@ -19,32 +23,6 @@ public class LacdumpParser {
 
     private static final String SUPERFRAME_PREFIX = "*";
     private static final String LHV_ON_DATA_PREFIX = "LHV ON DATA";
-
-    private enum DirectionEnum {
-        SKY, NTE, DYE
-    }
-
-    private enum ModeEnum {
-        MPC1, MPC2, MPC3, ACS, PCHK
-    }
-
-    private enum BitRateEnum {
-        H, M, L
-    }
-
-    private enum AttitudeEnum {
-        NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"), S36("S36"), MAN("MAN");
-
-        String value;
-
-        AttitudeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return this.value;
-        }
-    }
 
     private final int seqnoBeginIdx = 0;
     private final int seqnoLength = 5;
@@ -148,15 +126,19 @@ public class LacdumpParser {
                     bitRate = line.substring(this.bitRateBeginIdx,
                             this.bitRateBeginIdx + this.bitRateLength - 1).trim();
                     log.debug("BR " + bitRate);
-                    if (EnumUtils.isValidEnum(BitRateEnum.class, bitRate)) {
+                    if (EnumUtils.isValidEnum(BitRate.class, bitRate)) {
                         entity.setBitRate(bitRate);
+                    } else {
+                        log.warn("Unknown bit rate " + bitRate + " found");
                     }
                     // mode
                     mode = line.substring(this.modeBeginIdx,
                             this.modeBeginIdx + this.modeLength - 1).trim();
                     log.debug("MODE " + mode);
-                    if (EnumUtils.isValidEnum(ModeEnum.class, mode)) {
+                    if (EnumUtils.isValidEnum(LacMode.class, mode)) {
                         entity.setMode(mode);
+                    } else {
+                        log.warn("Unknown mode " + mode + " found");
                     }
 
                     // gain and medium/upper discriminator
@@ -172,15 +154,16 @@ public class LacdumpParser {
                     if (isValidAttitudeValue(attitude)) { // use ad-hoc validation method (forbidden
                         // chars in the String)
                         entity.setAttitudeStatus(attitude);
+                    } else {
+                        log.warn("Unknown attitude " + attitude + " found");
                     }
                     // direction
                     direction = line.substring(this.directionBeginIdx,
                             this.directionBeginIdx + this.directionLength - 1).trim();
                     log.debug("S/E " + direction);
-                    if (EnumUtils.isValidEnum(DirectionEnum.class, direction)) {
+                    if (EnumUtils.isValidEnum(LacDirection.class, direction)) {
                         entity.setDirection(direction);
                     }
-
                     // low energy count rate
                     try {
                         lowEnergyCountRate = Double.valueOf(
@@ -301,7 +284,7 @@ public class LacdumpParser {
                     target = line.substring(this.targetBeginIdx,
                             this.targetBeginIdx + this.targetLength - 1).trim();
                     log.debug("TARGET " + target);
-                    if(target.length() > 0) {
+                    if (target.length() > 0) {
                         entity.setTarget(target);
                     }
 
@@ -372,7 +355,7 @@ public class LacdumpParser {
     }
 
     public static boolean isValidAttitudeValue(String value) {
-        AttitudeEnum[] attitudeList = AttitudeEnum.values();
+        GingaAttitude[] attitudeList = GingaAttitude.values();
         for (int i = 0; i < attitudeList.length; i++) {
             if (attitudeList[i].getValue().equals(value)) {
                 return true;
@@ -383,7 +366,8 @@ public class LacdumpParser {
 
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("Usage org.ginga.toolbox.lacdump.LacDumpParser <LAC dump file path>");
+            System.out
+                    .println("Usage org.ginga.toolbox.lacdump.LacDumpParser <LAC dump file path>");
             System.exit(1);
         } else {
             File f = new File(args[0]);

@@ -2,12 +2,31 @@ package org.ginga.toolbox.util;
 
 public class Constants {
 
+    public enum LacDirection {
+        SKY, NTE, DYE
+    }
+
+    public enum GingaAttitude {
+        NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"), S36("S36"), MAN("MAN"), SAF("SAF"), STB("STB"), LSP(
+                "LSP");
+
+        String value;
+
+        GingaAttitude(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return this.value;
+        }
+    }
+
     public enum BitRate {
         ANY, H, M, L
     }
 
     public enum LacMode {
-        MPC1, MPC2, MPC3, ACS, PCHK, INIT
+        MPC1, MPC2, MPC3, ACS, PC, PCHK2, MCHK, ASMP, ASMT, NSCL, INIT
     }
 
     public enum BgSubtractionMethod {

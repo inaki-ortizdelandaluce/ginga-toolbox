@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LACDUMP")
+@Table(name = "LACDUMP_NEW")
 public class LacdumpSfEntity {
 
     @Id
@@ -20,7 +20,7 @@ public class LacdumpSfEntity {
 
     @Column(name = "LACDUMP_FILE", nullable = false, length = 7)
     private String lacdumpFile;
-    
+
     @Column(name = "SF", nullable = false, length = 12)
     private String superFrame;
 
@@ -33,13 +33,13 @@ public class LacdumpSfEntity {
     @Column(name = "BR", columnDefinition = "enum('H', 'M', 'L')")
     private String bitRate;
 
-    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PCHK')")
+    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'ACS', 'PC', 'PCHK', 'MCHK', 'ASMP', 'ASMT', 'NSCL')")
     private String mode;
 
     @Column(name = "GMU", length = 3)
     private String gainAndDiscriminators;
 
-    @Column(name = "ACM", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN')")
+    @Column(name = "ACM", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN','SAF','STB','LSP')")
     private String attitudeStatus;
 
     @Column(name = "S_E", columnDefinition = "enum('SKY','NTE','DYE')")
@@ -357,11 +357,11 @@ public class LacdumpSfEntity {
         this.id = id;
     }
 
-	public String getLacdumpFile() {
-		return lacdumpFile;
-	}
+    public String getLacdumpFile() {
+        return this.lacdumpFile;
+    }
 
-	public void setLacdumpFile(String lacdumpFile) {
-		this.lacdumpFile = lacdumpFile;
-	}
+    public void setLacdumpFile(String lacdumpFile) {
+        this.lacdumpFile = lacdumpFile;
+    }
 }

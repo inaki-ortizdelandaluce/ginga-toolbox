@@ -70,7 +70,7 @@ public class ObservationListPrinterCmd {
     }
 
     public void printTimingModes(String target) {
-        printModes(target, new LacMode[] { LacMode.MPC3, LacMode.PCHK });
+        printModes(target, new LacMode[] { LacMode.MPC2, LacMode.MPC3, LacMode.PC });
     }
 
     public void printModes(String target, LacMode[] modes) {

@@ -32,18 +32,7 @@ public class SingleModeTargetObservation {
     }
 
     public LacMode getLacMode() {
-        if (this.mode.equals(LacMode.MPC1.toString())) {
-            return LacMode.MPC1;
-        } else if (this.mode.equals(LacMode.MPC2.toString())) {
-            return LacMode.MPC2;
-        } else if (this.mode.equals(LacMode.MPC3.toString())) {
-            return LacMode.MPC3;
-        } else if (this.mode.equals(LacMode.PCHK.toString())) {
-            return LacMode.PCHK;
-        } else if (this.mode.equals(LacMode.ACS.toString())) {
-            return LacMode.ACS;
-        }
-        return null;
+        return Enum.valueOf(LacMode.class, this.mode);
     }
 
     /**

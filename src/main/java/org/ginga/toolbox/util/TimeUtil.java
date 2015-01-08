@@ -103,9 +103,8 @@ public class TimeUtil {
             return TIME_RESOLUTION_MPC2[idx];
         case MPC3:
             return TIME_RESOLUTION_MPC3[idx];
-        case PCHK:
+        case PC:
             return TIME_RESOLUTION_PCL[idx]; // lowest PC mode resolution
-        case ACS:
         case INIT:
         default:
             throw new IllegalStateException("Could not identify time resolution for LAC mode"
