@@ -26,7 +26,7 @@ public class Constants {
     }
 
     public enum LacMode {
-        MPC1, MPC2, MPC3, ACS, PC, PCHK2, MCHK, ASMP, ASMT, NSCL, INIT
+        MPC1, MPC2, MPC3, PC, INIT, ACS, PCHK, MCHK, ASMP, ASMT, LNCH, NSCL
     }
 
     public enum BgSubtractionMethod {
