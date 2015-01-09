@@ -83,6 +83,7 @@ public abstract class LacqrdfitsInputBuilder extends
                 inputModel.setStartTime(query.getStartTime());
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
+                inputModel.setTimingHayashidaBg(isTimingBackground());
                 if (!isTimingBackground()) {
                     inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
                             query.getMode(), "ps"));
@@ -91,6 +92,7 @@ public abstract class LacqrdfitsInputBuilder extends
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
                             query.getStartTime(), query.getMode(), "FILE"));
                 } else {
+                    inputModel.setPsFileName("//NULL");
                     inputModel.setTimingFileName(FileUtil.nextFileName("TIMING_BGD",
                             query.getStartTime(), query.getMode(), "fits"));
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC_BGD",
