@@ -28,6 +28,7 @@ public class LacqrdfitsInputModel {
     private String timingFileName;
     private String regionFileName;
     private String startTime;
+    private boolean timingHayashidaBg;
 
     public String getPsFileName() {
         return this.psFileName;
@@ -330,5 +331,19 @@ public class LacqrdfitsInputModel {
 
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    /**
+     * @return the timingHayashidaBg
+     */
+    public boolean isTimingHayashidaBg() {
+        return timingHayashidaBg;
+    }
+
+    /**
+     * @param timingHayashidaBg the timingHayashidaBg to set
+     */
+    public void setTimingHayashidaBg(boolean timingHayashidaBg) {
+        this.timingHayashidaBg = timingHayashidaBg;
     }
 }

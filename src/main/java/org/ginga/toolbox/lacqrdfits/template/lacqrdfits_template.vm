@@ -1,8 +1,4 @@
-#if ( $template.psFileName )
-$template.psFileName/vps  / output graph
-#else
-/NULL
-#end
+$template.psFileName/vps
 'CALFILE' 'CARD.LACQR.NORMAL8' /
 'TRP'  0.0   0.5  0.05   / PROPORTIONAL TO TRAPPED PARTICLES C/SEC/S    
 'CHK' 'SFL'   1 1 1  / SOLAR CONTAMI  POS,IMPOS,BOTH                    
@@ -29,8 +25,8 @@ $template.psFileName/vps  / output graph
 'RMK' '                                                    '            
 'RMK' '  MODELS WERE MADE BASED ON THE DATA UPTO MAY 1990  '            
 'TAB' 'CARD.LACQR.DIRBGTAB' / DATA FOR SUD AND MID 
-'COR'  $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.delayTimeCorrection    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
-'TIM'  $template.timingBinWidth /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF          
+'COR'  $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection $template.delayTimeCorrection    / BGD ,ASPCT,DEADTIME,DELAYTIME                    
+'TIM'  $template.timingBinWidth /SAMPLIN BIN (SEC)  IF  -1 1SF  -2 1/2 SF -4 1/4 SF
 'SUD' 1 1 1 1  1 1 1 1 ,2.0  22.0  1.0  ,37.0, 0.0 /                    
 'PIM' 1 1 1 1  1 1 1 1 ,0.5  10.5  0.5 , 0.0 /                          
 'MID' 1 1 1 1  1 1 1 1  2  8 , 0.0  30.0 1.0 , 0.0 /                    
@@ -52,16 +48,12 @@ $template.psFileName/vps  / output graph
 'CHT' 'PLP' 4, 3.0 ,  0 1  0.0 0.0  0.0 0.0   /                         
 'TIF' 'ENG' 1,   ' 22.1  35.2 '     / 
 'TIF' 'OUT'  '$template.timingFileName'  'OLD' /
-#if ( $template.psFileName )
+#if( !$template.timingHayashidaBg )
 'CALFILE'  'LACQRT1' /
-#elseif( $template.lacMode == "MPC1" || $template.lacMode == "MPC2" )       
+#elseif( $template.lacMode == "MPC1" || $template.lacMode == "MPC2" )
 'CALFILE'  'LACQRT48' /
-'RMK' ' Use LACQRT48 for MPC-1 and MPC-2 mode.  '            
-'RMK' ' Use LACQRT12 for MPC-3 mode.  '            
-#elseif ( $template.lacMode == "MPC3")
+#else
 'CALFILE'  'LACQRT12' /
-'RMK' ' Use LACQRT48 for MPC-1 and MPC-2 mode.  '            
-'RMK' ' Use LACQRT12 for MPC-3 mode.  '            
 #end
 'FILE'  '$template.regionFileName' /
 'GO' /
