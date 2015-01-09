@@ -81,11 +81,11 @@ public abstract class LacqrdfitsInputBuilder extends
                 LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
                 InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
                 inputModel.setStartTime(query.getStartTime());
-                inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
-                        query.getMode(), "ps"));
                 inputModel.setMinElevation(input.getElevationMin());
                 inputModel.setMaxElevation(input.getElevationMax());
                 if (!isTimingBackground()) {
+                    inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
+                            query.getMode(), "ps"));
                     inputModel.setTimingFileName(FileUtil.nextFileName("TIMING",
                             query.getStartTime(), query.getMode(), "fits"));
                     inputModel.setSpectralFileName(FileUtil.nextFileName("SPEC",
