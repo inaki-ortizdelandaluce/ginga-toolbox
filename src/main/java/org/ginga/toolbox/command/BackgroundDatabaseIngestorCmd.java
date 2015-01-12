@@ -53,8 +53,7 @@ public class BackgroundDatabaseIngestorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(BackgroundDatabaseIngestorCmd.class.getCanonicalName(),
-                getOptions());
+        helpFormatter.printHelp("ingest_background_db.sh", getOptions());
     }
 
     @SuppressWarnings("static-access")

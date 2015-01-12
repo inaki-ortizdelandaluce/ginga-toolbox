@@ -73,7 +73,7 @@ public class DatabaseSchemaGeneratorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(DatabaseSchemaGeneratorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("generate_db_schema.sh", getOptions());
     }
 
     @SuppressWarnings("static-access")

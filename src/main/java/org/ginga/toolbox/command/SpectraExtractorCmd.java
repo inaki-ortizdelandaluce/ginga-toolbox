@@ -126,6 +126,6 @@ public class SpectraExtractorCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp(SpectraExtractorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("extract_spectra.sh", getOptions());
     }
 }

@@ -208,7 +208,7 @@ public class SpectrumExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(SpectrumExtractorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("extract_spectrum.sh", getOptions());
     }
 
     public static void extractSpectrum(SingleModeTargetObservation obs, BgSubtractionMethod method) {

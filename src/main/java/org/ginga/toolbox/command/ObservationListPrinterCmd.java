@@ -217,6 +217,6 @@ public class ObservationListPrinterCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp(ObservationListPrinterCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("print_observation_list.sh", getOptions());
     }
 }

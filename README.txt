@@ -34,3 +34,8 @@ Query OK, 7318 rows affected, 53364 warnings (0.10 sec)
 
 LACDUMP indexes: idx_LACDUMP_DATE and idx_LACDUMP_TARGET (BTREE, Non-unique)
 
+4. Examples
+
+
+
+

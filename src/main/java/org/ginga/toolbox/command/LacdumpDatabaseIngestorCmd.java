@@ -53,7 +53,7 @@ public class LacdumpDatabaseIngestorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(LacdumpDatabaseIngestorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("ingest_lacdump_db.sh", getOptions());
     }
 
     @SuppressWarnings("static-access")

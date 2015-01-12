@@ -51,7 +51,7 @@ public class TargetLookupCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(TargetLookupCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("lookup_target.sh", getOptions());
     }
 
     @SuppressWarnings("static-access")

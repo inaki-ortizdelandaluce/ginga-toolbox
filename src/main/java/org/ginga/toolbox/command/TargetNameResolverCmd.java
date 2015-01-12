@@ -63,7 +63,7 @@ public class TargetNameResolverCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(TargetNameResolverCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("resolve_target_name.sh", getOptions());
     }
 
     @SuppressWarnings("static-access")

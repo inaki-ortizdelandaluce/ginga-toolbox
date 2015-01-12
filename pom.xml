@@ -97,77 +97,77 @@
           <programs>
             <program>
               <mainClass>org.ginga.toolbox.command.TargetListPrinterCmd</mainClass>
-              <id>print_target_list</id>
+              <id>print_target_list.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.ObservationListPrinterCmd</mainClass>
-              <id>print_observation_list</id>
+              <id>print_observation_list.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass>
-              <id>extract_spectrum</id>
+              <id>extract_spectrum.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.SpectraExtractorCmd</mainClass>
-              <id>extract_spectra</id>
+              <id>extract_spectra.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass>
-              <id>extract_timing_mode_1</id>
+              <id>extract_timing_mode_1.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.TimingMode2ExtractorCmd</mainClass>
-              <id>extract_timing_mode_2</id>
+              <id>extract_timing_mode_2.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.TargetLookupCmd</mainClass>
-              <id>lookup_target</id>
+              <id>lookup_target.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.DatabaseSchemaGeneratorCmd</mainClass>
-              <id>generate_db_schema</id>
+              <id>generate_db_schema.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.TargetNameResolverCmd</mainClass>
-              <id>resolve_target_name</id>
+              <id>resolve_target_name.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.LacdumpDatabaseIngestorCmd</mainClass>
-              <id>ingest_lacdump_db</id>
+              <id>ingest_lacdump_db.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>
             </program>
             <program>
               <mainClass>org.ginga.toolbox.command.BackgroundDatabaseIngestorCmd</mainClass>
-              <id>ingest_background_db</id>
+              <id>ingest_background_db.sh</id>
               <platforms>
                 <platform>unix</platform>
               </platforms>

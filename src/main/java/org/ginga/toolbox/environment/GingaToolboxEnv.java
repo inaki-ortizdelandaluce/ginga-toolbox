@@ -173,11 +173,11 @@ public class GingaToolboxEnv {
         switch (mode) {
         case SYSTEMATIC:
         case DEFAULT:
-            log.info("Selecting systematic data reduction");
+            log.info("Systematic data reduction option selected");
             this.inputParameters = SystematicInputParameters.getInstance(this.properties);
             break;
         case INTERACTIVE:
-            log.info("Selecting interactive data reduction");
+            log.info("Interactive data reduction option selected");
             this.inputParameters = new InteractiveInputParameters();
             break;
         }

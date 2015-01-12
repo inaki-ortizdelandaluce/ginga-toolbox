@@ -147,7 +147,7 @@ public class TimingMode2ExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp(TimingMode2ExtractorCmd.class.getCanonicalName(), getOptions());
+        helpFormatter.printHelp("extract_timing_mode_1.sh", getOptions());
     }
 
     public static void extractTiming(SingleModeTargetObservation obs) {
