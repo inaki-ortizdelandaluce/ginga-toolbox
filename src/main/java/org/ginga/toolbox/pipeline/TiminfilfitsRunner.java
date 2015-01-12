@@ -54,7 +54,7 @@ public class TiminfilfitsRunner extends AbstractPipe<TiminfilfitsInputModel, Fil
                 // execute command
                 GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile,
                         outputFile, cmd);
-                log.info("Executing command timingfilfits < " + inputFile.getName() + " > "
+                log.info("Executing command timinfilfits < " + inputFile.getName() + " > "
                         + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
