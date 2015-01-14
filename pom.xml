@@ -183,6 +183,13 @@
                 <platform>unix</platform>
               </platforms>
             </program>
+            <program>
+              <mainClass>org.ginga.toolbox.command.TargetDatabaseIngestorCmd</mainClass>
+              <id>ingest_target_db.sh</id>
+              <platforms>
+                <platform>unix</platform>
+              </platforms>
+            </program>
           </programs>
         </configuration>
       </plugin>

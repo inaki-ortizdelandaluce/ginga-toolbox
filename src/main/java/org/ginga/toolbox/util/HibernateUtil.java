@@ -5,6 +5,7 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationDataEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
+import org.ginga.toolbox.target.TargetEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -26,16 +27,14 @@ public class HibernateUtil {
                     env.getDatabaseDriverClassName());
 
             configuration.setProperty("hibernate.connection.url", env.getDatabaseUrl());
-            configuration.setProperty("hibernate.connection.username",
-                    env.getDatabaseUser());
-            configuration.setProperty("hibernate.connection.password",
-                    env.getDatabasePassword());
+            configuration.setProperty("hibernate.connection.username", env.getDatabaseUser());
+            configuration.setProperty("hibernate.connection.password", env.getDatabasePassword());
             configuration.setProperty("hibernate.default_schema", "ginga");
 
             // dialect properties:
             // MySQLInnoDBDialect/MySQLMyISAMDialect/MySQL5Dialect/MySQL5InnoDBDialect
             // configuration.setProperty("hibernate.dialect",
-            //        "org.hibernate.dialect.MySQL5InnoDBDialect");
+            // "org.hibernate.dialect.MySQL5InnoDBDialect");
             configuration.setProperty("hibernate.dialect",
                     "org.ginga.toolbox.util.MySQL5SphereDialect");
 
@@ -71,9 +70,10 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(ObservationEntity.class);
             configuration.addAnnotatedClass(ObservationBgEntity.class);
             configuration.addAnnotatedClass(ObservationDataEntity.class);
-            
+            configuration.addAnnotatedClass(TargetEntity.class);
+
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-            .applySettings(configuration.getProperties());
+                    .applySettings(configuration.getProperties());
             SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
             return sessionFactory;
 

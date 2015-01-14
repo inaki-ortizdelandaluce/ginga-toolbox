@@ -25,11 +25,11 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.pipeline.LacqrdfitsInputBuilder;
 import org.ginga.toolbox.pipeline.LacqrdfitsRunner;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
+import org.ginga.toolbox.target.SimbadTargetResolver;
+import org.ginga.toolbox.target.SimbadTargetResolver.SimbadObject;
+import org.ginga.toolbox.target.SimbadTargetResolver.TargetNotResolvedException;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
-import org.ginga.toolbox.util.SimbadTargetResolver;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 import org.ginga.toolbox.util.TimeUtil;
 
 import com.tinkerpop.pipes.Pipe;
@@ -45,19 +45,19 @@ public class Test {
     public static void main(String[] args) throws IOException {
         String target = "VELA X-1"; // "GS1124-68"; // "GS2000+25";
 
-        TargetCoordinates coords;
+        SimbadObject obj;
         try {
-            coords = new SimbadTargetResolver().resolve(target);
+            obj = new SimbadTargetResolver().resolve(target);
             DecimalFormat formatter = new DecimalFormat("#.####");
-            log.info("RA " + formatter.format(coords.getRaDeg()));
-            log.info("DEC " + formatter.format(coords.getDecDeg()));
+            log.info("RA " + formatter.format(obj.getRaDeg()));
+            log.info("DEC " + formatter.format(obj.getDecDeg()));
 
             LacdumpQuery query = new LacdumpQuery();
             query.setLacdumpFiles(Arrays.asList("J880226", "J880224", "J880225", "J880222",
                     "J880220"));
             query.setMinCutOffRigidity(10.0);
             query.setMinElevation(5.0);
-            query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(), 2.5, 3.5);
+            query.setSkyAnnulus(obj.getRaDeg(), obj.getDecDeg(), 2.5, 3.5);
 
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);

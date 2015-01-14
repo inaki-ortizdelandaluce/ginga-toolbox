@@ -18,6 +18,7 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationDataEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
+import org.ginga.toolbox.target.TargetEntity;
 import org.ginga.toolbox.util.DatabaseSchemaGenerator;
 
 public class DatabaseSchemaGeneratorCmd {
@@ -31,6 +32,7 @@ public class DatabaseSchemaGeneratorCmd {
         annotatedClasses.add(ObservationEntity.class);
         annotatedClasses.add(ObservationBgEntity.class);
         annotatedClasses.add(ObservationDataEntity.class);
+        annotatedClasses.add(TargetEntity.class);
         schemaGen.generate(annotatedClasses, f);
     }
 

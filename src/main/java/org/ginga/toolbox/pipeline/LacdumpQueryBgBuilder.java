@@ -16,10 +16,10 @@ import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
+import org.ginga.toolbox.target.TargetEntity;
+import org.ginga.toolbox.target.dao.TargetDaoException;
+import org.ginga.toolbox.target.dao.impl.TargetDaoImpl;
 import org.ginga.toolbox.util.Constants.LacMode;
-import org.ginga.toolbox.util.SimbadTargetResolver;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
@@ -63,10 +63,15 @@ public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservat
 
             // set sky region for suggested background
             String target = targetObservation.getTarget();
-            TargetCoordinates coords = new SimbadTargetResolver().resolve(target);
-            query.setSkyAnnulus(coords.getRaDeg(), coords.getDecDeg(),
-                    input.getSkyAnnulusInnerRadii(), input.getSkyAnnulusOuterRadii());
-
+            TargetEntity targetEntity = new TargetDaoImpl().findByName(target);
+            if (targetEntity != null) {
+                if (targetEntity.getRaDegB1950() == 0 && targetEntity.getDecDegB1950() == 0) {
+                    throw new TargetDaoException(
+                            "Target found in database but coordinates not resolved");
+                }
+                query.setSkyAnnulus(targetEntity.getRaDegB1950(), targetEntity.getDecDegB1950(),
+                        input.getSkyAnnulusInnerRadii(), input.getSkyAnnulusOuterRadii());
+            }
             // rigidity and elevation
             query.setMinCutOffRigidity(input.getCutOffRigidityMin());
             query.setMinElevation(input.getElevationMin());
@@ -74,7 +79,7 @@ public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservat
         } catch (ObservationDaoException e) {
             log.error("Error generating LACDUMP query for background region file", e);
             return null;
-        } catch (TargetNotResolvedException e) {
+        } catch (TargetDaoException e) {
             log.error("Error resolving target name to define background sky annulus", e);
             return null;
         }

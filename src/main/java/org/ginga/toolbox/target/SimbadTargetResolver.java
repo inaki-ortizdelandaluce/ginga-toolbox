@@ -1,4 +1,4 @@
-package org.ginga.toolbox.util;
+package org.ginga.toolbox.target;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,9 +28,10 @@ public class SimbadTargetResolver {
 
     public static void main(String[] args) {
         try {
-            TargetCoordinates coords = new SimbadTargetResolver().resolve("GS2000+25");
-            log.info("RA B1950 " + coords.getRaDeg() + "deg");
-            log.info("DEC B1950 " + coords.getDecDeg() + "deg");
+            SimbadObject obj = new SimbadTargetResolver().resolve("GS2000+25");
+            log.info("RA B1950 " + obj.getRaDeg() + " deg");
+            log.info("DEC B1950 " + obj.getDecDeg() + " deg");
+            log.info("Object type " + obj.getObjectType());
         } catch (Exception e) {
             log.error("Error resolving target GS2000+25", e);
         }
@@ -44,12 +45,12 @@ public class SimbadTargetResolver {
         this.serviceUrl = url;
     }
 
-    public TargetCoordinates resolve(String target) throws TargetNotResolvedException {
-        TargetCoordinates coords = null;
+    public SimbadObject resolve(String target) throws TargetNotResolvedException {
+        SimbadObject obj = null;
         try {
-            coords = parseResponse(callService(target));
-            coords.setTargetName(target);
-            return coords;
+            obj = parseResponse(callService(target));
+            obj.setTargetName(target);
+            return obj;
         } catch (Exception e) {
             throw new TargetNotResolvedException(target, e);
         }
@@ -82,8 +83,8 @@ public class SimbadTargetResolver {
         return responseBody.toString();
     }
 
-    private TargetCoordinates parseResponse(String response) throws IllegalArgumentException {
-        TargetCoordinates coords = new TargetCoordinates();
+    private SimbadObject parseResponse(String response) throws IllegalArgumentException {
+        SimbadObject obj = new SimbadObject();
         // split response in lines
         String lines[] = response.split("\\r?\\n");
         log.debug(lines.length + " lines(s) found");
@@ -96,13 +97,21 @@ public class SimbadTargetResolver {
         Matcher matcher = null;
         boolean targetResolved = false;
         for (int i = 0; i < lines.length; i++) {
+            // identity object type
+            if (lines[i].trim().startsWith("Object")) {
+                String[] sArray = lines[i].split("---");
+                if (sArray.length >= 2) {
+                    obj.setObjectType(sArray[1].toString().trim());
+                }
+                continue;
+            }
             matcher = pattern.matcher(lines[i].trim());
             if (matcher.matches()) {
                 log.debug("Line matching pattern found " + lines[i]);
                 log.debug("RA[deg]" + matcher.group(1));
                 log.debug("DEC[deg]" + matcher.group(3));
-                coords.setRaDeg(getRaDeg(matcher.group(1)));
-                coords.setDecDeg(getDecDeg(matcher.group(3)));
+                obj.setRaDeg(getRaDeg(matcher.group(1)));
+                obj.setDecDeg(getDecDeg(matcher.group(3)));
                 targetResolved = true;
                 break;
             }
@@ -110,7 +119,7 @@ public class SimbadTargetResolver {
         if (!targetResolved) {
             throw new IllegalArgumentException("FK4 coordinates not found in the reponse");
         }
-        return coords;
+        return obj;
     }
 
     private double getRaDeg(final String raHours) {
@@ -162,11 +171,12 @@ public class SimbadTargetResolver {
         }
     }
 
-    public class TargetCoordinates {
+    public class SimbadObject {
 
         private double raDeg;
         private double decDeg;
         private String targetName;
+        private String objectType;
 
         /**
          * @return the raDeg
@@ -208,6 +218,20 @@ public class SimbadTargetResolver {
          */
         public void setTargetName(String targetName) {
             this.targetName = targetName;
+        }
+
+        /**
+         * @return the objectType
+         */
+        public String getObjectType() {
+            return this.objectType;
+        }
+
+        /**
+         * @param objectType the objectType to set
+         */
+        public void setObjectType(String objectType) {
+            this.objectType = objectType;
         }
     }
 

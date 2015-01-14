@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
-import org.ginga.toolbox.util.SimbadTargetResolver;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
+import org.ginga.toolbox.target.TargetEntity;
+import org.ginga.toolbox.target.dao.TargetDaoException;
+import org.ginga.toolbox.target.dao.impl.TargetDaoImpl;
 
 public class GtiWriter {
 
@@ -61,12 +61,17 @@ public class GtiWriter {
             if (!isBackground) {
                 String targetLine = null;
                 try {
-                    SimbadTargetResolver resolver = new SimbadTargetResolver();
-                    TargetCoordinates coords = resolver.resolve(target);
-                    targetLine = "'TGT' " + df.format(coords.getRaDeg()) + " "
-                            + df.format(coords.getDecDeg()) + "  '" + coords.getTargetName()
-                            + "'\n";
-                } catch (TargetNotResolvedException e) {
+                    TargetEntity targetEntity = new TargetDaoImpl().findByName(target);
+                    if (targetEntity != null) {
+                        if (targetEntity.getRaDegB1950() == 0 && targetEntity.getDecDegB1950() == 0) {
+                            throw new TargetDaoException(
+                                    "Target found in database but coordinates not resolved");
+                        }
+                        targetLine = "'TGT' " + df.format(targetEntity.getRaDegB1950()) + " "
+                                + df.format(targetEntity.getDecDegB1950()) + "  '"
+                                + targetEntity.getTargetName() + "'\n";
+                    }
+                } catch (TargetDaoException e) {
                     log.warn("Could not resolve target. Message= " + e.getMessage());
                     Scanner scanner = new Scanner(System.in);
                     targetLine = "'TGT' ";

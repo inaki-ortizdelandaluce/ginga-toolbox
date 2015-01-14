@@ -11,9 +11,9 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.util.SimbadTargetResolver;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetCoordinates;
-import org.ginga.toolbox.util.SimbadTargetResolver.TargetNotResolvedException;
+import org.ginga.toolbox.target.SimbadTargetResolver;
+import org.ginga.toolbox.target.SimbadTargetResolver.SimbadObject;
+import org.ginga.toolbox.target.SimbadTargetResolver.TargetNotResolvedException;
 
 public class TargetNameResolverCmd {
 
@@ -21,12 +21,13 @@ public class TargetNameResolverCmd {
 
     public void resolve(String target) {
         try {
-            TargetCoordinates coords = new SimbadTargetResolver().resolve(target);
+            SimbadObject obj = new SimbadTargetResolver().resolve(target);
             System.out.println(target);
             System.out.println(" Coordinates (epoch=B1950 equinox=1950):");
             DecimalFormat formatter = new DecimalFormat("#.####");
-            System.out.println("  Righ Ascension [deg] = " + formatter.format(coords.getRaDeg()));
-            System.out.println("  Declination [deg] =" + formatter.format(coords.getDecDeg()));
+            System.out.println("  Righ Ascension [deg] = " + formatter.format(obj.getRaDeg()));
+            System.out.println("  Declination [deg] = " + formatter.format(obj.getDecDeg()));
+            System.out.println("  Object type = " + obj.getObjectType());
         } catch (TargetNotResolvedException e) {
             log.error("Target " + target + "could not be resolved." + e.getMessage());
         }
