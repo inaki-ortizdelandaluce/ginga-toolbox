@@ -46,3 +46,78 @@ select spoint(AVE_ALPHA*pi()/180.0,AVE_DELTA*pi()/180.0) from ginga.OBSERVATION 
 Custom dialect with DIF
 http://keyurj.blogspot.com.es/2012/12/creating-custom-dialect-in-hibernate.html
 
+==================================
+Ginga Toolbox Virtual Machine
+==================================
+1. Install MySQL 5.5 from source
+http://dev.mysql.com/doc/refman/5.5/en/installing-source-distribution.html
+http://askubuntu.com/questions/309677/mysql-5-6-12-installation-from-source-code
+
+2. Users set-up
+
+2.1. Creation to a MySQL admin user
+Admin user 'dbadmin' created by root, password protected and could connect from everywhere.
+For that purpose dbadmin has to be created limited to 'localhost' first and then with '%'.
+Password initially set to same as username.
+
+-bash-4.1$ mysql --user root -p
+mysql> CREATE USER 'dbadmin'@'localhost' IDENTIFIED BY 'dbadmin';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'localhost' WITH GRANT OPTION;
+mysql> CREATE USER 'dbadmin'@'%' IDENTIFIED BY 'dbadmin';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'dbadmin'@'%' WITH GRANT OPTION;
+
+2.2. MySQL Workbench setup
+Created an account connection from MySQL Workbench using 'dbadmin' 
+
+2.3. Creation to a MySQL ginga user
+User 'gingauser' created by root, password protected.
+Could connect from localhost only.
+Priviledges granted to selected tables only. 
+Password initially set to same as username.
+
+-bash-4.1$ mysql --user root -p
+mysql> CREATE USER 'gingauser'@'localhost' IDENTIFIED BY 'dbadmin';
+mysql> GRANT ALL PRIVILEGES ON ginga.LACDUMP TO 'lhsuser'@'localhost' WITH GRANT OPTION;
+
+
+3. Automatic database start-up
+http://dev.mysql.com/doc/refman/5.5/en/automatic-start.html
+
+4. Install DIF
+Prerequisites: 
+MySQL sources
+Perl
+DBD::mysql
+http://help.directadmin.com/item.php?id=49
+
+http://ross.iasfbo.inaf.it/dif/
+
+5. Install Java 
+http://askubuntu.com/questions/56104/how-can-i-install-sun-oracles-proprietary-java-jdk-6-7-8-or-jre
+
+6. Install Ginga Tools
+- Follow installation instructions
+http://www.darts.isas.jaxa.jp/astro/ginga/analysis.html
+http://www.darts.isas.jaxa.jp/pub/ginga/tools/ginga_tools_linux_v1.02.tar.gz
+
+- Setting up the environment (edit .bashrc)
+# GINGA
+GINGA_HOME=/home/inaki/ginga/ginga_tools/v1.02 
+GINGA_FRFDIR=/home/inaki/ginga/data/frf
+#GINGA_FRFDIR=$GINGA_HOME/frf
+GINGA_CALDIR=$GINGA_HOME/cal
+PFILES=$HOME/pfiles
+# GINGA TOOLS lacspec: Use environment variable PGPLOT_FONT to specify the locat
+ion of the PGPLOT grfont.dat file.
+PGPLOT_FONT=$HOME/ginga/ginga_ledas/bin/grfont.dat
+export GINGA_HOME
+export GINGA_FRFDIR
+export GINGA_CALDIR
+export PFILES
+export PGPLOT_FONT
+# add ginga binaries to path
+export PATH=$GINGA_HOME/bin/linux:$PATH
+
+
+7. Install Heasoft
+http://heasarc.gsfc.nasa.gov/lheasoft/install.html
