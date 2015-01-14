@@ -62,7 +62,7 @@ public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filf
                 // save matching results into a GTI file
                 GtiWriter gtiWriter = new GtiWriter();
                 String gtiString = gtiWriter.writeToString(query.getTargetName(), sfList, false,
-                        true);
+                        false);
                 log.info("GTI file written successfully");
 
                 // emit timinfilfits input model
