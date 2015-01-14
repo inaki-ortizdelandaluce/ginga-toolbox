@@ -49,6 +49,11 @@ http://keyurj.blogspot.com.es/2012/12/creating-custom-dialect-in-hibernate.html
 ==================================
 Ginga Toolbox Virtual Machine
 ==================================
+0. Install Ubuntu Virtual Box
+Install: http://www.psychocats.net/ubuntu/virtualbox
+Share folder:  https://help.ubuntu.com/community/VirtualBox/SharedFolders
+Share: clone vs. export. Use export....
+
 1. Install MySQL 5.5 from source
 http://dev.mysql.com/doc/refman/5.5/en/installing-source-distribution.html
 http://askubuntu.com/questions/309677/mysql-5-6-12-installation-from-source-code
