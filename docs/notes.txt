@@ -54,13 +54,20 @@ Install: http://www.psychocats.net/ubuntu/virtualbox
 Share folder:  https://help.ubuntu.com/community/VirtualBox/SharedFolders
 Share: clone vs. export. Use export....
 
-8 GB RAM
-10 GB Memory
-Dynamic resize
-Ubuntu i386/amd64
+Ubuntu amd64
+4 GB RAM
+10 GB Memory (Fixed size)
+2 CPUs, Video capture, Enable 3d Acceleration
 OS user/pwd: ginga/ginga
 Keyboard layout: currently set to spanish... to be changed
 Right CTRL+F -> Full screen mode
+Guest Tools:
+sudo apt-get install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+
+/home directory partition needs to be increased
+
+gfortran
+git
 
 1. Install MySQL 5.5 from source
 http://dev.mysql.com/doc/refman/5.5/en/installing-source-distribution.html
@@ -106,6 +113,8 @@ http://help.directadmin.com/item.php?id=49
 http://ross.iasfbo.inaf.it/dif/
 
 5. Install Java 
+http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
+http://www.duinsoft.nl/packages.php?t=en
 http://askubuntu.com/questions/56104/how-can-i-install-sun-oracles-proprietary-java-jdk-6-7-8-or-jre
 
 6. Install Ginga Tools
