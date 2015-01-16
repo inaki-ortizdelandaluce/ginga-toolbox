@@ -167,7 +167,7 @@ public class GingaToolboxEnv {
 
     public String getDatabaseUser() {
         try {
-            return this.properties.getProperty("jdbc.user", "dbadmin");
+            return this.properties.getProperty("jdbc.username", "dbadmin");
         } catch (Exception e) {
             log.warn("Cannot access JDBC database user, using default value", e);
             return "dbadmin";
