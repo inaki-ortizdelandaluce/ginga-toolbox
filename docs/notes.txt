@@ -223,3 +223,8 @@ sudo make
 sudo make install
 sudo dif --install
 
+10. Database Population
+ingest observations
+database population
+indexes
+
