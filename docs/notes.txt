@@ -225,6 +225,7 @@ sudo dif --install
 
 10. Database Population
 ingest observations
+COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
 database population
 indexes
 
