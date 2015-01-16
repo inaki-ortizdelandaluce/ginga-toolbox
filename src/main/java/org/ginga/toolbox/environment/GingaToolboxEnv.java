@@ -139,6 +139,14 @@ public class GingaToolboxEnv {
         }
     }
 
+    public boolean isMySQLDatabase() {
+        return getDatabaseDialect().contains("MySQL") ? true : false;
+    }
+
+    public boolean isPostgreSQLDatabase() {
+        return getDatabaseDialect().contains("PostgreSQL") ? true : false;
+    }
+
     public String getDatabaseDriverClassName() {
         try {
             return this.properties.getProperty("jdbc.driverClassName", "com.mysql.jdbc.Driver");

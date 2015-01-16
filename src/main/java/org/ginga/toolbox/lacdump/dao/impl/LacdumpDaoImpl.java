@@ -3,6 +3,7 @@ package org.ginga.toolbox.lacdump.dao.impl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpQuery.SkyAnnulus;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -20,7 +21,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#save(org.ginga.toolbox.lacdump. LACDumpEntity)
      */
     @Override
@@ -39,7 +40,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -60,7 +61,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -83,7 +84,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -91,7 +92,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws LacdumpDaoException {
+                    throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
@@ -151,7 +152,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump
      * .LacDumpQuery)
      */
@@ -199,8 +200,17 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hql += "  LACDUMP_FILE IN :files and";
             }
             if ((skyAnnulus = query.getSkyAnnulus()) != null) {
-                hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 > :innerRadii and";
-                hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 < :outerRadii and";
+                GingaToolboxEnv env = GingaToolboxEnv.getInstance();
+                if (env.isMySQLDatabase()) {
+                    hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 > :innerRadii and";
+                    hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 < :outerRadii and";
+                } else if (env.isPostgreSQLDatabase()) {
+                    hql += "  q3c_dist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 ) > :innerRadii and";
+                    hql += "  q3c_dist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 ) < :outerRadii and";
+                } else {
+                    throw new IllegalArgumentException(
+                            "No spherical indexing available for computing the distance");
+                }
             }
 
             // remove last and

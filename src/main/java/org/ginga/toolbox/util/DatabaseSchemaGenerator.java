@@ -14,10 +14,10 @@ public class DatabaseSchemaGenerator {
     private enum Dialect {
         MySQL("org.hibernate.dialect.MySQLDialect"), MySQLInno(
                 "org.hibernate.dialect.MySQLInnoDBDialect"), MySQLMyISAM(
-                        "org.hibernate.dialect.MySQLMyISAMDialect"), MySQL5(
-                                "org.hibernate.dialect.MySQL5Dialect"), MySQL5Inno(
-                                        "org.hibernate.dialect.MySQL5InnoDBDialect"), PostgreSQL9(
-                "org.hibernate.dialect.PostgreSQL9Dialect");
+                "org.hibernate.dialect.MySQLMyISAMDialect"), MySQL5(
+                "org.hibernate.dialect.MySQL5Dialect"), MySQL5Inno(
+                "org.hibernate.dialect.MySQL5InnoDBDialect"), PostgreSQL9(
+                                                "org.hibernate.dialect.PostgreSQL9Dialect");
 
         private String className;
 
@@ -39,10 +39,14 @@ public class DatabaseSchemaGenerator {
     public void generate(List<Class<?>> entities, File outputFile) {
         // set-up hibernate configuration
         Configuration configuration = new Configuration();
-        if (GingaToolboxEnv.getInstance().getDatabaseDialect().contains("MySQL")) {
+        GingaToolboxEnv env = GingaToolboxEnv.getInstance();
+        if (env.isMySQLDatabase()) {
             configuration.setProperty(Environment.DIALECT, Dialect.MySQL5Inno.getClassName());
-        } else {
+        } else if (env.isPostgreSQLDatabase()) {
             configuration.setProperty(Environment.DIALECT, Dialect.PostgreSQL9.getClassName());
+        } else {
+            throw new IllegalArgumentException("Dialect " + env.getDatabaseDialect()
+                    + " not supported");
         }
         configuration.setProperty("hibernate.default_schema", "ginga");
         for (Class<?> entityClass : entities) {
