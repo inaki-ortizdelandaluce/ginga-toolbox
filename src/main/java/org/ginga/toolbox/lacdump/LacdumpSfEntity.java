@@ -30,19 +30,19 @@ public class LacdumpSfEntity {
     @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @Column(name = "BR", columnDefinition = "enum('H', 'M', 'L')")
+    @Column(name = "BR", length = 1)
     private String bitRate;
 
-    @Column(name = "MODE", columnDefinition = "enum('MPC1', 'MPC2', 'MPC3', 'PC', 'ACS', 'PCHK', 'MCHK', 'ASMP', 'ASMT', 'NSCL', 'LNCH')")
+    @Column(name = "MODE", length = 4)
     private String mode;
 
     @Column(name = "GMU", length = 3)
     private String gainAndDiscriminators;
 
-    @Column(name = "ACM", columnDefinition = "enum('NML', 'SL+','SL-','S36','MAN','SAF','STB','LSP')")
+    @Column(name = "ACM", length = 3)
     private String attitudeStatus;
 
-    @Column(name = "S_E", columnDefinition = "enum('SKY','NTE','DYE')")
+    @Column(name = "S_E", length = 3)
     private String direction;
 
     @Column(name = "LAC_L")

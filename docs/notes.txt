@@ -55,9 +55,9 @@ Ginga Toolbox Virtual Machine
 Install: http://www.psychocats.net/ubuntu/virtualbox
 Share folder:  https://help.ubuntu.com/community/VirtualBox/SharedFolders
 
-Download Ubuntu amd64 14.04.1 iso
+Download Ubuntu amd64 14.04 iso
 4 GB RAM
-20 GB Memory (Fixed size)
+22 GB Memory (Fixed size)
 2 CPUs, Video capture, Enable 3D Acceleration
 OS user/pwd: ginga/ginga
 Keyboard layout: English (UK)
@@ -90,8 +90,8 @@ sudo apt-get install oracle-java7-installer
 
 4. Install building software
 
-sudo apt-get git
-sudo apt-get maven
+sudo apt-get install git
+sudo apt-get install maven
 
 5. Install Ginga Tools
 
