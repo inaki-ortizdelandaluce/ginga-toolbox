@@ -134,12 +134,12 @@ cp target/ginga-toolbox-1.0.tar.gz ~/
 tar xvfz ginga-toolbox-1.0.tar.gz
 ln -s ginga-toolbox-1.0 ginga-toolbox-1.0
 
-7 Install MySQL 5.5 
+7 Install MySQL 5.6
 http://dev.mysql.com/doc/refman/5.5/en/installing-source-distribution.html
 http://askubuntu.com/questions/309677/mysql-5-6-12-installation-from-source-code
 
 sudo apt-get install cmake
-sudo apt-get install libncurses5-dev
+sudo apt-get install libncurses5 libncurses5-dev
 Download mysql-5.6.21.tar.gz sources
 sudo cp mysql-5.6.21.tar.gz /usr/src/mysql/
 cd /usr/src/mysql/ 
@@ -152,8 +152,8 @@ shell> sudo useradd -r -g mysql mysql
 # Beginning of source-build specific instructions
 shell> tar zxvf mysql-VERSION.tar.gz
 shell> cd mysql-VERSION
-shell> sudo cmake .
-shell> sudo make
+shell> cmake .
+shell> make
 shell> sudo make install
 # End of source-build specific instructions
 
@@ -169,6 +169,7 @@ sudo chown mysql:mysql /usr/share/mysql/errmsg.sys
 
 shell> sudo chown -R root .
 shell> sudo chown -R mysql data
+shell> sudo chgrp -R mysql .
 
 # Next command is optional
 shell> sudo cp support-files/my-medium.cnf /etc/my.cnf
@@ -177,7 +178,9 @@ shell> sudo bin/mysqld_safe --user=mysql &
 # Next command is optional
 shell> sudo cp support-files/mysql.server /etc/init.d/mysql.server
 
-MySQL 'root' user: root/root
+
+# MySQL 'root' user: root/root
+/usr/local/mysql/bin/mysqladmin -u root password root
 
 8. MySQL configuration
 

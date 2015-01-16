@@ -129,6 +129,16 @@ public class GingaToolboxEnv {
         }
     }
 
+    public String getDatabaseDialect() {
+        try {
+            return this.properties.getProperty("database.dialect",
+                    "org.ginga.toolbox.util.MySQL5SphereDialect");
+        } catch (Exception e) {
+            log.warn("Cannot accessdatabase dialect , using default value", e);
+            return "org.ginga.toolbox.util.MySQL5SphereDialect";
+        }
+    }
+
     public String getDatabaseDriverClassName() {
         try {
             return this.properties.getProperty("jdbc.driverClassName", "com.mysql.jdbc.Driver");

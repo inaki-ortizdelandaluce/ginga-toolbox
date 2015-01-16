@@ -35,8 +35,7 @@ public class HibernateUtil {
             // MySQLInnoDBDialect/MySQLMyISAMDialect/MySQL5Dialect/MySQL5InnoDBDialect
             // configuration.setProperty("hibernate.dialect",
             // "org.hibernate.dialect.MySQL5InnoDBDialect");
-            configuration.setProperty("hibernate.dialect",
-                    "org.ginga.toolbox.util.MySQL5SphereDialect");
+            configuration.setProperty("hibernate.dialect", env.getDatabaseDialect());
 
             // connection pooling
             // https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool
@@ -73,7 +72,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(TargetEntity.class);
 
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties());
+            .applySettings(configuration.getProperties());
             SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
             return sessionFactory;
 
