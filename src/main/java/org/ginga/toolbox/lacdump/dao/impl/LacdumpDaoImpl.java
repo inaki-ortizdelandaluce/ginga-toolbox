@@ -21,7 +21,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#save(org.ginga.toolbox.lacdump. LACDumpEntity)
      */
     @Override
@@ -40,7 +40,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -61,7 +61,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -84,7 +84,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -92,7 +92,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-                    throws LacdumpDaoException {
+            throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
@@ -102,9 +102,14 @@ public class LacdumpDaoImpl implements LacdumpDao {
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
             Query query = hibernateSession.createQuery(hql);
+
             query.setString("br", bitRate);
             query.setString("mode", mode);
             query.setString("target", "%" + target + "%");
+            if (GingaToolboxEnv.getInstance().isPostgreSQLDatabase()) {
+                startTime = "'" + startTime + "'";
+                endTime = "'" + endTime + "'";
+            }
             query.setString("start", startTime);
             query.setString("end", endTime);
             query.setDouble("eelv", elevation);
@@ -135,6 +140,10 @@ public class LacdumpDaoImpl implements LacdumpDao {
             Query query = hibernateSession.createQuery(hql);
             query.setString("mode", mode);
             query.setString("target", "%" + target + "%");
+            if (GingaToolboxEnv.getInstance().isPostgreSQLDatabase()) {
+                startTime = "'" + startTime + "'";
+                endTime = "'" + endTime + "'";
+            }
             query.setString("start", startTime);
             query.setString("end", endTime);
             query.setDouble("eelv", elevation);
@@ -152,7 +161,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump
      * .LacDumpQuery)
      */
@@ -219,6 +228,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
             hql += " ORDER BY ID";
 
             log.debug("LACDUMP Query: " + hql);
+            GingaToolboxEnv env = GingaToolboxEnv.getInstance();
 
             HibernateUtil.beginTransaction();
             Session hibernateSession = HibernateUtil.getSession();
@@ -233,10 +243,18 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hquery.setString("target", "%" + target + "%");
             }
             if (startTime != null) {
-                hquery.setString("start", startTime);
+                if (env.isPostgreSQLDatabase()) {
+                    hquery.setString("start", "'" + startTime + "'");
+                } else {
+                    hquery.setString("start", startTime);
+                }
             }
             if (endTime != null) {
-                hquery.setString("end", endTime);
+                if (env.isPostgreSQLDatabase()) {
+                    hquery.setString("end", "'" + endTime + "'");
+                } else {
+                    hquery.setString("end", endTime);
+                }
             }
             if (minElevation != null) {
                 hquery.setDouble("eelv", minElevation);
@@ -280,6 +298,10 @@ public class LacdumpDaoImpl implements LacdumpDao {
             Session hibernateSession = HibernateUtil.getSession();
             Query query = hibernateSession.createQuery(hql);
             query.setString("target", "%" + target + "%");
+            if (GingaToolboxEnv.getInstance().isPostgreSQLDatabase()) {
+                startTime = "'" + startTime + "'";
+                endTime = "'" + endTime + "'";
+            }
             query.setString("start", startTime);
             query.setString("end", endTime);
             query.setDouble("eelv", elevation);
