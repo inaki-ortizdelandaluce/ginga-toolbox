@@ -78,4 +78,7 @@ COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
   413  sudo ./ingest_background_db.sh -d /data/ginga/dat  
 
 3. Create database indexes
-  
+ LACDUMP database table indexes:
+ idx_DATE
+ idx_TARGET
+ 
