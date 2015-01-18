@@ -1,0 +1,57 @@
+ 1. Set-up PostgreSQL database
+   11  sudo apt-get install cmake
+   12  sudo apt-get install libncurses5 libncurses5-dev
+   13  sudo apt-get install build-essential
+   25  sudo dpkg --add-architecture i386
+   27  sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
+   29  sudo groupadd postgres
+   31  sudo useradd -r -g postgres postgres
+   52  tar xvfz postgresql-9.1.14.tar.gz 
+   53  sudo apt-get install libreadline-dev
+   55  cd postgresql-9.1.14/
+   56  sudo apt-get install zlib1g-dev
+   61  ./configure
+   62  make 
+   64  sudo make install
+   65  cd
+   66  bunzip2 q3c_1.4.23.tar.bz2 
+   68  tar xvf q3c_1.4.23.tar 
+   71  mv q3c-1.4.23 postgresql-9.1.14/contrib/
+   73  cd postgresql-9.1.14/contrib/
+   75  cd q3c-1.4.23/
+   77  make NO_PGXS=1
+   80  sudo make NO_PGXS=1 install
+   83  cd ../adminpack/
+   85  make NO_PGXS=1
+   86  sudo make NO_PGXS=1 install
+   87  sudo apt-get install pgadmin3
+   89  sudo -u ginga psql postgres
+   91  sudo mkdir /data
+   95  sudo mkdir /data/ginga
+   96  sudo mkdir /data/postgresLog
+   97  sudo mkdir /data/postgresDb
+   98  sudo chown -R ginga:ginga /data/
+  100  source .bashrc 
+  111  echo $LD_LIBRARY_PATH 
+  112  mkdir /data/postgresDb/data-9.1.14
+  114  /usr/local/pgsql/bin/initdb -D /data/postgresDb/data-9.1.14
+  116  nedit .bashrc 
+  117  nedit /data/postgresDb/data-9.1.14/pg_hba.conf 
+  118  nedit /data/postgresDb/data-9.1.14/postgresql.conf 
+  119  echo '/usr/local/pgsql/bin/pg_ctl -D /data/postgresDb/data-9.1.14 start'
+  120  nedit .bashrc 
+  121  source .bashrc 
+  123  psql ginga
+  129  psql
+  131  psql postgres
+  132  createdb ginga
+  133  psql -U ginga < /home/ginga/postgresql-9.1.14/contrib/adminpack/adminpack--1.0.sql 
+  134  psql -U ginga < /home/ginga/postgresql-9.1.14/contrib/q3c-1.4.23/q3c.sql
+  136  sudo cp contrib/start-scripts/linux /etc/init.d/postgresql
+  137  sudo update-rc.d postgresql defaults
+  
+2. Populate database
+COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
+
+3. Create database indexes
+  

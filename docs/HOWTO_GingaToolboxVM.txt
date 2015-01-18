@@ -1,0 +1,92 @@
+==================================
+Ginga Toolbox Virtual Machine
+==================================
+
+1. Install Ubuntu Virtual Box
+
+Install: http://www.psychocats.net/ubuntu/virtualbox
+Share folder:  https://help.ubuntu.com/community/VirtualBox/SharedFolders
+
+Download Ubuntu amd64 14.04 iso
+4 GB RAM
+22 GB Memory (Fixed size)
+2 CPUs, Video capture, Enable 3D Acceleration
+OS user/pwd: ginga/ginga
+Keyboard layout: English (UK)
+Right CTRL+F -> Full screen mode
+
+Install Guest Tools:
+sudo apt-get install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
+Reboot
+
+2. Copy Ginga data
+
+Share folder /Users/iortiz/Personal/ginga/data from VirtualBox as data (/media/sf_data)
+Copy frf, tools and lacdump directories plus ginga_obs.dump from shared folder to /data/ginga (6.3GB)
+sudo cp -r /media/sf_data/pub/ginga/frf /data/ginga/
+sudo cp -r /media/sf_data/pub/ginga/lacdump /data/ginga/
+sudo cp /media/sf_data/pub/ginga/ginga_obs.dump /data/ginga/
+
+sudo chown -R ginga:ginga /data/ginga
+
+3. Install Java
+
+http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
+http://www.duinsoft.nl/packages.php?t=en
+http://askubuntu.com/questions/56104/how-can-i-install-sun-oracles-proprietary-java-jdk-6-7-8-or-jre
+
+sudo apt-get remove openjdk-7-jre default-jre default-jre-headless
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java7-installer
+
+4. Install building software
+
+sudo apt-get install git
+sudo apt-get install maven
+
+5. Install Ginga Tools
+
+sudo apt-get install gfortran
+sudo apt-get install csh
+cd $HOME
+wget http://www.darts.isas.jaxa.jp/pub/ginga/tools/ginga_tools_linux_v1.02.tar.gz .
+tar xvfz ginga_tools_linux_v1.01.tar.gz 
+rm ginga_tools_linux_v1.02.tar.gz 
+Edit .bashrd 
+GINGA_TOOLS_HOME=/home/ginga/ginga_tools/v1.02
+GINGA_FRFDIR=/data/ginga/frf
+GINGA_CALDIR=$GINGA_TOOLS_HOME/cal
+PFILES=$HOME/pfiles
+PGPLOT_FONT=/data/ginga/fonts/grfont.dat
+export GINGA_TOOLS_HOME
+export GINGA_FRFDIR
+export GINGA_CALDIR
+export PFILES
+export PGPLOT_FONT
+
+export PATH=$GINGA_TOOLS_HOME/bin/linux/:$PATH
+
+cd $HOME
+mkdir pfiles
+cp $GINGA_TOOLS_HOME/cal/lac2xspec.par ~/pfiles
+
+Edit make_sf_list.pl: perl and lacdump directory location
+
+Make 64-bit machine to support 32-bit executables
+sudo dpkg --add-architecture i386
+sudo apt-get install ia32-libs
+sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
+
+6. Install Ginga Toolbox
+
+git clone https://inaki-ortizdelandaluce@bitbucket.org/inaki-ortizdelandaluce/ginga-toolbox.git
+mvn clean package jar:jar appassembler:assemble assembly:assembly
+cp target/ginga-toolbox-1.0.tar.gz ~/
+tar xvfz ginga-toolbox-1.0.tar.gz
+ln -s ginga-toolbox-1.0 ginga-toolbox-1.0
+
+7. Install Database
+See instructions on how to install database in specific database documents under this folder:
+  HOWTO_MySQL.txt 
+  HOWTO_PostgreSQL.txt
