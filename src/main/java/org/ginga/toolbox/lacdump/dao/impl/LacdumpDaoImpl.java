@@ -21,7 +21,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#save(org.ginga.toolbox.lacdump. LACDumpEntity)
      */
     @Override
@@ -40,7 +40,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -61,7 +61,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -84,7 +84,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -92,13 +92,21 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-                    throws LacdumpDaoException {
+            throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
-            String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
-                    + " WHERE BR =:br and MODE =:mode and TARGET like :target and "
-                    + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
-
+            String hql = null;
+            if (GingaToolboxEnv.isPostgreSQLDatabase()) {
+                hql = "FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " WHERE BR =:br and MODE =:mode and TARGET like :target and "
+                        + "DATE >= timestamp :start and DATE <= timestamp :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
+            } else {
+                hql = "FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " WHERE BR =:br and MODE =:mode and TARGET like :target and "
+                        + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
+            }
             log.debug("HQL=" + hql);
 
             HibernateUtil.beginTransaction();
@@ -129,10 +137,18 @@ public class LacdumpDaoImpl implements LacdumpDao {
             String endTime, double elevation, double rigidity) throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
-            String hql = "FROM " + LacdumpSfEntity.class.getSimpleName()
-                    + " WHERE MODE =:mode and TARGET like :target and "
-                    + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
-
+            String hql = null;
+            if (GingaToolboxEnv.isPostgreSQLDatabase()) {
+                hql = "FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " WHERE MODE =:mode and TARGET like :target and "
+                        + "DATE >= timestamp :start and DATE <= timestamp :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
+            } else {
+                hql = "FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " WHERE MODE =:mode and TARGET like :target and "
+                        + "DATE >= :start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY ID";
+            }
             log.debug("HQL=" + hql);
 
             HibernateUtil.beginTransaction();
@@ -157,7 +173,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump
      * .LacDumpQuery)
      */
@@ -190,10 +206,18 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hql += " TARGET is NULL and";
             }
             if ((startTime = query.getStartTime()) != null) {
-                hql += " DATE >=:start and";
+                if (GingaToolboxEnv.isPostgreSQLDatabase()) {
+                    hql += " DATE >= timestamp :start and";
+                } else {
+                    hql += " DATE >=:start and";
+                }
             }
             if ((endTime = query.getEndTime()) != null) {
-                hql += " DATE <=:end and";
+                if (GingaToolboxEnv.isPostgreSQLDatabase()) {
+                    hql += " DATE <= timestamp :end and";
+                } else {
+                    hql += " DATE <=:end and";
+                }
             }
             if ((minElevation = query.getMinElevation()) != null) {
                 hql += "  EELV > :eelv and";
@@ -205,11 +229,10 @@ public class LacdumpDaoImpl implements LacdumpDao {
                 hql += "  LACDUMP_FILE IN :files and";
             }
             if ((skyAnnulus = query.getSkyAnnulus()) != null) {
-                GingaToolboxEnv env = GingaToolboxEnv.getInstance();
-                if (env.isMySQLDatabase()) {
+                if (GingaToolboxEnv.isMySQLDatabase()) {
                     hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 > :innerRadii and";
                     hql += "  Sphedist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 )/60 < :outerRadii and";
-                } else if (env.isPostgreSQLDatabase()) {
+                } else if (GingaToolboxEnv.isPostgreSQLDatabase()) {
                     hql += "  q3c_dist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 ) > :innerRadii and";
                     hql += "  q3c_dist( :targetRa, :targetDec, RA_DEG_B1950, DEC_DEG_B1950 ) < :outerRadii and";
                 } else {
@@ -275,12 +298,20 @@ public class LacdumpDaoImpl implements LacdumpDao {
             double elevation, double rigidity) throws LacdumpDaoException {
         List<String> modes = null;
         try {
-            String hql = "SELECT distinct(lacdump.mode) FROM "
-                    + LacdumpSfEntity.class.getSimpleName()
-                    + " as lacdump"
-                    + " WHERE TARGET like :target and "
-                    + "DATE >=:start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY mode";
-
+            String hql = null;
+            if (GingaToolboxEnv.isPostgreSQLDatabase()) {
+                hql = "SELECT distinct(lacdump.mode) FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " as lacdump"
+                        + " WHERE TARGET like :target and "
+                        + "DATE >= timestamp :start and DATE <= timestamp :end and EELV > :eelv and RIG >= :rig ORDER BY mode";
+            } else {
+                hql = "SELECT distinct(lacdump.mode) FROM "
+                        + LacdumpSfEntity.class.getSimpleName()
+                        + " as lacdump"
+                        + " WHERE TARGET like :target and "
+                        + "DATE >= :start and DATE <= :end and EELV > :eelv and RIG >= :rig ORDER BY mode";
+            }
             log.debug("HQL=" + hql);
 
             HibernateUtil.beginTransaction();
@@ -288,7 +319,6 @@ public class LacdumpDaoImpl implements LacdumpDao {
             Query query = hibernateSession.createQuery(hql);
             query.setString("target", "%" + target + "%");
             query.setString("start", startTime);
-            log.debug("Start time=" + startTime);
             query.setString("end", endTime);
             query.setDouble("eelv", elevation);
             query.setDouble("rig", rigidity);

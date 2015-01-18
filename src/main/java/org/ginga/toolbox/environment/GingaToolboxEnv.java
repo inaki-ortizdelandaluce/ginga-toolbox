@@ -139,12 +139,13 @@ public class GingaToolboxEnv {
         }
     }
 
-    public boolean isMySQLDatabase() {
-        return getDatabaseDialect().contains("MySQL") ? true : false;
+    public static boolean isMySQLDatabase() {
+        return GingaToolboxEnv.getInstance().getDatabaseDialect().contains("MySQL") ? true : false;
     }
 
-    public boolean isPostgreSQLDatabase() {
-        return getDatabaseDialect().contains("PostgreSQL") ? true : false;
+    public static boolean isPostgreSQLDatabase() {
+        return GingaToolboxEnv.getInstance().getDatabaseDialect().contains("PostgreSQL") ? true
+                : false;
     }
 
     public String getDatabaseDriverClassName() {
