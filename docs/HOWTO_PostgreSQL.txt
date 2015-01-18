@@ -52,8 +52,30 @@
   138  sudo update-rc.d postgresql defaults
   139  sudo nedit /etc/init.d/postgresql (edit PGDATA, PGUSER and PGLOG variables) 
   
-2. Populate database
+2. Populate database tables
+
+2.1 Observations
+psql
 COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
+
+2.2 Targets
+  307  ./ingest_target_db.sh 
+  
+2.3 LACDUMP
+  367  sudo cp -r /media/sf_ginga-data/pub/ginga/lacdump .
+  372  sudo chown -R ginga:ginga lacdump
+  374  cd
+  375  cd ginga-toolbox
+  377  cd bin/
+  379  ./ingest_lacdump_db.sh -d /data/ginga/lacdump
+
+2.4 LACDUMP background
+  391  cd /data/ginga/
+  402  ln -s /media/sf_ginga-data/pub/ginga/dat dat
+  408  cd
+  409  cd ginga-toolbox
+  411  cd bin/
+  413  sudo ./ingest_background_db.sh -d /data/ginga/dat  
 
 3. Create database indexes
   
