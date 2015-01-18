@@ -48,7 +48,9 @@
   133  psql -U ginga < /home/ginga/postgresql-9.1.14/contrib/adminpack/adminpack--1.0.sql 
   134  psql -U ginga < /home/ginga/postgresql-9.1.14/contrib/q3c-1.4.23/q3c.sql
   136  sudo cp contrib/start-scripts/linux /etc/init.d/postgresql
-  137  sudo update-rc.d postgresql defaults
+  137  sudo chmod +x /etc/init.d/postgresql
+  138  sudo update-rc.d postgresql defaults
+  139  sudo nedit /etc/init.d/postgresql (edit PGDATA, PGUSER and PGLOG variables) 
   
 2. Populate database
 COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
