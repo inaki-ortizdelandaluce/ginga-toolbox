@@ -19,12 +19,12 @@ Install Guest Tools on guest VM:
 sudo apt-get install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
 
 Shared folder
-Guest: data, Host: /Users/iortiz/Personal/ginga/data
+Guest: ginga_data, Host: /Users/iortiz/Personal/ginga/data
 Device > Share Clipboard > Bidirectional
-sudo apt-get install virtualbox-ose-additions-modules
-modprobe vboxvfs
+#sudo apt-get install virtualbox-ose-additions-modules
+#modprobe vboxvfs
 mkdir ~/share
-sudo mount -t vboxsf data ~/share -o rw,exec,uid=1000,gid=1000,dev
+sudo mount -t vboxsf ginga_data ~/share -o rw,exec,uid=1000,gid=1000,dev
 Reboot
 
 2. Copy Ginga data
