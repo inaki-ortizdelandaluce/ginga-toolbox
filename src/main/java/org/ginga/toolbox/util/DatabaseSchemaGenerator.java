@@ -39,14 +39,13 @@ public class DatabaseSchemaGenerator {
     public void generate(List<Class<?>> entities, File outputFile) {
         // set-up hibernate configuration
         Configuration configuration = new Configuration();
-        GingaToolboxEnv env = GingaToolboxEnv.getInstance();
-        if (env.isMySQLDatabase()) {
+        if (GingaToolboxEnv.isMySQLDatabase()) {
             configuration.setProperty(Environment.DIALECT, Dialect.MySQL5Inno.getClassName());
-        } else if (env.isPostgreSQLDatabase()) {
+        } else if (GingaToolboxEnv.isPostgreSQLDatabase()) {
             configuration.setProperty(Environment.DIALECT, Dialect.PostgreSQL9.getClassName());
         } else {
-            throw new IllegalArgumentException("Dialect " + env.getDatabaseDialect()
-                    + " not supported");
+            throw new IllegalArgumentException("Dialect "
+                    + GingaToolboxEnv.getInstance().getDatabaseDialect() + " not supported");
         }
         configuration.setProperty("hibernate.default_schema", "ginga");
         for (Class<?> entityClass : entities) {
