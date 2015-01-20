@@ -47,7 +47,7 @@ public class DatabaseSchemaGenerator {
             throw new IllegalArgumentException("Dialect "
                     + GingaToolboxEnv.getInstance().getDatabaseDialect() + " not supported");
         }
-        configuration.setProperty("hibernate.default_schema", "ginga");
+        configuration.setProperty("hibernate.default_schema", "default_schema");
         for (Class<?> entityClass : entities) {
             configuration.addAnnotatedClass(entityClass);
         }
