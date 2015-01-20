@@ -1,1 +1,0 @@
-COPY ginga.observation FROM '/path/to/ginga_observations.csv' DELIMITER ',' CSV;
