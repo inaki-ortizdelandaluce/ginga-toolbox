@@ -29,7 +29,7 @@ public class HibernateUtil {
             configuration.setProperty("hibernate.connection.url", env.getDatabaseUrl());
             configuration.setProperty("hibernate.connection.username", env.getDatabaseUser());
             configuration.setProperty("hibernate.connection.password", env.getDatabasePassword());
-            configuration.setProperty("hibernate.default_schema", "ginga");
+            configuration.setProperty("hibernate.default_schema", env.getDatabaseSchema());
 
             // dialect properties:
             // MySQLInnoDBDialect/MySQLMyISAMDialect/MySQL5Dialect/MySQL5InnoDBDialect
@@ -72,7 +72,7 @@ public class HibernateUtil {
             configuration.addAnnotatedClass(TargetEntity.class);
 
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-            .applySettings(configuration.getProperties());
+                    .applySettings(configuration.getProperties());
             SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
             return sessionFactory;
 
