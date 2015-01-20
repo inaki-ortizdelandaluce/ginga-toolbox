@@ -13,27 +13,35 @@ Download Ubuntu amd64 14.04 iso
 2 CPUs, Video capture, Enable 3D Acceleration
 OS user/pwd: ginga/ginga
 Keyboard layout: English (UK)
-Right CTRL+F -> Full screen mode
 
 Install Guest Tools on guest VM:
 sudo apt-get install virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11
 
 Shared folder
-Guest: ginga_data, Host: /Users/iortiz/Personal/ginga/data
+Guest: ginga-data, Host: /Users/iortiz/Personal/ginga/data
 Device > Share Clipboard > Bidirectional
-#sudo apt-get install virtualbox-ose-additions-modules
-#modprobe vboxvfs
 mkdir ~/share
-sudo mount -t vboxsf ginga_data ~/share -o rw,exec,uid=1000,gid=1000,dev
+Option 1:
+sudo usermod -a -G vboxsf ginga
+Put in /etc/rc.local the line:
+mount --bind /media/sf_ginga-data /home/ginga/share
+Option 2 (active during the session only):
+sudo mount -t vboxsf ginga-data ~/share -o rw,exec,uid=1000,gid=1000,dev
 Reboot
 
 2. Copy Ginga data
 
 Share folder /Users/iortiz/Personal/ginga/data from VirtualBox as data (/media/sf_data)
 Copy frf, tools and lacdump directories plus ginga_obs.dump from shared folder to /data/ginga (6.3GB)
-sudo cp -r /media/sf_data/pub/ginga/frf /data/ginga/
-sudo cp -r /media/sf_data/pub/ginga/lacdump /data/ginga/
-sudo cp /media/sf_data/pub/ginga/ginga_obs.dump /data/ginga/
+sudo mkdir /data
+sudo mkdir /data/ginga
+sudo mkdir /data/ginga/fonts
+sudo mkdir /data/postgres
+sudo cp -r ~/share/pub/ginga/frf /data/ginga/
+sudo cp -r ~/share/pub/ginga/lacdump /data/ginga/
+sudo cp ~/share/pub/ginga/grfont.dat /data/ginga/fonts/
+
+#sudo cp /media/sf_data/pub/ginga/ginga_obs.dump /data/ginga/
 
 sudo chown -R ginga:ginga /data/ginga
 
@@ -58,10 +66,10 @@ sudo apt-get install maven
 sudo apt-get install gfortran
 sudo apt-get install csh
 cd $HOME
-wget http://www.darts.isas.jaxa.jp/pub/ginga/tools/ginga_tools_linux_v1.02.tar.gz .
+cp ~/share/pub/ginga/tools/ginga_tools_linux_v1.02.tar.gz .
 tar xvfz ginga_tools_linux_v1.01.tar.gz 
 rm ginga_tools_linux_v1.02.tar.gz 
-Edit .bashrd 
+Edit .bashrc
 GINGA_TOOLS_HOME=/home/ginga/ginga_tools/v1.02
 GINGA_FRFDIR=/data/ginga/frf
 GINGA_CALDIR=$GINGA_TOOLS_HOME/cal
@@ -75,6 +83,7 @@ export PGPLOT_FONT
 
 export PATH=$GINGA_TOOLS_HOME/bin/linux/:$PATH
 
+source .bashrc
 cd $HOME
 mkdir pfiles
 cp $GINGA_TOOLS_HOME/cal/lac2xspec.par ~/pfiles
@@ -88,9 +97,11 @@ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
 
 6. Install Ginga Toolbox
 
-git clone https://inaki-ortizdelandaluce@bitbucket.org/inaki-ortizdelandaluce/ginga-toolbox.git
+git clone https://inaki-ortizdelandaluce@bitbucket.org/inaki-ortizdelandaluce/ginga-toolbox.git ginga-toolbox.git
+cd ginga-toolbox.git
 mvn clean package jar:jar appassembler:assemble assembly:assembly
 cp target/ginga-toolbox-1.0.tar.gz ~/
+cd
 tar xvfz ginga-toolbox-1.0.tar.gz
 ln -s ginga-toolbox-1.0 ginga-toolbox-1.0
 
