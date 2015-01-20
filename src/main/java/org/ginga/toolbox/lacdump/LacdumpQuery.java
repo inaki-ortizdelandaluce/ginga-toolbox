@@ -3,6 +3,7 @@ package org.ginga.toolbox.lacdump;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.util.Constants.BitRate;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -181,7 +182,7 @@ public class LacdumpQuery {
     }
 
     /**
-     * 
+     *
      * @param raDeg right ascension of annulus centre in degrees (equinox 1950)
      * @param degDeg declination of annulus centre in degrees (equinox 1950)
      * @param innerRadiiDeg inner annulus radii in degrees
@@ -260,14 +261,25 @@ public class LacdumpQuery {
         }
         if (this.skyAnnulus != null) {
             DecimalFormat formatter = new DecimalFormat("#.####");
-            sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
-                    + formatter.format(this.skyAnnulus.getTargetDecDeg())
-                    + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 > "
-                    + formatter.format(this.skyAnnulus.getInnerRadiiDeg()));
-            sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
-                    + formatter.format(this.skyAnnulus.getTargetDecDeg())
-                    + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 < "
-                    + formatter.format(this.skyAnnulus.getOuterRadiiDeg()));
+            if (GingaToolboxEnv.getInstance().isMySQLDatabase()) {
+                sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                        + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                        + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 > "
+                        + formatter.format(this.skyAnnulus.getInnerRadiiDeg()));
+                sb.append("\n Sphedist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                        + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                        + ", RA_DEG_B1950, DEC_DEG_B1950 )/60 < "
+                        + formatter.format(this.skyAnnulus.getOuterRadiiDeg()));
+            } else if (GingaToolboxEnv.getInstance().isPostgreSQLDatabase()) {
+                sb.append("\n q3c_dist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                        + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                        + ", RA_DEG_B1950, DEC_DEG_B1950 ) > "
+                        + formatter.format(this.skyAnnulus.getInnerRadiiDeg()));
+                sb.append("\n q3c_dist( " + this.skyAnnulus.getTargetRaDeg() + ", "
+                        + formatter.format(this.skyAnnulus.getTargetDecDeg())
+                        + ", RA_DEG_B1950, DEC_DEG_B1950 ) < "
+                        + formatter.format(this.skyAnnulus.getOuterRadiiDeg()));
+            }
         }
 
         return sb.toString();

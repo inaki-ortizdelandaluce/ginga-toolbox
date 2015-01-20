@@ -9,6 +9,6 @@ public class PostgreSQL9SphereDialect extends PostgreSQL9Dialect {
         super();
         // register Q3C functions
         // http://code.google.com/p/q3c/
-        registerFunction("g3c_dist", new StandardSQLFunction("Sphedist"));
+        registerFunction("q3c_dist", new StandardSQLFunction("q3c_dist"));
     }
 }
