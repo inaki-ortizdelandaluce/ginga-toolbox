@@ -86,18 +86,18 @@ public class ObservationListPrinterCmd {
                     LacMode mode = singleModeObs.getLacMode();
                     if (Arrays.asList(modes).contains(mode)) {
                         this.writer
-                                .println(" "
-                                        + String.format(
-                                                "%18s",
-                                                obsEntity.getId()
-                                                        + " "
-                                                        + obsEntity.getSequenceNumber()
-                                                        + " "
-                                                        + String.format("%8s",
-                                                                singleModeObs.getMode())
-                                                        + " "
-                                                        + String.format("%20s",
-                                                                singleModeObs.getStartTime())
+                        .println(" "
+                                + String.format(
+                                        "%18s",
+                                        obsEntity.getId()
+                                        + " "
+                                        + obsEntity.getSequenceNumber()
+                                        + " "
+                                        + String.format("%8s",
+                                                singleModeObs.getMode())
+                                                + " "
+                                                + String.format("%20s",
+                                                        singleModeObs.getStartTime())
                                                         + " "
                                                         + String.format("%20s",
                                                                 singleModeObs.getEndTime())));
@@ -189,8 +189,7 @@ public class ObservationListPrinterCmd {
         group2.addOption(new Option("a", "all-modes", false, "list all LAC modes"));
         group2.addOption(new Option("l", "spectral-modes-only", false,
                 "list MPC1 and MPC2 LAC modes only"));
-        group2.addOption(new Option("g", "timing-modes-only", false,
-                "list MPC3 and PCHK modes only"));
+        group2.addOption(new Option("g", "timing-modes-only", false, "list MPC3 and PC modes only"));
 
         OptionGroup group3 = new OptionGroup();
         group3.setRequired(true);
