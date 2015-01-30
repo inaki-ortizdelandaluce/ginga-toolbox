@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.bgdspec.BgdspecInputModel;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.InputParameters;
-import org.ginga.toolbox.gti.GtiWriter;
+import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
@@ -60,7 +60,7 @@ public class BgdspecInputBuilder extends AbstractPipe<LacdumpQuery, BgdspecInput
 
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
-                GtiWriter gtiWriter = new GtiWriter();
+                GingaGtiWriter gtiWriter = new GingaGtiWriter();
                 gtiWriter.writeToFile(query.getTargetName(), sfList, true, false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
 

@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.InputParameters;
-import org.ginga.toolbox.gti.GtiWriter;
+import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
@@ -85,7 +85,7 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
 
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
-                GtiWriter gtiWriter = new GtiWriter();
+                GingaGtiWriter gtiWriter = new GingaGtiWriter();
                 gtiWriter
                         .writeToFile(query.getTargetName(), sfList, isBackground(), false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");

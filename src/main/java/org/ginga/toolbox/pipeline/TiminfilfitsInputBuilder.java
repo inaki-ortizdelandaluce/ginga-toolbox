@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.InputParameters;
+import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.gti.GtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -68,9 +69,15 @@ public abstract class TiminfilfitsInputBuilder extends
 
             if (sfList.size() > 0) {
                 // save matching results into a GTI file
-                GtiWriter gtiWriter = new GtiWriter();
+                GingaGtiWriter gtiWriter = new GingaGtiWriter();
                 gtiWriter.writeToFile(query.getTargetName(), sfList, false, false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
+                // save matching results into a standard GTI fits file also
+                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI",
+                        query.getStartTime(), query.getMode(), "fits"));
+                GtiWriter gtiFitsWriter = new GtiWriter();
+                gtiFitsWriter.writeToFits(sfList, gtiFitsFile);
+                log.debug("GTI file " + gtiFitsFile.getPath() + " written successfully");
 
                 // emit timinfilfits input model
                 TiminfilfitsInputModel inputModel = new TiminfilfitsInputModel();

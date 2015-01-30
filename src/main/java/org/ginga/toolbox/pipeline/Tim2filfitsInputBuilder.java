@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.InputParameters;
+import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.gti.GtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -45,13 +46,6 @@ public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filf
             }
             log.debug("Working directory " + workingDir.getAbsolutePath());
 
-            // build empty GTI file
-            File gtiFile = null;
-            log.debug("Generating GTI file for on-source data");
-            gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(),
-                    query.getMode(), "DATA"));
-            log.debug("GTI file " + gtiFile.getPath());
-
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
             List<LacdumpSfEntity> sfList = dao.findSfList(query);
@@ -59,11 +53,16 @@ public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filf
             log.info("LACDUMP query executed successfully. " + sfList.size() + " result(s) found");
 
             if (sfList.size() > 0) {
-                // save matching results into a GTI file
-                GtiWriter gtiWriter = new GtiWriter();
+                // save matching results into a Ginga GTI file
+                GingaGtiWriter gtiWriter = new GingaGtiWriter();
                 String gtiString = gtiWriter.writeToString(query.getTargetName(), sfList, false,
                         false);
-                log.info("GTI file written successfully");
+                // save matching results into a standard GTI fits file also
+                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI",
+                        query.getStartTime(), query.getMode(), "fits"));
+                GtiWriter gtiFitsWriter = new GtiWriter();
+                gtiFitsWriter.writeToFits(sfList, gtiFitsFile);
+                log.debug("GTI file " + gtiFitsFile.getPath() + " written successfully");
 
                 // emit timinfilfits input model
                 Tim2filfitsInputModel inputModel = new Tim2filfitsInputModel();

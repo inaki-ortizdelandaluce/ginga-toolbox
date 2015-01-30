@@ -1,151 +1,126 @@
 package org.ginga.toolbox.gti;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
+
+import nom.tam.fits.Fits;
+import nom.tam.fits.FitsFactory;
+import nom.tam.util.BufferedFile;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
-import org.ginga.toolbox.target.TargetEntity;
-import org.ginga.toolbox.target.dao.TargetDaoException;
-import org.ginga.toolbox.target.dao.impl.TargetDaoImpl;
 
 public class GtiWriter {
 
     private final static Logger log = Logger.getLogger(GtiWriter.class);
 
+    public class GtiRow {
+
+        private Date startDate;
+        private Date endDate;
+
+        /**
+         * @return the startDate
+         */
+        public Date getStartDate() {
+            return this.startDate;
+        }
+
+        /**
+         * @param startDate the startDate to set
+         */
+        public void setStartDate(Date startDate) {
+            this.startDate = startDate;
+        }
+
+        /**
+         * @return the endDate
+         */
+        public Date getEndDate() {
+            return this.endDate;
+        }
+
+        /**
+         * @param endDate the endDate to set
+         */
+        public void setEndDate(Date endDate) {
+            this.endDate = endDate;
+        }
+    }
+
     public static void main(String[] args) {
         String target = "GS2000+25";
-        File f = new File("/tmp/" + target + "_REGION.DATA");
+        File f = new File("/tmp/GTI_" + target + "-5.fits");
         try {
             // query entities matching the criteria
             LacdumpDao dao = new LacdumpDaoImpl();
-            // List<LacDumpSfEntity> sfList = dao.findSfList("H", "MPC2", target,
-            // "1988-04-30 04:41:00", "1988-04-30 04:47:00", 5.0, 10.0);
             List<LacdumpSfEntity> sfList = dao.findSfList("MPC3", target, "1988-05-02 01:34:31",
                     "1988-05-02 03:09:27", 5.0, 10.0);
             log.info("Query executed successfully. " + sfList.size() + " result(s) found");
             // save matching results into a GTI file
-            GtiWriter gtiWriter = new GtiWriter();
-            gtiWriter.writeToFile(target, sfList, false, true, f);
-            log.debug("GTI file " + f.getPath() + " written successfully");
+            GtiWriter gtiFitsWriter = new GtiWriter();
+            gtiFitsWriter.writeToFits(sfList, f);
+            log.info("GTI file " + f.getPath() + " written successfully");
         } catch (Exception e) {
             log.error("Error generating GTI file " + f.getPath(), e);
         }
     }
 
-    public String writeToString(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
-            boolean dataBlocks) throws IOException {
-        StringWriter writer = new StringWriter();
-        write(target, sfList, isBackground, dataBlocks, writer);
-        return writer.toString();
-    }
-
-    public void writeToFile(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
-            boolean dataBlocks, File file) throws IOException {
-        write(target, sfList, isBackground, dataBlocks, new FileWriter(file));
-    }
-
-    public void write(String target, List<LacdumpSfEntity> sfList, boolean isBackground,
-            boolean dataBlocks, Writer writer) throws IOException {
+    public void writeToFits(List<LacdumpSfEntity> sfList, File f) throws IOException {
         try {
-            DecimalFormat df = new DecimalFormat("#.0000");
-            // add TGT line with target resolved into B1950 coordinates
-            if (!isBackground) {
-                String targetLine = null;
-                try {
-                    TargetEntity targetEntity = new TargetDaoImpl().findByName(target);
-                    if (targetEntity != null) {
-                        if (targetEntity.getRaDegB1950() == 0 && targetEntity.getDecDegB1950() == 0) {
-                            throw new TargetDaoException(
-                                    "Target found in database but coordinates not resolved");
-                        }
-                        targetLine = "'TGT' " + df.format(targetEntity.getRaDegB1950()) + " "
-                                + df.format(targetEntity.getDecDegB1950()) + "  '"
-                                + targetEntity.getTargetName() + "'\n";
-                    }
-                } catch (TargetDaoException e) {
-                    log.warn("Could not resolve target. Message= " + e.getMessage());
-                    Scanner scanner = new Scanner(System.in);
-                    targetLine = "'TGT' ";
-                    boolean catcher = false;
-                    do {
-                        try {
-                            System.out.println("Enter coordinates for " + target
-                                    + " (epoch=B1950, unit=degrees)");
-
-                            System.out.println("[e.g. 300.1786, 25.0954]:");
-                            String[] coordinates = scanner.next().split(",");
-                            targetLine += Double.valueOf(coordinates[0]).toString() + " ";
-                            targetLine += Double.valueOf(coordinates[1]).toString() + "  ";
-                            targetLine += "'" + target + "'\n";
-                            catcher = true;
-                        } catch (Exception e2) {
-                            System.out
-                                    .println("Coordinates input format is not correct, please try again");
-                            System.out.println("[e.g. 300.1786, 25.0954]");
-                        } finally {
-                            scanner.nextLine();
-                        }
-                    } while (!catcher);
-                    scanner.close();
-                } finally {
-                    writer.write(targetLine);
-                }
-            }
-
-            if (!dataBlocks) { // add DATA line
-                writer.write("'DATA' \n");
-            }
-
-            // add Super Frame and Sequence Numbers
+            // read entities into GTI structure
+            List<GtiRow> rows = new ArrayList<GtiRow>();
             String lastSuperFrame = null;
+            Date lastDate = null;
             int lastSeqNo = -1;
+            GtiRow row = null;
             for (LacdumpSfEntity sf : sfList) {
                 if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
                     if (lastSuperFrame != null) {
-                        writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
-                        if (dataBlocks) { // close DATA
-                            writer.write("'END'\n");
-                        }
+                        row.setEndDate(lastDate);
+                        rows.add(row);
                     }
-                    if (dataBlocks) { // add DATA line
-                        writer.write("'DATA' \n");
-                    }
-                    writer.write("'PASS' '" + sf.getSuperFrame() + "' / \n");
-                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
+                    row = new GtiRow();
+                    row.setStartDate(sf.getDate());
                 } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
-                    writer.write("'E' " + lastSeqNo + " 63  63 /\n"); // end previous
-                    writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
+                    // end previous
+                    row.setEndDate(lastDate);
+                    rows.add(row);
+                    // begin new
+                    row = new GtiRow();
+                    row.setStartDate(sf.getDate());
                 }
                 lastSeqNo = sf.getSequenceNumber();
+                lastDate = sf.getDate();
                 lastSuperFrame = sf.getSuperFrame();
             }
             if (lastSeqNo > 0) {
-                writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
-                if (dataBlocks) { // close DATA
-                    writer.write("'END'\n");
-                }
+                // end previous
+                row.setEndDate(lastDate);
+                rows.add(row);
             }
-            if (!dataBlocks) { // close DATA
-                writer.write("'END'\n");
+            // build FITS data
+            log.info(rows.size() + " GTI row(s) found");
+            double[][] data = new double[rows.size()][2];
+            long zeroTime = rows.get(0).getStartDate().getTime();
+            for (int i = 0; i < rows.size(); i++) {
+                data[i][0] = (rows.get(i).getStartDate().getTime() - zeroTime) / 1000;
+                data[i][1] = (rows.get(i).getEndDate().getTime() - zeroTime) / 1000;
             }
-            writer.flush();
-        } catch (IOException e) {
+            // build FITS
+            Fits fits = new Fits();
+            fits.addHDU(FitsFactory.HDUFactory(data));
+            BufferedFile bf = new BufferedFile(f, "rw");
+            fits.write(bf);
+            bf.flush();
+            bf.close();
+        } catch (Exception e) {
             throw new IOException(e);
-        } finally {
-            try {
-                writer.close();
-            } catch (IOException e) {
-                log.warn("Error closing writer stream");
-            }
         }
     }
 }
