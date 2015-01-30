@@ -109,3 +109,46 @@ ln -s ginga-toolbox-1.0 ginga-toolbox-1.0
 See instructions on how to install database in specific database documents under this folder:
   HOWTO_MySQL.txt 
   HOWTO_PostgreSQL.txt
+  
+8. Export VM  
+Open VirtualBox 
+Go to File > Export Appliance... 
+Thne save it as GingaToolbox.ova
+
+9. Import VM
+Open VirtualBox
+Go to File > Import Appliance...
+Select GingaToolbox.ova file
+Once this is done, a GingaToolboxVM item will appear on the vertical left panel
+
+10. Share local folder on GingaToolboxVM
+Create a folder on the host machine (e.g. /Users/iortiz/projects/ginga/output_data)
+On the vertical left panel, right click on GingaToolboxVM > Settings...
+On the top tool bar, click on 'Shared Folders'
+Click on the a folder with a plus sign icon ('Add a new shared folder definition')
+On the 'Folder Path' field select the folder you created on the host machine (e.g. /Users/iortiz/projects/ginga/output_data)
+Select 'Auto-mount' and 'Make permanent' and click 'OK'
+Start the GingaToolboxVM
+Go to the VirtualBox VM window menu and make sure bidirectional sharing is selected (Devices > Shared Clipboard > Bidirectional)
+Open a terminal in the GingaToolboxVM guest machine and type the following commands:
+> mkdir ~/share
+> sudo usermod -a -G vboxsf ginga
+Edit the /etc/rc.local, and add the following line:
+mount --bind /media/sf_<your_local_shared_folder> /home/ginga/share 
+(e.g. mount --bind /media/sf_output_data /home/ginga/share)
+Reboot the GingaToolboxVM
+
+11. Update the GingaToolbox software
+Start-up the GingaToolboxVM 
+Open a terminal and type:
+> cd
+> cd ginga-toolbox.git
+> git pull (username/password: gingatoolbox)
+The previous steps update the source code locally.
+To install such updates type the following commands
+> mvn clean package jar:jar appassembler:assemble assembly:assembly  
+> cp target/ginga-toolbox-<X.Y>.tar.gz ~/ (where X.Y is the version to be installed)
+> cd
+> tar xvfz ginga-toolbox-<X.Y>.tar.gz
+> rm ginga-toolbox
+> ln -s ginga-toolbox-<X.Y> ginga-toolbox
