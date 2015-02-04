@@ -1,6 +1,6 @@
 1. Build software
 
-mvn clean package jar:jar appassembler:assemble assembly:assembly
+mvn install:install-file clean package jar:jar appassembler:assemble assembly:assembly
 
 2. Install software
 

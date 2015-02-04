@@ -4,7 +4,7 @@
 	<groupId>org.ginga.toolbox</groupId>
 	<artifactId>ginga-toolbox</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1</version>
+	<version>1.1.1</version>
 	<name>ginga-toolbox</name>
 	<url>http://maven.apache.org</url>
  	<dependencies>
@@ -52,8 +52,6 @@
           <groupId>nom.tam.fits</groupId>
           <artifactId>nom.tam.fits</artifactId>
           <version>1.11.1</version>
-          <scope>system</scope>
-          <systemPath>${basedir}/lib/fits-1.11.1.jar</systemPath>
         </dependency>        
 		<dependency>
 			<groupId>log4j</groupId>
@@ -80,6 +78,18 @@
         </resource>
     </resources>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <file>${basedir}/lib/fits-1.11.1.jar</file>
+          <groupId>nom.tam.fits</groupId>
+          <artifactId>nom.tam.fits</artifactId>
+          <version>1.11.1</version>
+          <packaging>jar</packaging>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
