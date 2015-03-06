@@ -97,7 +97,7 @@ sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0
 
 6. Install Ginga Toolbox
 
-git clone https://inaki-ortizdelandaluce@bitbucket.org/inaki-ortizdelandaluce/ginga-toolbox.git ginga-toolbox.git
+git clone https://gingatoolbox@bitbucket.org/inaki-ortizdelandaluce/ginga-toolbox.git ginga-toolbox.git
 cd ginga-toolbox.git
 mvn clean package jar:jar appassembler:assemble assembly:assembly
 cp target/ginga-toolbox-1.0.tar.gz ~/
