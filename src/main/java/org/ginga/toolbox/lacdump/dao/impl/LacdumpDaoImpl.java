@@ -21,7 +21,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#save(org.ginga.toolbox.lacdump. LACDumpEntity)
      */
     @Override
@@ -40,7 +40,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findById(long)
      */
     @Override
@@ -61,7 +61,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LACDumpDao#saveList(lava.util.List< LacDumpSfEntity>)
      */
     @Override
@@ -71,7 +71,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
             Session hibernateSession = HibernateUtil.getSession();
             for (LacdumpSfEntity entity : entityList) {
                 hibernateSession.saveOrUpdate(entity);
-                log.debug(entity.getSuperFrame() + ":" + entity.getSequenceNumber()
+                log.debug(entity.getPass() + ":" + entity.getSequenceNumber()
                         + " stored into the database successfully");
             }
             HibernateUtil.commitTransaction();
@@ -84,7 +84,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(java.lang.String, java.lang.String,
      * java.lang.String, java.util.Date, java.util.Date, double, double)
      */
@@ -92,7 +92,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
     @Override
     public List<LacdumpSfEntity> findSfList(String bitRate, String mode, String target,
             String startTime, String endTime, double elevation, double rigidity)
-            throws LacdumpDaoException {
+                    throws LacdumpDaoException {
         List<LacdumpSfEntity> sfList = null;
         try {
             String hql = null;
@@ -175,7 +175,7 @@ public class LacdumpDaoImpl implements LacdumpDao {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.ginga.toolbox.lacdump.dao.LacDumpDao#findSfList(org.ginga.toolbox.lacdump
      * .LacDumpQuery)
      */

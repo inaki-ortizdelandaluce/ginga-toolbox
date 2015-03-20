@@ -89,7 +89,7 @@ public class GingaGtiWriter {
                             catcher = true;
                         } catch (Exception e2) {
                             System.out
-                                    .println("Coordinates input format is not correct, please try again");
+                            .println("Coordinates input format is not correct, please try again");
                             System.out.println("[e.g. 300.1786, 25.0954]");
                         } finally {
                             scanner.nextLine();
@@ -105,12 +105,12 @@ public class GingaGtiWriter {
                 writer.write("'DATA' \n");
             }
 
-            // add Super Frame and Sequence Numbers
-            String lastSuperFrame = null;
+            // add Pass and Super Frame Sequence Numbers
+            String lastPass = null;
             int lastSeqNo = -1;
             for (LacdumpSfEntity sf : sfList) {
-                if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
-                    if (lastSuperFrame != null) {
+                if (!sf.getPass().equals(lastPass)) { // new PASS
+                    if (lastPass != null) {
                         writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous
                         if (dataBlocks) { // close DATA
                             writer.write("'END'\n");
@@ -119,14 +119,14 @@ public class GingaGtiWriter {
                     if (dataBlocks) { // add DATA line
                         writer.write("'DATA' \n");
                     }
-                    writer.write("'PASS' '" + sf.getSuperFrame() + "' / \n");
+                    writer.write("'PASS' '" + sf.getPass() + "' / \n");
                     writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
                 } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
                     writer.write("'E' " + lastSeqNo + " 63  63 /\n"); // end previous
                     writer.write("'B' " + sf.getSequenceNumber() + "  0   0/\n"); // begin
                 }
                 lastSeqNo = sf.getSequenceNumber();
-                lastSuperFrame = sf.getSuperFrame();
+                lastPass = sf.getPass();
             }
             if (lastSeqNo > 0) {
                 writer.write("'E' " + lastSeqNo + " 63  63/\n"); // end previous

@@ -75,13 +75,13 @@ public class GtiWriter {
         try {
             // read entities into GTI structure
             List<GtiRow> rows = new ArrayList<GtiRow>();
-            String lastSuperFrame = null;
+            String lastPass = null;
             Date lastDate = null;
             int lastSeqNo = -1;
             GtiRow row = null;
             for (LacdumpSfEntity sf : sfList) {
-                if (!sf.getSuperFrame().equals(lastSuperFrame)) { // new SF
-                    if (lastSuperFrame != null) {
+                if (!sf.getPass().equals(lastPass)) { // new SF
+                    if (lastPass != null) {
                         row.setEndDate(lastDate);
                         rows.add(row);
                     }
@@ -97,7 +97,7 @@ public class GtiWriter {
                 }
                 lastSeqNo = sf.getSequenceNumber();
                 lastDate = sf.getDate();
-                lastSuperFrame = sf.getSuperFrame();
+                lastPass = sf.getPass();
             }
             if (lastSeqNo > 0) {
                 // end previous

@@ -22,7 +22,7 @@ public class LacdumpSfEntity {
     private String lacdumpFile;
 
     @Column(name = "SF", nullable = false, length = 12)
-    private String superFrame;
+    private String pass;
 
     @Column(name = "SEQ_NO", nullable = false)
     private int sequenceNumber;
@@ -82,17 +82,17 @@ public class LacdumpSfEntity {
     private double spinAxisDecDeg;
 
     /**
-     * @return the superFrame
+     * @return the pass
      */
-    public String getSuperFrame() {
-        return this.superFrame;
+    public String getPass() {
+        return this.pass;
     }
 
     /**
-     * @param superFrame the superFrame to set
+     * @param pass the pass to set
      */
-    public void setSuperFrame(String superFrame) {
-        this.superFrame = superFrame;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     /**
