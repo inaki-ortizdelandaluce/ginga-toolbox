@@ -43,8 +43,6 @@ public class ObservationListPrinterCmd {
 
     public void printAllModes(String target) {
 
-        printHeaderWithLacMode();
-
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
@@ -52,7 +50,10 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        printHeaderWithLacMode();
+        this.writer.println(String.format("%6s%10s%6s%20s%20s", "OBSID", "PASS", "MODE",
+                "START_TIME", "END_TIME"));
+        this.writer.println(String.format("%62s",
+                "=============================================================="));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
@@ -60,31 +61,12 @@ public class ObservationListPrinterCmd {
                 this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
                         obsEntity.getSequenceNumber(), singleModeObs.getMode(),
                         singleModeObs.getStartTime(), singleModeObs.getEndTime()));
-                // this.writer.println(" "
-                // + String.format("%18s",
-                // obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
-                // + String.format("%8s", singleModeObs.getMode()) + " "
-                // + String.format("%20s", singleModeObs.getStartTime()) + " "
-                // + String.format("%20s", singleModeObs.getEndTime())));
             }
-            this.writer.println("----------------------------------------------------------");
+            this.writer.println(String.format("%62s",
+                    "--------------------------------------------------------------"));
         }
         this.writer.flush();
         this.writer.close();
-    }
-
-    private void printHeaderWithLacMode() {
-        this.writer.println(String.format("%6s%10s%6s%20s%20s", "OBSID", "PASS", "MODE",
-                "START_TIME", "END_TIME"));
-        this.writer.println(String.format("%62s",
-                "=============================================================="));
-    }
-
-    private void printHeader() {
-        this.writer.println(String.format("%6s%10s%20s%20s", "OBSID", "PASS", "START_TIME",
-                "END_TIME"));
-        this.writer.println(String.format("%62s",
-                "========================================================"));
     }
 
     public void printSpectralModes(String target) {
@@ -103,21 +85,19 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        printHeaderWithLacMode();
+        this.writer.println(String.format("%6s%10s%6s%20s%20s", "OBSID", "PASS", "MODE",
+                "START_TIME", "END_TIME"));
+        this.writer.println(String.format("%62s",
+                "=============================================================="));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             for (PipelineInput singleModeObs : obsMap.get(obsEntity)) {
                 LacMode mode = singleModeObs.getLacMode();
                 if (Arrays.asList(modes).contains(mode)) {
-                    this.writer.println(" "
-                            + String.format(
-                                    "%18s",
-                                    obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
-                                            + String.format("%8s", singleModeObs.getMode()) + " "
-                                            + String.format("%20s", singleModeObs.getStartTime())
-                                            + " "
-                                            + String.format("%20s", singleModeObs.getEndTime())));
+                    this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
+                            obsEntity.getSequenceNumber(), singleModeObs.getMode(),
+                            singleModeObs.getStartTime(), singleModeObs.getEndTime()));
                 }
             }
         }
@@ -134,16 +114,17 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        printHeader();
+        this.writer.println(String.format("%6s%10s%20s%20s", "OBSID", "PASS", "START_TIME",
+                "END_TIME"));
+        this.writer.println(String.format("%62s",
+                "========================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            this.writer.println(" "
-                    + String.format(
-                            "%18s",
-                            obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
-                                    + String.format("%20s", obsEntity.getStartTime()) + " "
-                                    + String.format("%20s", obsEntity.getEndTime())));
+            this.writer
+            .println(String.format("%6s%10s%20s%20s", obsEntity.getId(),
+                    obsEntity.getSequenceNumber(), obsEntity.getStartTime(),
+                    obsEntity.getEndTime()));
         }
         this.writer.flush();
         this.writer.close();
