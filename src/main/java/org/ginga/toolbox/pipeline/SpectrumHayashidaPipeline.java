@@ -7,6 +7,7 @@ import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
@@ -14,16 +15,16 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class SpectrumHayashidaPipeline {
 
-    private Pipe<PipelineInput, PipelineInput> modeFilter;
-    private Pipe<PipelineInput, LacdumpQuery> queryBuilder;
+    private Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter;
+    private Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder;
     private Pipe<LacdumpQuery, LacqrdfitsInputModel> lacqrdfitsInputBuilder;
     private Pipe<LacqrdfitsInputModel, File> lacqrdfits;
     private Pipe<File, File> lac2xspec;
-    private Pipeline<PipelineInput, File> pipeline;
+    private Pipeline<LacModeTargetObservation, File> pipeline;
 
     public SpectrumHayashidaPipeline() {
         // initialize all pipes needed
-        this.modeFilter = new FilterFunctionPipe<PipelineInput>(
+        this.modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new SpectrumModeFilter());
         this.queryBuilder = new LacdumpQueryBuilder();
         this.lacqrdfitsInputBuilder = new LacqrdfitsInputBuilder() {
@@ -62,11 +63,11 @@ public class SpectrumHayashidaPipeline {
         };
         this.lacqrdfits = new LacqrdfitsRunner();
         this.lac2xspec = new Lac2xspecRunner();
-        this.pipeline = new Pipeline<PipelineInput, File>(this.modeFilter,
+        this.pipeline = new Pipeline<LacModeTargetObservation, File>(this.modeFilter,
                 this.queryBuilder, this.lacqrdfitsInputBuilder, this.lacqrdfits, this.lac2xspec);
     }
 
-    public void run(List<PipelineInput> obsList) {
+    public void run(List<LacModeTargetObservation> obsList) {
         this.pipeline.setStarts(obsList);
     }
 

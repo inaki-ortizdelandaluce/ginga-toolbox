@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
@@ -16,16 +17,16 @@ public class SpectrumSimplePipeline {
     public SpectrumSimplePipeline() {
     }
 
-    public File run(PipelineInput obs) {
+    public File run(LacModeTargetObservation obs) {
         SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline();
         bgPipeline.run(Arrays.asList(obs));
         return extractSpecWithBg(obs, bgPipeline.next());
     }
 
-    private File extractSpecWithBg(PipelineInput obs, final File bgSpectrumFile) {
-        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
+    private File extractSpecWithBg(LacModeTargetObservation obs, final File bgSpectrumFile) {
+        Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new SpectrumModeFilter());
-        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+        Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
         Pipe<LacdumpQuery, LacspecInputModel> lacspecInputBuilder = new LacspecInputBuilder() {
 
             @Override
@@ -66,7 +67,7 @@ public class SpectrumSimplePipeline {
         Pipe<LacspecInputModel, File> lacspec = new LacspecRunner();
         Pipe<File, File> lac2xspec = new Lac2xspecRunner();
 
-        Pipeline<PipelineInput, File> specExtractor = new Pipeline<PipelineInput, File>(
+        Pipeline<LacModeTargetObservation, File> specExtractor = new Pipeline<LacModeTargetObservation, File>(
                 modeFilter, queryBuilder, lacspecInputBuilder, lacspec, lac2xspec);
         specExtractor.setStarts(Arrays.asList(obs));
         return specExtractor.next();

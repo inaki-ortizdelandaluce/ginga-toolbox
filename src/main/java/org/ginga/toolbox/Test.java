@@ -19,6 +19,7 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
@@ -26,7 +27,6 @@ import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
 import org.ginga.toolbox.pipeline.LacqrdfitsInputBuilder;
 import org.ginga.toolbox.pipeline.LacqrdfitsRunner;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
-import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.target.SimbadTargetResolver;
 import org.ginga.toolbox.target.SimbadTargetResolver.SimbadObject;
 import org.ginga.toolbox.target.SimbadTargetResolver.TargetNotResolvedException;
@@ -89,10 +89,10 @@ public class Test {
     }
 
     public static void scanObservations(String[] args) {
-        Pipe<String, Map<ObservationEntity, List<PipelineInput>>> obsPipe = new ObservationListBuilder();
+        Pipe<String, Map<ObservationEntity, List<LacModeTargetObservation>>> obsPipe = new ObservationListBuilder();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
         if (obsPipe.hasNext()) {
-            Map<ObservationEntity, List<PipelineInput>> obsSummary = obsPipe.next();
+            Map<ObservationEntity, List<LacModeTargetObservation>> obsSummary = obsPipe.next();
             log.info(obsSummary.size() + " observation(s) scanned");
         }
     }

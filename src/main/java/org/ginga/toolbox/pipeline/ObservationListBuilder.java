@@ -14,6 +14,7 @@ import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
@@ -24,16 +25,16 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class ObservationListBuilder extends
-AbstractPipe<String, Map<ObservationEntity, List<PipelineInput>>> implements
-TransformPipe<String, Map<ObservationEntity, List<PipelineInput>>> {
+        AbstractPipe<String, Map<ObservationEntity, List<LacModeTargetObservation>>> implements
+        TransformPipe<String, Map<ObservationEntity, List<LacModeTargetObservation>>> {
 
     private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
     @Override
-    protected Map<ObservationEntity, List<PipelineInput>> processNextStart()
+    protected Map<ObservationEntity, List<LacModeTargetObservation>> processNextStart()
             throws NoSuchElementException {
         String target = this.starts.next();
-        Map<ObservationEntity, List<PipelineInput>> map = new LinkedHashMap<ObservationEntity, List<PipelineInput>>();
+        Map<ObservationEntity, List<LacModeTargetObservation>> map = new LinkedHashMap<ObservationEntity, List<LacModeTargetObservation>>();
         // read environment
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
         double minElevation = dataReductionEnv.getElevationMin();
@@ -52,7 +53,7 @@ TransformPipe<String, Map<ObservationEntity, List<PipelineInput>>> {
         // find available LAC modes and date ranges for each observation
         LacdumpDao lacdumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = TimeUtil.DATE_FORMAT_DATABASE;
-        List<PipelineInput> lacModeObsList = null;
+        List<LacModeTargetObservation> targetObsList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.debug("Scanning observation " + obsEntity.getSequenceNumber() + "...");
             // find available LAC modes
@@ -68,8 +69,8 @@ TransformPipe<String, Map<ObservationEntity, List<PipelineInput>>> {
 
             // find date ranges for each mode
             List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
-            lacModeObsList = new ArrayList<PipelineInput>();
-            PipelineInput lacModeObs = null;
+            targetObsList = new ArrayList<LacModeTargetObservation>();
+            LacModeTargetObservation targetObs = null;
             for (String mode : modes) {
                 try {
                     sfList = lacdumpDao.findSfList(mode, target, startTime, endTime, minElevation,
@@ -81,16 +82,16 @@ TransformPipe<String, Map<ObservationEntity, List<PipelineInput>>> {
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
                     log.debug("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
-                    lacModeObs = new PipelineInput();
-                    lacModeObs.setTarget(target);
-                    lacModeObs.setMode(mode);
-                    lacModeObs.setStartTime(modeStartTime);
-                    lacModeObs.setEndTime(modeEndTime);
+                    targetObs = new LacModeTargetObservation();
+                    targetObs.setTarget(target);
+                    targetObs.setMode(mode);
+                    targetObs.setStartTime(modeStartTime);
+                    targetObs.setEndTime(modeEndTime);
                     // add LAC single mode target observation to list
-                    lacModeObsList.add(lacModeObs);
+                    targetObsList.add(targetObs);
                 }
             }
-            map.put(obsEntity, lacModeObsList);
+            map.put(obsEntity, targetObsList);
         }
         return map;
     }

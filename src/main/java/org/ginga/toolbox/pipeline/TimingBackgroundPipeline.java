@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
@@ -13,7 +14,7 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class TimingBackgroundPipeline {
 
-    private Pipeline<PipelineInput, File> pipeline;
+    private Pipeline<LacModeTargetObservation, File> pipeline;
 
     public TimingBackgroundPipeline() {
         this(false);
@@ -21,12 +22,12 @@ public class TimingBackgroundPipeline {
 
     public TimingBackgroundPipeline(final boolean sudsort) {
         // initialize all pipes needed
-        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
+        Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new TimingMode1Filter());
-        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
+        Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
 
         if (sudsort) {
-            this.pipeline = new Pipeline<PipelineInput, File>(modeFilter,
+            this.pipeline = new Pipeline<LacModeTargetObservation, File>(modeFilter,
                     queryBuilder, new BgdspecInputBuilder(), new BgdspecRunner());
         } else {
             Pipe<LacdumpQuery, LacspecInputModel> inputBuilder = new LacspecInputBuilder() {
@@ -66,12 +67,12 @@ public class TimingBackgroundPipeline {
                     return false;
                 }
             };
-            this.pipeline = new Pipeline<PipelineInput, File>(modeFilter,
+            this.pipeline = new Pipeline<LacModeTargetObservation, File>(modeFilter,
                     queryBuilder, inputBuilder, new LacspecRunner());
         }
     }
 
-    public void run(List<PipelineInput> obsList) {
+    public void run(List<LacModeTargetObservation> obsList) {
         this.pipeline.setStarts(obsList);
     }
 

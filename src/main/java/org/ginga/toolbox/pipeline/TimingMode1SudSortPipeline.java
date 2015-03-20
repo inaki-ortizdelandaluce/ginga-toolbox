@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.ginga.toolbox.lacdump.LacdumpQuery;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
@@ -16,16 +17,16 @@ public class TimingMode1SudSortPipeline {
     public TimingMode1SudSortPipeline() {
     }
 
-    public File run(PipelineInput obs) {
+    public File run(LacModeTargetObservation obs) {
         TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline(true);
         bgPipeline.run(Arrays.asList(obs));
         return extractTiming(obs, bgPipeline.next());
     }
 
-    private File extractTiming(PipelineInput obs, final File bgMonitorFile) {
-        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
+    private File extractTiming(LacModeTargetObservation obs, final File bgMonitorFile) {
+        Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new TimingMode1Filter());
-        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+        Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
         Pipe<LacdumpQuery, TiminfilfitsInputModel> inputBuilder = new TiminfilfitsInputBuilder() {
 
             @Override
@@ -45,7 +46,7 @@ public class TimingMode1SudSortPipeline {
         };
         Pipe<TiminfilfitsInputModel, File> timinfilfits = new TiminfilfitsRunner();
 
-        Pipeline<PipelineInput, File> extractor = new Pipeline<PipelineInput, File>(
+        Pipeline<LacModeTargetObservation, File> extractor = new Pipeline<LacModeTargetObservation, File>(
                 modeFilter, queryBuilder, inputBuilder, timinfilfits);
         extractor.setStarts(Arrays.asList(obs));
         return extractor.next();

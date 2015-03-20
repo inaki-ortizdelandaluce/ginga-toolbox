@@ -23,9 +23,9 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
-import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class ObservationListPrinterCmd {
@@ -46,7 +46,7 @@ public class ObservationListPrinterCmd {
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<LacModeTargetObservation>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
@@ -57,10 +57,10 @@ public class ObservationListPrinterCmd {
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            for (PipelineInput singleModeObs : obsMap.get(obsEntity)) {
+            for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
                 this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
-                        obsEntity.getSequenceNumber(), singleModeObs.getMode(),
-                        singleModeObs.getStartTime(), singleModeObs.getEndTime()));
+                        obsEntity.getSequenceNumber(), targetObservation.getMode(),
+                        targetObservation.getStartTime(), targetObservation.getEndTime()));
             }
             this.writer.println(String.format("%62s",
                     "--------------------------------------------------------------"));
@@ -81,7 +81,7 @@ public class ObservationListPrinterCmd {
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<LacModeTargetObservation>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
@@ -92,12 +92,12 @@ public class ObservationListPrinterCmd {
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            for (PipelineInput singleModeObs : obsMap.get(obsEntity)) {
-                LacMode mode = singleModeObs.getLacMode();
+            for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
+                LacMode mode = targetObservation.getLacMode();
                 if (Arrays.asList(modes).contains(mode)) {
                     this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
-                            obsEntity.getSequenceNumber(), singleModeObs.getMode(),
-                            singleModeObs.getStartTime(), singleModeObs.getEndTime()));
+                            obsEntity.getSequenceNumber(), targetObservation.getMode(),
+                            targetObservation.getStartTime(), targetObservation.getEndTime()));
                 }
             }
         }
@@ -110,7 +110,7 @@ public class ObservationListPrinterCmd {
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<LacModeTargetObservation>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
@@ -122,9 +122,9 @@ public class ObservationListPrinterCmd {
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             this.writer
-            .println(String.format("%6s%10s%20s%20s", obsEntity.getId(),
-                    obsEntity.getSequenceNumber(), obsEntity.getStartTime(),
-                    obsEntity.getEndTime()));
+                    .println(String.format("%6s%10s%20s%20s", obsEntity.getId(),
+                            obsEntity.getSequenceNumber(), obsEntity.getStartTime(),
+                            obsEntity.getEndTime()));
         }
         this.writer.flush();
         this.writer.close();

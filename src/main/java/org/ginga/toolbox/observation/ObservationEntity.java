@@ -77,7 +77,7 @@ public class ObservationEntity {
     private Set<ObservationDataEntity> obsDataSet;
 
     // @Transient
-    // private List<PipelineInput> singleModeObsList;
+    // private List<LacModeTargetObservation> singleModeObsList;
 
     public long getId() {
         return this.id;
