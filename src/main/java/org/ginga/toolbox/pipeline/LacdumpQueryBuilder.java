@@ -8,13 +8,12 @@ import java.util.NoSuchElementException;
 import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacdumpQueryBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
-implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
+public class LacdumpQueryBuilder extends AbstractPipe<PipelineInput, LacdumpQuery>
+implements TransformPipe<PipelineInput, LacdumpQuery> {
 
     /*
      * (non-Javadoc)
@@ -23,7 +22,7 @@ implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
      */
     @Override
     protected LacdumpQuery processNextStart() throws NoSuchElementException {
-        SingleModeTargetObservation targetObservation = this.starts.next();
+        PipelineInput targetObservation = this.starts.next();
         LacdumpQuery query = new LacdumpQuery();
 
         // apply values from observation

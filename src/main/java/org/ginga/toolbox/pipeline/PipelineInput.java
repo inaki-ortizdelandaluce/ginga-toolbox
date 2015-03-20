@@ -1,8 +1,8 @@
-package org.ginga.toolbox.observation;
+package org.ginga.toolbox.pipeline;
 
 import org.ginga.toolbox.util.Constants.LacMode;
 
-public class SingleModeTargetObservation {
+public class PipelineInput {
 
     private long obsId;
     private String target;

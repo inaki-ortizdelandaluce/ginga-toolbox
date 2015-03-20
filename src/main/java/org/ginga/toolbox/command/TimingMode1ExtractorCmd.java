@@ -14,7 +14,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
+import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
 import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
 import org.ginga.toolbox.pipeline.TimingMode1SudSortPipeline;
@@ -117,7 +117,7 @@ public class TimingMode1ExtractorCmd {
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // build single mode target observation instance from arguments
-            SingleModeTargetObservation obs = new SingleModeTargetObservation();
+            PipelineInput obs = new PipelineInput();
             obs.setObsId(obsId);
             obs.setTarget(target);
             obs.setMode(mode);
@@ -210,7 +210,7 @@ public class TimingMode1ExtractorCmd {
         helpFormatter.printHelp("extract_timing_mode_1.sh", getOptions());
     }
 
-    public static void extractTiming(SingleModeTargetObservation obs, BgSubtractionMethod method) {
+    public static void extractTiming(PipelineInput obs, BgSubtractionMethod method) {
         switch (method) {
         case HAYASHIDA:
             extractTimingHayashida(obs);
@@ -227,7 +227,7 @@ public class TimingMode1ExtractorCmd {
         }
     }
 
-    public static void extractTimingHayashida(SingleModeTargetObservation obs) {
+    public static void extractTimingHayashida(PipelineInput obs) {
         TimingMode1HayashidaPipeline pipeline = new TimingMode1HayashidaPipeline();
         File timingFile = pipeline.run(obs);
         if (timingFile != null) {
@@ -235,7 +235,7 @@ public class TimingMode1ExtractorCmd {
         }
     }
 
-    public static void extractTimingSimple(SingleModeTargetObservation obs) {
+    public static void extractTimingSimple(PipelineInput obs) {
         TimingMode1SimplePipeline pipeline = new TimingMode1SimplePipeline();
         File timingFile = pipeline.run(obs);
         if (timingFile != null) {
@@ -243,7 +243,7 @@ public class TimingMode1ExtractorCmd {
         }
     }
 
-    public static void extractTimingSudSort(SingleModeTargetObservation obs) {
+    public static void extractTimingSudSort(PipelineInput obs) {
         TimingMode1SudSortPipeline pipeline = new TimingMode1SudSortPipeline();
         File timingFile = pipeline.run(obs);
         if (timingFile != null) {

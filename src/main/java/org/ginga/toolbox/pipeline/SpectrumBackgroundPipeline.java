@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
@@ -14,7 +13,7 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class SpectrumBackgroundPipeline {
 
-    private Pipeline<SingleModeTargetObservation, File> pipeline;
+    private Pipeline<PipelineInput, File> pipeline;
 
     public SpectrumBackgroundPipeline() {
         this(false);
@@ -22,11 +21,11 @@ public class SpectrumBackgroundPipeline {
 
     public SpectrumBackgroundPipeline(final boolean sudsort) {
         // initialize all pipes needed
-        Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
+        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
                 new SpectrumModeFilter());
-        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
+        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
         if (sudsort) {
-            this.pipeline = new Pipeline<SingleModeTargetObservation, File>(modeFilter,
+            this.pipeline = new Pipeline<PipelineInput, File>(modeFilter,
                     queryBuilder, new BgdspecInputBuilder(), new BgdspecRunner());
         } else {
             Pipe<LacdumpQuery, LacspecInputModel> inputBuilder = new LacspecInputBuilder() {
@@ -66,12 +65,12 @@ public class SpectrumBackgroundPipeline {
                     return false;
                 }
             };
-            this.pipeline = new Pipeline<SingleModeTargetObservation, File>(modeFilter,
+            this.pipeline = new Pipeline<PipelineInput, File>(modeFilter,
                     queryBuilder, inputBuilder, new LacspecRunner());
         }
     }
 
-    public void run(List<SingleModeTargetObservation> obsList) {
+    public void run(List<PipelineInput> obsList) {
         this.pipeline.setStarts(obsList);
     }
 

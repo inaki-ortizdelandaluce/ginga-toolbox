@@ -12,7 +12,6 @@ import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
@@ -24,8 +23,8 @@ import org.ginga.toolbox.util.Constants.LacMode;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
-implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
+public class LacdumpQueryBgBuilder extends AbstractPipe<PipelineInput, LacdumpQuery>
+implements TransformPipe<PipelineInput, LacdumpQuery> {
 
     private final static Logger log = Logger.getLogger(LacdumpQueryBgBuilder.class);
 
@@ -38,7 +37,7 @@ implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
     protected LacdumpQuery processNextStart() throws NoSuchElementException {
         LacdumpQuery query = new LacdumpQuery();
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
-        SingleModeTargetObservation targetObservation = this.starts.next();
+        PipelineInput targetObservation = this.starts.next();
 
         try {
             // set target and flag as background

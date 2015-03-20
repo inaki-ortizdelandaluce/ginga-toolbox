@@ -7,7 +7,6 @@ import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
@@ -20,11 +19,11 @@ public class TimingMode1HayashidaPipeline {
     public TimingMode1HayashidaPipeline() {
     }
 
-    public File run(SingleModeTargetObservation obs) {
+    public File run(PipelineInput obs) {
         // create a BGD timing file using lacqrdfits
-        Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
+        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
                 new TimingMode1Filter());
-        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
         Pipe<LacdumpQuery, LacqrdfitsInputModel> inputBuilder = new LacqrdfitsInputBuilder() {
 
             @Override
@@ -61,15 +60,15 @@ public class TimingMode1HayashidaPipeline {
 
         };
         Pipe<LacqrdfitsInputModel, File> lacqrdfits = new LacqrdfitsRunner(true);
-        Pipeline<SingleModeTargetObservation, File> bgPipeline = new Pipeline<SingleModeTargetObservation, File>(
+        Pipeline<PipelineInput, File> bgPipeline = new Pipeline<PipelineInput, File>(
                 modeFilter, queryBuilder, inputBuilder, lacqrdfits);
         bgPipeline.setStarts(Arrays.asList(obs));
         // extract timing file subtracting the BGD file
         return extractTiming(obs, bgPipeline.next());
     }
 
-    private File extractTiming(SingleModeTargetObservation obs, final File bgTimingFile) {
-        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+    private File extractTiming(PipelineInput obs, final File bgTimingFile) {
+        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
         Pipe<LacdumpQuery, TiminfilfitsInputModel> inputBuilder = new TiminfilfitsInputBuilder() {
 
             @Override
@@ -89,7 +88,7 @@ public class TimingMode1HayashidaPipeline {
         };
         Pipe<TiminfilfitsInputModel, File> timinfilfits = new TiminfilfitsRunner();
 
-        Pipeline<SingleModeTargetObservation, File> extractor = new Pipeline<SingleModeTargetObservation, File>(
+        Pipeline<PipelineInput, File> extractor = new Pipeline<PipelineInput, File>(
                 queryBuilder, inputBuilder, timinfilfits);
         extractor.setStarts(Arrays.asList(obs));
         return extractor.next();

@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacspec.LacspecInputModel;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
 import com.tinkerpop.pipes.Pipe;
@@ -17,16 +16,16 @@ public class SpectrumSudSortPipeline {
     public SpectrumSudSortPipeline() {
     }
 
-    public File run(SingleModeTargetObservation obs) {
+    public File run(PipelineInput obs) {
         SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline(true);
         bgPipeline.run(Arrays.asList(obs));
         return extractSpecWithBg(obs, bgPipeline.next());
     }
 
-    private File extractSpecWithBg(SingleModeTargetObservation obs, final File bgSpectrumFile) {
-        Pipe<SingleModeTargetObservation, SingleModeTargetObservation> modeFilter = new FilterFunctionPipe<SingleModeTargetObservation>(
+    private File extractSpecWithBg(PipelineInput obs, final File bgSpectrumFile) {
+        Pipe<PipelineInput, PipelineInput> modeFilter = new FilterFunctionPipe<PipelineInput>(
                 new SpectrumModeFilter());
-        Pipe<SingleModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
+        Pipe<PipelineInput, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
         Pipe<LacdumpQuery, LacspecInputModel> lacspecInputBuilder = new LacspecInputBuilder() {
 
             @Override
@@ -67,7 +66,7 @@ public class SpectrumSudSortPipeline {
         Pipe<LacspecInputModel, File> lacspec = new LacspecRunner();
         Pipe<File, File> lac2xspec = new Lac2xspecRunner();
 
-        Pipeline<SingleModeTargetObservation, File> specExtractor = new Pipeline<SingleModeTargetObservation, File>(
+        Pipeline<PipelineInput, File> specExtractor = new Pipeline<PipelineInput, File>(
                 modeFilter, queryBuilder, lacspecInputBuilder, lacspec, lac2xspec);
         specExtractor.setStarts(Arrays.asList(obs));
         return specExtractor.next();

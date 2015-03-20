@@ -15,7 +15,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
+import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.pipeline.TimingMode2Pipeline;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
@@ -86,7 +86,7 @@ public class TimingMode2ExtractorCmd {
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // build single mode target observation instance from arguments
-            SingleModeTargetObservation obs = new SingleModeTargetObservation();
+            PipelineInput obs = new PipelineInput();
             obs.setObsId(obsId);
             obs.setTarget(target);
             obs.setMode(LacMode.PC.toString());
@@ -150,7 +150,7 @@ public class TimingMode2ExtractorCmd {
         helpFormatter.printHelp("extract_timing_mode_1.sh", getOptions());
     }
 
-    public static void extractTiming(SingleModeTargetObservation obs) {
+    public static void extractTiming(PipelineInput obs) {
         TimingMode2Pipeline pipeline = new TimingMode2Pipeline();
         pipeline.run(Arrays.asList(obs));
         File timingFile = pipeline.next();

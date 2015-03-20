@@ -16,8 +16,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
+import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
@@ -43,7 +43,7 @@ public class SpectraExtractorCmd {
         // find all observations for input target
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
-        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
 
         // find available modes for each observations and extract spectra
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
@@ -51,7 +51,7 @@ public class SpectraExtractorCmd {
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
-            List<SingleModeTargetObservation> singleModeObsList = obsMap.get(obsEntity);
+            List<PipelineInput> singleModeObsList = obsMap.get(obsEntity);
             // extract spectra for all relevant modes
             if (singleModeObsList != null) {
                 // run pipeline

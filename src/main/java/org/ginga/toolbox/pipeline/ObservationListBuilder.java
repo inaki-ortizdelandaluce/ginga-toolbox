@@ -15,7 +15,6 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
@@ -25,16 +24,16 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class ObservationListBuilder extends
-AbstractPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> implements
-TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> {
+AbstractPipe<String, Map<ObservationEntity, List<PipelineInput>>> implements
+TransformPipe<String, Map<ObservationEntity, List<PipelineInput>>> {
 
     private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
     @Override
-    protected Map<ObservationEntity, List<SingleModeTargetObservation>> processNextStart()
+    protected Map<ObservationEntity, List<PipelineInput>> processNextStart()
             throws NoSuchElementException {
         String target = this.starts.next();
-        Map<ObservationEntity, List<SingleModeTargetObservation>> map = new LinkedHashMap<ObservationEntity, List<SingleModeTargetObservation>>();
+        Map<ObservationEntity, List<PipelineInput>> map = new LinkedHashMap<ObservationEntity, List<PipelineInput>>();
         // read environment
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
         double minElevation = dataReductionEnv.getElevationMin();
@@ -53,7 +52,7 @@ TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>>
         // find available LAC modes and date ranges for each observation
         LacdumpDao lacdumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = TimeUtil.DATE_FORMAT_DATABASE;
-        List<SingleModeTargetObservation> lacModeObsList = null;
+        List<PipelineInput> lacModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.debug("Scanning observation " + obsEntity.getSequenceNumber() + "...");
             // find available LAC modes
@@ -69,8 +68,8 @@ TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>>
 
             // find date ranges for each mode
             List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
-            lacModeObsList = new ArrayList<SingleModeTargetObservation>();
-            SingleModeTargetObservation lacModeObs = null;
+            lacModeObsList = new ArrayList<PipelineInput>();
+            PipelineInput lacModeObs = null;
             for (String mode : modes) {
                 try {
                     sfList = lacdumpDao.findSfList(mode, target, startTime, endTime, minElevation,
@@ -82,7 +81,7 @@ TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>>
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
                     log.debug("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
-                    lacModeObs = new SingleModeTargetObservation();
+                    lacModeObs = new PipelineInput();
                     lacModeObs.setTarget(target);
                     lacModeObs.setMode(mode);
                     lacModeObs.setStartTime(modeStartTime);

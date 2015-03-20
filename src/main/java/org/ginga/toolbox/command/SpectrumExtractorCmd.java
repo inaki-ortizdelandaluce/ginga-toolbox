@@ -15,7 +15,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
+import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.pipeline.SpectrumSimplePipeline;
 import org.ginga.toolbox.pipeline.SpectrumSudSortPipeline;
@@ -118,7 +118,7 @@ public class SpectrumExtractorCmd {
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // build single mode target observation instance from arguments
-            SingleModeTargetObservation obs = new SingleModeTargetObservation();
+            PipelineInput obs = new PipelineInput();
             obs.setObsId(obsId);
             obs.setTarget(target);
             obs.setMode(mode);
@@ -211,7 +211,7 @@ public class SpectrumExtractorCmd {
         helpFormatter.printHelp("extract_spectrum.sh", getOptions());
     }
 
-    public static void extractSpectrum(SingleModeTargetObservation obs, BgSubtractionMethod method) {
+    public static void extractSpectrum(PipelineInput obs, BgSubtractionMethod method) {
         switch (method) {
         case HAYASHIDA:
             extractSpectrumHayashida(obs);
@@ -228,7 +228,7 @@ public class SpectrumExtractorCmd {
         }
     }
 
-    public static void extractSpectrumHayashida(SingleModeTargetObservation obs) {
+    public static void extractSpectrumHayashida(PipelineInput obs) {
         SpectrumHayashidaPipeline pipeline = new SpectrumHayashidaPipeline();
         pipeline.run(Arrays.asList(obs));
         File specFile = pipeline.next();
@@ -237,7 +237,7 @@ public class SpectrumExtractorCmd {
         }
     }
 
-    public static void extractSpectrumSimple(SingleModeTargetObservation obs) {
+    public static void extractSpectrumSimple(PipelineInput obs) {
         SpectrumSimplePipeline pipeline = new SpectrumSimplePipeline();
         File specFile = pipeline.run(obs);
         if (specFile != null) {
@@ -245,7 +245,7 @@ public class SpectrumExtractorCmd {
         }
     }
 
-    public static void extractSpectrumSudSort(SingleModeTargetObservation obs) {
+    public static void extractSpectrumSudSort(PipelineInput obs) {
         SpectrumSudSortPipeline pipeline = new SpectrumSudSortPipeline();
         File specFile = pipeline.run(obs);
         if (specFile != null) {
