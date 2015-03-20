@@ -24,8 +24,8 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.ObservationEntity;
-import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
+import org.ginga.toolbox.pipeline.PipelineInput;
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class ObservationListPrinterCmd {
@@ -42,15 +42,22 @@ public class ObservationListPrinterCmd {
     }
 
     public void printAllModes(String target) {
+
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
+
+        this.writer.println(" " + String.format("%5s", "OBSID") + String.format("%8s", "SF")
+                + String.format("%18s", "MODE") + String.format("%20s", "START_TIME")
+                + String.format("%22s", "END_TIME"));
+        this.writer.println("==========================================");
+
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            for (SingleModeTargetObservation singleModeObs : obsMap.get(obsEntity)) {
+            for (PipelineInput singleModeObs : obsMap.get(obsEntity)) {
                 this.writer.println(" "
                         + String.format("%18s",
                                 obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
@@ -76,12 +83,18 @@ public class ObservationListPrinterCmd {
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
+
+        this.writer.println(" " + String.format("%5s", "OBSID") + String.format("%8s", "SF")
+                + String.format("%18s", "MODE") + String.format("%20s", "START_TIME")
+                + String.format("%22s", "END_TIME"));
+        this.writer.println("==========================================");
+
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            for (SingleModeTargetObservation singleModeObs : obsMap.get(obsEntity)) {
+            for (PipelineInput singleModeObs : obsMap.get(obsEntity)) {
                 LacMode mode = singleModeObs.getLacMode();
                 if (Arrays.asList(modes).contains(mode)) {
                     this.writer.println(" "
@@ -100,12 +113,18 @@ public class ObservationListPrinterCmd {
     }
 
     public void printObservations(String target) {
+
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
 
-        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Map<ObservationEntity, List<PipelineInput>> obsMap = obsListBuilder.next();
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
+
+        this.writer.println(" " + String.format("%5s", "OBSID") + String.format("%8s", "SF")
+                + String.format("%20s", "START_TIME") + String.format("%22s", "END_TIME"));
+        this.writer.println("=====================================");
+
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             this.writer.println(" "
