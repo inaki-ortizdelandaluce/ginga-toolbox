@@ -18,12 +18,17 @@ public class TimingMode1SimplePipeline {
     }
 
     public File run(LacModeTargetObservation obs) {
-        TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline();
-        bgPipeline.run(Arrays.asList(obs));
-        return extractTiming(obs, bgPipeline.next());
+        File bgSpectrumFile = obs.getBackgroundFile();
+        if (bgSpectrumFile != null) {
+            return extractTiming(obs, bgSpectrumFile);
+        } else {
+            TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline();
+            bgPipeline.run(Arrays.asList(obs));
+            return extractTiming(obs, bgPipeline.next());
+        }
     }
 
-    private File extractTiming(LacModeTargetObservation obs, final File bgMonitorFile) {
+    private File extractTiming(LacModeTargetObservation obs, final File bgSpectrumFile) {
         Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new TimingMode1Filter());
         Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBuilder();
@@ -36,7 +41,7 @@ public class TimingMode1SimplePipeline {
 
             @Override
             public String getBgFileName() {
-                return bgMonitorFile.getName();
+                return bgSpectrumFile.getName();
             }
 
             @Override

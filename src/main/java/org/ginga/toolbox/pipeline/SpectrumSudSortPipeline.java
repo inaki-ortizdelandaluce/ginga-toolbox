@@ -18,9 +18,14 @@ public class SpectrumSudSortPipeline {
     }
 
     public File run(LacModeTargetObservation obs) {
-        SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline(true);
-        bgPipeline.run(Arrays.asList(obs));
-        return extractSpecWithBg(obs, bgPipeline.next());
+        File bgSpectrumFile = obs.getBackgroundFile();
+        if (bgSpectrumFile != null) {
+            return extractSpecWithBg(obs, bgSpectrumFile);
+        } else {
+            SpectrumBackgroundPipeline bgPipeline = new SpectrumBackgroundPipeline();
+            bgPipeline.run(Arrays.asList(obs));
+            return extractSpecWithBg(obs, bgPipeline.next());
+        }
     }
 
     private File extractSpecWithBg(LacModeTargetObservation obs, final File bgSpectrumFile) {

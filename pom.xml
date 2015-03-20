@@ -148,9 +148,30 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass> -->
+<!--                   <id>extract_spectrum.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
                 <program>
-                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass>
-                  <id>extract_spectrum.sh</id>
+                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorHayashidaCmd</mainClass>
+                  <id>extract_spectrum_hayashida.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorSimpleCmd</mainClass>
+                  <id>extract_spectrum_simple.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorSudSortCmd</mainClass>
+                  <id>extract_spectrum_sudsort.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>
@@ -162,16 +183,37 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass> -->
+<!--                   <id>extract_timing_mode1.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
                 <program>
-                  <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass>
-                  <id>extract_timing_mode_1.sh</id>
+                  <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorHayashidaCmd</mainClass>
+                  <id>extract_timing_mode1_hayashida.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorSimpleCmd</mainClass>
+                  <id>extract_timing_mode1_simple.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorSudSortCmd</mainClass>
+                  <id>extract_timing_mode1_sudsort.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>
                 </program>
                 <program>
                   <mainClass>org.ginga.toolbox.command.TimingMode2ExtractorCmd</mainClass>
-                  <id>extract_timing_mode_2.sh</id>
+                  <id>extract_timing_mode2.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>

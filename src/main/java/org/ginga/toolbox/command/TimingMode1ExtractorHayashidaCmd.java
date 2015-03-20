@@ -1,7 +1,6 @@
 package org.ginga.toolbox.command;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.commons.cli.BasicParser;
@@ -16,14 +15,14 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
-import org.ginga.toolbox.pipeline.TimingMode2Pipeline;
+import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
-public class TimingMode2ExtractorCmd {
+public class TimingMode1ExtractorHayashidaCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    private final static Logger log = Logger.getLogger(TimingMode2ExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(TimingMode1ExtractorHayashidaCmd.class);
 
     public static void main(String[] args) {
         try {
@@ -36,6 +35,20 @@ public class TimingMode2ExtractorCmd {
                 target = commandLine.getOptionValue("t");
             } else {
                 target = scanner.scanTarget();
+            }
+            // LAC MODE
+            String mode = null;
+            if (commandLine.hasOption("m")) {
+                mode = commandLine.getOptionValue("m");
+                try {
+                    Enum.valueOf(LacMode.class, commandLine.getOptionValue("m"));
+                } catch (IllegalArgumentException e) {
+                    log.error("Unknown background LAC mode " + commandLine.getOptionValue("m"));
+                    printHelp();
+                    System.exit(1);
+                }
+            } else {
+                mode = scanner.scanLacMode();
             }
             // START TIME
             String startTime = null;
@@ -74,11 +87,11 @@ public class TimingMode2ExtractorCmd {
             // build single mode target observation instance from arguments
             LacModeTargetObservation obs = new LacModeTargetObservation();
             obs.setTarget(target);
-            obs.setMode(LacMode.PC.toString());
+            obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
             // extract spectrum
-            extractTiming(obs);
+            extractTimingHayashida(obs);
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
@@ -92,6 +105,9 @@ public class TimingMode2ExtractorCmd {
         Options options = new Options();
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name").hasArg().create("t");
+        Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
+                .withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes()).hasArg()
+                .create("m");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
                 .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create();
@@ -106,6 +122,7 @@ public class TimingMode2ExtractorCmd {
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
         options.addOption(targetOption);
+        options.addOption(lacModeOption);
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
 
@@ -114,11 +131,20 @@ public class TimingMode2ExtractorCmd {
         return options;
     }
 
+    protected static String getLacModes() {
+        String s = "";
+        LacMode[] modes = LacMode.values();
+        for (int i = 0; i < modes.length; i++) {
+            s += modes[i].toString() + ", ";
+        }
+        return s.substring(0, s.length() - 2);
+    }
+
     private static void printHelp() {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "iset"; // short option names
+            private static final String OPTS_ORDER = "isetm"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
@@ -127,13 +153,12 @@ public class TimingMode2ExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp("extract_timing_mode2.sh", getOptions());
+        helpFormatter.printHelp("extract_timing_mode1_hayashida.sh", getOptions());
     }
 
-    public static void extractTiming(LacModeTargetObservation obs) {
-        TimingMode2Pipeline pipeline = new TimingMode2Pipeline();
-        pipeline.run(Arrays.asList(obs));
-        File timingFile = pipeline.next();
+    public static void extractTimingHayashida(LacModeTargetObservation obs) {
+        TimingMode1HayashidaPipeline pipeline = new TimingMode1HayashidaPipeline();
+        File timingFile = pipeline.run(obs);
         if (timingFile != null) {
             log.info("Timing file " + timingFile.getName() + " created successfully");
         }

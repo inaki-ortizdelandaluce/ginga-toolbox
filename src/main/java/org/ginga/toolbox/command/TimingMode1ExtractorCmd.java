@@ -198,6 +198,7 @@ public class TimingMode1ExtractorCmd {
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
             private static final String OPTS_ORDER = "isetbom"; // short option
+
             // names
 
             @Override
@@ -207,7 +208,7 @@ public class TimingMode1ExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp("extract_timing_mode_1.sh", getOptions());
+        helpFormatter.printHelp("extract_timing_mode1.sh", getOptions());
     }
 
     public static void extractTiming(LacModeTargetObservation obs, BgSubtractionMethod method) {

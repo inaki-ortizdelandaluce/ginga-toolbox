@@ -1,5 +1,7 @@
 package org.ginga.toolbox.observation;
 
+import java.io.File;
+
 import org.ginga.toolbox.util.Constants.LacMode;
 
 public class LacModeTargetObservation {
@@ -9,6 +11,7 @@ public class LacModeTargetObservation {
     private String mode;
     private String startTime;
     private String endTime;
+    private File backgroundFile;
 
     /**
      * @return the obsId
@@ -76,5 +79,19 @@ public class LacModeTargetObservation {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    /**
+     * @return the backgroundFile
+     */
+    public File getBackgroundFile() {
+        return this.backgroundFile;
+    }
+
+    /**
+     * @param backgroundFile the backgroundFile to set
+     */
+    public void setBackgroundFile(File backgroundFile) {
+        this.backgroundFile = backgroundFile;
     }
 }

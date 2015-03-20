@@ -1,7 +1,6 @@
 package org.ginga.toolbox.command;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.commons.cli.BasicParser;
@@ -16,14 +15,14 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
-import org.ginga.toolbox.pipeline.TimingMode2Pipeline;
+import org.ginga.toolbox.pipeline.TimingMode1SudSortPipeline;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
-public class TimingMode2ExtractorCmd {
+public class TimingMode1ExtractorSudSortCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    private final static Logger log = Logger.getLogger(TimingMode2ExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(TimingMode1ExtractorSudSortCmd.class);
 
     public static void main(String[] args) {
         try {
@@ -36,6 +35,20 @@ public class TimingMode2ExtractorCmd {
                 target = commandLine.getOptionValue("t");
             } else {
                 target = scanner.scanTarget();
+            }
+            // LAC MODE
+            String mode = null;
+            if (commandLine.hasOption("m")) {
+                mode = commandLine.getOptionValue("m");
+                try {
+                    Enum.valueOf(LacMode.class, commandLine.getOptionValue("m"));
+                } catch (IllegalArgumentException e) {
+                    log.error("Unknown background LAC mode " + commandLine.getOptionValue("m"));
+                    printHelp();
+                    System.exit(1);
+                }
+            } else {
+                mode = scanner.scanLacMode();
             }
             // START TIME
             String startTime = null;
@@ -74,11 +87,31 @@ public class TimingMode2ExtractorCmd {
             // build single mode target observation instance from arguments
             LacModeTargetObservation obs = new LacModeTargetObservation();
             obs.setTarget(target);
-            obs.setMode(LacMode.PC.toString());
+            obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
-            // extract spectrum
-            extractTiming(obs);
+            // observation identifier to use suggested background observations
+            if (commandLine.hasOption("o")) {
+                try {
+                    obs.setObsId(Long.valueOf(commandLine.getOptionValue("o")).longValue());
+                } catch (NumberFormatException e) {
+                    log.error("Observation identifier " + commandLine.getOptionValue("o")
+                            + " is not an integer");
+                    printHelp();
+                    return;
+                }
+            } else { // background file
+                File bgFile = new File(commandLine.getOptionValue("f"));
+                if (bgFile.exists()) {
+                    obs.setBackgroundFile(bgFile);
+                } else {
+                    log.error("Background file " + bgFile.getPath() + " does not exist");
+                    printHelp();
+                    return;
+                }
+            }
+            // extract timing file
+            extractTimingSudSort(obs);
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
@@ -92,33 +125,58 @@ public class TimingMode2ExtractorCmd {
         Options options = new Options();
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name").hasArg().create("t");
+        Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
+                .withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes()).hasArg()
+                .create("m");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
                 .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create();
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
                 .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create();
-        OptionGroup group1 = new OptionGroup();
-        group1.setRequired(true);
-        group1.addOption(new Option("i", "interactive", false,
+
+        OptionGroup dataReductionModeGroup = new OptionGroup();
+        dataReductionModeGroup.setRequired(true);
+        dataReductionModeGroup.addOption(new Option("i", "interactive", false,
                 "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
-        group1.addOption(new Option("s", "systematic", false,
+        dataReductionModeGroup
+        .addOption(new Option("s", "systematic", false,
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
+        OptionGroup backgroundGroup = new OptionGroup();
+        backgroundGroup.setRequired(true);
+        backgroundGroup
+                .addOption(new Option("o", "observation-id", false,
+                        " subtraction will use suggested background observations for this observation identifier"));
+        Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
+                .withDescription("background spectrum file").hasArg().create("f");
+        backgroundGroup.addOption(bgFileOption);
+
         options.addOption(targetOption);
+        options.addOption(lacModeOption);
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
 
-        options.addOptionGroup(group1);
+        options.addOptionGroup(dataReductionModeGroup);
+        options.addOptionGroup(backgroundGroup);
 
         return options;
+    }
+
+    protected static String getLacModes() {
+        String s = "";
+        LacMode[] modes = LacMode.values();
+        for (int i = 0; i < modes.length; i++) {
+            s += modes[i].toString() + ", ";
+        }
+        return s.substring(0, s.length() - 2);
     }
 
     private static void printHelp() {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "iset"; // short option names
+            private static final String OPTS_ORDER = "ofisetm"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
@@ -127,13 +185,12 @@ public class TimingMode2ExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp("extract_timing_mode2.sh", getOptions());
+        helpFormatter.printHelp("extract_timing_mode1_sudsort.sh", getOptions());
     }
 
-    public static void extractTiming(LacModeTargetObservation obs) {
-        TimingMode2Pipeline pipeline = new TimingMode2Pipeline();
-        pipeline.run(Arrays.asList(obs));
-        File timingFile = pipeline.next();
+    public static void extractTimingSudSort(LacModeTargetObservation obs) {
+        TimingMode1SudSortPipeline pipeline = new TimingMode1SudSortPipeline();
+        File timingFile = pipeline.run(obs);
         if (timingFile != null) {
             log.info("Timing file " + timingFile.getName() + " created successfully");
         }
