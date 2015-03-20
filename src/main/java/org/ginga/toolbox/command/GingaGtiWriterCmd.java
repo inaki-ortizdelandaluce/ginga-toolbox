@@ -200,7 +200,7 @@ public class GingaGtiWriterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "fcistmban"; // short option names
+            private static final String OPTS_ORDER = "fcistmanb"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
