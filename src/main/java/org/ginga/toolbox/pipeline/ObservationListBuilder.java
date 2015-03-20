@@ -2,7 +2,7 @@ package org.ginga.toolbox.pipeline;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,8 +25,8 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class ObservationListBuilder extends
-        AbstractPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> implements
-        TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> {
+AbstractPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> implements
+TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> {
 
     private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
@@ -34,7 +34,7 @@ public class ObservationListBuilder extends
     protected Map<ObservationEntity, List<SingleModeTargetObservation>> processNextStart()
             throws NoSuchElementException {
         String target = this.starts.next();
-        Map<ObservationEntity, List<SingleModeTargetObservation>> map = new HashMap<ObservationEntity, List<SingleModeTargetObservation>>();
+        Map<ObservationEntity, List<SingleModeTargetObservation>> map = new LinkedHashMap<ObservationEntity, List<SingleModeTargetObservation>>();
         // read environment
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
         double minElevation = dataReductionEnv.getElevationMin();
