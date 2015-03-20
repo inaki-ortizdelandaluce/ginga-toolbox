@@ -148,6 +148,13 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.GingaGtiWriterCmd</mainClass>
+                  <id>write_ginga_gti.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
 <!--                 <program> -->
 <!--                   <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass> -->
 <!--                   <id>extract_spectrum.sh</id> -->
