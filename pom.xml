@@ -4,7 +4,7 @@
 	<groupId>org.ginga.toolbox</groupId>
 	<artifactId>ginga-toolbox</artifactId>
 	<packaging>jar</packaging>
-	<version>1.1.1</version>
+	<version>1.2</version>
 	<name>ginga-toolbox</name>
 	<url>http://maven.apache.org</url>
  	<dependencies>
@@ -103,117 +103,125 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>appassembler-maven-plugin</artifactId>
         <version>1.9</version>
-        <configuration>
-          <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
-          <!-- Set the target configuration directory to be used in the bin scripts -->
-          <configurationDirectory>config</configurationDirectory>
-          <!-- Copy the contents from "/src/main/config" to the target
-               configuration directory in the assembled application -->
-          <copyConfigurationDirectory>true</copyConfigurationDirectory>
-          <!-- Include the target configuration directory in the beginning of
-               the classpath declaration in the bin scripts -->
-          <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-          <!-- set alternative assemble directory -->
-          <assembleDirectory>${project.build.directory}/ginga-toolbox</assembleDirectory>
-          <!-- The logs directory for the assembled project -->
-          <logsDirectory>log</logsDirectory>
-          <!-- The layout of the generated Maven repository -->
-          <repositoryLayout>flat</repositoryLayout>
-          <!-- Path (relative to assembleDirectory) of the desired output repository. -->
-          <repositoryName>lib</repositoryName>
-          <!-- Extra JVM arguments that will be included in the bin scripts -->
-          <extraJvmArguments>-Xms512m</extraJvmArguments>
-          <!-- Generate bin scripts for windows and unix pr default -->
-          <platforms>
-            <platform>all</platform>
-          </platforms>
-          <programs>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TargetListPrinterCmd</mainClass>
-              <id>print_target_list.sh</id>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>assemble</goal>
+            </goals>        
+            <configuration>
+              <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+              <!-- Set the target configuration directory to be used in the bin scripts -->
+              <configurationDirectory>config</configurationDirectory>
+              <!-- Copy the contents from "/src/main/config" to the target
+                   configuration directory in the assembled application -->
+              <copyConfigurationDirectory>true</copyConfigurationDirectory>
+              <!-- Include the target configuration directory in the beginning of
+                   the classpath declaration in the bin scripts -->
+              <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+              <!-- set alternative assemble directory -->
+              <assembleDirectory>${project.build.directory}/ginga-toolbox</assembleDirectory>
+              <!-- The logs directory for the assembled project -->
+              <logsDirectory>log</logsDirectory>
+              <!-- The layout of the generated Maven repository -->
+              <repositoryLayout>flat</repositoryLayout>
+              <!-- Path (relative to assembleDirectory) of the desired output repository. -->
+              <repositoryName>lib</repositoryName>
+              <!-- Extra JVM arguments that will be included in the bin scripts -->
+              <extraJvmArguments>-Xms512m</extraJvmArguments>
+              <!-- Generate bin scripts for windows and unix pr default -->
               <platforms>
-                <platform>unix</platform>
+                <platform>all</platform>
               </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.ObservationListPrinterCmd</mainClass>
-              <id>print_observation_list.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass>
-              <id>extract_spectrum.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.SpectraExtractorCmd</mainClass>
-              <id>extract_spectra.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass>
-              <id>extract_timing_mode_1.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TimingMode2ExtractorCmd</mainClass>
-              <id>extract_timing_mode_2.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TargetLookupCmd</mainClass>
-              <id>lookup_target.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.DatabaseSchemaGeneratorCmd</mainClass>
-              <id>generate_db_schema.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TargetNameResolverCmd</mainClass>
-              <id>resolve_target_name.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.LacdumpDatabaseIngestorCmd</mainClass>
-              <id>ingest_lacdump_db.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.BackgroundDatabaseIngestorCmd</mainClass>
-              <id>ingest_background_db.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-            <program>
-              <mainClass>org.ginga.toolbox.command.TargetDatabaseIngestorCmd</mainClass>
-              <id>ingest_target_db.sh</id>
-              <platforms>
-                <platform>unix</platform>
-              </platforms>
-            </program>
-          </programs>
-        </configuration>
+              <programs>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TargetListPrinterCmd</mainClass>
+                  <id>print_target_list.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.ObservationListPrinterCmd</mainClass>
+                  <id>print_observation_list.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorCmd</mainClass>
+                  <id>extract_spectrum.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.SpectraExtractorCmd</mainClass>
+                  <id>extract_spectra.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass>
+                  <id>extract_timing_mode_1.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TimingMode2ExtractorCmd</mainClass>
+                  <id>extract_timing_mode_2.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TargetLookupCmd</mainClass>
+                  <id>lookup_target.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.DatabaseSchemaGeneratorCmd</mainClass> -->
+<!--                   <id>generate_db_schema.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TargetNameResolverCmd</mainClass>
+                  <id>resolve_target_name.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.LacdumpDatabaseIngestorCmd</mainClass> -->
+<!--                   <id>ingest_lacdump_db.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.BackgroundDatabaseIngestorCmd</mainClass> -->
+<!--                   <id>ingest_background_db.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
+<!--                 <program> -->
+<!--                   <mainClass>org.ginga.toolbox.command.TargetDatabaseIngestorCmd</mainClass> -->
+<!--                   <id>ingest_target_db.sh</id> -->
+<!--                   <platforms> -->
+<!--                     <platform>unix</platform> -->
+<!--                   </platforms> -->
+<!--                 </program> -->
+              </programs>
+            </configuration>
+          </execution>
+        </executions>          
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
