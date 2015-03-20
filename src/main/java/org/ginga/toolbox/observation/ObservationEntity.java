@@ -222,19 +222,4 @@ public class ObservationEntity {
     public void setObsDataSet(Set<ObservationDataEntity> obsDataSet) {
         this.obsDataSet = obsDataSet;
     }
-
-    // public List<SingleModeTargetObservation> getSingleModeObsList() {
-    // return this.singleModeObsList;
-    // }
-    //
-    // public void setSingleModeList(List<SingleModeTargetObservation> singleModeObsList) {
-    // this.singleModeObsList = singleModeObsList;
-    // }
-    //
-    // public void addSingleModeObs(SingleModeTargetObservation singleModeObs) {
-    // if (this.singleModeObsList == null) {
-    // this.singleModeObsList = new ArrayList<SingleModeTargetObservation>();
-    // }
-    // this.singleModeObsList.add(singleModeObs);
-    // }
 }
