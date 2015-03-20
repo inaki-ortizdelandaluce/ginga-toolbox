@@ -17,7 +17,7 @@ public class GingaToolboxEnv {
     private static GingaToolboxEnv instance;
 
     private Properties properties;
-    private InputParameters inputParameters;
+    private DataReductionEnv dataReductionEnv;
 
     public static GingaToolboxEnv getInstance() {
         if (instance == null) {
@@ -61,8 +61,8 @@ public class GingaToolboxEnv {
         } else {
             log.warn("Property file 'gingatoolbox.properties' not found in classpath");
         }
-        // set default input mode
-        setInputParametersMode(InputMode.SYSTEMATIC);
+        // set default pipeline mode
+        setDataReductionMode(DataReductionMode.SYSTEMATIC);
     }
 
     public String getGingaToolsHome() {
@@ -192,26 +192,26 @@ public class GingaToolboxEnv {
         }
     }
 
-    public enum InputMode {
+    public enum DataReductionMode {
         DEFAULT, SYSTEMATIC, INTERACTIVE
     }
 
-    public void setInputParametersMode(InputMode mode) {
+    public void setDataReductionMode(DataReductionMode mode) {
         switch (mode) {
         case SYSTEMATIC:
         case DEFAULT:
             log.info("Systematic data reduction option selected");
-            this.inputParameters = SystematicInputParameters.getInstance(this.properties);
+            this.dataReductionEnv = SystematicDataReductionEnv.getInstance(this.properties);
             break;
         case INTERACTIVE:
             log.info("Interactive data reduction option selected");
-            this.inputParameters = new InteractiveInputParameters();
+            this.dataReductionEnv = new InteractiveDataReductionEnv();
             break;
         }
     }
 
-    public InputParameters getInputParameters() {
-        return this.inputParameters;
+    public DataReductionEnv getDataReductionEnv() {
+        return this.dataReductionEnv;
     }
 
     public Map<String, String> getEnv() {

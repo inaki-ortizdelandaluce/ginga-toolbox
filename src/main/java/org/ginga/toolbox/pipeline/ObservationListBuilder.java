@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
 import org.ginga.toolbox.lacdump.dao.LacdumpDao;
 import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
@@ -22,8 +22,8 @@ import org.ginga.toolbox.util.TimeUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class ObservationListBuilder extends AbstractPipe<String, List<ObservationEntity>>
-        implements TransformPipe<String, List<ObservationEntity>> {
+public class ObservationListBuilder extends AbstractPipe<String, List<ObservationEntity>> implements
+        TransformPipe<String, List<ObservationEntity>> {
 
     private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
@@ -31,9 +31,9 @@ public class ObservationListBuilder extends AbstractPipe<String, List<Observatio
     protected List<ObservationEntity> processNextStart() throws NoSuchElementException {
         String target = this.starts.next();
         // read environment
-        InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-        double minElevation = input.getElevationMin();
-        double minCutOffRigidity = input.getCutOffRigidityMin();
+        DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
+        double minElevation = dataReductionEnv.getElevationMin();
+        double minCutOffRigidity = dataReductionEnv.getCutOffRigidityMin();
 
         // find observation list by target
         ObservationDao obsDao = new ObservationDaoImpl();

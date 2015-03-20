@@ -3,8 +3,8 @@ package org.ginga.toolbox.pipeline;
 import java.io.File;
 import java.util.List;
 
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
@@ -31,9 +31,10 @@ public class SpectrumHayashidaPipeline {
 
             @Override
             public int getTimingBinWidth() {
-                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
+                        .getDataReductionEnv();
                 // return lowest time resolution for each BR, i.e. MPC1 mode, 1SF (8x)
-                switch (input.getBitRate()) {
+                switch (dataReductionEnv.getBitRate()) {
                 case ANY:
                 case L:
                 default:

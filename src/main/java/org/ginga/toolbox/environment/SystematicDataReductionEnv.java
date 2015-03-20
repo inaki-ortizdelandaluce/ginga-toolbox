@@ -5,20 +5,20 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.util.Constants.BitRate;
 
-public class SystematicInputParameters implements InputParameters {
+public class SystematicDataReductionEnv implements DataReductionEnv {
 
-    private static final Logger log = Logger.getLogger(SystematicInputParameters.class);
+    private static final Logger log = Logger.getLogger(SystematicDataReductionEnv.class);
 
-    private static SystematicInputParameters instance;
+    private static SystematicDataReductionEnv instance;
     private Properties properties;
 
-    private SystematicInputParameters(Properties properties) {
+    private SystematicDataReductionEnv(Properties properties) {
         this.properties = properties;
     }
 
-    protected static SystematicInputParameters getInstance(Properties properties) {
+    protected static SystematicDataReductionEnv getInstance(Properties properties) {
         if (instance == null) {
-            instance = new SystematicInputParameters(properties);
+            instance = new SystematicDataReductionEnv(properties);
         }
         return instance;
     }

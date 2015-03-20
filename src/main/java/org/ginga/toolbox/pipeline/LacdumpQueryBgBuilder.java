@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.observation.ObservationBgEntity;
 import org.ginga.toolbox.observation.ObservationEntity;
@@ -25,19 +25,19 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
-        implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
+implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
 
     private final static Logger log = Logger.getLogger(LacdumpQueryBgBuilder.class);
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.tinkerpop.pipes.AbstractPipe#processNextStart()
      */
     @Override
     protected LacdumpQuery processNextStart() throws NoSuchElementException {
         LacdumpQuery query = new LacdumpQuery();
-        InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+        DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
         SingleModeTargetObservation targetObservation = this.starts.next();
 
         try {
@@ -70,11 +70,12 @@ public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservat
                             "Target found in database but coordinates not resolved");
                 }
                 query.setSkyAnnulus(targetEntity.getRaDegB1950(), targetEntity.getDecDegB1950(),
-                        input.getSkyAnnulusInnerRadii(), input.getSkyAnnulusOuterRadii());
+                        dataReductionEnv.getSkyAnnulusInnerRadii(),
+                        dataReductionEnv.getSkyAnnulusOuterRadii());
             }
             // rigidity and elevation
-            query.setMinCutOffRigidity(input.getCutOffRigidityMin());
-            query.setMinElevation(input.getElevationMin());
+            query.setMinCutOffRigidity(dataReductionEnv.getCutOffRigidityMin());
+            query.setMinElevation(dataReductionEnv.getElevationMin());
 
         } catch (ObservationDaoException e) {
             log.error("Error generating LACDUMP query for background region file", e);
@@ -85,5 +86,4 @@ public class LacdumpQueryBgBuilder extends AbstractPipe<SingleModeTargetObservat
         }
         return query;
     }
-
 }

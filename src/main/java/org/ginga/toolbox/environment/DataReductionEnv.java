@@ -2,7 +2,7 @@ package org.ginga.toolbox.environment;
 
 import org.ginga.toolbox.util.Constants.BitRate;
 
-public interface InputParameters {
+public interface DataReductionEnv {
 
     public Double getElevationMin();
 

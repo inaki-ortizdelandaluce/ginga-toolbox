@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -22,7 +22,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, LacspecInputModel>
-        implements TransformPipe<LacdumpQuery, LacspecInputModel> {
+implements TransformPipe<LacdumpQuery, LacspecInputModel> {
 
     private final static Logger log = Logger.getLogger(LacspecInputBuilder.class);
 
@@ -87,17 +87,18 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
                 // save matching results into a GTI file
                 GingaGtiWriter gtiWriter = new GingaGtiWriter();
                 gtiWriter
-                        .writeToFile(query.getTargetName(), sfList, isBackground(), false, gtiFile);
+                .writeToFile(query.getTargetName(), sfList, isBackground(), false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
 
                 // emit lacspec input model
                 LacspecInputModel inputModel = new LacspecInputModel();
-                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
+                        .getDataReductionEnv();
                 inputModel.setHasBackground(!isBackground());
                 if (!isBackground()) { // on-source with background correction
                     inputModel.setBgMethod(getBgSubtractionMethod());
                     inputModel.setBgFileName(getBgFileName());
-                    inputModel.setBgSubFileNumber(input.getBgSubFileNumber());
+                    inputModel.setBgSubFileNumber(dataReductionEnv.getBgSubFileNumber());
                     inputModel.setStartTime(query.getStartTime());
                     inputModel.setPsFileName(FileUtil.nextFileName("lacspec", query.getStartTime(),
                             query.getMode(), "ps"));
@@ -114,28 +115,28 @@ public abstract class LacspecInputBuilder extends AbstractPipe<LacdumpQuery, Lac
                     inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                             + "_MONI_BGD", "SPEC"));
                 }
-                inputModel.setBitRate(input.getBitRate());
+                inputModel.setBitRate(dataReductionEnv.getBitRate());
                 inputModel.setLacMode(query.getMode());
-                inputModel.setMinElevation(input.getElevationMin());
-                inputModel.setMaxElevation(input.getElevationMax());
-                inputModel.setMinRigidity(input.getCutOffRigidityMin());
-                inputModel.setMaxRigidity(input.getCutOffRigidityMax());
+                inputModel.setMinElevation(dataReductionEnv.getElevationMin());
+                inputModel.setMaxElevation(dataReductionEnv.getElevationMax());
+                inputModel.setMinRigidity(dataReductionEnv.getCutOffRigidityMin());
+                inputModel.setMaxRigidity(dataReductionEnv.getCutOffRigidityMax());
                 inputModel.setBgCorrection(backgroundCorrection());
                 inputModel.setAspectCorrection(aspectCorrection());
-                inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
-                inputModel.setChannelToEnergy(input.getChannelToEnergyConversion());
+                inputModel.setDeadTimeCorrection(dataReductionEnv.getDeadTimeCorrection());
+                inputModel.setChannelToEnergy(dataReductionEnv.getChannelToEnergyConversion());
                 inputModel.setDataUnit(getDataUnit());
                 inputModel.setSudSort(sudSort());
-                inputModel.setAce(input.getAttitudeMode());
-                inputModel.setCounter1(input.getLacCounter1());
-                inputModel.setCounter2(input.getLacCounter2());
-                inputModel.setCounter3(input.getLacCounter3());
-                inputModel.setCounter4(input.getLacCounter4());
-                inputModel.setCounter5(input.getLacCounter5());
-                inputModel.setCounter6(input.getLacCounter6());
-                inputModel.setCounter7(input.getLacCounter7());
-                inputModel.setCounter8(input.getLacCounter8());
-                inputModel.setMixedMode(input.isLacMixedMode());
+                inputModel.setAce(dataReductionEnv.getAttitudeMode());
+                inputModel.setCounter1(dataReductionEnv.getLacCounter1());
+                inputModel.setCounter2(dataReductionEnv.getLacCounter2());
+                inputModel.setCounter3(dataReductionEnv.getLacCounter3());
+                inputModel.setCounter4(dataReductionEnv.getLacCounter4());
+                inputModel.setCounter5(dataReductionEnv.getLacCounter5());
+                inputModel.setCounter6(dataReductionEnv.getLacCounter6());
+                inputModel.setCounter7(dataReductionEnv.getLacCounter7());
+                inputModel.setCounter8(dataReductionEnv.getLacCounter8());
+                inputModel.setMixedMode(dataReductionEnv.isLacMixedMode());
                 inputModel.setRegionFileName(gtiFile.getName());
                 return inputModel;
             }

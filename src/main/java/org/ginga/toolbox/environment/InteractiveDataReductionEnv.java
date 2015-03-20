@@ -7,10 +7,10 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.util.Constants;
 import org.ginga.toolbox.util.Constants.BitRate;
 
-public class InteractiveInputParameters implements InputParameters {
+public class InteractiveDataReductionEnv implements DataReductionEnv {
 
     @SuppressWarnings("unused")
-    private static final Logger log = Logger.getLogger(InteractiveInputParameters.class);
+    private static final Logger log = Logger.getLogger(InteractiveDataReductionEnv.class);
 
     private Scanner scanner;
 
@@ -51,7 +51,7 @@ public class InteractiveInputParameters implements InputParameters {
     private String pcLine3;
     private String pcLine4;
 
-    protected InteractiveInputParameters() {
+    protected InteractiveDataReductionEnv() {
         this.scanner = new Scanner(System.in);
     }
 

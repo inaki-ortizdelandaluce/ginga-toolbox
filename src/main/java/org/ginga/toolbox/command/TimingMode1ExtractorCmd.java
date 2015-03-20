@@ -13,7 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.GingaToolboxEnv.InputMode;
+import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
 import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
@@ -114,7 +114,7 @@ public class TimingMode1ExtractorCmd {
             endTime = endTime.replace("T", " ");
             scanner.close();
             if (commandLine.hasOption("i")) { // set interactive mode
-                GingaToolboxEnv.getInstance().setInputParametersMode(InputMode.INTERACTIVE);
+                GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // build single mode target observation instance from arguments
             SingleModeTargetObservation obs = new SingleModeTargetObservation();
@@ -198,7 +198,7 @@ public class TimingMode1ExtractorCmd {
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
             private static final String OPTS_ORDER = "isetbom"; // short option
-                                                                // names
+            // names
 
             @Override
             public int compare(Option o1, Option o2) {

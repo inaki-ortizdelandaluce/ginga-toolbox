@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.bgdspec.BgdspecInputModel;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -21,7 +21,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class BgdspecInputBuilder extends AbstractPipe<LacdumpQuery, BgdspecInputModel> implements
-        TransformPipe<LacdumpQuery, BgdspecInputModel> {
+TransformPipe<LacdumpQuery, BgdspecInputModel> {
 
     private final static Logger log = Logger.getLogger(BgdspecInputBuilder.class);
 
@@ -66,29 +66,30 @@ public class BgdspecInputBuilder extends AbstractPipe<LacdumpQuery, BgdspecInput
 
                 // emit lacspec input model
                 BgdspecInputModel inputModel = new BgdspecInputModel();
-                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
+                        .getDataReductionEnv();
                 inputModel.setPsFileName(FileUtil.nextFileName(workingDir, prefix + "_bgdspec_bgd",
                         "ps"));
                 inputModel.setMonitorFileName(FileUtil.nextFileName(workingDir, prefix
                         + "_MONI_BGD", "SPEC"));
-                inputModel.setBitRate(input.getBitRate());
+                inputModel.setBitRate(dataReductionEnv.getBitRate());
                 inputModel.setLacMode(query.getMode());
-                inputModel.setMinElevation(input.getElevationMin());
-                inputModel.setMaxElevation(input.getElevationMax());
-                inputModel.setMinRigidity(input.getCutOffRigidityMin());
-                inputModel.setMaxRigidity(input.getCutOffRigidityMax());
-                inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
-                inputModel.setChannelToEnergy(input.getChannelToEnergyConversion());
-                inputModel.setAce(input.getAttitudeMode());
-                inputModel.setCounter1(input.getLacCounter1());
-                inputModel.setCounter2(input.getLacCounter2());
-                inputModel.setCounter3(input.getLacCounter3());
-                inputModel.setCounter4(input.getLacCounter4());
-                inputModel.setCounter5(input.getLacCounter5());
-                inputModel.setCounter6(input.getLacCounter6());
-                inputModel.setCounter7(input.getLacCounter7());
-                inputModel.setCounter8(input.getLacCounter8());
-                inputModel.setMixedMode(input.isLacMixedMode());
+                inputModel.setMinElevation(dataReductionEnv.getElevationMin());
+                inputModel.setMaxElevation(dataReductionEnv.getElevationMax());
+                inputModel.setMinRigidity(dataReductionEnv.getCutOffRigidityMin());
+                inputModel.setMaxRigidity(dataReductionEnv.getCutOffRigidityMax());
+                inputModel.setDeadTimeCorrection(dataReductionEnv.getDeadTimeCorrection());
+                inputModel.setChannelToEnergy(dataReductionEnv.getChannelToEnergyConversion());
+                inputModel.setAce(dataReductionEnv.getAttitudeMode());
+                inputModel.setCounter1(dataReductionEnv.getLacCounter1());
+                inputModel.setCounter2(dataReductionEnv.getLacCounter2());
+                inputModel.setCounter3(dataReductionEnv.getLacCounter3());
+                inputModel.setCounter4(dataReductionEnv.getLacCounter4());
+                inputModel.setCounter5(dataReductionEnv.getLacCounter5());
+                inputModel.setCounter6(dataReductionEnv.getLacCounter6());
+                inputModel.setCounter7(dataReductionEnv.getLacCounter7());
+                inputModel.setCounter8(dataReductionEnv.getLacCounter8());
+                inputModel.setMixedMode(dataReductionEnv.isLacMixedMode());
                 inputModel.setSpectralFileName(FileUtil.nextFileName(workingDir, prefix + "_BGD",
                         "SPEC"));
                 inputModel.setRegionFileName(gtiFile.getName());

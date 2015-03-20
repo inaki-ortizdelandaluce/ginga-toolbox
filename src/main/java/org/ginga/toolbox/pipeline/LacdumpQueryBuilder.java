@@ -5,8 +5,8 @@ package org.ginga.toolbox.pipeline;
 
 import java.util.NoSuchElementException;
 
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.observation.SingleModeTargetObservation;
 
@@ -14,11 +14,11 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class LacdumpQueryBuilder extends AbstractPipe<SingleModeTargetObservation, LacdumpQuery>
-        implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
+implements TransformPipe<SingleModeTargetObservation, LacdumpQuery> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.tinkerpop.pipes.AbstractPipe#processNextStart()
      */
     @Override
@@ -33,10 +33,10 @@ public class LacdumpQueryBuilder extends AbstractPipe<SingleModeTargetObservatio
         query.setMode(targetObservation.getLacMode());
 
         // apply values from environment
-        InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
-        query.setBitRate(input.getBitRate());
-        query.setMinCutOffRigidity(input.getCutOffRigidityMin());
-        query.setMinElevation(input.getElevationMin());
+        DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
+        query.setBitRate(dataReductionEnv.getBitRate());
+        query.setMinCutOffRigidity(dataReductionEnv.getCutOffRigidityMin());
+        query.setMinElevation(dataReductionEnv.getElevationMin());
         return query;
     }
 

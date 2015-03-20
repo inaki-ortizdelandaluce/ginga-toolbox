@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -21,14 +21,14 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public abstract class LacqrdfitsInputBuilder extends
-        AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
-        TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
+TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(LacqrdfitsInputBuilder.class);
 
     /**
      * Returns the time bin width in seconds.
-     * 
+     *
      * <pre>
      * Example:
      *   For 1/4 SF 1s,  8s and  32s for HI, MED and LOW bit rates respectively
@@ -79,10 +79,11 @@ public abstract class LacqrdfitsInputBuilder extends
 
                 // emit lacqrdfits input model
                 LacqrdfitsInputModel inputModel = new LacqrdfitsInputModel();
-                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
+                        .getDataReductionEnv();
                 inputModel.setStartTime(query.getStartTime());
-                inputModel.setMinElevation(input.getElevationMin());
-                inputModel.setMaxElevation(input.getElevationMax());
+                inputModel.setMinElevation(dataReductionEnv.getElevationMin());
+                inputModel.setMaxElevation(dataReductionEnv.getElevationMax());
                 inputModel.setTimingHayashidaBg(isTimingBackground());
                 if (!isTimingBackground()) {
                     inputModel.setPsFileName(FileUtil.nextFileName("lacqrd", query.getStartTime(),
@@ -101,17 +102,17 @@ public abstract class LacqrdfitsInputBuilder extends
                 inputModel.setRegionFileName(gtiFile.getName());
                 inputModel.setBgCorrection(backgroundCorrection());
                 inputModel.setAspectCorrection(aspectCorrection());
-                inputModel.setDeadTimeCorrection(input.getDeadTimeCorrection());
-                inputModel.setDelayTimeCorrection(input.getDelayTimeCorrection());
-                inputModel.setCounter1(input.getLacCounter1());
-                inputModel.setCounter2(input.getLacCounter2());
-                inputModel.setCounter3(input.getLacCounter3());
-                inputModel.setCounter4(input.getLacCounter4());
-                inputModel.setCounter5(input.getLacCounter5());
-                inputModel.setCounter6(input.getLacCounter6());
-                inputModel.setCounter7(input.getLacCounter7());
-                inputModel.setCounter8(input.getLacCounter8());
-                inputModel.setMixedMode(input.isLacMixedMode());
+                inputModel.setDeadTimeCorrection(dataReductionEnv.getDeadTimeCorrection());
+                inputModel.setDelayTimeCorrection(dataReductionEnv.getDelayTimeCorrection());
+                inputModel.setCounter1(dataReductionEnv.getLacCounter1());
+                inputModel.setCounter2(dataReductionEnv.getLacCounter2());
+                inputModel.setCounter3(dataReductionEnv.getLacCounter3());
+                inputModel.setCounter4(dataReductionEnv.getLacCounter4());
+                inputModel.setCounter5(dataReductionEnv.getLacCounter5());
+                inputModel.setCounter6(dataReductionEnv.getLacCounter6());
+                inputModel.setCounter7(dataReductionEnv.getLacCounter7());
+                inputModel.setCounter8(dataReductionEnv.getLacCounter8());
+                inputModel.setMixedMode(dataReductionEnv.isLacMixedMode());
                 inputModel.setLacMode(query.getMode());
                 inputModel.setTimingBinWidth(getTimingBinWidth());
 

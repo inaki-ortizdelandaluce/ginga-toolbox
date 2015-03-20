@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
-import org.ginga.toolbox.environment.InputParameters;
 import org.ginga.toolbox.gti.GingaGtiWriter;
 import org.ginga.toolbox.gti.GtiWriter;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
@@ -66,27 +66,28 @@ public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filf
 
                 // emit timinfilfits input model
                 Tim2filfitsInputModel inputModel = new Tim2filfitsInputModel();
-                InputParameters input = GingaToolboxEnv.getInstance().getInputParameters();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
+                        .getDataReductionEnv();
                 inputModel.setStartTime(query.getStartTime());
-                inputModel.setBitRate(input.getBitRate());
-                inputModel.setAce(input.getAttitudeMode());
-                inputModel.setMinElevation(input.getElevationMin());
-                inputModel.setMaxElevation(input.getElevationMax());
-                inputModel.setMinRigidity(input.getCutOffRigidityMin());
-                inputModel.setMaxRigidity(input.getCutOffRigidityMax());
+                inputModel.setBitRate(dataReductionEnv.getBitRate());
+                inputModel.setAce(dataReductionEnv.getAttitudeMode());
+                inputModel.setMinElevation(dataReductionEnv.getElevationMin());
+                inputModel.setMaxElevation(dataReductionEnv.getElevationMax());
+                inputModel.setMinRigidity(dataReductionEnv.getCutOffRigidityMin());
+                inputModel.setMaxRigidity(dataReductionEnv.getCutOffRigidityMax());
                 inputModel.setBgCorrection(false);
                 inputModel.setAspectCorrection(false);
                 inputModel.setDeadTimeCorrection(false);
                 inputModel.setChannelToEnergy(false);
                 inputModel.setDataUnit(0); // counts
-                inputModel.setPcLine1(input.getPcLine1());
-                inputModel.setPcLine2(input.getPcLine2());
-                inputModel.setPcLine3(input.getPcLine3());
-                inputModel.setPcLine4(input.getPcLine4());
+                inputModel.setPcLine1(dataReductionEnv.getPcLine1());
+                inputModel.setPcLine2(dataReductionEnv.getPcLine2());
+                inputModel.setPcLine3(dataReductionEnv.getPcLine3());
+                inputModel.setPcLine4(dataReductionEnv.getPcLine4());
                 inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
                         query.getMode(), "fits"));
-                inputModel.setTimeResolution(TimeUtil.getTimeResolution(input.getBitRate(),
-                        query.getMode()));
+                inputModel.setTimeResolution(TimeUtil.getTimeResolution(
+                        dataReductionEnv.getBitRate(), query.getMode()));
                 inputModel.setGtiLines(gtiString);
                 return inputModel;
             }
