@@ -158,7 +158,7 @@ public class GingaGtiWriterCmd {
                 .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create("n");
         Option bgOption = OptionBuilder.withArgName("background").withLongOpt("is-background")
-                .withDescription("[OPTIONAL] Background GTI.").hasArg().create("b");
+                .withDescription("[OPTIONAL] Background GTI.").hasArg(false).create("b");
 
         Option fileOption = OptionBuilder.withArgName("file path").withLongOpt("file")
                 .withDescription("write observation list to output file").hasArg().create("f");
