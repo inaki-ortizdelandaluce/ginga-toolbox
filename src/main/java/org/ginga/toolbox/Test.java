@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.command.ObservationListPrinterCmd;
@@ -19,6 +20,7 @@ import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
 import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.lacqrdfits.LacqrdfitsInputModel;
 import org.ginga.toolbox.observation.ObservationEntity;
+import org.ginga.toolbox.observation.SingleModeTargetObservation;
 import org.ginga.toolbox.observation.dao.ObservationDao;
 import org.ginga.toolbox.observation.dao.ObservationDaoException;
 import org.ginga.toolbox.observation.dao.impl.ObservationDaoImpl;
@@ -87,10 +89,10 @@ public class Test {
     }
 
     public static void scanObservations(String[] args) {
-        Pipe<String, List<ObservationEntity>> obsPipe = new ObservationListBuilder();
+        Pipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> obsPipe = new ObservationListBuilder();
         obsPipe.setStarts(Arrays.asList("GS2000+25"));
         if (obsPipe.hasNext()) {
-            List<ObservationEntity> obsSummary = obsPipe.next();
+            Map<ObservationEntity, List<SingleModeTargetObservation>> obsSummary = obsPipe.next();
             log.info(obsSummary.size() + " observation(s) scanned");
         }
     }

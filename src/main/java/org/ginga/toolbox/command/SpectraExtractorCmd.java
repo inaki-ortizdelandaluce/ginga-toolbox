@@ -3,7 +3,9 @@ package org.ginga.toolbox.command;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -41,13 +43,15 @@ public class SpectraExtractorCmd {
         // find all observations for input target
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = obsListBuilder.next();
+        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
 
         // find available modes for each observations and extract spectra
-        List<SingleModeTargetObservation> singleModeObsList = null;
-        for (ObservationEntity obsEntity : obsList) {
+        Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
+        ObservationEntity obsEntity = null;
+        while (obsIterator.hasNext()) {
+            obsEntity = obsIterator.next();
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
-            singleModeObsList = obsEntity.getSingleModeObsList();
+            List<SingleModeTargetObservation> singleModeObsList = obsMap.get(obsEntity);
             // extract spectra for all relevant modes
             if (singleModeObsList != null) {
                 // run pipeline

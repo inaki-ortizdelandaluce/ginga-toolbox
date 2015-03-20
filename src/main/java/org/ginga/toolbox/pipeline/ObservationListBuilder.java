@@ -2,7 +2,9 @@ package org.ginga.toolbox.pipeline;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
@@ -22,14 +24,17 @@ import org.ginga.toolbox.util.TimeUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class ObservationListBuilder extends AbstractPipe<String, List<ObservationEntity>> implements
-        TransformPipe<String, List<ObservationEntity>> {
+public class ObservationListBuilder extends
+        AbstractPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> implements
+        TransformPipe<String, Map<ObservationEntity, List<SingleModeTargetObservation>>> {
 
     private static Logger log = Logger.getLogger(ObservationListBuilder.class);
 
     @Override
-    protected List<ObservationEntity> processNextStart() throws NoSuchElementException {
+    protected Map<ObservationEntity, List<SingleModeTargetObservation>> processNextStart()
+            throws NoSuchElementException {
         String target = this.starts.next();
+        Map<ObservationEntity, List<SingleModeTargetObservation>> map = new HashMap<ObservationEntity, List<SingleModeTargetObservation>>();
         // read environment
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
         double minElevation = dataReductionEnv.getElevationMin();
@@ -48,6 +53,7 @@ public class ObservationListBuilder extends AbstractPipe<String, List<Observatio
         // find available LAC modes and date ranges for each observation
         LacdumpDao lacdumpDao = new LacdumpDaoImpl();
         SimpleDateFormat dateFmt = TimeUtil.DATE_FORMAT_DATABASE;
+        List<SingleModeTargetObservation> lacModeObsList = null;
         for (ObservationEntity obsEntity : obsList) {
             log.debug("Scanning observation " + obsEntity.getSequenceNumber() + "...");
             // find available LAC modes
@@ -63,7 +69,8 @@ public class ObservationListBuilder extends AbstractPipe<String, List<Observatio
 
             // find date ranges for each mode
             List<LacdumpSfEntity> sfList = new ArrayList<LacdumpSfEntity>();
-            SingleModeTargetObservation singleModeObs = null;
+            lacModeObsList = new ArrayList<SingleModeTargetObservation>();
+            SingleModeTargetObservation lacModeObs = null;
             for (String mode : modes) {
                 try {
                     sfList = lacdumpDao.findSfList(mode, target, startTime, endTime, minElevation,
@@ -75,17 +82,17 @@ public class ObservationListBuilder extends AbstractPipe<String, List<Observatio
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
                     log.debug("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
-                    singleModeObs = new SingleModeTargetObservation();
-                    singleModeObs.setObsId(obsEntity.getId());
-                    singleModeObs.setTarget(target);
-                    singleModeObs.setMode(mode);
-                    singleModeObs.setStartTime(modeStartTime);
-                    singleModeObs.setEndTime(modeEndTime);
-                    // add observation mode to observation summary
-                    obsEntity.addSingleModeObs(singleModeObs);
+                    lacModeObs = new SingleModeTargetObservation();
+                    lacModeObs.setTarget(target);
+                    lacModeObs.setMode(mode);
+                    lacModeObs.setStartTime(modeStartTime);
+                    lacModeObs.setEndTime(modeEndTime);
+                    // add LAC single mode target observation to list
+                    lacModeObsList.add(lacModeObs);
                 }
             }
+            map.put(obsEntity, lacModeObsList);
         }
-        return obsList;
+        return map;
     }
 }

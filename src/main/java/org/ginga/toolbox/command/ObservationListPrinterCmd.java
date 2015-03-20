@@ -8,7 +8,9 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -42,24 +44,21 @@ public class ObservationListPrinterCmd {
     public void printAllModes(String target) {
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = obsListBuilder.next();
 
-        List<SingleModeTargetObservation> singleModeObsList = null;
-        for (ObservationEntity obsEntity : obsList) {
-            singleModeObsList = obsEntity.getSingleModeObsList();
-            if (singleModeObsList != null) {
-                for (SingleModeTargetObservation singleModeObs : singleModeObsList) {
-                    this.writer.println(" "
-                            + String.format(
-                                    "%18s",
-                                    obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
-                                            + String.format("%8s", singleModeObs.getMode()) + " "
-                                            + String.format("%20s", singleModeObs.getStartTime())
-                                            + " "
-                                            + String.format("%20s", singleModeObs.getEndTime())));
-                }
-                this.writer.println("----------------------------------------------------------");
+        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
+        ObservationEntity obsEntity = null;
+        while (obsIterator.hasNext()) {
+            obsEntity = obsIterator.next();
+            for (SingleModeTargetObservation singleModeObs : obsMap.get(obsEntity)) {
+                this.writer.println(" "
+                        + String.format("%18s",
+                                obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
+                                        + String.format("%8s", singleModeObs.getMode()) + " "
+                                        + String.format("%20s", singleModeObs.getStartTime()) + " "
+                                        + String.format("%20s", singleModeObs.getEndTime())));
             }
+            this.writer.println("----------------------------------------------------------");
         }
         this.writer.flush();
         this.writer.close();
@@ -74,34 +73,25 @@ public class ObservationListPrinterCmd {
     }
 
     public void printModes(String target, LacMode[] modes) {
-        ObservationListBuilder pipe = new ObservationListBuilder();
-        pipe.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = pipe.next();
+        ObservationListBuilder obsListBuilder = new ObservationListBuilder();
+        obsListBuilder.setStarts(Arrays.asList(target));
 
-        List<SingleModeTargetObservation> singleModeObsList = null;
-        for (ObservationEntity obsEntity : obsList) {
-            singleModeObsList = obsEntity.getSingleModeObsList();
-            if (singleModeObsList != null) {
-                for (SingleModeTargetObservation singleModeObs : singleModeObsList) {
-                    LacMode mode = singleModeObs.getLacMode();
-                    if (Arrays.asList(modes).contains(mode)) {
-                        this.writer
-                        .println(" "
-                                + String.format(
-                                        "%18s",
-                                        obsEntity.getId()
-                                        + " "
-                                        + obsEntity.getSequenceNumber()
-                                        + " "
-                                        + String.format("%8s",
-                                                singleModeObs.getMode())
-                                                + " "
-                                                + String.format("%20s",
-                                                        singleModeObs.getStartTime())
-                                                        + " "
-                                                        + String.format("%20s",
-                                                                singleModeObs.getEndTime())));
-                    }
+        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
+        ObservationEntity obsEntity = null;
+        while (obsIterator.hasNext()) {
+            obsEntity = obsIterator.next();
+            for (SingleModeTargetObservation singleModeObs : obsMap.get(obsEntity)) {
+                LacMode mode = singleModeObs.getLacMode();
+                if (Arrays.asList(modes).contains(mode)) {
+                    this.writer.println(" "
+                            + String.format(
+                                    "%18s",
+                                    obsEntity.getId() + " " + obsEntity.getSequenceNumber() + " "
+                                            + String.format("%8s", singleModeObs.getMode()) + " "
+                                            + String.format("%20s", singleModeObs.getStartTime())
+                                            + " "
+                                            + String.format("%20s", singleModeObs.getEndTime())));
                 }
             }
         }
@@ -110,11 +100,14 @@ public class ObservationListPrinterCmd {
     }
 
     public void printObservations(String target) {
-        ObservationListBuilder pipe = new ObservationListBuilder();
-        pipe.setStarts(Arrays.asList(target));
-        List<ObservationEntity> obsList = pipe.next();
+        ObservationListBuilder obsListBuilder = new ObservationListBuilder();
+        obsListBuilder.setStarts(Arrays.asList(target));
 
-        for (ObservationEntity obsEntity : obsList) {
+        Map<ObservationEntity, List<SingleModeTargetObservation>> obsMap = obsListBuilder.next();
+        Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
+        ObservationEntity obsEntity = null;
+        while (obsIterator.hasNext()) {
+            obsEntity = obsIterator.next();
             this.writer.println(" "
                     + String.format(
                             "%18s",
