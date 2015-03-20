@@ -153,15 +153,15 @@ public class GingaGtiWriterCmd {
                 .create("m");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
                 .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
-                .hasArg().create();
+                .hasArg().create("a");
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
                 .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
-                .hasArg().create();
+                .hasArg().create("n");
         Option bgOption = OptionBuilder.withArgName("background").withLongOpt("is-background")
                 .withDescription("[OPTIONAL] Background GTI.").hasArg().create("b");
 
         Option fileOption = OptionBuilder.withArgName("file path").withLongOpt("file")
-                .withDescription("write observation list to file").hasArg().create("f");
+                .withDescription("write observation list to output file").hasArg().create("f");
         Option consoleOption = new Option("c", "console", false,
                 "write observation list to console");
 
@@ -200,7 +200,7 @@ public class GingaGtiWriterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "tcfbis"; // short option names
+            private static final String OPTS_ORDER = "fcistmban"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
