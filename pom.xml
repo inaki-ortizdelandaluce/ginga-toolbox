@@ -163,6 +163,13 @@
 <!--                   </platforms> -->
 <!--                 </program> -->
                 <program>
+                  <mainClass>org.ginga.toolbox.command.BackgroundSpectrumExtractorCmd</mainClass>
+                  <id>extract_background_spectrum.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
                   <mainClass>org.ginga.toolbox.command.SpectrumExtractorHayashidaCmd</mainClass>
                   <id>extract_spectrum_hayashida.sh</id>
                   <platforms>
