@@ -114,15 +114,15 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%20s%20s", "OBSID", "PASS", "START_TIME",
+        this.writer.println(String.format("%6s%10s%22s%22s", "OBSID", "PASS", "START_TIME",
                 "END_TIME"));
-        this.writer.println(String.format("%62s",
-                "========================================================"));
+        this.writer.println(String.format("%60s",
+                "============================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             this.writer
-                    .println(String.format("%6s%10s%20s%20s", obsEntity.getId(),
+                    .println(String.format("%6s%10s%22s%22s", obsEntity.getId(),
                             obsEntity.getSequenceNumber(), obsEntity.getStartTime(),
                             obsEntity.getEndTime()));
         }
