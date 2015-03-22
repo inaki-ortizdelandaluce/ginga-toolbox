@@ -3,6 +3,7 @@ package org.ginga.toolbox.pipeline;
 import java.io.File;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
@@ -15,6 +16,8 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class SpectrumHayashidaPipeline {
 
+    private static final Logger LOGGER = Logger.getLogger(SpectrumHayashidaPipeline.class);
+
     private Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter;
     private Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder;
     private Pipe<LacdumpQuery, LacqrdfitsInputModel> lacqrdfitsInputBuilder;
@@ -24,8 +27,7 @@ public class SpectrumHayashidaPipeline {
 
     public SpectrumHayashidaPipeline() {
         // initialize all pipes needed
-        this.modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
-                new SpectrumModeFilter());
+        this.modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(new SpectrumModeFilter());
         this.queryBuilder = new LacdumpQueryBuilder();
         this.lacqrdfitsInputBuilder = new LacqrdfitsInputBuilder() {
 
@@ -68,6 +70,7 @@ public class SpectrumHayashidaPipeline {
     }
 
     public void run(List<LacModeTargetObservation> obsList) {
+        LOGGER.debug("Entering into SpectrumHayashidaPipeline.run...");
         this.pipeline.setStarts(obsList);
     }
 

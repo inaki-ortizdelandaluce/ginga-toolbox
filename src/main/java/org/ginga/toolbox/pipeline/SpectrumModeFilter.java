@@ -16,7 +16,7 @@ public class SpectrumModeFilter implements PipeFunction<LacModeTargetObservation
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.tinkerpop.pipes.PipeFunction#compute(java.lang.Object)
      */
     @Override
@@ -24,11 +24,10 @@ public class SpectrumModeFilter implements PipeFunction<LacModeTargetObservation
         LacMode mode = observation.getLacMode();
         if (mode == null)
             return Boolean.FALSE;
-        if (mode.equals(LacMode.MPC1) || mode.equals(LacMode.MPC2)) {
+        if (mode.equals(LacMode.MPC1) || mode.equals(LacMode.MPC2) || mode.equals(LacMode.MPC3)) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;
         }
     }
-
 }
