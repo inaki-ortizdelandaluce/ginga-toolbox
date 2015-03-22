@@ -49,6 +49,11 @@
 	        <version>1.2</version>
         </dependency>
         <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.4</version>
+        </dependency>
+        <dependency>
           <groupId>nom.tam.fits</groupId>
           <artifactId>nom.tam.fits</artifactId>
           <version>1.11.1</version>

@@ -1,12 +1,16 @@
 package org.ginga.toolbox.pipeline;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
+import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.timinfilfits.TiminfilfitsInputModel;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
+import org.ginga.toolbox.util.FileUtil;
 
 import com.tinkerpop.pipes.Pipe;
 import com.tinkerpop.pipes.filter.FilterFunctionPipe;
@@ -14,13 +18,24 @@ import com.tinkerpop.pipes.util.Pipeline;
 
 public class TimingMode1SudSortPipeline {
 
+    private static final Logger LOGGER = Logger.getLogger(TimingMode1SudSortPipeline.class);
+
     public TimingMode1SudSortPipeline() {
     }
 
     public File run(LacModeTargetObservation obs) {
-        File bgSpectrumFile = obs.getBackgroundFile();
-        if (bgSpectrumFile != null) {
-            return extractTiming(obs, bgSpectrumFile);
+        File inputFile = obs.getBackgroundFile();
+        if (inputFile != null) {
+            try {
+                // copy file to working directory
+                File bgSpectrumFile = new File(GingaToolboxEnv.getInstance().getWorkingDir(),
+                        inputFile.getName());
+                FileUtil.copy(inputFile, bgSpectrumFile);
+                return extractTiming(obs, bgSpectrumFile);
+            } catch (IOException e) {
+                LOGGER.error("Error copying background file to working directory", e);
+                return null;
+            }
         } else {
             TimingBackgroundPipeline bgPipeline = new TimingBackgroundPipeline();
             bgPipeline.run(Arrays.asList(obs));

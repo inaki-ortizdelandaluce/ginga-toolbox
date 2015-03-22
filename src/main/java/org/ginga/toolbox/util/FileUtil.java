@@ -2,11 +2,13 @@ package org.ginga.toolbox.util;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -18,20 +20,27 @@ public class FileUtil {
         log.info("Next file " + nextFileName(new File("/tmp"), "lacqrd", "input"));
     }
 
+    public static void copy(File srcFile, File destFile) throws IOException {
+        if (!srcFile.getPath().equals(destFile.getPath())) {
+            FileUtils.copyFile(srcFile, destFile);
+        }
+    }
+
     public static String[] splitFileBaseAndExtension(File file) {
         return file.getName().split("\\.(?=[^\\.]+$)");
     }
 
-    public static String nextFileName(String prefix, String startTime, LacMode mode, String extension) {
-    	String fileName = prefix;
-    	try {
-			fileName += "_" + TimeUtil.convertDatabaseToFileFormat(startTime);
-		} catch (ParseException e) {
-			fileName += "_" + startTime;
-		}
-    	fileName += "_" + mode.toString();
-    	fileName += "." + extension;
-    	return fileName;
+    public static String nextFileName(String prefix, String startTime, LacMode mode,
+            String extension) {
+        String fileName = prefix;
+        try {
+            fileName += "_" + TimeUtil.convertDatabaseToFileFormat(startTime);
+        } catch (ParseException e) {
+            fileName += "_" + startTime;
+        }
+        fileName += "_" + mode.toString();
+        fileName += "." + extension;
+        return fileName;
     }
 
     public static String nextFileName(File directory, String prefix, String extension) {
@@ -83,11 +92,12 @@ public class FileUtil {
         Arrays.sort(files);
         return files;
     }
-    
+
     public static class LacdumpFileFilter implements FilenameFilter {
-		@Override
-		public boolean accept(File dir, String name) {
-			return name.matches("J[0-9]{6}");
-		}
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.matches("J[0-9]{6}");
+        }
     }
 }
