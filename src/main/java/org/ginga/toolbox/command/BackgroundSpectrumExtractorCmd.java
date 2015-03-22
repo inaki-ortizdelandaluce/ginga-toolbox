@@ -142,7 +142,7 @@ public class BackgroundSpectrumExtractorCmd {
                 .withLongOpt("background-method")
                 .withDescription(
                         "[OPTIONAL] Background subtraction method. Possible values: SIMPLE, SUD_SORT")
-                        .hasArg().create("b");
+                .hasArg().create("b");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
                 .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create();
@@ -155,8 +155,8 @@ public class BackgroundSpectrumExtractorCmd {
         dataReductionModeGroup.addOption(new Option("i", "interactive", false,
                 "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         dataReductionModeGroup
-                .addOption(new Option("s", "systematic", false,
-                        "use default systematic values present in configuration file gingatoolbox.properties "));
+        .addOption(new Option("s", "systematic", false,
+                "use default systematic values present in configuration file gingatoolbox.properties "));
 
         options.addOption(targetOption);
         options.addOption(methodOption);
@@ -195,7 +195,7 @@ public class BackgroundSpectrumExtractorCmd {
     }
 
     public static void extractBackgroundSpectrum(LacModeTargetObservation obs, boolean sudSort) {
-        SpectrumBackgroundPipeline pipeline = new SpectrumBackgroundPipeline(sudSort);
+        SpectrumBackgroundPipeline pipeline = new SpectrumBackgroundPipeline(sudSort, false);
         pipeline.run(Arrays.asList(obs));
         File specFile = pipeline.next();
         if (specFile != null) {

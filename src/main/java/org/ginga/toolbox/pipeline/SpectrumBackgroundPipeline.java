@@ -15,19 +15,25 @@ import com.tinkerpop.pipes.util.Pipeline;
 public class SpectrumBackgroundPipeline {
 
     private Pipeline<LacModeTargetObservation, File> pipeline;
+    private Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder;
 
     public SpectrumBackgroundPipeline() {
-        this(false);
+        this(false, true);
     }
 
-    public SpectrumBackgroundPipeline(final boolean sudsort) {
+    // public SpectrumBackgroundPipeline(final boolean sudsort) {
+    public SpectrumBackgroundPipeline(boolean sudsort, boolean autoBackgroundSelection) {
         // initialize all pipes needed
         Pipe<LacModeTargetObservation, LacModeTargetObservation> modeFilter = new FilterFunctionPipe<LacModeTargetObservation>(
                 new SpectrumModeFilter());
-        Pipe<LacModeTargetObservation, LacdumpQuery> queryBuilder = new LacdumpQueryBgBuilder();
+        if (autoBackgroundSelection) { // build background region file from suggested observations
+            this.queryBuilder = new LacdumpQueryBgBuilder();
+        } else { // build background region file from LacModeTargetObservation constraints
+            this.queryBuilder = new LacdumpQueryBuilder();
+        }
         if (sudsort) {
             this.pipeline = new Pipeline<LacModeTargetObservation, File>(modeFilter,
-                    queryBuilder, new BgdspecInputBuilder(), new BgdspecRunner());
+                    this.queryBuilder, new BgdspecInputBuilder(), new BgdspecRunner());
         } else {
             Pipe<LacdumpQuery, LacspecInputModel> inputBuilder = new LacspecInputBuilder() {
 
@@ -67,7 +73,7 @@ public class SpectrumBackgroundPipeline {
                 }
             };
             this.pipeline = new Pipeline<LacModeTargetObservation, File>(modeFilter,
-                    queryBuilder, inputBuilder, new LacspecRunner());
+                    this.queryBuilder, inputBuilder, new LacspecRunner());
         }
     }
 
