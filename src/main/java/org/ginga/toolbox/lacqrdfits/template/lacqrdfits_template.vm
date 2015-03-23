@@ -59,5 +59,7 @@ $template.psFileName/vps
 #else
 'CALFILE'  'LACQRT12' /
 #end
+'RMK' '  Use LACQRT48 for MPC-1 and MPC-2 mode. '
+'RMK' '  Use LACQRT12 for MPC-3 mode. '
 'FILE'  '$template.regionFileName' /
 'GO' /
