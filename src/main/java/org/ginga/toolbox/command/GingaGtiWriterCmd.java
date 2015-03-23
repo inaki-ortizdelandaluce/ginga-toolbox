@@ -32,7 +32,7 @@ import org.ginga.toolbox.util.TimeUtil;
 public class GingaGtiWriterCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    public static final Logger log = Logger.getLogger(TargetListPrinterCmd.class);
+    public static final Logger log = Logger.getLogger(GingaGtiWriterCmd.class);
     private PrintWriter writer;
 
     public GingaGtiWriterCmd(Writer writer) {
