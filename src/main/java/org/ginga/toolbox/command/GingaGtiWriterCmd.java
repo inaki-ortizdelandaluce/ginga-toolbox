@@ -178,10 +178,9 @@ public class GingaGtiWriterCmd {
                 .withLongOpt("file")
                 .withDescription(
                         "write GTI to output file (or directory if split option is enabled)")
-                        .hasArg().isRequired().create("f");
+                .hasArg().isRequired().create("f");
         Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
-                .withDescription("[OPTIONAL] Split into GTI files by frame bin in seconds.")
-                .hasArg().create("s");
+                .withDescription("[OPTIONAL] Split by frame bin in seconds.").hasArg().create("s");
 
         OptionGroup group2 = new OptionGroup();
         group2.setRequired(true);
