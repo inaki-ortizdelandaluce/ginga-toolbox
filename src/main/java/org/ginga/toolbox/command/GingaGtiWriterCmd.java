@@ -178,7 +178,7 @@ public class GingaGtiWriterCmd {
                 .withLongOpt("file")
                 .withDescription(
                         "write GTI to output file (or directory if split option is enabled)")
-                        .hasArg().create("f");
+                        .hasArg().isRequired().create("f");
         Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
                 .withDescription("[OPTIONAL] Split into GTI files by frame bin in seconds.")
                 .hasArg().create("s");
@@ -213,7 +213,7 @@ public class GingaGtiWriterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "istmanfsb"; // short option names
+            private static final String OPTS_ORDER = "fistmansb"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
