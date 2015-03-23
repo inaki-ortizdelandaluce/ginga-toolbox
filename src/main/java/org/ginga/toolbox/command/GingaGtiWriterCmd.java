@@ -3,8 +3,6 @@ package org.ginga.toolbox.command;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Comparator;
 import java.util.List;
@@ -33,14 +31,10 @@ public class GingaGtiWriterCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
     public static final Logger log = Logger.getLogger(GingaGtiWriterCmd.class);
-    private PrintWriter writer;
+    private File file;
 
-    public GingaGtiWriterCmd(Writer writer) {
-        this.writer = new PrintWriter(writer);
-    }
-
-    public GingaGtiWriterCmd(PrintStream stream) {
-        this.writer = new PrintWriter(stream);
+    public GingaGtiWriterCmd(File file) {
+        this.file = file;
     }
 
     public void writeGti(String target, String lacMode, String startTime, String endTime,
@@ -57,7 +51,25 @@ public class GingaGtiWriterCmd {
         List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
         // write results into Ginga GTI format
         GingaGtiWriter gtiWriter = new GingaGtiWriter();
-        gtiWriter.write(target, sfList, isBackground, false, this.writer);
+        gtiWriter.write(target, sfList, isBackground, false, new FileWriter(this.file));
+    }
+
+    public void writeGtiSplit(String target, String lacMode, String startTime, String endTime,
+            boolean isBackground, double frameBinSeconds) throws LacdumpDaoException, IOException {
+        // build and execute query
+        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
+        LacdumpQuery query = new LacdumpQuery();
+        query.setTargetName(target);
+        query.setMode(Enum.valueOf(LacMode.class, lacMode));
+        query.setStartTime(startTime);
+        query.setEndTime(endTime);
+        query.setMinCutOffRigidity(env.getCutOffRigidityMin());
+        query.setMinElevation(env.getElevationMin());
+        List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
+        // write results into Ginga GTI format
+        GingaGtiWriter gtiWriter = new GingaGtiWriter();
+        gtiWriter.writeToFileSplitByFrameBin(target, sfList, frameBinSeconds, isBackground,
+                this.file);
     }
 
     public static void main(String[] args) {
@@ -72,16 +84,11 @@ public class GingaGtiWriterCmd {
                 target = commandLine.getOptionValue("t");
             }
             // WRITER
-            if (commandLine.hasOption("f")) {
-                String filePath = commandLine.getOptionValue("f");
-                File f = new File(filePath);
-                // create parent directory if it does not exist
-                if (!f.getParentFile().exists()) {
-                    f.getParentFile().mkdirs();
-                }
-                writer = new FileWriter(f);
-            } else {
-                writer = new PrintWriter(System.out);
+            String filePath = commandLine.getOptionValue("f");
+            File f = new File(filePath);
+            // create parent directory if it does not exist
+            if (!f.getParentFile().exists()) {
+                f.getParentFile().mkdirs();
             }
             // LAC MODE
             String mode = null;
@@ -132,8 +139,15 @@ public class GingaGtiWriterCmd {
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // write GTI
-            GingaGtiWriterCmd cmd = new GingaGtiWriterCmd(writer);
-            cmd.writeGti(target, mode, startTime, endTime, commandLine.hasOption("b"));
+            GingaGtiWriterCmd cmd = new GingaGtiWriterCmd(f);
+            if (!commandLine.hasOption("s")) {
+                cmd.writeGti(target, mode, startTime, endTime, commandLine.hasOption("b"));
+            } else { // split GTIs in frame bins
+                double frameBinSeconds = Double.valueOf(commandLine.getOptionValue("s"))
+                        .doubleValue();
+                cmd.writeGtiSplit(target, mode, startTime, endTime, commandLine.hasOption("b"),
+                        frameBinSeconds);
+            }
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
@@ -159,16 +173,15 @@ public class GingaGtiWriterCmd {
                 .hasArg().create("n");
         Option bgOption = OptionBuilder.withArgName("background").withLongOpt("is-background")
                 .withDescription("[OPTIONAL] Background GTI.").hasArg(false).create("b");
-
-        Option fileOption = OptionBuilder.withArgName("file path").withLongOpt("file")
-                .withDescription("write observation list to output file").hasArg().create("f");
-        Option consoleOption = new Option("c", "console", false,
-                "write observation list to console");
-
-        OptionGroup group1 = new OptionGroup();
-        group1.setRequired(true);
-        group1.addOption(fileOption);
-        group1.addOption(consoleOption);
+        Option fileOption = OptionBuilder
+                .withArgName("file path")
+                .withLongOpt("file")
+                .withDescription(
+                        "write GTI to output file (or directory if split option is enabled)")
+                        .hasArg().create("f");
+        Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
+                .withDescription("[OPTIONAL] Split into GTI files by frame bin in seconds.")
+                .hasArg().create("s");
 
         OptionGroup group2 = new OptionGroup();
         group2.setRequired(true);
@@ -182,8 +195,8 @@ public class GingaGtiWriterCmd {
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
         options.addOption(bgOption);
-        options.addOptionGroup(group1);
-        options.addOptionGroup(group2);
+        options.addOption(fileOption);
+        options.addOption(splitByFrameByOption);
         return options;
     }
 
@@ -200,7 +213,7 @@ public class GingaGtiWriterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "fcistmanb"; // short option names
+            private static final String OPTS_ORDER = "istmanfsb"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
