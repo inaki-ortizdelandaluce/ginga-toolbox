@@ -85,8 +85,8 @@ public class GingaGtiWriter {
                 writer.write("'DATA' \n");
                 writer.write("'PASS' '" + sf.getPass() + "' / \n");
                 writer.write("'B' " + sf.getSequenceNumber() + "  " + frameNumber + "   0/\n"); // begin
-                writer.write("'E' " + sf.getSequenceNumber() + "  " + (frameNumber + frameBin)
-                        + "   0/\n"); // begin
+                writer.write("'E' " + sf.getSequenceNumber() + "  " + (frameNumber + frameBin - 1)
+                        + "   63/\n"); // begin
                 writer.write("'END'\n");
                 writer.flush();
                 writer.close();
