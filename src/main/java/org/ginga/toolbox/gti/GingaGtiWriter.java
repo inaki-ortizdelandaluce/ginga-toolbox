@@ -16,7 +16,6 @@ import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
 import org.ginga.toolbox.target.TargetEntity;
 import org.ginga.toolbox.target.dao.TargetDaoException;
 import org.ginga.toolbox.target.dao.impl.TargetDaoImpl;
-import org.ginga.toolbox.util.FileUtil;
 
 public class GingaGtiWriter {
 
@@ -74,10 +73,9 @@ public class GingaGtiWriter {
             FileWriter writer;
             int frameBin = (int) (frameBinSeconds / FRAME_SECONDS);
             for (int i = 0; i < (NUMBER_OF_FRAMES / frameBin); i++) {
-                String prefix = "REGION_" + sf.getSequenceNumber() + "_" + frameNumber + "_"
-                        + sf.getMode();
-                File gtiFile = new File(outputDirectory, FileUtil.nextFileName(outputDirectory,
-                        prefix, "DATA"));
+                String fileName = "REGION_" + String.format("%03d", sf.getSequenceNumber()) + "_"
+                        + String.format("%02d", frameNumber) + "_" + sf.getMode() + ".DATA";
+                File gtiFile = new File(outputDirectory, fileName);
                 writer = new FileWriter(gtiFile);
                 // write TGT section
                 writeTargetSection(target, writer);
