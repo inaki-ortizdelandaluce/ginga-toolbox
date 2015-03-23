@@ -140,14 +140,13 @@ public class TimingMode1ExtractorSimpleCmd {
         dataReductionModeGroup.addOption(new Option("i", "interactive", false,
                 "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         dataReductionModeGroup
-                .addOption(new Option("s", "systematic", false,
-                        "use default systematic values present in configuration file gingatoolbox.properties "));
+        .addOption(new Option("s", "systematic", false,
+                "use default systematic values present in configuration file gingatoolbox.properties "));
 
         OptionGroup backgroundGroup = new OptionGroup();
         backgroundGroup.setRequired(true);
-        backgroundGroup
-        .addOption(new Option("o", "observation-id", false,
-                "subtraction will use suggested background observations for this observation identifier"));
+        backgroundGroup.addOption(new Option("o", "observation-id", false,
+                "background subtraction will use suggested observations for this identifier"));
         Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
                 .withDescription("background spectrum file").hasArg().create("f");
         backgroundGroup.addOption(bgFileOption);
