@@ -50,20 +50,21 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%6s%20s%20s", "OBSID", "PASS", "MODE",
-                "START_TIME", "END_TIME"));
-        this.writer.println(String.format("%62s",
-                "=============================================================="));
+        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE",
+                "BIT_RATE", "START_TIME", "END_TIME"));
+        this.writer.println(String.format("%72s",
+                "========================================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
-                this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
+                this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(),
                         obsEntity.getSequenceNumber(), targetObservation.getMode(),
-                        targetObservation.getStartTime(), targetObservation.getEndTime()));
+                        targetObservation.getBitRatesAsString(), targetObservation.getStartTime(),
+                        targetObservation.getEndTime()));
             }
-            this.writer.println(String.format("%62s",
-                    "--------------------------------------------------------------"));
+            this.writer.println(String.format("%72s",
+                    "------------------------------------------------------------------------"));
         }
         this.writer.flush();
         this.writer.close();
@@ -85,18 +86,19 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%6s%20s%20s", "OBSID", "PASS", "MODE",
-                "START_TIME", "END_TIME"));
-        this.writer.println(String.format("%62s",
-                "=============================================================="));
+        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE",
+                "BIT_RATE", "START_TIME", "END_TIME"));
+        this.writer.println(String.format("%72s",
+                "========================================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
                 LacMode mode = targetObservation.getLacMode();
                 if (Arrays.asList(modes).contains(mode)) {
-                    this.writer.println(String.format("%6s%10s%6s%20s%20s", obsEntity.getId(),
+                    this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(),
                             obsEntity.getSequenceNumber(), targetObservation.getMode(),
+                            targetObservation.getBitRatesAsString(),
                             targetObservation.getStartTime(), targetObservation.getEndTime()));
                 }
             }

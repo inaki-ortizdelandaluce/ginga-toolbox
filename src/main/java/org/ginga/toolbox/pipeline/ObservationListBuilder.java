@@ -2,10 +2,12 @@ package org.ginga.toolbox.pipeline;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.DataReductionEnv;
@@ -79,6 +81,10 @@ public class ObservationListBuilder extends
                     log.error("Modes for target " + target + " could not be found", e);
                 }
                 if (sfList.size() > 0) {
+                    Set<String> bitRates = new HashSet<String>();
+                    for (LacdumpSfEntity sf : sfList) {
+                        bitRates.add(sf.getBitRate());
+                    }
                     String modeStartTime = dateFmt.format(sfList.get(0).getDate());
                     String modeEndTime = dateFmt.format(sfList.get(sfList.size() - 1).getDate());
                     log.debug("[" + mode + ", " + modeStartTime + ", " + modeEndTime + "]");
@@ -87,6 +93,7 @@ public class ObservationListBuilder extends
                     targetObs.setMode(mode);
                     targetObs.setStartTime(modeStartTime);
                     targetObs.setEndTime(modeEndTime);
+                    targetObs.setBitRates(bitRates);
                     // add LAC single mode target observation to list
                     targetObsList.add(targetObs);
                 }
