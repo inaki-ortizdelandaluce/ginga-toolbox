@@ -87,7 +87,8 @@ public class TimeResolvedSpectraSimplePipeline {
     private File extractSpectrum(File bgSpectrumFile, File gtiFile, LacMode mode) {
         DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
 
-        String baseName = FileUtil.splitFileBaseAndExtension(gtiFile)[0];
+        String[] s = gtiFile.getName().split("_"); // REGION_SUPERFRAME_FRAME_LACMODE.DATA
+        String baseName = s[1] + "_" + s[2]; // SUPERFRAME_FRAME
 
         // build lacspec input model
         LOGGER.info("Building input file for GTI " + gtiFile.getName() + " ...");
