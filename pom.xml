@@ -203,8 +203,15 @@
                   </platforms>
                 </program>
                 <program>
-                  <mainClass>org.ginga.toolbox.command.TargetTimingExtractorCmd</mainClass>
-                  <id>extract_timing.sh</id>
+                  <mainClass>org.ginga.toolbox.command.TargetTimingMode1ExtractorCmd</mainClass>
+                  <id>extract_timing_mode1.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TargetTimingMode2ExtractorCmd</mainClass>
+                  <id>extract_timing_mode2.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>

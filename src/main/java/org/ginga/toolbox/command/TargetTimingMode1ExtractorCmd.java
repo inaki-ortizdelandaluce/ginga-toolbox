@@ -19,27 +19,15 @@ import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
 import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
+import org.ginga.toolbox.pipeline.TimingMode1SimplePipeline;
+import org.ginga.toolbox.pipeline.TimingMode1SudSortPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
-public class TargetTimingExtractorCmd {
+public class TargetTimingMode1ExtractorCmd {
 
-    private final static Logger log = Logger.getLogger(TargetTimingExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(TargetTimingMode1ExtractorCmd.class);
 
     public static void extractTiming(String target, BgSubtractionMethod method) {
-        switch (method) {
-        case HAYASHIDA:
-            extractTimingHayashida(target);
-            break;
-        case SIMPLE:
-        case SUD_SORT:
-        default:
-            log.error(method
-                    + " background subtraction method not yet supported for bulk processing");
-            System.exit(1);
-        }
-    }
-
-    public static void extractTimingHayashida(String target) {
         // find all observations for input target
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
@@ -51,20 +39,60 @@ public class TargetTimingExtractorCmd {
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
-            List<LacModeTargetObservation> targetObsList = obsMap.get(obsEntity);
+            List<LacModeTargetObservation> obsList = obsMap.get(obsEntity);
             // extract timing for all relevant modes
-            if (targetObsList != null) {
+            if (obsList != null) {
                 // run pipeline
-                TimingMode1HayashidaPipeline timingHayashidaPipeline = new TimingMode1HayashidaPipeline();
-                File file = null;
-                for (LacModeTargetObservation obs : targetObsList) {
-                    file = timingHayashidaPipeline.run(obs);
-                    if (file != null) {
-                        log.info("Timing file " + file.getName() + " created successfully");
-                    }
+                switch (method) {
+                case HAYASHIDA:
+                    extractTimingHayashida(obsList);
+                    break;
+                case SIMPLE:
+                    extractTimingSimple(obsList);
+                    break;
+                case SUD_SORT:
+                    extractTimingSudSort(obsList);
+                    break;
+                default:
+                    log.error(method
+                            + " background subtraction method not yet supported for bulk processing");
+                    System.exit(1);
                 }
             }
             log.info("Observation " + obsEntity.getSequenceNumber() + " processed successfully");
+        }
+    }
+
+    public static void extractTimingHayashida(List<LacModeTargetObservation> obsList) {
+        TimingMode1HayashidaPipeline pipeline = new TimingMode1HayashidaPipeline();
+        File file = null;
+        for (LacModeTargetObservation obs : obsList) {
+            file = pipeline.run(obs);
+            if (file != null) {
+                log.info("Timing file " + file.getName() + " created successfully");
+            }
+        }
+    }
+
+    public static void extractTimingSimple(List<LacModeTargetObservation> obsList) {
+        TimingMode1SimplePipeline pipeline = new TimingMode1SimplePipeline();
+        File file = null;
+        for (LacModeTargetObservation obs : obsList) {
+            file = pipeline.run(obs);
+            if (file != null) {
+                log.info("Timing file " + file.getName() + " created successfully");
+            }
+        }
+    }
+
+    public static void extractTimingSudSort(List<LacModeTargetObservation> obsList) {
+        TimingMode1SudSortPipeline pipeline = new TimingMode1SudSortPipeline();
+        File file = null;
+        for (LacModeTargetObservation obs : obsList) {
+            file = pipeline.run(obs);
+            if (file != null) {
+                log.info("Timing file " + file.getName() + " created successfully");
+            }
         }
     }
 
@@ -129,6 +157,6 @@ public class TargetTimingExtractorCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp("extract_timing.sh", getOptions());
+        helpFormatter.printHelp("extract_timing_mode1.sh", getOptions());
     }
 }
