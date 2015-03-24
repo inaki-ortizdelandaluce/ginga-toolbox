@@ -20,8 +20,6 @@ import org.ginga.toolbox.target.dao.impl.TargetDaoImpl;
 public class GingaGtiWriter {
 
     private final static Logger log = Logger.getLogger(GingaGtiWriter.class);
-    private static final int NUMBER_OF_FRAMES = 64;
-    private static final double FRAME_SECONDS = 0.0625; // 4 seconds are 64 frames
 
     public static void main(String[] args) {
         String target = "GS2000+25";
@@ -62,17 +60,30 @@ public class GingaGtiWriter {
         }
     }
 
+    private double getFrameSeconds(LacdumpSfEntity sf) {
+        switch (sf.getBitRate()) {
+        case "H":
+            return 4 / 64;
+        case "M":
+            return 32 / 64;
+        case "L":
+        default:
+            return 128 / 64;
+        }
+    }
+
     public void writeToFileSplitByFrameBin(String target, LacdumpSfEntity sf,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
         try {
-            if ((int) frameBinSeconds % FRAME_SECONDS != 0) {
+            double frameSeconds = getFrameSeconds(sf);
+            if ((int) frameBinSeconds % frameSeconds != 0) {
                 throw new IllegalArgumentException("Could not split Super Frame into a "
                         + frameBinSeconds + " seconds time bin");
             }
             int frameNumber = 0;
             FileWriter writer;
-            int frameBin = (int) (frameBinSeconds / FRAME_SECONDS);
-            for (int i = 0; i < (NUMBER_OF_FRAMES / frameBin); i++) {
+            int frameBin = (int) (frameBinSeconds / frameSeconds);
+            for (int i = 0; i < (64 / frameBin); i++) {
                 String fileName = "REGION_" + String.format("%03d", sf.getSequenceNumber()) + "_"
                         + String.format("%02d", frameNumber) + "_" + sf.getMode() + ".DATA";
                 File gtiFile = new File(outputDirectory, fileName);
