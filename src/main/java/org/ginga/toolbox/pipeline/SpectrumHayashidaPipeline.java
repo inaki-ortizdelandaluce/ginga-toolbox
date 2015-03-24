@@ -42,7 +42,7 @@ public class SpectrumHayashidaPipeline {
                 default:
                     return 128; // 8x16s
                 case M:
-                    return 64; // 8x4s
+                    return 32; // 8x4s
                 case H:
                     return 4; // 8x500ms
                 }

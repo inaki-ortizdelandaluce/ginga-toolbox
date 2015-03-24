@@ -21,8 +21,8 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public abstract class LacqrdfitsInputBuilder extends
-AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
-TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
+        AbstractPipe<LacdumpQuery, LacqrdfitsInputModel> implements
+        TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(LacqrdfitsInputBuilder.class);
 
@@ -33,7 +33,7 @@ TransformPipe<LacdumpQuery, LacqrdfitsInputModel> {
      * Example:
      *   For 1/4 SF 1s,  8s and  32s for HI, MED and LOW bit rates respectively
      *   For 1/2 SF 2s, 16s and  64s for HI, MED and LOW bit rates respectively
-     *   For 1 SF   4s, 64s and 128s for HI, MED and LOW bit rates respectively
+     *   For 1 SF   4s, 32s and 128s for HI, MED and LOW bit rates respectively
      * </pre>
      * @return time bin width in seconds
      */
