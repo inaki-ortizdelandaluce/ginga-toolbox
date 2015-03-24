@@ -1,5 +1,6 @@
 package org.ginga.toolbox.command;
 
+import java.io.File;
 import java.util.Comparator;
 
 import org.apache.commons.cli.BasicParser;
@@ -61,8 +62,10 @@ public class TimeResolvedSpectraExtractorCmd {
             } else {
                 method = scanner.scanBackgroundMethod();
             }
+            // BACKGROUND FILE
+            File bgFile = new File(commandLine.getOptionValue("f"));
             // TIME STEP
-            double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("t")).doubleValue();
+            double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("s")).doubleValue();
             // LAC MODE
             String mode = null;
             if (commandLine.hasOption("m")) {
@@ -117,6 +120,7 @@ public class TimeResolvedSpectraExtractorCmd {
             obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
+            obs.setBackgroundFile(bgFile);
             // extract spectrum
             switch (method) {
             case SIMPLE:
@@ -144,8 +148,10 @@ public class TimeResolvedSpectraExtractorCmd {
     private static Options getOptions() {
         Options options = new Options();
 
-        Option timeBinOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step")
+        Option timeStepOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step")
                 .withDescription("Time bin size in seconds.").isRequired().hasArg().create("p");
+        Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
+                .withDescription("background spectrum file").hasArg().create("f");
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name.").hasArg().create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
@@ -172,7 +178,8 @@ public class TimeResolvedSpectraExtractorCmd {
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
         options.addOptionGroup(group);
-        options.addOption(timeBinOption);
+        options.addOption(timeStepOption);
+        options.addOption(bgFileOption);
         options.addOption(targetOption);
         options.addOption(lacModeOption);
         options.addOption(startTimeOption);
@@ -194,7 +201,7 @@ public class TimeResolvedSpectraExtractorCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "isptmanb"; // short option names
+            private static final String OPTS_ORDER = "ispftmanb"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
