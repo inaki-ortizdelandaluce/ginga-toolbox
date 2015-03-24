@@ -48,6 +48,10 @@ public class GingaGtiWriterCmd {
         query.setMinCutOffRigidity(env.getCutOffRigidityMin());
         query.setMinElevation(env.getElevationMin());
         List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
+        // create parent directory if it does not exist
+        if (!this.file.getParentFile().exists()) {
+            this.file.getParentFile().mkdirs();
+        }
         // write results into Ginga GTI format
         GingaGtiWriter gtiWriter = new GingaGtiWriter();
         gtiWriter.write(target, sfList, isBackground, false, new FileWriter(this.file));
@@ -65,6 +69,10 @@ public class GingaGtiWriterCmd {
         query.setMinCutOffRigidity(env.getCutOffRigidityMin());
         query.setMinElevation(env.getElevationMin());
         List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
+        // create directory if it does not exist
+        if (!this.file.exists()) {
+            this.file.mkdirs();
+        }
         // write results into Ginga GTI format
         GingaGtiWriter gtiWriter = new GingaGtiWriter();
         gtiWriter.writeToFileSplitByFrameBin(target, sfList, frameBinSeconds, isBackground,
@@ -85,11 +93,7 @@ public class GingaGtiWriterCmd {
             }
             // FILE
             String filePath = commandLine.getOptionValue("f");
-            File f = new File(filePath);
-            // create parent directory if it does not exist
-            if (!f.getParentFile().exists()) {
-                f.getParentFile().mkdirs();
-            }
+            File file = new File(filePath);
             // LAC MODE
             String mode = null;
             if (commandLine.hasOption("m")) {
@@ -139,7 +143,7 @@ public class GingaGtiWriterCmd {
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
             // write GTI
-            GingaGtiWriterCmd cmd = new GingaGtiWriterCmd(f);
+            GingaGtiWriterCmd cmd = new GingaGtiWriterCmd(file);
             if (!commandLine.hasOption("s")) {
                 cmd.writeGti(target, mode, startTime, endTime, commandLine.hasOption("b"));
             } else { // split GTIs in frame bins
@@ -178,7 +182,7 @@ public class GingaGtiWriterCmd {
                 .withLongOpt("file")
                 .withDescription(
                         "write GTI to output file (or directory if split option is enabled)")
-                        .hasArg().isRequired().create("f");
+                .hasArg().isRequired().create("f");
         Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
                 .withDescription("[OPTIONAL] Split by frame bin in seconds.").hasArg().create("s");
 
