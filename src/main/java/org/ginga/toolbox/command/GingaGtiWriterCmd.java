@@ -3,7 +3,6 @@ package org.ginga.toolbox.command;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Comparator;
 import java.util.List;
 
@@ -77,13 +76,12 @@ public class GingaGtiWriterCmd {
             CommandLine commandLine = new BasicParser().parse(getOptions(), args);
             InputScanner scanner = new InputScanner();
             // read command line argument values
-            Writer writer = null;
             // TARGET
             String target = null;
             if (commandLine.hasOption("t")) {
                 target = commandLine.getOptionValue("t");
             }
-            // WRITER
+            // FILE
             String filePath = commandLine.getOptionValue("f");
             File f = new File(filePath);
             // create parent directory if it does not exist
