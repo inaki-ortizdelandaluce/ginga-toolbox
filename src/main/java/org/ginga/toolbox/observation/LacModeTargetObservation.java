@@ -1,6 +1,8 @@
 package org.ginga.toolbox.observation;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.ginga.toolbox.util.Constants.LacMode;
 
@@ -12,6 +14,7 @@ public class LacModeTargetObservation {
     private String startTime;
     private String endTime;
     private File backgroundFile;
+    private Set<String> bitRates;
 
     /**
      * @return the obsId
@@ -93,5 +96,30 @@ public class LacModeTargetObservation {
      */
     public void setBackgroundFile(File backgroundFile) {
         this.backgroundFile = backgroundFile;
+    }
+
+    /**
+     * @return the bitRates
+     */
+    public Set<String> getBitRates() {
+        return this.bitRates;
+    }
+
+    public String getBitRatesAsString() {
+        String s = "";
+        for (Iterator<String> iterator = this.bitRates.iterator(); iterator.hasNext();) {
+            s += iterator.next() + ", ";
+        }
+        if (s.length() > 0) {
+            s = s.substring(0, s.length() - 2);
+        }
+        return s;
+    }
+
+    /**
+     * @param bitRates the bitRates to set
+     */
+    public void setBitRates(Set<String> bitRates) {
+        this.bitRates = bitRates;
     }
 }
