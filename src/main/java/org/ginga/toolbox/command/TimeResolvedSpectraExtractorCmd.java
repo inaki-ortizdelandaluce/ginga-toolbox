@@ -151,7 +151,7 @@ public class TimeResolvedSpectraExtractorCmd {
         Option timeStepOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step")
                 .withDescription("Time bin size in seconds.").isRequired().hasArg().create("p");
         Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
-                .withDescription("background spectrum file").hasArg().create("f");
+                .withDescription("background spectrum file").isRequired().hasArg().create("f");
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name.").hasArg().create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
@@ -168,7 +168,7 @@ public class TimeResolvedSpectraExtractorCmd {
                 .withLongOpt("background-method")
                 .withDescription(
                         "[OPTIONAL] Background subtraction method. Possible values: SIMPLE, SUD_SORT")
-                        .hasArg().create("b");
+                .hasArg().create("b");
 
         OptionGroup group = new OptionGroup();
         group.setRequired(true);
