@@ -55,7 +55,7 @@ public class GingaGtiWriter {
 
     public void writeToFileSplitByFrameBin(String target, List<LacdumpSfEntity> sfList,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
-        log.info("Writing GTI files for " + sfList + " super frame(s)...");
+        log.info("Writing GTI files for " + sfList.size() + " super frame(s)...");
         for (LacdumpSfEntity sf : sfList) {
             writeToFileSplitByFrameBin(target, sf, frameBinSeconds, isBackground, outputDirectory);
         }
