@@ -49,18 +49,13 @@ public class TimeResolvedSpectraExtractorCmd {
             }
             // BACKGROUND SUBTRACTION METHOD
             BgSubtractionMethod method = null;
-            if (commandLine.hasOption("b")) {
-                try {
-                    method = Enum.valueOf(BgSubtractionMethod.class,
-                            commandLine.getOptionValue("b"));
-                } catch (IllegalArgumentException e) {
-                    log.error("Unknown background subtraction method "
-                            + commandLine.getOptionValue("b"));
-                    printHelp();
-                    return;
-                }
-            } else {
-                method = scanner.scanBackgroundMethod();
+            try {
+                method = Enum.valueOf(BgSubtractionMethod.class, commandLine.getOptionValue("b"));
+            } catch (IllegalArgumentException e) {
+                log.error("Unknown background subtraction method "
+                        + commandLine.getOptionValue("b"));
+                printHelp();
+                return;
             }
             // BACKGROUND FILE
             File bgFile = new File(commandLine.getOptionValue("f"));
@@ -152,6 +147,11 @@ public class TimeResolvedSpectraExtractorCmd {
                 .withDescription("Time bin size in seconds.").isRequired().hasArg().create("p");
         Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
                 .withDescription("background spectrum file").isRequired().hasArg().create("f");
+        Option bgMethodOption = OptionBuilder
+                .withArgName("method")
+                .withLongOpt("background-method")
+                .withDescription("Background subtraction method. Possible values: SIMPLE, SUD_SORT")
+                .isRequired().hasArg().create("b");
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name.").hasArg().create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
@@ -163,12 +163,6 @@ public class TimeResolvedSpectraExtractorCmd {
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
                 .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create("n");
-        Option methodOption = OptionBuilder
-                .withArgName("method")
-                .withLongOpt("background-method")
-                .withDescription(
-                        "[OPTIONAL] Background subtraction method. Possible values: SIMPLE, SUD_SORT")
-                .hasArg().create("b");
 
         OptionGroup group = new OptionGroup();
         group.setRequired(true);
@@ -184,7 +178,7 @@ public class TimeResolvedSpectraExtractorCmd {
         options.addOption(lacModeOption);
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
-        options.addOption(methodOption);
+        options.addOption(bgMethodOption);
         return options;
     }
 
@@ -201,7 +195,7 @@ public class TimeResolvedSpectraExtractorCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "ispftmanb"; // short option names
+            private static final String OPTS_ORDER = "ispfbtman"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
