@@ -90,7 +90,7 @@ public class TimingMode1ExtractorHayashidaCmd {
             obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
-            // extract spectrum
+            // extract timing
             extractTimingHayashida(obs);
         } catch (ParseException e) {
             log.error(e.getMessage());
