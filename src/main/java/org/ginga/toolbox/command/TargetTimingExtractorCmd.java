@@ -18,17 +18,17 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
 import org.ginga.toolbox.observation.ObservationEntity;
 import org.ginga.toolbox.pipeline.ObservationListBuilder;
-import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
+import org.ginga.toolbox.pipeline.TimingMode1HayashidaPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 
-public class SpectraExtractorCmd {
+public class TargetTimingExtractorCmd {
 
-    private final static Logger log = Logger.getLogger(SpectraExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(TargetTimingExtractorCmd.class);
 
-    public static void extractSpectra(String target, BgSubtractionMethod method) {
+    public static void extractTiming(String target, BgSubtractionMethod method) {
         switch (method) {
         case HAYASHIDA:
-            extractSpectraHayashida(target);
+            extractTimingHayashida(target);
             break;
         case SIMPLE:
         case SUD_SORT:
@@ -39,29 +39,28 @@ public class SpectraExtractorCmd {
         }
     }
 
-    public static void extractSpectraHayashida(String target) {
+    public static void extractTimingHayashida(String target) {
         // find all observations for input target
         ObservationListBuilder obsListBuilder = new ObservationListBuilder();
         obsListBuilder.setStarts(Arrays.asList(target));
         Map<ObservationEntity, List<LacModeTargetObservation>> obsMap = obsListBuilder.next();
 
-        // find available modes for each observations and extract spectra
+        // find available modes for each observations and extract timing
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             log.info("Processing observation " + obsEntity.getSequenceNumber() + "...");
             List<LacModeTargetObservation> targetObsList = obsMap.get(obsEntity);
-            // extract spectra for all relevant modes
+            // extract timing for all relevant modes
             if (targetObsList != null) {
                 // run pipeline
-                SpectrumHayashidaPipeline specHayashidaPipeline = new SpectrumHayashidaPipeline();
-                specHayashidaPipeline.run(targetObsList);
+                TimingMode1HayashidaPipeline timingHayashidaPipeline = new TimingMode1HayashidaPipeline();
                 File file = null;
-                while (specHayashidaPipeline.hasNext()) {
-                    file = specHayashidaPipeline.next();
+                for (LacModeTargetObservation obs : targetObsList) {
+                    file = timingHayashidaPipeline.run(obs);
                     if (file != null) {
-                        log.info("Spectrum file " + file.getName() + " created successfully");
+                        log.info("Timing file " + file.getName() + " created successfully");
                     }
                 }
             }
@@ -83,8 +82,8 @@ public class SpectraExtractorCmd {
                 printHelp();
                 System.exit(1);
             }
-            // extract spectra
-            extractSpectra(target, method);
+            // extract timing
+            extractTiming(target, method);
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
@@ -130,6 +129,6 @@ public class SpectraExtractorCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp("extract_spectra.sh", getOptions());
+        helpFormatter.printHelp("extract_timing.sh", getOptions());
     }
 }

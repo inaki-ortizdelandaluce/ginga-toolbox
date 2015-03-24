@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.ginga.toolbox.command.ObservationListPrinterCmd;
-import org.ginga.toolbox.command.SpectraExtractorCmd;
+import org.ginga.toolbox.command.TargetSpectraExtractorCmd;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.lacdump.LacdumpQuery;
 import org.ginga.toolbox.lacdump.LacdumpSfEntity;
@@ -76,7 +76,7 @@ public class Test {
         String target = "GS2000+25"; // "GS1124-68"; // "GS2000+25";
 
         // extract all spectra
-        SpectraExtractorCmd.extractSpectra(target, BgSubtractionMethod.HAYASHIDA);
+        TargetSpectraExtractorCmd.extractSpectra(target, BgSubtractionMethod.HAYASHIDA);
         // write observation list
         File workingDir = new File(GingaToolboxEnv.getInstance().getWorkingDir());
         if (!workingDir.exists()) {
