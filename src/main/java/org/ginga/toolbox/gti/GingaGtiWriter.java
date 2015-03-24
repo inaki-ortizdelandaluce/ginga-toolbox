@@ -202,12 +202,12 @@ public class GingaGtiWriter {
         log.debug("Super Frame " + sf.getSequenceNumber() + "\nBit Rate='" + sf.getBitRate() + "'");
         switch (sf.getBitRate()) {
         case "H":
-            return 4 / 64;
+            return 0.0625; // 4 / 64;
         case "M":
-            return 32 / 64;
+            return 0.5; // 32 / 64;
         case "L":
         default:
-            return 128 / 64;
+            return 2.0; // 128 / 64;
         }
     }
 }
