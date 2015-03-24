@@ -80,6 +80,8 @@ public class GingaGtiWriterCmd {
             String target = null;
             if (commandLine.hasOption("t")) {
                 target = commandLine.getOptionValue("t");
+            } else {
+                target = scanner.scanTarget();
             }
             // FILE
             String filePath = commandLine.getOptionValue("f");
@@ -176,7 +178,7 @@ public class GingaGtiWriterCmd {
                 .withLongOpt("file")
                 .withDescription(
                         "write GTI to output file (or directory if split option is enabled)")
-                .hasArg().isRequired().create("f");
+                        .hasArg().isRequired().create("f");
         Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
                 .withDescription("[OPTIONAL] Split by frame bin in seconds.").hasArg().create("s");
 
