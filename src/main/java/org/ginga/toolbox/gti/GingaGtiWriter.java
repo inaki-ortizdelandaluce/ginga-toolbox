@@ -60,18 +60,6 @@ public class GingaGtiWriter {
         }
     }
 
-    private double getFrameSeconds(LacdumpSfEntity sf) {
-        switch (sf.getBitRate()) {
-        case "H":
-            return 4 / 64;
-        case "M":
-            return 32 / 64;
-        case "L":
-        default:
-            return 128 / 64;
-        }
-    }
-
     public void writeToFileSplitByFrameBin(String target, LacdumpSfEntity sf,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
         try {
@@ -202,6 +190,18 @@ public class GingaGtiWriter {
             scanner.close();
         } finally {
             writer.write(targetLine);
+        }
+    }
+
+    private double getFrameSeconds(LacdumpSfEntity sf) {
+        switch (sf.getBitRate()) {
+        case "H":
+            return 4 / 64;
+        case "M":
+            return 32 / 64;
+        case "L":
+        default:
+            return 128 / 64;
         }
     }
 }
