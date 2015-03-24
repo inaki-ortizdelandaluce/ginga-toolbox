@@ -202,6 +202,13 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.TimeResolvedSpectraExtractorCmd</mainClass>
+                  <id>extract_time_resolved_spectra.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>                
 <!--                 <program> -->
 <!--                   <mainClass>org.ginga.toolbox.command.TimingMode1ExtractorCmd</mainClass> -->
 <!--                   <id>extract_timing_mode1.sh</id> -->

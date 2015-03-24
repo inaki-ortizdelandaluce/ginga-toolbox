@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,17 +54,22 @@ public class GingaGtiWriter {
         write(target, sfList, isBackground, dataBlocks, new FileWriter(file));
     }
 
-    public void writeToFileSplitByFrameBin(String target, List<LacdumpSfEntity> sfList,
+    public List<File> writeToFileSplitByFrameBin(String target, List<LacdumpSfEntity> sfList,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
         log.info("Writing GTI files for " + sfList.size() + " super frame(s)...");
+        List<File> gtiFileList = new ArrayList<File>();
         for (LacdumpSfEntity sf : sfList) {
-            writeToFileSplitByFrameBin(target, sf, frameBinSeconds, isBackground, outputDirectory);
+            gtiFileList.addAll(writeToFileSplitByFrameBin(target, sf, frameBinSeconds,
+                    isBackground, outputDirectory));
         }
-        log.info("GTI files written to " + outputDirectory.getPath() + " successfully");
+        log.info(gtiFileList.size() + " GTI file(s) written to " + outputDirectory.getPath()
+                + " successfully");
+        return gtiFileList;
     }
 
-    public void writeToFileSplitByFrameBin(String target, LacdumpSfEntity sf,
+    public List<File> writeToFileSplitByFrameBin(String target, LacdumpSfEntity sf,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
+        List<File> gtiFileList = new ArrayList<File>();
         try {
             double frameSeconds = getFrameSeconds(sf);
             if ((int) frameBinSeconds % frameSeconds != 0) {
@@ -95,10 +101,12 @@ public class GingaGtiWriter {
                 writer.flush();
                 writer.close();
                 frameNumber += frameBin;
+                gtiFileList.add(gtiFile);
             }
         } catch (IOException e) {
             throw new IOException(e);
         }
+        return gtiFileList;
     }
 
     public void write(String target, List<LacdumpSfEntity> sfList, boolean isBackground,

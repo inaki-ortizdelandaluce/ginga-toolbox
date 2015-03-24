@@ -1,10 +1,6 @@
 package org.ginga.toolbox.command;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Comparator;
-import java.util.List;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -15,68 +11,27 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
-import org.ginga.toolbox.environment.DataReductionEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
-import org.ginga.toolbox.gti.GingaGtiWriter;
-import org.ginga.toolbox.lacdump.LacdumpQuery;
-import org.ginga.toolbox.lacdump.LacdumpSfEntity;
-import org.ginga.toolbox.lacdump.dao.LacdumpDaoException;
-import org.ginga.toolbox.lacdump.dao.impl.LacdumpDaoImpl;
+import org.ginga.toolbox.observation.LacModeTargetObservation;
+import org.ginga.toolbox.pipeline.TimeResolvedSpectraSimplePipeline;
+import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
-public class GingaGtiWriterCmd {
+public class TimeResolvedSpectraExtractorCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    public static final Logger log = Logger.getLogger(GingaGtiWriterCmd.class);
-    private File file;
+    public static final Logger log = Logger.getLogger(TimeResolvedSpectraExtractorCmd.class);
 
-    public GingaGtiWriterCmd(File file) {
-        this.file = file;
+    public TimeResolvedSpectraExtractorCmd() {
     }
 
-    public void writeGti(String target, String lacMode, String startTime, String endTime,
-            boolean isBackground) throws LacdumpDaoException, IOException {
-        // build and execute query
-        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
-        LacdumpQuery query = new LacdumpQuery();
-        query.setTargetName(target);
-        query.setMode(Enum.valueOf(LacMode.class, lacMode));
-        query.setStartTime(startTime);
-        query.setEndTime(endTime);
-        query.setMinCutOffRigidity(env.getCutOffRigidityMin());
-        query.setMinElevation(env.getElevationMin());
-        List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
-        // create parent directory if it does not exist
-        if (!this.file.getParentFile().exists()) {
-            this.file.getParentFile().mkdirs();
-        }
-        // write results into Ginga GTI format
-        GingaGtiWriter gtiWriter = new GingaGtiWriter();
-        gtiWriter.write(target, sfList, isBackground, false, new FileWriter(this.file));
-    }
-
-    public void writeGtiSplit(String target, String lacMode, String startTime, String endTime,
-            boolean isBackground, double frameBinSeconds) throws LacdumpDaoException, IOException {
-        // build and execute query
-        DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
-        LacdumpQuery query = new LacdumpQuery();
-        query.setTargetName(target);
-        query.setMode(Enum.valueOf(LacMode.class, lacMode));
-        query.setStartTime(startTime);
-        query.setEndTime(endTime);
-        query.setMinCutOffRigidity(env.getCutOffRigidityMin());
-        query.setMinElevation(env.getElevationMin());
-        List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
-        // create directory if it does not exist
-        if (!this.file.exists()) {
-            this.file.mkdirs();
-        }
-        // write results into Ginga GTI format
-        GingaGtiWriter gtiWriter = new GingaGtiWriter();
-        gtiWriter.writeToFileSplitByFrameBin(target, sfList, frameBinSeconds, isBackground,
-                this.file);
+    public static void extractTimeResolvedSpectraSimple(LacModeTargetObservation obs,
+            double timeStepSeconds) throws Exception {
+        TimeResolvedSpectraSimplePipeline pipeline = new TimeResolvedSpectraSimplePipeline(
+                timeStepSeconds);
+        pipeline.run(obs);
     }
 
     public static void main(String[] args) {
@@ -91,9 +46,23 @@ public class GingaGtiWriterCmd {
             } else {
                 target = scanner.scanTarget();
             }
-            // FILE
-            String filePath = commandLine.getOptionValue("f");
-            File file = new File(filePath);
+            // BACKGROUND SUBTRACTION METHOD
+            BgSubtractionMethod method = null;
+            if (commandLine.hasOption("b")) {
+                try {
+                    method = Enum.valueOf(BgSubtractionMethod.class,
+                            commandLine.getOptionValue("b"));
+                } catch (IllegalArgumentException e) {
+                    log.error("Unknown background subtraction method "
+                            + commandLine.getOptionValue("b"));
+                    printHelp();
+                    return;
+                }
+            } else {
+                method = scanner.scanBackgroundMethod();
+            }
+            // TIME STEP
+            double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("t")).doubleValue();
             // LAC MODE
             String mode = null;
             if (commandLine.hasOption("m")) {
@@ -142,15 +111,26 @@ public class GingaGtiWriterCmd {
             if (commandLine.hasOption("i")) { // set interactive mode
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
-            // write GTI
-            GingaGtiWriterCmd cmd = new GingaGtiWriterCmd(file);
-            if (!commandLine.hasOption("s")) {
-                cmd.writeGti(target, mode, startTime, endTime, commandLine.hasOption("b"));
-            } else { // split GTIs in frame bins
-                double frameBinSeconds = Double.valueOf(commandLine.getOptionValue("s"))
-                        .doubleValue();
-                cmd.writeGtiSplit(target, mode, startTime, endTime, commandLine.hasOption("b"),
-                        frameBinSeconds);
+            // build target observation instance from arguments
+            LacModeTargetObservation obs = new LacModeTargetObservation();
+            obs.setTarget(target);
+            obs.setMode(mode);
+            obs.setStartTime(startTime);
+            obs.setEndTime(endTime);
+            // extract spectrum
+            switch (method) {
+            case SIMPLE:
+                extractTimeResolvedSpectraSimple(obs, timeStepSeconds);
+                break;
+            case SUD_SORT:
+                log.error("SUD Sort background method not supported yet");
+                printHelp();
+                return;
+            case HAYASHIDA:
+            default:
+                log.error("Hayashida background method is not applicable");
+                printHelp();
+                return;
             }
         } catch (ParseException e) {
             log.error(e.getMessage());
@@ -164,6 +144,8 @@ public class GingaGtiWriterCmd {
     private static Options getOptions() {
         Options options = new Options();
 
+        Option timeBinOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step")
+                .withDescription("Time bin size in seconds.").isRequired().hasArg().create("p");
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
                 .withDescription("[OPTIONAL] Target name.").hasArg().create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
@@ -175,16 +157,12 @@ public class GingaGtiWriterCmd {
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
                 .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
                 .hasArg().create("n");
-        Option bgOption = OptionBuilder.withArgName("background").withLongOpt("is-background")
-                .withDescription("[OPTIONAL] Background GTI.").hasArg(false).create("b");
-        Option fileOption = OptionBuilder
-                .withArgName("file path")
-                .withLongOpt("file")
+        Option methodOption = OptionBuilder
+                .withArgName("method")
+                .withLongOpt("background-method")
                 .withDescription(
-                        "write GTI to output file (or directory if split option is enabled)")
-                        .hasArg().isRequired().create("f");
-        Option splitByFrameByOption = OptionBuilder.withArgName("seconds").withLongOpt("split")
-                .withDescription("[OPTIONAL] Split by frame bin in seconds.").hasArg().create("s");
+                        "[OPTIONAL] Background subtraction method. Possible values: SIMPLE, SUD_SORT")
+                        .hasArg().create("b");
 
         OptionGroup group = new OptionGroup();
         group.setRequired(true);
@@ -194,13 +172,12 @@ public class GingaGtiWriterCmd {
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
         options.addOptionGroup(group);
+        options.addOption(timeBinOption);
         options.addOption(targetOption);
         options.addOption(lacModeOption);
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
-        options.addOption(bgOption);
-        options.addOption(fileOption);
-        options.addOption(splitByFrameByOption);
+        options.addOption(methodOption);
         return options;
     }
 
@@ -217,13 +194,13 @@ public class GingaGtiWriterCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "fistmansb"; // short option names
+            private static final String OPTS_ORDER = "isptmanb"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp("write_ginga_gti.sh", getOptions());
+        helpFormatter.printHelp("extract_time_resolved.sh", getOptions());
     }
 }
