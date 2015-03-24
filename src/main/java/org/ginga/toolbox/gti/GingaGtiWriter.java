@@ -55,9 +55,11 @@ public class GingaGtiWriter {
 
     public void writeToFileSplitByFrameBin(String target, List<LacdumpSfEntity> sfList,
             double frameBinSeconds, boolean isBackground, File outputDirectory) throws IOException {
+        log.info("Writing GTI files for " + sfList + " super frame(s)...");
         for (LacdumpSfEntity sf : sfList) {
             writeToFileSplitByFrameBin(target, sf, frameBinSeconds, isBackground, outputDirectory);
         }
+        log.info("GTI files written to " + outputDirectory.getPath() + " successfully");
     }
 
     public void writeToFileSplitByFrameBin(String target, LacdumpSfEntity sf,
@@ -71,6 +73,9 @@ public class GingaGtiWriter {
             int frameNumber = 0;
             FileWriter writer;
             int frameBin = (int) (frameBinSeconds / frameSeconds);
+            log.info("Super Frame " + sf.getSequenceNumber() + " to be split in " + (64 / frameBin)
+                    + " GTI file(s)");
+
             for (int i = 0; i < (64 / frameBin); i++) {
                 String fileName = "REGION_" + String.format("%03d", sf.getSequenceNumber()) + "_"
                         + String.format("%02d", frameNumber) + "_" + sf.getMode() + ".DATA";
