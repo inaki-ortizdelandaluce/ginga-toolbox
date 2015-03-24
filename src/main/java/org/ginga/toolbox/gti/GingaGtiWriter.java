@@ -199,6 +199,7 @@ public class GingaGtiWriter {
     }
 
     private double getFrameSeconds(LacdumpSfEntity sf) {
+        log.debug("Bit rate for Super Frame " + sf.getSequenceNumber() + "=" + sf.getBitRate());
         switch (sf.getBitRate()) {
         case "H":
             return 4 / 64;
