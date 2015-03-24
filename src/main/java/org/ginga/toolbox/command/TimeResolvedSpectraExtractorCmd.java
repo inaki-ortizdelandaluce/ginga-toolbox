@@ -60,7 +60,7 @@ public class TimeResolvedSpectraExtractorCmd {
             // BACKGROUND FILE
             File bgFile = new File(commandLine.getOptionValue("f"));
             // TIME STEP
-            double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("s")).doubleValue();
+            double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("p")).doubleValue();
             // LAC MODE
             String mode = null;
             if (commandLine.hasOption("m")) {
