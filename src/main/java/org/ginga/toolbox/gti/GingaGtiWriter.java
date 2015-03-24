@@ -82,7 +82,9 @@ public class GingaGtiWriter {
                 File gtiFile = new File(outputDirectory, fileName);
                 writer = new FileWriter(gtiFile);
                 // write TGT section
-                writeTargetSection(target, writer);
+                if (!isBackground) {
+                    writeTargetSection(target, writer);
+                }
                 // write DATA secion
                 writer.write("'DATA' \n");
                 writer.write("'PASS' '" + sf.getPass() + "' / \n");
