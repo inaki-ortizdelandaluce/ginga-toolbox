@@ -80,7 +80,7 @@ public class TimingMode1ExtractorSimpleCmd {
                 endTime = scanner.scanEndTime();
             }
             endTime = endTime.replace("T", " ");
-            scanner.close();
+            // INTERACTIVE VS. SYSTEMATIC
             if (commandLine.hasOption("i")) { // set interactive mode
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
@@ -110,6 +110,8 @@ public class TimingMode1ExtractorSimpleCmd {
                     return;
                 }
             }
+            // close scanner
+            scanner.close();
             // extract timing file
             extractTimingSimple(obs);
         } catch (ParseException e) {
@@ -140,8 +142,8 @@ public class TimingMode1ExtractorSimpleCmd {
         dataReductionModeGroup.addOption(new Option("i", "interactive", false,
                 "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         dataReductionModeGroup
-        .addOption(new Option("s", "systematic", false,
-                "use default systematic values present in configuration file gingatoolbox.properties "));
+                .addOption(new Option("s", "systematic", false,
+                        "use default systematic values present in configuration file gingatoolbox.properties "));
 
         OptionGroup backgroundGroup = new OptionGroup();
         backgroundGroup.setRequired(true);

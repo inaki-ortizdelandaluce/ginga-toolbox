@@ -80,7 +80,7 @@ public class SpectrumExtractorSudSortCmd {
                 endTime = scanner.scanEndTime();
             }
             endTime = endTime.replace("T", " ");
-            scanner.close();
+            // INTERACTIVE VS. SYSTEMATIC
             if (commandLine.hasOption("i")) { // set interactive mode
                 GingaToolboxEnv.getInstance().setDataReductionMode(DataReductionMode.INTERACTIVE);
             }
@@ -110,6 +110,8 @@ public class SpectrumExtractorSudSortCmd {
                     return;
                 }
             }
+            // close scanner
+            scanner.close();
             // extract spectrum
             extractSpectrumSudSort(obs);
         } catch (ParseException e) {
@@ -140,14 +142,14 @@ public class SpectrumExtractorSudSortCmd {
         dataReductionModeGroup.addOption(new Option("i", "interactive", false,
                 "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         dataReductionModeGroup
-        .addOption(new Option("s", "systematic", false,
-                "use default systematic values present in configuration file gingatoolbox.properties "));
+                .addOption(new Option("s", "systematic", false,
+                        "use default systematic values present in configuration file gingatoolbox.properties "));
 
         OptionGroup backgroundGroup = new OptionGroup();
         backgroundGroup.setRequired(true);
         backgroundGroup
-        .addOption(new Option("o", "observation-id", false,
-                " subtraction will use suggested background observations for this observation identifier"));
+                .addOption(new Option("o", "observation-id", false,
+                        " subtraction will use suggested background observations for this observation identifier"));
         Option bgGtiFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
                 .withDescription("background spectrum file").hasArg().create("f");
         backgroundGroup.addOption(bgGtiFileOption);
