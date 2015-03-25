@@ -157,6 +157,6 @@ public class TargetTimingMode1ExtractorCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp("extract_timing_mode1.sh", getOptions());
+        helpFormatter.printHelp("extract_target_timing_mode1.sh", getOptions());
     }
 }

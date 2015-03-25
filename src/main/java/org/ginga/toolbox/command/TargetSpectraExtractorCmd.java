@@ -130,6 +130,6 @@ public class TargetSpectraExtractorCmd {
                 return OPTS_ORDER.indexOf(o1.getOpt()) - OPTS_ORDER.indexOf(o2.getOpt());
             }
         });
-        helpFormatter.printHelp("extract_spectra.sh", getOptions());
+        helpFormatter.printHelp("extract_target_spectra.sh", getOptions());
     }
 }

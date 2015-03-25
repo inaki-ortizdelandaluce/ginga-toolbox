@@ -76,6 +76,6 @@ public class TargetTimingMode2ExtractorCmd {
 
     private static void printHelp() {
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.printHelp("extract_timing_mode2.sh", getOptions());
+        helpFormatter.printHelp("extract_target_timing_mode2.sh", getOptions());
     }
 }

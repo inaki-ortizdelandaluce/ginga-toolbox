@@ -197,21 +197,21 @@
                 </program>
                 <program>
                   <mainClass>org.ginga.toolbox.command.TargetSpectraExtractorCmd</mainClass>
-                  <id>extract_spectra.sh</id>
+                  <id>extract_target_spectra.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>
                 </program>
                 <program>
                   <mainClass>org.ginga.toolbox.command.TargetTimingMode1ExtractorCmd</mainClass>
-                  <id>extract_timing_mode1.sh</id>
+                  <id>extract_target_timing_mode1.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>
                 </program>
                 <program>
                   <mainClass>org.ginga.toolbox.command.TargetTimingMode2ExtractorCmd</mainClass>
-                  <id>extract_timing_mode2.sh</id>
+                  <id>extract_target_timing_mode2.sh</id>
                   <platforms>
                     <platform>unix</platform>
                   </platforms>
