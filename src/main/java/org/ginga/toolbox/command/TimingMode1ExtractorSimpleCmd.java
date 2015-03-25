@@ -147,10 +147,15 @@ public class TimingMode1ExtractorSimpleCmd {
 
         OptionGroup backgroundGroup = new OptionGroup();
         backgroundGroup.setRequired(true);
-        backgroundGroup.addOption(new Option("o", "observation-id", false,
-                "background subtraction will use suggested observations for this identifier"));
+        Option observationOption = OptionBuilder
+                .withArgName("id")
+                .withLongOpt("observation-id")
+                .withDescription(
+                        "subtraction will use suggested background observations for this observation identifier")
+                        .hasArg().create("o");
         Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
                 .withDescription("background spectrum file").hasArg().create("f");
+        backgroundGroup.addOption(observationOption);
         backgroundGroup.addOption(bgFileOption);
 
         options.addOption(targetOption);

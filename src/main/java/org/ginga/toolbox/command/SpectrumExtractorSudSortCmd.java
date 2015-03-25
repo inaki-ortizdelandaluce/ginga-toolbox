@@ -147,11 +147,15 @@ public class SpectrumExtractorSudSortCmd {
 
         OptionGroup backgroundGroup = new OptionGroup();
         backgroundGroup.setRequired(true);
-        backgroundGroup
-                .addOption(new Option("o", "observation-id", false,
-                        " subtraction will use suggested background observations for this observation identifier"));
+        Option observationOption = OptionBuilder
+                .withArgName("id")
+                .withLongOpt("observation-id")
+                .withDescription(
+                        "subtraction will use suggested background observations for this observation identifier")
+                        .hasArg().create("o");
         Option bgGtiFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
                 .withDescription("background spectrum file").hasArg().create("f");
+        backgroundGroup.addOption(observationOption);
         backgroundGroup.addOption(bgGtiFileOption);
 
         options.addOption(targetOption);
