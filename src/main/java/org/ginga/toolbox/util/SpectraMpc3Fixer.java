@@ -58,7 +58,7 @@ public class SpectraMpc3Fixer {
 
     public void fixPhaFiles(List<File> phaFiles) throws FitsException, IOException {
         for (File phaFile : phaFiles) {
-            fix(phaFile);
+            fixPhaFile(phaFile);
         }
     }
 
