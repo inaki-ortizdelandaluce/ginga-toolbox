@@ -50,6 +50,7 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
     private String pcLine2;
     private String pcLine3;
     private String pcLine4;
+    private Double timingResolution;
 
     protected InteractiveDataReductionEnv() {
         this.scanner = new Scanner(System.in);
@@ -787,6 +788,24 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
      */
     public void setLacMixedMode(Boolean isLacMixedMode) {
         this.isLacMixedMode = isLacMixedMode;
+    }
+
+    /**
+     * @return the timingResolution
+     */
+    @Override
+    public Double getTimingResolution() {
+        if (this.timingResolution == null) {
+            this.timingResolution = readDoubleFromInput("Enter time resolution of timing file in unit of second");
+        }
+        return this.timingResolution;
+    }
+
+    /**
+     * @param timingResolution the timingResolution to set
+     */
+    public void setTimingResolution(Double timingResolution) {
+        this.timingResolution = timingResolution;
     }
 
 }

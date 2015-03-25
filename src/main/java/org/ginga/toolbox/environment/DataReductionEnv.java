@@ -76,4 +76,6 @@ public interface DataReductionEnv {
 
     public String getPcLine4();
 
+    public Double getTimingResolution();
+
 }

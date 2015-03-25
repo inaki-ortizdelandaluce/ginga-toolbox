@@ -23,7 +23,7 @@ import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
 public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filfitsInputModel>
-        implements TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
+implements TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(Tim2filfitsInputBuilder.class);
 
@@ -86,8 +86,14 @@ public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filf
                 inputModel.setPcLine4(dataReductionEnv.getPcLine4());
                 inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
                         query.getMode(), "fits"));
-                inputModel.setTimeResolution(TimeUtil.getTimeResolution(
-                        dataReductionEnv.getBitRate(), query.getMode()));
+                if (dataReductionEnv.getTimingResolution() == null) {
+                    // set time resolution based on LAC Mode and Bit Rate values
+                    inputModel.setTimeResolution(TimeUtil.getTimeResolution(
+                            dataReductionEnv.getBitRate(), query.getMode()));
+                } else {
+                    // use value in gingatoolbox.properties file
+                    inputModel.setTimeResolution(dataReductionEnv.getTimingResolution());
+                }
                 inputModel.setGtiLines(gtiString);
                 return inputModel;
             }

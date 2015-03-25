@@ -386,4 +386,19 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
             return "'PC'        0   1 ,    0   1   / LAC A ,B   ,   PCL, PCH";
         }
     }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.ginga.toolbox.environment.DataReductionEnv#getTimingResolution()
+     */
+    @Override
+    public Double getTimingResolution() {
+        String property = this.properties.getProperty("systematic.1BIN");
+        if (property != null) {
+            return Double.valueOf(property);
+        } else { // OPTIONAL property
+            return null;
+        }
+    }
 }
