@@ -108,10 +108,7 @@ public class LacModeTargetObservation {
     public String getBitRatesAsString() {
         String s = "";
         for (Iterator<String> iterator = this.bitRates.iterator(); iterator.hasNext();) {
-            s += iterator.next() + ", ";
-        }
-        if (s.length() > 0) {
-            s = s.substring(0, s.length() - 2);
+            s += iterator.next();
         }
         return s;
     }
