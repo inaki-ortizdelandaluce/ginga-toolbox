@@ -196,6 +196,13 @@
                   </platforms>
                 </program>
                 <program>
+                  <mainClass>org.ginga.toolbox.command.SpectraMpc3FixerCmd</mainClass>
+                  <id>fix_mpc3_spectra.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>
+                <program>
                   <mainClass>org.ginga.toolbox.command.TargetSpectraExtractorCmd</mainClass>
                   <id>extract_target_spectra.sh</id>
                   <platforms>
