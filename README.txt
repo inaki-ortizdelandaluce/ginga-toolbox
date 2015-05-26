@@ -1,7 +1,10 @@
 1. Introduction
-GingaToolbox is a software package which allows a systematic processing of the Ginga X-ray satellite data.
+GingaToolbox is a software package which allows a systematic processing of the
+Ginga X-ray satellite data.
 
-GingaToolbox has been developed as part of a Master Thesis project for the Valencian International University: Spectral State Transitions in Low-Mass X-ray Binaries observed with Ginga.
+GingaToolbox has been developed as part of a Master Thesis project for the
+Valencian International University: 
+Spectral State Transitions in Low-Mass X-ray Binaries observed with Ginga.
 
 GingaToolbox is distributed as an open-source software package with GPL License.
 
@@ -22,9 +25,16 @@ GingaToolbox is distributed as an open-source software package with GPL License.
 
 3. GingaToolbox Virtual Machine (GingaToolboxVM)
 
-A version of the GingaToolbox with all the required data and software installed has been already packaged into a Virtual Machine. The Virtual Machine includes a copy of the ISAS/JAXA Ginga Data Archive, the ISAS/JAXA Ginga Tools, and a PostgreSQL database server where all the Ginga orbit, housekeeping and attitude files have been stored together with the Ginga observations catalogue. The Virtual machine can be downloaded form here: https://copy.com/z0oapWLK1f3sMaKX
+A version of the GingaToolbox with all the required data and software installed
+has been already packaged 
+into a Virtual Machine. The Virtual Machine includes a copy of the ISAS/JAXA
+Ginga Data Archive, the ISAS/JAXA Ginga Tools, and a PostgreSQL database server
+where all the Ginga orbit, housekeeping and attitude files have been stored
+together with the Ginga observations catalogue. The Virtual machine can be
+downloaded form here: https://copy.com/z0oapWLK1f3sMaKX
 
-The version of the GingaToolbox software running into the GingaToolboxVM can be updated. To do so you can open a terminal and execute the following steps:
+The version of the GingaToolbox software running into the GingaToolboxVM can be
+updated. To do so you can open a terminal and execute the following steps:
 
 i. Go to the source code local repository folder
 > cd ~/ginga-toolbox.git
@@ -44,12 +54,13 @@ iv. Install the software
 
 4. Local Installation
 
-If want to make a local installation instead, you can read the steps followed to create the GingaToolboxVM on docs/HOWTO_GingaToolboxVM.txt. 
+If want to make a local installation instead, you can read the steps followed to
+create the GingaToolboxVM on docs/HOWTO_GingaToolboxVM.txt. 
 The sofware pre-requisites are the following:
 
 - Java 1.7 or higher
 - MySQL or PostgreSQL database 
 - Apache Maven
 - Git client
-- ISAS/JAXA Ginga Tools, which has its own software requirements (http://www.darts.isas.jaxa.jp/astro/ginga/analysis.html)
-
+- ISAS/JAXA Ginga Tools, which has its own software requirements
+(http://www.darts.isas.jaxa.jp/astro/ginga/analysis.html)
