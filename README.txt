@@ -45,6 +45,7 @@ ii. Fetch latest source code from server
 
 iii. Build the software
 > mvn clean package assembly:assembly
+
 iv. Install the software
 > cp target/ginga-toolbox-<X.Y>.tar.gz ~/
 > cd ~/
