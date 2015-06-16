@@ -45,6 +45,7 @@ ii. Fetch latest source code from server
 
 iii. Build the software
 > mvn clean package assembly:assembly
+
 iv. Install the software
 > cp target/ginga-toolbox-<X.Y>.tar.gz ~/
 > cd ~/
@@ -58,9 +59,9 @@ If want to make a local installation instead, you can read the steps followed to
 create the GingaToolboxVM on docs/HOWTO_GingaToolboxVM.txt. 
 The sofware pre-requisites are the following:
 
-- Java 1.7 or higher
-- MySQL or PostgreSQL database 
-- Apache Maven
-- Git client
-- ISAS/JAXA Ginga Tools, which has its own software requirements
+* Java 1.7 or higher
+* MySQL or PostgreSQL database 
+* Apache Maven
+* Git client
+* ISAS/JAXA Ginga Tools, which has its own software requirements
 (http://www.darts.isas.jaxa.jp/astro/ginga/analysis.html)
