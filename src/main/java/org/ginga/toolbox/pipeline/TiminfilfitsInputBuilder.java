@@ -23,9 +23,8 @@ import org.ginga.toolbox.util.TimeUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public abstract class TiminfilfitsInputBuilder extends
-        AbstractPipe<LacdumpQuery, TiminfilfitsInputModel> implements
-        TransformPipe<LacdumpQuery, TiminfilfitsInputModel> {
+public abstract class TiminfilfitsInputBuilder extends AbstractPipe<LacdumpQuery, TiminfilfitsInputModel> implements
+TransformPipe<LacdumpQuery, TiminfilfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(TiminfilfitsInputBuilder.class);
 
@@ -36,7 +35,7 @@ public abstract class TiminfilfitsInputBuilder extends
 
     public abstract String getBgFileName();
 
-    public abstract boolean sudSort();
+    public abstract boolean ignoreAllCorrections();
 
     /*
      * Receives a LacdumpQuery, creates a GTI/Region file and finally emits a Tim2filfitsInputModel
@@ -57,8 +56,7 @@ public abstract class TiminfilfitsInputBuilder extends
             // build empty GTI file
             File gtiFile = null;
             log.debug("Generating GTI file for on-source data");
-            gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(),
-                    query.getMode(), "DATA"));
+            gtiFile = new File(workingDir, FileUtil.nextFileName("REGION", query.getStartTime(), query.getMode(), "DATA"));
             log.debug("GTI file " + gtiFile.getPath());
 
             // query entities matching the criteria
@@ -73,16 +71,14 @@ public abstract class TiminfilfitsInputBuilder extends
                 gtiWriter.writeToFile(query.getTargetName(), sfList, false, false, gtiFile);
                 log.info("GTI file " + gtiFile.getPath() + " written successfully");
                 // save matching results into a standard GTI fits file also
-                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI",
-                        query.getStartTime(), query.getMode(), "fits"));
+                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI", query.getStartTime(), query.getMode(), "fits"));
                 GtiWriter gtiFitsWriter = new GtiWriter();
                 gtiFitsWriter.writeToFits(sfList, gtiFitsFile);
                 log.debug("GTI file " + gtiFitsFile.getPath() + " written successfully");
 
                 // emit timinfilfits input model
                 TiminfilfitsInputModel inputModel = new TiminfilfitsInputModel();
-                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
-                        .getDataReductionEnv();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
                 inputModel.setStartTime(query.getStartTime());
                 inputModel.setBitRate(dataReductionEnv.getBitRate());
                 inputModel.setAce(dataReductionEnv.getAttitudeMode());
@@ -90,15 +86,21 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setMaxElevation(dataReductionEnv.getElevationMax());
                 inputModel.setMinRigidity(dataReductionEnv.getCutOffRigidityMin());
                 inputModel.setMaxRigidity(dataReductionEnv.getCutOffRigidityMax());
-                inputModel.setBgCorrection(true);
-                inputModel.setAspectCorrection(true);
-                inputModel.setDeadTimeCorrection(dataReductionEnv.getDeadTimeCorrection());
-                inputModel.setChannelToEnergy(dataReductionEnv.getChannelToEnergyConversion());
+                if (ignoreAllCorrections()) {
+                    inputModel.setBgCorrection(false);
+                    inputModel.setAspectCorrection(false);
+                    inputModel.setDeadTimeCorrection(false);
+                    inputModel.setChannelToEnergy(false);
+                } else {
+                    inputModel.setBgCorrection(true);
+                    inputModel.setAspectCorrection(true);
+                    inputModel.setDeadTimeCorrection(dataReductionEnv.getDeadTimeCorrection());
+                    inputModel.setChannelToEnergy(dataReductionEnv.getChannelToEnergyConversion());
+                    inputModel.setBgMethod(getBgSubtractionMethod());
+                    inputModel.setBgFileName(getBgFileName());
+                    inputModel.setBgSubFileNumber(dataReductionEnv.getBgSubFileNumber());
+                }
                 inputModel.setDataUnit(0); // counts
-                inputModel.setBgMethod(getBgSubtractionMethod());
-                inputModel.setBgFileName(getBgFileName());
-                inputModel.setBgSubFileNumber(dataReductionEnv.getBgSubFileNumber());
-                inputModel.setSudsort(sudSort());
                 inputModel.setPhsel1(dataReductionEnv.getPhselLine1());
                 inputModel.setPhsel2(dataReductionEnv.getPhselLine2());
                 inputModel.setPhsel3(dataReductionEnv.getPhselLine3());
@@ -109,8 +111,7 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setPhsel8(dataReductionEnv.getPhselLine8());
                 inputModel.setPhsel9(dataReductionEnv.getPhselLine9());
                 inputModel.setPhsel10(dataReductionEnv.getPhselLine10());
-                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
-                        query.getMode(), "fits"));
+                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(), query.getMode(), "fits"));
                 inputModel.setLacMode(query.getMode());
                 inputModel.setCounter1(dataReductionEnv.getLacCounter1());
                 inputModel.setCounter2(dataReductionEnv.getLacCounter2());
@@ -123,8 +124,7 @@ public abstract class TiminfilfitsInputBuilder extends
                 inputModel.setMixedMode(dataReductionEnv.isLacMixedMode());
                 if (dataReductionEnv.getTimingResolution() == null) {
                     // set time resolution based on LAC Mode and Bit Rate values
-                    inputModel.setTimeResolution(TimeUtil.getTimeResolution(
-                            dataReductionEnv.getBitRate(), query.getMode()));
+                    inputModel.setTimeResolution(TimeUtil.getTimeResolution(dataReductionEnv.getBitRate(), query.getMode()));
                 } else {
                     // use value in gingatoolbox.properties file
                     inputModel.setTimeResolution(dataReductionEnv.getTimingResolution());

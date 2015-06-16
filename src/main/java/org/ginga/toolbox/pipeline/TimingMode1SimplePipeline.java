@@ -28,8 +28,7 @@ public class TimingMode1SimplePipeline {
         if (inputFile != null) {
             try {
                 // copy file to working directory
-                File bgSpectrumFile = new File(GingaToolboxEnv.getInstance().getWorkingDir(),
-                        inputFile.getName());
+                File bgSpectrumFile = new File(GingaToolboxEnv.getInstance().getWorkingDir(), inputFile.getName());
                 FileUtil.copy(inputFile, bgSpectrumFile);
                 return extractTiming(obs, bgSpectrumFile);
             } catch (IOException e) {
@@ -60,14 +59,14 @@ public class TimingMode1SimplePipeline {
             }
 
             @Override
-            public boolean sudSort() {
+            public boolean ignoreAllCorrections() {
                 return false;
             }
         };
         Pipe<TiminfilfitsInputModel, File> timinfilfits = new TiminfilfitsRunner();
 
-        Pipeline<LacModeTargetObservation, File> extractor = new Pipeline<LacModeTargetObservation, File>(
-                modeFilter, queryBuilder, inputBuilder, timinfilfits);
+        Pipeline<LacModeTargetObservation, File> extractor = new Pipeline<LacModeTargetObservation, File>(modeFilter, queryBuilder,
+                inputBuilder, timinfilfits);
         extractor.setStarts(Arrays.asList(obs));
         return extractor.next();
     }

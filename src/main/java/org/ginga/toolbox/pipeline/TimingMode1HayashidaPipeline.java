@@ -29,8 +29,7 @@ public class TimingMode1HayashidaPipeline {
 
             @Override
             public int getTimingBinWidth() {
-                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
-                        .getDataReductionEnv();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
                 // return lowest time resolution for each BR, i.e. MPC1 mode, 1SF (8x)
                 switch (dataReductionEnv.getBitRate()) {
                 case L:
@@ -61,8 +60,8 @@ public class TimingMode1HayashidaPipeline {
 
         };
         Pipe<LacqrdfitsInputModel, File> lacqrdfits = new LacqrdfitsRunner(true);
-        Pipeline<LacModeTargetObservation, File> bgPipeline = new Pipeline<LacModeTargetObservation, File>(
-                modeFilter, queryBuilder, inputBuilder, lacqrdfits);
+        Pipeline<LacModeTargetObservation, File> bgPipeline = new Pipeline<LacModeTargetObservation, File>(modeFilter, queryBuilder,
+                inputBuilder, lacqrdfits);
         bgPipeline.setStarts(Arrays.asList(obs));
         // extract timing file subtracting the BGD file
         return extractTiming(obs, bgPipeline.next());
@@ -83,14 +82,14 @@ public class TimingMode1HayashidaPipeline {
             }
 
             @Override
-            public boolean sudSort() {
+            public boolean ignoreAllCorrections() {
                 return false;
             }
         };
         Pipe<TiminfilfitsInputModel, File> timinfilfits = new TiminfilfitsRunner();
 
-        Pipeline<LacModeTargetObservation, File> extractor = new Pipeline<LacModeTargetObservation, File>(
-                queryBuilder, inputBuilder, timinfilfits);
+        Pipeline<LacModeTargetObservation, File> extractor = new Pipeline<LacModeTargetObservation, File>(queryBuilder, inputBuilder,
+                timinfilfits);
         extractor.setStarts(Arrays.asList(obs));
         return extractor.next();
     }

@@ -7,7 +7,9 @@
 'ELV'   $template.minElevation   $template.maxElevation     0  /MIN, MAX,  -1/0/1/2=ANY/SKY/DARK/BRITE      
 'ENG' 1   '22.1,35.1'   / ENERGY SCALE,  LEVEL, ' DATA ' 
 'COR'   $template.bgCorrection  $template.aspectCorrection  $template.deadTimeCorrection  $template.counterToEnergy  $template.dataUnit  0  1/ BGDSBT,ASPECT,DTIME,ENGSCAL,CNTSCL,CALSEL
+#if ( $template.bgFileName )
 'BGD'   $template.bgMethod, ' ''$template.bgFileName'', $template.bgSubFileNumber, ''NONE'' ' /
+#end
 #if( $template.sudSort )
 'SUD'   1 1 1 1  1 1 1 1    4.6  9.8 0.4 37.0 / SSUD                   
 'BSU'   46 50 54 58 62 66 70 74 78 82 86 90 94 98/

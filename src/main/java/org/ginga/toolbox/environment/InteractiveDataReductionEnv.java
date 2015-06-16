@@ -219,8 +219,7 @@ public class InteractiveDataReductionEnv implements DataReductionEnv {
     @Override
     public BitRate getBitRate() {
         if (this.bitRate == null) {
-            this.bitRate = BitRate.valueOf(readEnumFromInput(
-                    "Enter a Bit Rate ('ANY', 'H', 'M' and 'L'):", Constants.getBitRates()));
+            this.bitRate = BitRate.valueOf(readEnumFromInput("Enter a Bit Rate ('ANY', 'H', 'M' and 'L'):", Constants.getBitRates()));
         }
         return this.bitRate;
     }

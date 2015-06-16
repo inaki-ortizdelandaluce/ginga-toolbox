@@ -96,8 +96,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     @Override
     public Boolean getDeadTimeCorrection() {
         try {
-            return Boolean
-                    .valueOf(this.properties.getProperty("systematic.COR.deadTimeCorrection"));
+            return Boolean.valueOf(this.properties.getProperty("systematic.COR.deadTimeCorrection"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.deadTimeCorrection, using default value", e);
             return Boolean.valueOf("true");
@@ -217,8 +216,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     @Override
     public Double getSkyAnnulusInnerRadii() {
         try {
-            return Double.valueOf(this.properties
-                    .getProperty("systematic.sky.annulus.innerRadiiDeg"));
+            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.innerRadiiDeg"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.sky.annulus.innerRadiiDeg, using default value", e);
             return Double.valueOf("2.5");
@@ -228,8 +226,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     @Override
     public Double getSkyAnnulusOuterRadii() {
         try {
-            return Double.valueOf(this.properties
-                    .getProperty("systematic.sky.annulus.outerRadiiDeg"));
+            return Double.valueOf(this.properties.getProperty("systematic.sky.annulus.outerRadiiDeg"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.sky.annulus.outerRadiiDeg, using default value", e);
             return Double.valueOf("3.5");
@@ -239,8 +236,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     @Override
     public Boolean getDelayTimeCorrection() {
         try {
-            return Boolean.valueOf(this.properties
-                    .getProperty("systematic.COR.delayTimeCorrection"));
+            return Boolean.valueOf(this.properties.getProperty("systematic.COR.delayTimeCorrection"));
         } catch (Exception e) {
             log.warn("Cannot access systematic.COR.delayTimeCorrection, using default value", e);
             return Boolean.valueOf("true");
