@@ -22,8 +22,8 @@ import org.ginga.toolbox.util.TimeUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filfitsInputModel>
-implements TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
+public class Tim2filfitsInputBuilder extends AbstractPipe<LacdumpQuery, Tim2filfitsInputModel> implements
+        TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
 
     private final static Logger log = Logger.getLogger(Tim2filfitsInputBuilder.class);
 
@@ -55,19 +55,16 @@ implements TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
             if (sfList.size() > 0) {
                 // save matching results into a Ginga GTI file
                 GingaGtiWriter gtiWriter = new GingaGtiWriter();
-                String gtiString = gtiWriter.writeToString(query.getTargetName(), sfList, false,
-                        false);
+                String gtiString = gtiWriter.writeToString(query.getTargetName(), sfList, false, false);
                 // save matching results into a standard GTI fits file also
-                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI",
-                        query.getStartTime(), query.getMode(), "fits"));
+                File gtiFitsFile = new File(workingDir, FileUtil.nextFileName("GTI", query.getStartTime(), query.getMode(), "fits"));
                 GtiWriter gtiFitsWriter = new GtiWriter();
                 gtiFitsWriter.writeToFits(sfList, gtiFitsFile);
                 log.debug("GTI file " + gtiFitsFile.getPath() + " written successfully");
 
                 // emit timinfilfits input model
                 Tim2filfitsInputModel inputModel = new Tim2filfitsInputModel();
-                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance()
-                        .getDataReductionEnv();
+                DataReductionEnv dataReductionEnv = GingaToolboxEnv.getInstance().getDataReductionEnv();
                 inputModel.setStartTime(query.getStartTime());
                 inputModel.setBitRate(dataReductionEnv.getBitRate());
                 inputModel.setAce(dataReductionEnv.getAttitudeMode());
@@ -84,15 +81,16 @@ implements TransformPipe<LacdumpQuery, Tim2filfitsInputModel> {
                 inputModel.setPcLine2(dataReductionEnv.getPcLine2());
                 inputModel.setPcLine3(dataReductionEnv.getPcLine3());
                 inputModel.setPcLine4(dataReductionEnv.getPcLine4());
-                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(),
-                        query.getMode(), "fits"));
+                inputModel.setTimingFileName(FileUtil.nextFileName("TIMING", query.getStartTime(), query.getMode(), "fits"));
                 if (dataReductionEnv.getTimingResolution() == null) {
                     // set time resolution based on LAC Mode and Bit Rate values
-                    inputModel.setTimeResolution(TimeUtil.getTimeResolution(
-                            dataReductionEnv.getBitRate(), query.getMode()));
+                    inputModel.setTimeResolution(TimeUtil.getTimeResolution(dataReductionEnv.getBitRate(), query.getMode()));
+                    log.debug("Time resolution for BR=" + dataReductionEnv.getBitRate() + ", Mode=" + query.getMode() + ":"
+                            + inputModel.getTimeResolution());
                 } else {
                     // use value in gingatoolbox.properties file
                     inputModel.setTimeResolution(dataReductionEnv.getTimingResolution());
+                    log.debug("Time resolution: " + inputModel.getTimeResolution());
                 }
                 inputModel.setGtiLines(gtiString);
                 return inputModel;

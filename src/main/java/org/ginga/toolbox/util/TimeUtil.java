@@ -9,13 +9,10 @@ import org.ginga.toolbox.util.Constants.LacMode;
 
 public class TimeUtil {
 
-    public static final SimpleDateFormat DATE_FORMAT_DATABASE = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");
-    public static final SimpleDateFormat DATE_FORMAT_LACDUMP = new SimpleDateFormat(
-            "yyMMdd HH:mm:s");
+    public static final SimpleDateFormat DATE_FORMAT_DATABASE = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT_LACDUMP = new SimpleDateFormat("yyMMdd HH:mm:s");
     public static final SimpleDateFormat DATE_FORMAT_FILE = new SimpleDateFormat("yyMMddHHmmss");
-    public static final SimpleDateFormat DATE_FORMAT_INPUT = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss");
+    public static final SimpleDateFormat DATE_FORMAT_INPUT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     private static final double[] TIME_RESOLUTION_MPC1 = new double[] { 0.5, 4, 16 };
     private static final double[] TIME_RESOLUTION_MPC2 = new double[] { 0.0625, 0.5, 2 };
@@ -60,21 +57,21 @@ public class TimeUtil {
     /**
      * Returns the optimal time resolution (seconds/bin) given a bit rate and a LAC mode according
      * to the following table:
-     * 
+     *
      * <pre>
      * Mode     High  Medium     Low
-     * 
+     *
      * MPC-1   500ms      4s     16s
      * MPC-2  62.5ms   500ms      2s
      * MPC-3   7.8ms  62.5ms   250ms
      * PC-H    1.9ms  15.6ms  62.5ms
      * PC-L   0.98ms   7.8ms  31.3ms
      * </pre>
-     * 
+     *
      * For ANY bit rate, the lowest time resolution will be returned. For PCHK mode, the PC-L
      * resolution will be returned. For ACS and INIT modes, an IllegalArgumentException will be
      * thrown.
-     * 
+     *
      * @param bitRate the bit rate (ANY, HI, MED, LOW)
      * @param mode the LAC mode. (MPC1
      * @return time resolution in seconds/bin
@@ -85,6 +82,7 @@ public class TimeUtil {
         switch (bitRate) {
         case H:
             idx = 0;
+            break;
         case M:
             idx = 1;
             break;
@@ -107,8 +105,7 @@ public class TimeUtil {
             return TIME_RESOLUTION_PCL[idx]; // lowest PC mode resolution
         case INIT:
         default:
-            throw new IllegalStateException("Could not identify time resolution for LAC mode"
-                    + mode.toString());
+            throw new IllegalStateException("Could not identify time resolution for LAC mode" + mode.toString());
         }
     }
 }
