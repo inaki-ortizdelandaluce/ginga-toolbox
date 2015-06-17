@@ -14,8 +14,7 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> implements
-        TransformPipe<LacqrdfitsInputModel, File> {
+public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> implements TransformPipe<LacqrdfitsInputModel, File> {
 
     private static final Logger log = Logger.getLogger(LacqrdfitsRunner.class);
 
@@ -49,36 +48,33 @@ public class LacqrdfitsRunner extends AbstractPipe<LacqrdfitsInputModel, File> i
                 // File inputFile = new File(workingDir,
                 // FileUtil.nextFileName(workingDir, "lacqrd",
                 // "input"));
-                File inputFile = new File(workingDir, FileUtil.nextFileName("lacqrd",
-                        inputModel.getStartTime(), inputModel.getLacMode(), "input"));
-                LacqrdfitsInputFileWriter lacqrdInputFileWriter = new LacqrdfitsInputFileWriter(
-                        inputModel);
+                File inputFile = new File(workingDir, FileUtil.nextFileName("lacqrd", inputModel.getStartTime(), inputModel.getLacMode(),
+                        "input"));
+                LacqrdfitsInputFileWriter lacqrdInputFileWriter = new LacqrdfitsInputFileWriter(inputModel);
                 lacqrdInputFileWriter.writeToFile(inputFile);
                 log.info("Input file " + inputFile.getPath() + " created successfully");
 
                 // create output file
-                File outputFile = new File(workingDir,
-                        FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
+                File outputFile = new File(workingDir, FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
 
                 // create 'lacqrdfits' command
                 String cmd = env.getGingaToolsBinDir() + File.separator + "lacqrdfits";
 
                 // execute command
-                GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile,
-                        outputFile, cmd);
-                log.info("Executing command lacqrdfits < " + inputFile.getName() + " > "
-                        + outputFile.getName());
+                GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile, outputFile, cmd);
+                log.info("Executing command lacqrdfits < " + inputFile.getName() + " > " + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lacqrdfits' output file
                     log.info("Command executed successfully");
-                    if (this.timingBg) {
-                        return new File(workingDir, inputModel.getTimingFileName());
-                    } else {
-                        return new File(workingDir, inputModel.getSpectralFileName());
-                    }
                 } else {
                     log.error("Error executing command " + cmd);
+                }
+                // FIX: return file even if execution fails
+                if (this.timingBg) {
+                    return new File(workingDir, inputModel.getTimingFileName());
+                } else {
+                    return new File(workingDir, inputModel.getSpectralFileName());
                 }
             }
         } catch (IOException e) {
