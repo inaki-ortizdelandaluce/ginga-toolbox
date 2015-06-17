@@ -78,7 +78,11 @@ public class TimingMode1HayashidaPipeline {
 
             @Override
             public String getBgFileName() {
-                return bgTimingFile.getName();
+                if (bgTimingFile != null) {
+                    return bgTimingFile.getName();
+                } else {
+                    return null;
+                }
             }
 
             @Override
