@@ -376,7 +376,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
     @Override
     public String getPcLine4() {
         try {
-            return this.properties.getProperty("systematic.PC.line1");
+            return this.properties.getProperty("systematic.PC.line4");
         } catch (Exception e) {
             log.warn("Cannot access systematic.PC.line1, using default value", e);
             return "'PC'        0   1 ,    0   1   / LAC A ,B   ,   PCL, PCH";
@@ -385,7 +385,7 @@ public class SystematicDataReductionEnv implements DataReductionEnv {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.ginga.toolbox.environment.DataReductionEnv#getTimingResolution()
      */
     @Override
