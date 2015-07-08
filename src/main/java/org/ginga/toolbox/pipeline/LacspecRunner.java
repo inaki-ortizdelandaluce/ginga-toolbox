@@ -14,10 +14,18 @@ import org.ginga.toolbox.util.FileUtil;
 import com.tinkerpop.pipes.AbstractPipe;
 import com.tinkerpop.pipes.transform.TransformPipe;
 
-public class LacspecRunner extends AbstractPipe<LacspecInputModel, File> implements
-        TransformPipe<LacspecInputModel, File> {
+public class LacspecRunner extends AbstractPipe<LacspecInputModel, File> implements TransformPipe<LacspecInputModel, File> {
 
     private static final Logger log = Logger.getLogger(LacspecRunner.class);
+    private boolean ignoreBackgroundCorrection;
+
+    public LacspecRunner() {
+        this(true);
+    }
+
+    public LacspecRunner(boolean backgroundCorrection) {
+        this.ignoreBackgroundCorrection = !backgroundCorrection;
+    }
 
     /*
      * Receives a Tim2filfitsInputModel, writes it to an input file, executes the lacspec routine
@@ -37,30 +45,25 @@ public class LacspecRunner extends AbstractPipe<LacspecInputModel, File> impleme
 
                 // create input file
                 File inputFile = null;
-                if (inputModel.getHasBackground()) {
-                    inputFile = new File(workingDir, FileUtil.nextFileName("lacspec",
-                            inputModel.getStartTime(), inputModel.getLacMode(), "input"));
+                if (inputModel.getHasBackground() || this.ignoreBackgroundCorrection) {
+                    inputFile = new File(workingDir, FileUtil.nextFileName("lacspec", inputModel.getStartTime(), inputModel.getLacMode(),
+                            "input"));
                 } else {
-                    inputFile = new File(workingDir, FileUtil.nextFileName(workingDir,
-                            "lacspec_bgd", "input"));
+                    inputFile = new File(workingDir, FileUtil.nextFileName(workingDir, "lacspec_bgd", "input"));
                 }
-                LacspecInputFileWriter lacspecInputFileWriter = new LacspecInputFileWriter(
-                        inputModel);
+                LacspecInputFileWriter lacspecInputFileWriter = new LacspecInputFileWriter(inputModel);
                 lacspecInputFileWriter.writeToFile(inputFile);
                 log.info("Input file " + inputFile.getPath() + " created successfully");
 
                 // create output file
-                File outputFile = new File(workingDir,
-                        FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
+                File outputFile = new File(workingDir, FileUtil.splitFileBaseAndExtension(inputFile)[0] + ".log");
 
                 // create 'lacspec' command
                 String cmd = env.getGingaToolsBinDir() + File.separator + "lacspec";
 
                 // execute command
-                GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile,
-                        outputFile, cmd);
-                log.info("Executing command lacspec < " + inputFile.getName() + " > "
-                        + outputFile.getName());
+                GingaToolsRuntime runtime = new GingaToolsRuntime(workingDir, inputFile, outputFile, cmd);
+                log.info("Executing command lacspec < " + inputFile.getName() + " > " + outputFile.getName());
                 int exitValue = runtime.exec();
                 log.debug("Exit value " + exitValue);
                 if (exitValue == 0) { // return 'lacqrdfits' output file

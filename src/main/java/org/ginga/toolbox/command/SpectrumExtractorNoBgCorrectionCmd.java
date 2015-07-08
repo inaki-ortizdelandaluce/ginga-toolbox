@@ -16,18 +16,15 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
-import org.ginga.toolbox.pipeline.SpectrumHayashidaPipeline;
 import org.ginga.toolbox.pipeline.SpectrumNoBgCorrectionPipeline;
-import org.ginga.toolbox.pipeline.SpectrumSimplePipeline;
-import org.ginga.toolbox.pipeline.SpectrumSudSortPipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
 import org.ginga.toolbox.util.TimeUtil;
 
-public class SpectrumExtractorCmd {
+public class SpectrumExtractorNoBgCorrectionCmd {
 
     protected final static String DATE_FORMAT_PATTERN = TimeUtil.DATE_FORMAT_INPUT.toPattern();
-    private final static Logger log = Logger.getLogger(SpectrumExtractorCmd.class);
+    private final static Logger log = Logger.getLogger(SpectrumExtractorNoBgCorrectionCmd.class);
 
     public static void main(String[] args) {
         try {
@@ -40,19 +37,6 @@ public class SpectrumExtractorCmd {
                 target = commandLine.getOptionValue("t");
             } else {
                 target = scanner.scanTarget();
-            }
-            // BACKGROUND SUBTRACTION METHOD
-            BgSubtractionMethod method = null;
-            if (commandLine.hasOption("b")) {
-                try {
-                    method = Enum.valueOf(BgSubtractionMethod.class, commandLine.getOptionValue("b"));
-                } catch (IllegalArgumentException e) {
-                    log.error("Unknown background subtraction method " + commandLine.getOptionValue("b"));
-                    printHelp();
-                    System.exit(1);
-                }
-            } else {
-                method = scanner.scanBackgroundMethod();
             }
             // LAC MODE
             String mode = null;
@@ -67,19 +51,6 @@ public class SpectrumExtractorCmd {
                 }
             } else {
                 mode = scanner.scanLacMode();
-            }
-            // OBSERVATION IDENTIFIER
-            long obsId = 0;
-            if (commandLine.hasOption("o")) {
-                try {
-                    obsId = Long.valueOf(commandLine.getOptionValue("o")).longValue();
-                } catch (NumberFormatException e) {
-                    log.error("Observation identifier " + commandLine.getOptionValue("o") + " is not an integer");
-                    printHelp();
-                    System.exit(1);
-                }
-            } else {
-                obsId = scanner.scanObsId();
             }
             // START TIME
             String startTime = null;
@@ -117,13 +88,12 @@ public class SpectrumExtractorCmd {
             }
             // build single mode target observation instance from arguments
             LacModeTargetObservation obs = new LacModeTargetObservation();
-            obs.setObsId(obsId);
             obs.setTarget(target);
             obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
             // extract spectrum
-            extractSpectrum(obs, method);
+            extractSpectrum(obs);
         } catch (ParseException e) {
             log.error(e.getMessage());
             printHelp();
@@ -135,15 +105,10 @@ public class SpectrumExtractorCmd {
     @SuppressWarnings("static-access")
     private static Options getOptions() {
         Options options = new Options();
-        Option obsIdOption = OptionBuilder.withArgName("observation id").withLongOpt("observation-id")
-                .withDescription("[OPTIONAL] Observation identifier").hasArg().create("o");
         Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target").withDescription("[OPTIONAL] Target name").hasArg()
                 .create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
                 .withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes()).hasArg().create("m");
-        Option methodOption = OptionBuilder.withArgName("method").withLongOpt("background-method")
-                .withDescription("[OPTIONAL] Background subtraction method. Possible values: " + getBgSubtractionMethods()).hasArg()
-                .create("b");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
                 .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format").hasArg().create();
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
@@ -155,8 +120,6 @@ public class SpectrumExtractorCmd {
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
         options.addOption(targetOption);
-        options.addOption(methodOption);
-        options.addOption(obsIdOption);
         options.addOption(lacModeOption);
         options.addOption(startTimeOption);
         options.addOption(endTimeOption);
@@ -188,9 +151,7 @@ public class SpectrumExtractorCmd {
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setOptionComparator(new Comparator<Option>() {
 
-            private static final String OPTS_ORDER = "isetbom"; // short option
-
-            // names
+            private static final String OPTS_ORDER = "isetm"; // short option names
 
             @Override
             public int compare(Option o1, Option o2) {
@@ -199,54 +160,10 @@ public class SpectrumExtractorCmd {
                 return OPTS_ORDER.indexOf(argCharOption1) - OPTS_ORDER.indexOf(argCharOption2);
             }
         });
-        helpFormatter.printHelp("extract_spectrum.sh", getOptions());
+        helpFormatter.printHelp("extract_spectrum_hayashida.sh", getOptions());
     }
 
-    public static void extractSpectrum(LacModeTargetObservation obs, BgSubtractionMethod method) {
-        switch (method) {
-        case HAYASHIDA:
-            extractSpectrumHayashida(obs);
-            break;
-        case SIMPLE:
-            extractSpectrumSimple(obs);
-            break;
-        case SUD_SORT:
-            extractSpectrumSudSort(obs);
-            break;
-        case NONE:
-            extractSpectrumNoBgCorrection(obs);
-        default:
-            log.error(method + " background subtraction method not supported");
-            System.exit(1);
-        }
-    }
-
-    public static void extractSpectrumHayashida(LacModeTargetObservation obs) {
-        SpectrumHayashidaPipeline pipeline = new SpectrumHayashidaPipeline();
-        pipeline.run(Arrays.asList(obs));
-        File specFile = pipeline.next();
-        if (specFile != null) {
-            log.info("Spectrum file " + specFile.getName() + " created successfully");
-        }
-    }
-
-    public static void extractSpectrumSimple(LacModeTargetObservation obs) {
-        SpectrumSimplePipeline pipeline = new SpectrumSimplePipeline();
-        File specFile = pipeline.run(obs);
-        if (specFile != null) {
-            log.info("Spectrum file " + specFile.getName() + " created successfully");
-        }
-    }
-
-    public static void extractSpectrumSudSort(LacModeTargetObservation obs) {
-        SpectrumSudSortPipeline pipeline = new SpectrumSudSortPipeline();
-        File specFile = pipeline.run(obs);
-        if (specFile != null) {
-            log.info("Spectrum file " + specFile.getName() + " created successfully");
-        }
-    }
-
-    public static void extractSpectrumNoBgCorrection(LacModeTargetObservation obs) {
+    public static void extractSpectrum(LacModeTargetObservation obs) {
         SpectrumNoBgCorrectionPipeline pipeline = new SpectrumNoBgCorrectionPipeline();
         pipeline.run(Arrays.asList(obs));
         File specFile = pipeline.next();
@@ -254,5 +171,4 @@ public class SpectrumExtractorCmd {
             log.info("Spectrum file " + specFile.getName() + " created successfully");
         }
     }
-
 }

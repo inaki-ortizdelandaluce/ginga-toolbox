@@ -7,8 +7,7 @@ public class Constants {
     }
 
     public enum GingaAttitude {
-        NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"), S36("S36"), MAN("MAN"), SAF("SAF"), STB("STB"), LSP(
-                "LSP");
+        NML("NML"), SL_PLUS("SL+"), SL_MINUS("SL-"), S36("S36"), MAN("MAN"), SAF("SAF"), STB("STB"), LSP("LSP");
 
         String value;
 
@@ -30,7 +29,7 @@ public class Constants {
     }
 
     public enum BgSubtractionMethod {
-        SIMPLE, SUD_SORT, HAYASHIDA
+        SIMPLE, SUD_SORT, HAYASHIDA, NONE
     }
 
     public enum LacCounterMode {

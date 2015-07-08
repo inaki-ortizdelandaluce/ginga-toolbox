@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.ginga.toolbox.environment.GingaToolboxEnv;
 import org.ginga.toolbox.environment.GingaToolboxEnv.DataReductionMode;
 import org.ginga.toolbox.observation.LacModeTargetObservation;
+import org.ginga.toolbox.pipeline.TimeResolvedSpectraPipeline;
 import org.ginga.toolbox.pipeline.TimeResolvedSpectraSimplePipeline;
 import org.ginga.toolbox.util.Constants.BgSubtractionMethod;
 import org.ginga.toolbox.util.Constants.LacMode;
@@ -28,10 +29,13 @@ public class TimeResolvedSpectraExtractorCmd {
     public TimeResolvedSpectraExtractorCmd() {
     }
 
-    public static void extractTimeResolvedSpectraSimple(LacModeTargetObservation obs,
-            double timeStepSeconds) throws Exception {
-        TimeResolvedSpectraSimplePipeline pipeline = new TimeResolvedSpectraSimplePipeline(
-                timeStepSeconds);
+    public static void extractTimeResolvedSpectraSimple(LacModeTargetObservation obs, double timeStepSeconds) throws Exception {
+        TimeResolvedSpectraSimplePipeline pipeline = new TimeResolvedSpectraSimplePipeline(timeStepSeconds);
+        pipeline.run(obs);
+    }
+
+    public static void extractTimeResolvedSpectra(LacModeTargetObservation obs, double timeStepSeconds) throws Exception {
+        TimeResolvedSpectraPipeline pipeline = new TimeResolvedSpectraPipeline(timeStepSeconds);
         pipeline.run(obs);
     }
 
@@ -52,13 +56,15 @@ public class TimeResolvedSpectraExtractorCmd {
             try {
                 method = Enum.valueOf(BgSubtractionMethod.class, commandLine.getOptionValue("b"));
             } catch (IllegalArgumentException e) {
-                log.error("Unknown background subtraction method "
-                        + commandLine.getOptionValue("b"));
+                log.error("Unknown background subtraction method " + commandLine.getOptionValue("b"));
                 printHelp();
                 return;
             }
             // BACKGROUND FILE
-            File bgFile = new File(commandLine.getOptionValue("f"));
+            File bgFile = null;
+            if (commandLine.hasOption("f")) {
+                bgFile = new File(commandLine.getOptionValue("f"));
+            }
             // TIME STEP
             double timeStepSeconds = Double.valueOf(commandLine.getOptionValue("p")).doubleValue();
             // LAC MODE
@@ -115,11 +121,16 @@ public class TimeResolvedSpectraExtractorCmd {
             obs.setMode(mode);
             obs.setStartTime(startTime);
             obs.setEndTime(endTime);
-            obs.setBackgroundFile(bgFile);
+            if (bgFile != null) {
+                obs.setBackgroundFile(bgFile);
+            }
             // extract spectrum
             switch (method) {
             case SIMPLE:
                 extractTimeResolvedSpectraSimple(obs, timeStepSeconds);
+                break;
+            case NONE:
+                extractTimeResolvedSpectra(obs, timeStepSeconds);
                 break;
             case SUD_SORT:
                 log.error("SUD Sort background method not supported yet");
@@ -143,31 +154,24 @@ public class TimeResolvedSpectraExtractorCmd {
     private static Options getOptions() {
         Options options = new Options();
 
-        Option timeStepOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step")
-                .withDescription("Time bin size in seconds.").isRequired().hasArg().create("p");
+        Option timeStepOption = OptionBuilder.withArgName("seconds").withLongOpt("time-step").withDescription("Time bin size in seconds.")
+                .isRequired().hasArg().create("p");
         Option bgFileOption = OptionBuilder.withArgName("file").withLongOpt("background-file")
-                .withDescription("background spectrum file").isRequired().hasArg().create("f");
-        Option bgMethodOption = OptionBuilder
-                .withArgName("method")
-                .withLongOpt("background-method")
-                .withDescription("Background subtraction method. Possible values: SIMPLE, SUD_SORT")
-                .isRequired().hasArg().create("b");
-        Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
-                .withDescription("[OPTIONAL] Target name.").hasArg().create("t");
+                .withDescription("[OPTIONAL] background spectrum file").hasArg().create("f");
+        Option bgMethodOption = OptionBuilder.withArgName("method").withLongOpt("background-method")
+                .withDescription("Background subtraction method. Possible values: SIMPLE, SUD_SORT").isRequired().hasArg().create("b");
+        Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target").withDescription("[OPTIONAL] Target name.").hasArg()
+                .create("t");
         Option lacModeOption = OptionBuilder.withArgName("LAC mode").withLongOpt("mode")
-                .withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes()).hasArg()
-                .create("m");
+                .withDescription("[OPTIONAL] LAC mode. Possible values: " + getLacModes()).hasArg().create("m");
         Option startTimeOption = OptionBuilder.withArgName("start time").withLongOpt("start-time")
-                .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format")
-                .hasArg().create("a");
+                .withDescription("[OPTIONAL] Start time in " + DATE_FORMAT_PATTERN + " format").hasArg().create("a");
         Option endTimeOption = OptionBuilder.withArgName("end time").withLongOpt("end-time")
-                .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format")
-                .hasArg().create("n");
+                .withDescription("[OPTIONAL] End time in " + DATE_FORMAT_PATTERN + " format").hasArg().create("n");
 
         OptionGroup group = new OptionGroup();
         group.setRequired(true);
-        group.addOption(new Option("i", "interactive", false,
-                "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
+        group.addOption(new Option("i", "interactive", false, "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         group.addOption(new Option("s", "systematic", false,
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 

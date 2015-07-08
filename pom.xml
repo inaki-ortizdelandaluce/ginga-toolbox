@@ -4,7 +4,7 @@
 	<groupId>org.ginga.toolbox</groupId>
 	<artifactId>ginga-toolbox</artifactId>
 	<packaging>jar</packaging>
-	<version>1.3</version>
+	<version>1.4</version>
 	<name>ginga-toolbox</name>
 	<url>http://maven.apache.org</url>
  	<dependencies>
@@ -195,6 +195,13 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.SpectrumExtractorNoBgCorrectionCmd</mainClass>
+                  <id>extract_spectrum_no_bg_correction.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>                
                 <program>
                   <mainClass>org.ginga.toolbox.command.SpectraMpc3FixerCmd</mainClass>
                   <id>fix_mpc3_spectra.sh</id>
