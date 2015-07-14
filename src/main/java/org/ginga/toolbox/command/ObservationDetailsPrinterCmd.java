@@ -77,7 +77,7 @@ public class ObservationDetailsPrinterCmd {
 
         for (int i = 0; i < modes.length; i++) {
             try {
-                printMode(target, obsid, modes[i], obsEntity.getStartTime(), obsEntity.getEndTime());
+                printMode(target, obsEntity, modes[i]);
             } catch (java.text.ParseException | LacdumpDaoException e) {
                 throw new IOException(e);
             }
@@ -86,15 +86,14 @@ public class ObservationDetailsPrinterCmd {
         this.writer.close();
     }
 
-    private void printMode(String target, String obsid, LacMode mode, Date startTime, Date endTime) throws java.text.ParseException,
-    LacdumpDaoException {
+    private void printMode(String target, ObservationEntity obsEntity, LacMode mode) throws java.text.ParseException, LacdumpDaoException {
         // build and execute query
         DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
         LacdumpQuery query = new LacdumpQuery();
         query.setTargetName(target);
         query.setMode(mode);
-        query.setStartTime(TimeUtil.DATE_FORMAT_DATABASE.format(startTime));
-        query.setEndTime(TimeUtil.DATE_FORMAT_DATABASE.format(endTime));
+        query.setStartTime(TimeUtil.DATE_FORMAT_DATABASE.format(obsEntity.getStartTime()));
+        query.setEndTime(TimeUtil.DATE_FORMAT_DATABASE.format(obsEntity.getEndTime()));
         query.setMinCutOffRigidity(env.getCutOffRigidityMin());
         query.setMinElevation(env.getElevationMin());
         List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
@@ -104,21 +103,24 @@ public class ObservationDetailsPrinterCmd {
         Date lastDateTime = null;
         Set<String> bitRates = new HashSet<String>();
         for (LacdumpSfEntity sf : sfList) {
+            log.info("SF" + sf.getPass() + "," + sf.getSequenceNumber() + "," + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
             bitRates.add(sf.getBitRate());
             if (!sf.getPass().equals(lastPass)) { // new PASS
                 if (lastPass != null) {
-                    this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsid, lastSeqNo, mode, getBitRatesAsString(bitRates),
-                            TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, lastDateTime),
-                            TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, sf.getDate()))); // end
+                    this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
+                            getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
+                            TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()))); // end
+                    log.info("End: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                     // previous
                     bitRates.clear();
                 }
                 lastDateTime = sf.getDate(); // begin
+                log.info("[NEW PASS] Start: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime));
             } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
-                this.writer
-                .println(String.format("%6s%10s%6s%10s%20s%20s", obsid, lastSeqNo, mode, getBitRatesAsString(bitRates),
-                        TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, lastDateTime),
-                        TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, sf.getDate()))); // end
+                this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
+                        getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
+                        TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()))); // end
+                log.info("End(gap): " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                 // previous
                 bitRates.clear();
                 lastDateTime = sf.getDate(); // begin
@@ -129,9 +131,11 @@ public class ObservationDetailsPrinterCmd {
         }
         if (lastSeqNo > 0) {
             LacdumpSfEntity last = sfList.get(sfList.size() - 1);
-            this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsid, lastSeqNo, mode, getBitRatesAsString(bitRates),
-                    TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, lastDateTime), TimeUtil.format(TimeUtil.DATE_FORMAT_FILE, last.getDate()))); // end
+            this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
+                    getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
+                    TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, last.getDate()))); // end
             // previous
+            log.info("End(last): " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, last.getDate()));
         }
     }
 
