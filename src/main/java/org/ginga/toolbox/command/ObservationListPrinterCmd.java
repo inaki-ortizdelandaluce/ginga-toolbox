@@ -50,21 +50,17 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE",
-                "BIT_RATE", "START_TIME", "END_TIME"));
-        this.writer.println(String.format("%72s",
-                "========================================================================"));
+        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE", "BIT_RATE", "FIRST_SF_TIME", "LAST_SF_TIME"));
+        this.writer.println(String.format("%72s", "========================================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
-                this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(),
-                        obsEntity.getSequenceNumber(), targetObservation.getMode(),
-                        targetObservation.getBitRatesAsString(), targetObservation.getStartTime(),
+                this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(),
+                        targetObservation.getMode(), targetObservation.getBitRatesAsString(), targetObservation.getStartTime(),
                         targetObservation.getEndTime()));
             }
-            this.writer.println(String.format("%72s",
-                    "------------------------------------------------------------------------"));
+            this.writer.println(String.format("%72s", "------------------------------------------------------------------------"));
         }
         this.writer.flush();
         this.writer.close();
@@ -86,20 +82,17 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE",
-                "BIT_RATE", "START_TIME", "END_TIME"));
-        this.writer.println(String.format("%72s",
-                "========================================================================"));
+        this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", "OBSID", "PASS", "MODE", "BIT_RATE", "FIRST_SF_TIME", "LAST_SF_TIME"));
+        this.writer.println(String.format("%72s", "========================================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
             for (LacModeTargetObservation targetObservation : obsMap.get(obsEntity)) {
                 LacMode mode = targetObservation.getLacMode();
                 if (Arrays.asList(modes).contains(mode)) {
-                    this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(),
-                            obsEntity.getSequenceNumber(), targetObservation.getMode(),
-                            targetObservation.getBitRatesAsString(),
-                            targetObservation.getStartTime(), targetObservation.getEndTime()));
+                    this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(),
+                            targetObservation.getMode(), targetObservation.getBitRatesAsString(), targetObservation.getStartTime(),
+                            targetObservation.getEndTime()));
                 }
             }
         }
@@ -116,17 +109,13 @@ public class ObservationListPrinterCmd {
         Iterator<ObservationEntity> obsIterator = obsMap.keySet().iterator();
         ObservationEntity obsEntity = null;
 
-        this.writer.println(String.format("%6s%10s%22s%22s", "OBSID", "PASS", "START_TIME",
-                "END_TIME"));
-        this.writer.println(String.format("%60s",
-                "============================================================"));
+        this.writer.println(String.format("%6s%10s%22s%22s", "OBSID", "PASS", "START_TIME", "END_TIME"));
+        this.writer.println(String.format("%60s", "============================================================"));
 
         while (obsIterator.hasNext()) {
             obsEntity = obsIterator.next();
-            this.writer
-                    .println(String.format("%6s%10s%22s%22s", obsEntity.getId(),
-                            obsEntity.getSequenceNumber(), obsEntity.getStartTime(),
-                            obsEntity.getEndTime()));
+            this.writer.println(String.format("%6s%10s%22s%22s", obsEntity.getId(), obsEntity.getSequenceNumber(),
+                    obsEntity.getStartTime(), obsEntity.getEndTime()));
         }
         this.writer.flush();
         this.writer.close();
@@ -175,14 +164,13 @@ public class ObservationListPrinterCmd {
     private static Options getOptions() {
         Options options = new Options();
 
-        Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target")
-                .isRequired().withDescription("Target name").hasArg().create("t");
+        Option targetOption = OptionBuilder.withArgName("target").withLongOpt("target").isRequired().withDescription("Target name")
+                .hasArg().create("t");
 
-        Option fileOption = OptionBuilder.withArgName("file path").withLongOpt("file")
-                .withDescription("write observation list to file").hasArg().create("f");
+        Option fileOption = OptionBuilder.withArgName("file path").withLongOpt("file").withDescription("write observation list to file")
+                .hasArg().create("f");
 
-        Option consoleOption = new Option("c", "console", false,
-                "write observation list to console");
+        Option consoleOption = new Option("c", "console", false, "write observation list to console");
 
         OptionGroup group1 = new OptionGroup();
         group1.setRequired(true);
@@ -193,14 +181,12 @@ public class ObservationListPrinterCmd {
         group2.setRequired(true);
         group2.addOption(new Option("o", "observations-only", false, "list observations only"));
         group2.addOption(new Option("a", "all-modes", false, "list all LAC modes"));
-        group2.addOption(new Option("l", "spectral-modes-only", false,
-                "list MPC1 and MPC2 LAC modes only"));
+        group2.addOption(new Option("l", "spectral-modes-only", false, "list MPC1 and MPC2 LAC modes only"));
         group2.addOption(new Option("g", "timing-modes-only", false, "list MPC3 and PC modes only"));
 
         OptionGroup group3 = new OptionGroup();
         group3.setRequired(true);
-        group3.addOption(new Option("i", "interactive", false,
-                "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
+        group3.addOption(new Option("i", "interactive", false, "prompt for input values, e.g. LACDUMP elevation and rigidity constraints"));
         group3.addOption(new Option("s", "systematic", false,
                 "use default systematic values present in configuration file gingatoolbox.properties "));
 
