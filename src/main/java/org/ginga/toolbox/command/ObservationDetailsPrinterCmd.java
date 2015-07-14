@@ -100,57 +100,54 @@ public class ObservationDetailsPrinterCmd {
         query.setMinElevation(env.getElevationMin());
         List<LacdumpSfEntity> sfList = new LacdumpDaoImpl().findSfList(query);
         // write results to writer
-        String lastPass = null;
-        int lastSeqNo = -1;
-        Date lastDateTime = null;
+        Date startDateTime = null;
+        LacdumpSfEntity lastSf = null;
         Set<String> bitRates = new HashSet<String>();
         for (LacdumpSfEntity sf : sfList) {
             log.info("\tSF " + sf.getPass() + ", " + sf.getSequenceNumber() + ", "
                     + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
             bitRates.add(sf.getBitRate());
-            if (!sf.getPass().equals(lastPass)) { // new PASS
-                if (lastPass != null) {
+            if (lastSf == null || !sf.getPass().equals(lastSf.getPass())) { // new PASS
+                if (lastSf != null && lastSf.getPass() != null) {
                     this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
-                            getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
-                            TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()))); // end
+                            getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
+                            TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
                     log.info("END [NEW PASS]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                     // previous
                     bitRates.clear();
                 }
-                lastDateTime = sf.getDate(); // begin
-                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime));
-            } else if (sf.getSequenceNumber() > lastSeqNo + 1) {
+                startDateTime = sf.getDate(); // begin
+                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
+            } else if (sf.getSequenceNumber() > lastSf.getSequenceNumber() + 1) {
                 this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
-                        getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
-                        TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()))); // end
+                        getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
+                        TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
                 log.info("END [GAP]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                 // previous
                 bitRates.clear();
-                lastDateTime = sf.getDate(); // begin
-                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime));
+                startDateTime = sf.getDate(); // begin
+                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
             }
-            lastSeqNo = sf.getSequenceNumber();
-            lastPass = sf.getPass();
+            lastSf = sf;
         }
-        if (lastSeqNo > 0) {
-            LacdumpSfEntity lastSf = sfList.get(sfList.size() - 1);
+        if (lastSf != null && lastSf.getSequenceNumber() > 0) {
             this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
-                    getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, lastDateTime),
-                    TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf.getDate(), lastSf.getBitRate())))); // end
+                    getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
+                    TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
             // previous
-            log.info("END [LAST]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf.getDate(), lastSf.getBitRate())));
+            log.info("END [LAST]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)));
         }
     }
 
-    private Date getNextDate(Date date, String bitRate) {
-        switch (bitRate) {
+    private Date getNextDate(LacdumpSfEntity sf) {
+        switch (sf.getBitRate()) {
         case "L":
-            return addSeconds(date, 32);
+            return addSeconds(sf.getDate(), 32);
         case "M":
-            return addSeconds(date, 8);
+            return addSeconds(sf.getDate(), 8);
         case "H":
         default:
-            return addSeconds(date, 4);
+            return addSeconds(sf.getDate(), 4);
         }
     }
 
