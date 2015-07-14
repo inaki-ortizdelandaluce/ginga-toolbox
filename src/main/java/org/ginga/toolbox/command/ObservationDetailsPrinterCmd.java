@@ -88,7 +88,7 @@ public class ObservationDetailsPrinterCmd {
     }
 
     private void printMode(String target, ObservationEntity obsEntity, LacMode mode) throws java.text.ParseException, LacdumpDaoException {
-        log.info("Observation " + obsEntity.getId() + "in " + mode.toString() + "mode ");
+        log.debug("Observation " + obsEntity.getId() + "in " + mode.toString() + "mode ");
         // build and execute query
         DataReductionEnv env = GingaToolboxEnv.getInstance().getDataReductionEnv();
         LacdumpQuery query = new LacdumpQuery();
@@ -104,47 +104,47 @@ public class ObservationDetailsPrinterCmd {
         LacdumpSfEntity lastSf = null;
         Set<String> bitRates = new HashSet<String>();
         for (LacdumpSfEntity sf : sfList) {
-            log.info("\tSF " + sf.getPass() + ", " + sf.getSequenceNumber() + ", "
+            log.debug("\tSF " + sf.getPass() + ", " + sf.getSequenceNumber() + ", "
                     + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
-            bitRates.add(sf.getBitRate());
             if (lastSf == null || !sf.getPass().equals(lastSf.getPass())) { // new PASS
                 if (lastSf != null && lastSf.getPass() != null) {
                     this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
                             getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
                             TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
-                    log.info("END [NEW PASS]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
+                    log.debug("END [NEW PASS]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                     // previous
                     bitRates.clear();
                 }
                 startDateTime = sf.getDate(); // begin
-                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
+                log.debug("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
             } else if (sf.getSequenceNumber() > lastSf.getSequenceNumber() + 1) {
                 this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
                         getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
                         TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
-                log.info("END [GAP]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
+                log.debug("END [GAP]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, sf.getDate()));
                 // previous
                 bitRates.clear();
                 startDateTime = sf.getDate(); // begin
-                log.info("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
+                log.debug("START: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime));
             }
             lastSf = sf;
+            bitRates.add(lastSf.getBitRate());
         }
         if (lastSf != null && lastSf.getSequenceNumber() > 0) {
             this.writer.println(String.format("%6s%10s%6s%10s%20s%20s", obsEntity.getId(), obsEntity.getSequenceNumber(), mode,
                     getBitRatesAsString(bitRates), TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, startDateTime),
                     TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)))); // end
             // previous
-            log.info("END [LAST]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)));
+            log.debug("END [LAST]: " + TimeUtil.format(TimeUtil.DATE_FORMAT_INPUT, getNextDate(lastSf)));
         }
     }
 
     private Date getNextDate(LacdumpSfEntity sf) {
         switch (sf.getBitRate()) {
         case "L":
-            return addSeconds(sf.getDate(), 32);
+            return addSeconds(sf.getDate(), 128);
         case "M":
-            return addSeconds(sf.getDate(), 8);
+            return addSeconds(sf.getDate(), 32);
         case "H":
         default:
             return addSeconds(sf.getDate(), 4);
