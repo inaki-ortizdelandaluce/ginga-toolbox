@@ -4,7 +4,7 @@
 	<groupId>org.ginga.toolbox</groupId>
 	<artifactId>ginga-toolbox</artifactId>
 	<packaging>jar</packaging>
-	<version>1.4</version>
+	<version>1.5</version>
 	<name>ginga-toolbox</name>
 	<url>http://maven.apache.org</url>
  	<dependencies>
@@ -153,6 +153,13 @@
                     <platform>unix</platform>
                   </platforms>
                 </program>
+                <program>
+                  <mainClass>org.ginga.toolbox.command.ObservationDetailsPrinterCmd</mainClass>
+                  <id>print_observation_details.sh</id>
+                  <platforms>
+                    <platform>unix</platform>
+                  </platforms>
+                </program>                
                 <program>
                   <mainClass>org.ginga.toolbox.command.GingaGtiWriterCmd</mainClass>
                   <id>write_ginga_gti.sh</id>
