@@ -4,7 +4,9 @@ Ginga X-ray satellite data.
 
 GingaToolbox has been developed as part of a Master Thesis project for the
 Valencian International University: 
-Spectral State Transitions in Low-Mass X-ray Binaries observed with Ginga.
+Spectral State Transitions in Low-Mass X-ray Binaries observed with Ginga. 
+A copy of the Master Thesis dissertation can be found at:
+https://www.dropbox.com/s/765vxnlgm7pr8r3/14MUA_TFM_InakiOrtizdeLandaluce-FINAL.pdf?dl=0
 
 GingaToolbox is distributed as an open-source software package with GPL License.
 
